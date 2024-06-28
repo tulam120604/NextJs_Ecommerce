@@ -1,18 +1,38 @@
+'use client';
 
 import Image from 'next/image'
-import React from 'react'
-import Filter_Products from './[Filter]'
+import React, { useState } from 'react'
+import Filter_Products from './Filter'
 import Product_Item from '@/app/Components/Products/Product_Item'
+import Link from 'next/link'
+import { Paginate_Item } from '@/app/_lib/Tanstack_Query/Items/query'
+import { Loading_Component } from '@/app/Components/Loadings/LoadingPage';
 
 const Render_Products = () => {
+    const [page, setPage] = useState<number>(1);
+    // data server
+    // const {data, isPending} = Paginate_Item(page);
 
-    const arr = [1, 2, 3, 4, 5, 6, 7, 8]
+    // if (isPending) {
+    //     return (
+    //         <div className='w-full'>
+    //             <Loading_Component/>
+    //         </div>
+    //     )
+    // }
 
+    // fake data render html
+    const data = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+    const firstData = data.slice(0, 12);
+    const lastData = data.slice(12)
     return (
-        <div className="w-full flex flex-col mb:items-center lg:items-start">
-            <div className="mb:w-[342px] lg:w-full flex justify-between items-center lg:my-0 my-10">
-                <div className='flex justify-between lg:text-xl w-full items-center relative'>
-                    <span className=''>Tất cả sản phẩm </span>
+        <div className="w-full flex flex-col mb:items-center lg:items-start *:lg:px-6">
+            <div className="mb:w-[342px] md:w-full flex justify-between items-center lg:my-0 my-10">
+                <div className='flex justify-between w-full items-center relative'>
+                    <div className='flex items-center text-sm gap-x-2 font-medium capitalize text-gray-700'>
+                    <Link href={'/'} className='hover:text-black'>Trang chủ</Link>/
+                    <Link href={'/products'} className='hover:text-black'>Sản phẩm</Link>
+                    </div>
 
                     <div className="lg:hidden group cursor-pointer">
                         <strong className="mb:text-sm flex items-center lg:text-base font-medium whitespace-nowrap">Bộ lọc sản phẩm <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:rotate-180 duration-300" viewBox="0 0 20 20" fill="currentColor">
@@ -24,17 +44,17 @@ const Render_Products = () => {
                 </div>
             </div>
             {/* render products */}
-            <div className="lg:w-full mb:w-[342px] md:w-[95vw] grid lg:my-[33px] lg:grid-cols-[304px_304px_304px] mb:grid-cols-[159px_159px] gap-y-5 text-center justify-between">
+            <div className="mb:w-[342px] lg:shadow-xl lg:w-full md:w-full grid lg:py-8 rounded-lg lg:grid-cols-[23.5%_23.5%_23.5%_23.5%] md:grid-cols-[30%_30%_30%] mb:grid-cols-[159px_159px] lg:gap-y-8 mb:gap-y-6 text-center justify-between">
                {
-                arr?.map((item) => {
+                firstData?.map((item : any) => {
                     return (
-                        <Product_Item key={item}/>
+                        <Product_Item key={item} dataProps={item}/>
                     )
                 })
                }
             </div>
             {/* contentratest */}
-            <div className="lg:w-full mb:w-full lg:rounded-3xl lg:my-8 mb:my-2 lg:h-[460px] mb:h-[671px] bg-gradient-to-r from-[#05422C] lg:pl-[56px] lg:pr-[88px] to-[#648A7C] mb:py-6 flex lg:flex-row mb:flex-col items-center justify-between">
+            <div className="lg:w-full lg:shadow-xl mb:w-full lg:rounded-3xl lg:my-8 mb:my-2 lg:h-[460px] mb:h-[671px] bg-gradient-to-r from-[#05422C] lg:pl-[56px] lg:pr-[88px] to-[#648A7C] mb:py-6 flex lg:flex-row mb:flex-col items-center justify-between">
                 {/* left */}
                 <div className="lg:w-[341px] lg:h-[348px] mb:h-[239px] w-[342px] text-white flex flex-col justify-between">
                     <span className="lg:text-sm mb:text-xs opacity-30 lg:tracking-[4px] mb:tracking-[2px]">CONCENTRATES</span>
@@ -67,8 +87,8 @@ const Render_Products = () => {
                 </div>
                 {/* right */}
                 <div className="relative lg:w-[373px] mb:w-[342px] h-[344px] flex flex-col items-center justify-between">
-                    <div className="w-full h-[322px] bg-[#ffffff12] grid place-items-center rounded-2xl">
-                        <Image width={100} height={100} src="/Images/Image widtth={100} height={100}_product.png" alt='' />
+                    <div className="w-full h-[322px] bg-[#ffffff12] grid place-items-center rounded-2xl overflow-hidden">
+                        <Image width={100} height={100} className='w-full h-full' src="/Images/tao.png" alt='' />
                     </div>
                     {/* *****  */}
                     <div className="*:relative flex *:w-1.5 *:h-1.5 *:rounded-[50%] gap-x-2 *:after:content-[''] *:after:absolute *:after:-top-1/2 *:after:-left-1/2 *:after:rounded-[50%] *:after:bg-[#ffffff20]">
@@ -93,11 +113,11 @@ const Render_Products = () => {
                 </div>
             </div>
             {/* products */}
-            <div className="lg:w-full mb:w-[342px] md:w-[95vw] grid mt-8 lg:mb-8 mb-[30px] lg:grid-cols-[304px_304px_304px] mb:grid-cols-[159px_159px] lg:gap-y-8 gap-y-[29px] text-center justify-between">
+            <div className="lg:w-full lg:shadow-xl mb:w-[342px] md:w-full grid mt-8 lg:mb-8 pb-[30px] rounded-lg lg:grid-cols-[23.5%_23.5%_23.5%_23.5%] md:grid-cols-[30%_30%_30%] mb:grid-cols-[159px_159px] lg:gap-y-8 gap-y-6 text-center justify-between">
             {
-                arr?.map((item) => {
+                lastData?.map((item : any) => {
                     return (
-                        <Product_Item key={item}/>
+                        <Product_Item key={item} dataProps={item}/>
                     )
                 })
                }
@@ -108,17 +128,17 @@ const Render_Products = () => {
                 <span className="lg:w-auto  mb:w-full text-[#717378] lg:text-sm mb:text-xs">Showing 1-30 of 393
                     results</span>
                 {/* list page */}
-                <div className="lg:w-auto mb:w-[342px] flex items-center justify-left *:w-9 *:h-9 *:rounded-[50%] *:grid *:place-items-center lg:gap-x-[9.5px] gap-x-1 text-xs lg:text-sm">
+                <div className="md:w-auto mb:w-[342px] flex items-center justify-left *:w-9 *:h-9 *:rounded-[50%] *:grid *:place-items-center md:gap-x-3 gap-x-1 text-xs lg:text-sm">
                     <button className="border">
                         <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left">
                             <path d="m15 18-6-6 6-6" />
                         </svg>
                     </button>
                     {/* **** */}
-                    <button className="bg-[#F2F6F4]">1</button>
-                    <button className="hover:bg-[#f2f6f4]">2</button>
-                    <button className="hover:bg-[#f2f6f4]">3</button>
-                    <button className="hover:bg-[#f2f6f4]">4</button>
+                    <button onClick={() => setPage(1)} className="bg-[#F2F6F4]">1</button>
+                    <button onClick={() => setPage(2)} className="hover:bg-[#f2f6f4]">2</button>
+                    <button onClick={() => setPage(3)} className="hover:bg-[#f2f6f4]">3</button>
+                    <button onClick={() => setPage(4)} className="hover:bg-[#f2f6f4]">4</button>
                     <span className="hover:bg-[#f2f6f4]">...</span>
                     <button className="hover:bg-[#f2f6f4]">55</button>
                     {/* **** */}

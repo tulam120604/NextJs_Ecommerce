@@ -4,18 +4,17 @@ import Image from "next/image"
 
 const About_Us = () => {
   return (
-    <div className="w-full flex justify-center">
-      <div className="lg:w-[1200px] mb:w-[342px] flex flex-col">
+      <div className="lg:w-[1440px] mx-auto mb:w-[342px] flex flex-col">
         {/* TEXT */}
-        <div className="lg:w-[789px] flex flex-col text-center">
-          <div className="mx-auto lg:w-[1200px] md:w-[90vw] w-[342px] relative">
-            <strong className="relative bg-white lg:text-[32px] px-4 mb:text-[24px] lg:leading-[70px] mb:leading-[38.5px]">
-              Dịch vụ &#38; chất lượng sản phẩm của chúng tôit</strong>
+        <div className="lg:w-full flex flex-col text-center">
+          <div className="mx-auto lg:w-full md:w-[90vw] w-[342px] relative">
+            <strong className="relative bg-white lg:text-[32px] px-4 mb:text-xl lg:leading-[70px] mb:leading-[38.5px]">
+              Về của chúng tôi</strong>
             <div className="absolute w-full h-[1px] bg-gray-400 top-1/2 z-[-1]"></div>
           </div>
         </div>
         {/* BOX */}
-        <div className="w-full lg:mt-10 mb:mt-4 lg:grid mb:flex mb:flex-col lg:grid-cols-[379px_379px_379px] lg:justify-between lg:gap-y-10 *:mb:mb-6 *:lg:mb-0">
+        <div className="w-full lg:mt-10 mb:mt-4 lg:grid mb:flex mb:flex-col lg:grid-cols-[32%_32%_32%] lg:justify-between lg:gap-y-10 *:mb:mb-6 *:lg:mb-0">
           {/* item */}
           <div className="lg:order-none order-1">
             <div className="flex flex-col lg:gap-y-8 mb:gap-y-1.5 justify-between lg:p-[32px] mb:px-3.5 mb:pb-3.5 rounded-xl border">
@@ -56,7 +55,6 @@ const About_Us = () => {
           </div>
         </div>
       </div>
-    </div>
 
   )
 }

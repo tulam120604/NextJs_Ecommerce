@@ -6,3 +6,16 @@
 .hidden_scroll_x::-webkit-scrollbar {
     display: none;
   }
+
+@keyframes animationScrollYHeader {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transfrom: translateY(0);
+  }
+}
+
+.hidden_scroll_y {
+  scrollbar-width: none;
+}

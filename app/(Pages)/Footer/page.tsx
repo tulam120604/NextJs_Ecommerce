@@ -1,14 +1,15 @@
-'use client'
+'use client';
 
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const Footer = () => {
     return (
         <footer className="w-full lg:mt-[276px] bg-gradient-to-b from-[#1A1E26] to-[#01100B] mt-[182px]">
-            <div className="relative lg:pt-[323.5px] mb:pt-[238px] lg:w-[1200px] mb:w-[342px] mx-auto">
+            <div className="relative lg:pt-[323.5px] mb:pt-[238px] lg:w-[1440px] mb:w-[342px] mx-auto">
                 {/* UNLOCK VOUCHER 20% */}
-                <div className="lg:w-[1200px] lg:left-0 lg:translate-x-0 w-full mb:left-1/2 mb:-translate-x-1/2 absolute top-0 -translate-y-1/2">
+                <div className="lg:w-full lg:left-0 lg:translate-x-0 w-full mb:left-1/2 mb:-translate-x-1/2 absolute top-0 -translate-y-1/2">
                     <div className="bg-[#05422C] lg:pb-[70px] px-6 py-[26px] lg:pt-[45px] lg:px-16 rounded-3xl">
                         <h2 className="text-[31px]/[123%] -tracking-[0.8px] lg:text-[64px]/[110%] -translate-y-0.5 lg:mt-5 lg:-tracking-[4px] text-white font-semibold uppercase">
                             UNLOCK 20% OFF YOUR <br className="hidden lg:block" />FIRST ORDER
@@ -26,7 +27,9 @@ const Footer = () => {
                 {/* ***** */}
                 <div className="flex lg:flex-row mb:flex-col lg:gap-x-16 lg:gap-y-0 gap-y-8 *:w-full">
                     <div className="lg:w-[385px]">
-                        <Image width={173} height={42} className="w-[153px] h-[50px]" src="/Images/logo.png" alt="" />
+                        <Link className='text-4xl font-extrabold font-sans text-white' href={'/'}>
+                            Fruits
+                        </Link>
                         <p className="text-[#9D9EA2] mt-1 font-normal lg:w-full w-[276px]">
                             #1 Canadian top rated online dispensary that meets the customers needs
                             in every single medical marijuana aspect. The team here at TopShelfBC is

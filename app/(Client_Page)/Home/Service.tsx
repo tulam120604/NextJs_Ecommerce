@@ -5,7 +5,8 @@ import Image from 'next/image'
 const Service = () => {
     return (
         <div className="w-full flex justify-center bg-[#F2F6F4] mb:pb-2 lg:pb-0 mb:-mt-0.5 lg:mt-0">
-            <div className="lg:w-[1440px] mb:w-[342px] md:w-[95vw] lg:h-[356px] mb:h-[645px] grid grid-cols-1 auto-cols-[172px] *:w-full *:h-full md:grid-cols-2 lg:gap-y-0 mb:gap-y-[31px] lg:grid-cols-[416px_416px_416px] justify-between lg:px-16 lg:py-20 mb:py-16">
+            <div className="lg:w-[1440px] mb:w-[342px] md:w-[95vw] lg:h-[356px] mb:h-[645px] grid grid-cols-1 auto-cols-[172px] *:w-full *:h-full md:grid-cols-2 
+            lg:gap-y-0 mb:gap-y-[31px] lg:grid-cols-[416px_416px_416px] justify-between lg:py-20 mb:py-16">
                 {/* left */}
                 <div className="flex items-start grid lg:grid-cols-[100px_292px] mb:grid-cols-[64px_256px] justify-between">
                     <Image width={100} height={100} className="lg:w-[100px] lg:h-[100px] mb:w-16 mb:h-16 bg-white rounded-[50%] lg:p-5 mb:p-2.5" src="/Images/truck-fast.png" alt='' />

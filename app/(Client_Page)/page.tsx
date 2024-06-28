@@ -1,9 +1,8 @@
-import Layout_Home from './Home/page'
+// import Layout_Home from "./home/page";
+import Layout_Home from "./home/page";
 
-const Layout_CLient = () => {
-    return (<>
-        <Layout_Home />
-    </>)
+export default function RootLayout() {
+  return (
+      <Layout_Home />
+  );
 }
-
-export default Layout_CLient
