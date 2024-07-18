@@ -1,0 +1,15 @@
+import * as yup from 'yup';
+
+
+export const schemaValidateRegister = yup.object().shape({
+    user_name: yup.string().min(3, 'Tên ít nhất 3 kí tự!').max(30, 'Tên tối đa 30 kí tự!').required('Tên là bắt buộc!').optional(),
+    email: yup.string().email('Email không hợp lệ!').required('Email là bắt buộc!'),
+    password: yup.string().min(6, 'Mật khẩu ít nhất 6 kí tự!').required('Mật khẩu là bắt buộc!'),
+});
+
+export const schemaValidateOrder = yup.object().shape({
+    name_user: yup.string().required('Đại vương phải nhập tên!'),
+    email_user: yup.string().email('Email đại vương không hợp lệ!').required('Đại vương hãy nhập địa chỉ để giao hàng!'),
+    phone: yup.string().min(10, 'Số điện thoại đại vương phải 10 số!').required('Đại vương hãy nhập địa chỉ để giao hàng!'),
+    address: yup.string().required('Đại vương hãy nhập địa chỉ để giao hàng!'),
+});
