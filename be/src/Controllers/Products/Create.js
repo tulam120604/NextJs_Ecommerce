@@ -29,7 +29,7 @@ export async function Create_Product(req, res) {
             })
         }
         const img_upload = await cloudinary.uploader.upload(req.file.path);
-        const convert_Attributes = JSON.parse(dataClient.attributes);
+
         const allData = {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
@@ -43,28 +43,43 @@ export async function Create_Product(req, res) {
                 message
             })
         }
-        const data = await Products.create(allData);
-        const attribute_data = {
-            id_item: data?._id,
-            values: []
-        }
-        convert_Attributes.map(item => (
-            attribute_data.values.push(
+        if (dataClient.attributes) {
+            const convert_Attributes = JSON.parse(dataClient.attributes);
+            const data = await Products.create(allData);
+
+            const varriant = convert_Attributes.map(item => (
                 {
                     color_item: convert_Attributes ? item.color_item : '',
-                    size_item: convert_Attributes ? item.size_item : '',
-                    stock_item: convert_Attributes ? item.stock_item : ''
+                    size_item: item.size_item.map(size =>
+                    (
+                        {
+                            name_size: size.name_size ? size.name_size.toString() : '',
+                            stock_item: size.stock_item ? size.stock_item : 0
+                        }
+                    )
+                    )
                 }
-            )
-        ))
-        const new_attributes = await Attribute.create(attribute_data);
-        await Products.findByIdAndUpdate(data._id, {
-            $push: { attributes: new_attributes.values.map(item => item._id) }
-        })
-        return res.status(StatusCodes.CREATED).json({
-            message: "Create Done",
-            data
-        })
+            ));
+            const attribute_data = {
+                id_item: data?._id,
+                varriants: varriant,
+            }
+            const new_attributes = await Attribute.create(attribute_data);
+            await Products.findByIdAndUpdate(data._id, {
+                $push: { attributes: new_attributes.varriants.map(item => item._id) }
+            })
+            return res.status(StatusCodes.CREATED).json({
+                message: "Create Done",
+                data
+            })
+        }
+        else {
+            const data = await Products.create(allData);
+            return res.status(StatusCodes.CREATED).json({
+                message: "Create Done",
+                data
+            })
+        }
     }
     catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

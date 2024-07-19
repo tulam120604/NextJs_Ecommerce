@@ -5,19 +5,21 @@ const Schema_Attribute = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Products',
     },
-    values: [
+    varriants: [
         {
             color_item: {
                 type: String,
             },
-            size_item: {
-                type: String,
-            },
-            stock_item: {
-                type: Number,
-                required: true,
-                min: 1,
-            },
+            size_item: [
+                {
+                    name_size: String,
+                    stock_item: {
+                        type: Number,
+                        required: true,
+                        min: 1,
+                    },
+                }
+            ],
         }
     ]
 }, { timestamps: true, versionKey: false });

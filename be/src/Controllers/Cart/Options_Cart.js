@@ -12,14 +12,22 @@ export async function Add_To_Cart(req, res) {
         let price_item = data_item?.price_product;
         let quantity_by_item = 0;
         let color_item;
-        let size_attribute_item
+        let size_attribute_item;
         if (data_item.attributes) {
             for (let i = 0; i < attribute_item.length; i++) {
-                for (let j = 0; j < attribute_item[i]?.values.length; j++) {
-                    if (attribute_item[i]?.values[j].color_item == color && attribute_item[i]?.values[j].size_item == size_attribute) {
-                        quantity_by_item = attribute_item[i]?.values[j].stock_item;
-                        color_item = attribute_item[i]?.values[j].color_item;
-                        size_attribute_item = attribute_item[i]?.values[j].size_item;
+                // console.log(attribute_item[i]);
+                for (let j = 0; j < attribute_item[i]?.varriants.length; j++) {
+                    // console.log(attribute_item[i]?.varriants[j]);
+                    if (attribute_item[i]?.varriants[j].color_item == color) {
+                        // console.log(attribute_item[i]?.varriants[j].color_item);
+                        for (let k of attribute_item[i]?.varriants[j]?.size_item) {
+                            // console.log(k);
+                            if (k.name_size == size_attribute) {
+                                quantity_by_item = k.stock_item;
+                                color_item = attribute_item[i]?.varriants[j].color_item;
+                                size_attribute_item = k.name_size;
+                            }
+                        }
                     }
                 }
             }
@@ -30,7 +38,7 @@ export async function Add_To_Cart(req, res) {
                 user_id,
                 items: [],
             })
-        }
+        };
         if (data_cart.items.length === 0) {
             data_cart.items.push({
                 product_id,
@@ -123,7 +131,8 @@ export async function dow_quantity(req, res) {
         };
         for (let i = 0; i < data_user_cart.items.length; i++) {
             if (data_user_cart.items[i].product_id == product_id) {
-                if (data_user_cart.items[i].color_item == color && data_user_cart.items[i].color_item == color) {
+                // console.log(data_user_cart.items[i].product_id);
+                if (data_user_cart.items[i].color_item == color && data_user_cart.items[i].size_attribute_item == size_attribute) {
                     data_user_cart.items[i].quantity--;
                     data_user_cart.items[i].total_price_item = data_user_cart.items[i].total_price_item - data_user_cart.items[i].price_item;
                     if (data_user_cart.items[i].quantity === 0) {

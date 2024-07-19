@@ -43,6 +43,7 @@ const schema_Products = new mongoose.Schema({
             ref: 'Attributes'
         }
     ],
+    stock : Number,
     made_in: {
         type: String,
     }

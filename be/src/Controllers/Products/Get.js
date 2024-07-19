@@ -1,3 +1,4 @@
+import Attribute from '../../Model/Products/Attribute';
 import Categories from '../../Model/Products/Categories';
 import Products from '../../Model/Products/Products';
 import { StatusCodes } from 'http-status-codes';
@@ -26,6 +27,18 @@ export async function GetAll_Admin(req, res) {
         };
         const data = await Products.paginate(querry, options);
         const data_All = await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
+        for (const id_data of data_All) {
+            const data_attribute = await Attribute.find({ id_item: id_data?._id.toString() })
+            let current = 0;
+            data_attribute.map(item => {
+                item.varriants.map((b) => {
+                    b.size_item.map(l => {
+                        current += l.stock_item
+                    })
+                })
+            });
+            id_data.count_stock = current;
+        }
         // for (let i = 0; i < data_All.length; i++) {
         //     let totalStock = 0;
         //     for (let j = 0; j < data_All[i].attributes.length; j++) {
@@ -39,8 +52,9 @@ export async function GetAll_Admin(req, res) {
         // for (let i = 0; i < data.docs.length; i++) {
         //     // console.log(data.docs[i])
         // }
+        // console.log(data_All)
         if (!data_All || data_All.length === 0) {
-            return res.status(StatusCodes.NOT_FOUND).json({
+            return res.status(StatusCodes.OK).json({
                 message: "Khong co data!",
             })
         };
