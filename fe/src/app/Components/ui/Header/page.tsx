@@ -85,7 +85,7 @@ const Header = () => {
         }, [data_storage])
         const { data } = Get_Items_Cart(data_storage);
         return (<>
-            {data ? (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{data?.items.length}</span>) : ''}
+            {data && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{data?.items?.length}</span>)}
         </>
         )
     }
