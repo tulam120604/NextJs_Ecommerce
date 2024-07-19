@@ -9,27 +9,26 @@ const Banner = () => {
         {/* slide */}
         <div>
           <Slide_show>
+            <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
+              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/voucher_4.jpg" alt='Loading...' />
+            </div>
+            {/* 888 */}
+            {/* 888 */}
+            <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
+              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/voucher_freeship.png" alt='Loading...' />
+            </div>
             {/* 888 */}
             <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
               <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/3.jpeg" alt='Loading...' />
             </div>
             {/* 888 */}
             <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
-
-              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/banner1.jpeg" alt='Loading...' />
-            </div>
-            {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
-              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/4.jpeg" alt='Loading...' />
-            </div>
-            {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[200px] lg:h-[400px]">
-              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/banner2.jpeg" alt='Loading...' />
+              <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/voucher_3.jpg" alt='Loading...' />
             </div>
           </Slide_show>
         </div>
         <div className='border h-[200px] lg:h-[400px]'>
-          <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/banner2.jpeg" alt='Loading...' />
+          <Image width={1000} height={500} className='w-full h-full top-0 rounded left-0' src="/Images/voucher_2.png" alt='Loading...' />
         </div>
       </div>
     </div>

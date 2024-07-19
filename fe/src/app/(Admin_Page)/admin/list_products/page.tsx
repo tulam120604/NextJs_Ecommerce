@@ -97,7 +97,7 @@ const Page = () => {
           <TableBody>
             {data?.map((item: any) => (
               <TableRow key={item?._id}>
-                <TableCell key={item?._id}>{item?.short_name}</TableCell>
+                <TableCell className="max-w-[200px]" key={item?._id}>{item?.short_name}</TableCell>
                 <TableCell key={item?._id}>{item?.category_id?.category_name}</TableCell>
                 <TableCell key={item?._id}><img loading="lazy" className="w-16 h-16" width={80} height={80} src={item.feature_product} alt=""></img></TableCell>
                 <TableCell key={item?._id}>{item?.price_product}</TableCell>

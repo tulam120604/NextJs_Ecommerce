@@ -128,6 +128,7 @@ const Cart = () => {
                   {
                     data?.items?.map((item: any) => {
                       if (item?.product_id) {
+                        console.log(item?.quantity_by_item);
                         return (
                           item?.quantity_by_item > 0 ?
                             <TableRow key={item._id} className="border-y border-gray-300">

@@ -1,6 +1,5 @@
 'use client';
 
-import Config_color from "@/src/app/_lib/Config/Config_color";
 import { Get_Attribute_Items } from "@/src/app/_lib/Tanstack_Query/Attribute/Query_attribute";
 import Btn_Add_Cart from "@/src/app/Components/Btn/Btn_Add_Cart";
 import { useEffect, useState } from "react";
@@ -9,10 +8,18 @@ import Swal from "sweetalert2";
 
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const [color, setColor] = useState<any>();
+  const [varriants_attribute, setVarriants_attribute] = useState<any>();
   const [size_attribute, setsize_attribute] = useState<any>();
+  const [name_size, setName_size] = useState<any>();
+  const [sizePropsCart, setSizePropsCart] = useState<any>();
   const [quantity_attributes, setQuantity_attributes] = useState<any>();
   const [quantity, set_quantity] = useState(1);
   const { data, isLoading } = Get_Attribute_Items(data_Item_Detail?.id_item);
+  useEffect(() => {
+    if (data) {
+      setVarriants_attribute(data[0].varriants)
+    }
+  }, [data]);
   function dow() {
     if (quantity > 1) {
       set_quantity(quantity - 1);
@@ -27,61 +34,55 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   };
   // color
   const arr_color: any = [];
-  (data && data[0]?.values?.map((item: any) => {
+  (data && data[0]?.varriants?.map((item: any) => {
     if (!arr_color.includes(item?.color_item)) {
       arr_color.push(item?.color_item);
     }
   }));
-  // size
-  const arr_size: any = [];
-  (data && data[0]?.values?.map((item: any) => {
-    if (!arr_size.includes(item?.size_item)) {
-      arr_size.push(item?.size_item);
-    }
-  }));
+
 
   // attributes
   function handle_attributes(action: any, item: any) {
     switch (action) {
       case 'Color':
-        for (let i = 0; i < data.length; i++) {
-          for (let j = 0; j < data[i]?.values.length; j++) {
-            if (data[i]?.values[j]?.color_item == item) {
-              setQuantity_attributes(data[i]?.values[j]?.stock_item)
+        varriants_attribute.filter((attr: any) => {
+          (attr.color_item == item) ? setsize_attribute(attr.size_item) : setsize_attribute([])
+        });
+        return setColor(item);
+      case 'size_attribute':
+        for (let value of varriants_attribute) {
+          if (value.color_item == color) {
+            for (let i of value.size_item) {
+              if (i.name_size == item) {
+                setQuantity_attributes(i.stock_item);
+                setSizePropsCart(i.name_size);
+              }
             }
           }
         }
-        return setColor(item);
-      case 'size_attribute':
-        for (let i = 0; i < data.length; i++) {
-          if (data[i]?.size_item === item) {
-            setQuantity_attributes(data[i]?.stock_item)
-          }
-        }
-        return setsize_attribute(item);
+        return setName_size(item);
       default: return
     }
-  }
+  };
 
   const price = data_Item_Detail.price * quantity;
   return (<>
     {data && (
       <div className="flex flex-col gap-y-4">
         {isLoading ? 'Loading...' : (<>
-          <div className="flex items-center gap-x-4 *:relative *:border *:w-8 *:h-8 *:text-sm *:rounded-[50%] *:after:absolute *:after:w-4  *:after:h-2 
-          *:after:border-l-2  *:after:border-b-2  *:after:rotate-[-45deg] *:after:left-1/4  *:after:top-1/4">
-            {arr_color.map((item: any) => (
-              <button className={`${Config_color(item)} after:border-black'}
-                ${color == item ? 'after:block' : 'after:hidden'} after:border-white`}
-                key={Math.random()} onClick={() => handle_attributes('Color', item)}></button>
+          <div className="flex items-center gap-x-4 *:relative *:border *:border-black *:px-2 *:py-1 *:text-sm *:rounded">
+            {varriants_attribute?.map((item: any) => (
+              <button className={`after:border-black hover:bg-black hover:text-white duration-200'}
+                ${color == item?.color_item && 'text-white bg-black'}`}
+                key={Math.random()} onClick={() => handle_attributes('Color', item?.color_item)}>{item?.color_item}</button>
             ))}
           </div>
-          <div className="flex items-center gap-x-4 *:relative *:border *:px-4 *:py-1 *:text-sm *:rounded *:border-black">
-            {arr_size.map((item: any) => (
-              <button className={`${size_attribute == item ? 'bg-gray-800 text-white' : 'bg-white text-black'}`} key={Math.random()}
-                onClick={() => handle_attributes('size_attribute', item)}>{item}</button>
+          {size_attribute && <div className="flex items-center gap-x-4 *:relative *:border *:px-4 *:py-1 *:text-sm *:rounded *:border-black">
+            {size_attribute?.map((item: any) => (
+              <button className={`${(name_size == item?.name_size) && 'text-white bg-black'}`} key={Math.random()}
+                onClick={() => handle_attributes('size_attribute', item?.name_size)}>{item?.name_size}</button>
             ))}
-          </div>
+          </div>}
         </>)}
       </div>
     )}
@@ -110,7 +111,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     <span className="font-medium text-[#EB2606] lg:text-2xl lg:font-normal lg:tracking-[0.7px] mb:text-base flex items-center lg:gap-x-3 lg:mt-0.5 mb:gap-x-2">{price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
     {/* add cart */}
     <div className="flex items-center gap-x-5 my-4 font-medium lg:text-base mb:text-sm *:duration-300">
-      <Btn_Add_Cart data_Btn={{ id_item: data_Item_Detail?.id_item, color_item: color, size_attribute_item: size_attribute, quantity_item_add: quantity }} />
+      <Btn_Add_Cart data_Btn={{ id_item: data_Item_Detail?.id_item, color_item: color, size_attribute_item: sizePropsCart, quantity_item_add: quantity }} />
       {/* add cart */}
       <button className="bg-black hover:scale-105 duration-200 w-[128px] h-[40px] grid place-items-center rounded-md text-sm text-white">
         Thanh toán

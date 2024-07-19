@@ -28,12 +28,10 @@ const Infor_Detail_Product = ({ dataProps }: any) => {
           </div>
         </div>
         {/* row 2 */}
-        <div className="flex flex-col gap-y-2 lg:pb-0 mb:pb-[21px]">
+        {/* <div className="flex flex-col gap-y-2 lg:pb-0 mb:pb-[21px]">
           <span className="text-sm tracking-[1px] text-[#717378]">Mô tả ngắn</span>
-          <p className="text-[14px] text-[#46494F]">Jungle Diamonds is a slightly indica dominant hybrid strain
-            (60% indica/40% sativa) created through
-            crossing the infamous Slurricane X Gorilla Glue #4 strains.</p>
-        </div>
+          <p className="text-[14px] text-[#46494F]">{dataProps?.des_product}</p>
+        </div> */}
         {/* row 4 */}
         <div className="py-5 *:w-full rounded-xl lg:-mt-5 -mt-1">
           {/* quantity */}

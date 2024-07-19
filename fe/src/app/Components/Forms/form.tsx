@@ -7,11 +7,20 @@ import Swal from 'sweetalert2';
 import Loading from '../../(Admin_Page)/admin/list_products/loading';
 import { Custome_Hooks } from '../../_lib/Custome_Hooks/MyForm';
 import { Button } from '../ui/Tables/button';
+import Link from 'next/link';
 
 
 const MyForm: React.FC<any> = ({ mode }: any) => {
     const { dataToken, my_Form, submitForm, isLoading, loading, data_Category, routing, data_one_item } = Custome_Hooks({ mode });
-    const [attributes, setAttribute] = useState<any>([]);
+    const [stock_quantity, setStock_quantity] = useState<boolean>(false)
+    const [attributes, setAttribute] = useState<any>([{
+        color_item: '',
+        size_item: [{
+            name_size: '',
+            stock_item: '',
+        }],
+    }]);
+
 
     if (loading === 'dang_call') {
         return (<div className='grid place-items-center fixed z-[3] *:z-[4] w-screen h-screen top-0 left-0 bg-[#10182488]'>
@@ -19,18 +28,44 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         </div>)
     }
 
+    // stock_item: '',
+
     function add_Attribute() {
-            setAttribute([...attributes, {
-                color_item: '',
-                size_item: '',
+        setStock_quantity(false);
+        setAttribute([...attributes, {
+            color_item: '',
+            size_item: [{
+                name_size: '',
                 stock_item: '',
-            }])
+            }],
+        }])
+    }
+
+    function add_Size_Attribute(i: any) {
+        setStock_quantity(false);
+        const add_size_attribute = [...attributes]
+        add_size_attribute[i].size_item.push({
+            name_size: '',
+            stock_item: '',
+        })
+        setAttribute(add_size_attribute)
     }
 
     function remove_Attribute(index: number) {
         const updatedAttributes = [...attributes];
         updatedAttributes.splice(index, 1);
         setAttribute(updatedAttributes);
+        if (attributes.length < 2) {
+            setStock_quantity(true);
+        } else {
+            setStock_quantity(false);
+        }
+    }
+
+    function remove_size_Attribute(index: number) {
+        const remove_size_Attributes = [...attributes];
+        remove_size_Attributes[index].size_item.splice(index, 1);
+        setAttribute(remove_size_Attributes);
     }
 
     if (loading === 'call_ok') {
@@ -55,7 +90,10 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
 
     return (<>
         <section className="bg-[#101824] flex flex-col gap-y-6 py-6 rounded">
+            <div className='flex items-center justify-between'>
             <strong className="text-gray-200 lg:text-2xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
+            <Link className='text-white hover:text-gray-200 hover:underline' href={'/admin/list_products'}>Quay lại</Link>
+            </div>
             <form onSubmit={my_Form.handleSubmit(submitForm)} className="bg-[#1F2936] w-full px-4 flex flex-col gap-y-5 py-4 rounded">
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="short_name">Tên sản phẩm :</label>
@@ -88,32 +126,48 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 </div>
 
                 <div className='flex flex-col text-gray-200 gap-y-3'>
-                    <label>Thuộc tính sản phẩm:</label>
-                    {attributes?.map((e: any, i: any) => (
-                        <div key={i} className='flex item-center gap-x-4'>
+                    <label>Thuộc tính sản phẩm (nếu có):</label>
+                    {attributes?.map((item: any, i: any) => (<>
+                        <div key={i} className='flex item-center gap-x-4 w-full'>
                             <input
                                 type="text"
                                 {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
                                 className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                placeholder='Màu sắc ...'
+                                placeholder='Màu sắc (nếu có)...'
                             />
-                            <input
-                                type="text"
-                                {...my_Form.register(`attributes[${i}].size_item`)}
-                                className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                placeholder='Kích thước (nếu có) ...'
-                            />
-                            <input
-                                type="text"
-                                {...my_Form.register(`attributes[${i}].stock_item`, { required: true })}
-                                className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                placeholder='Số lượng ...'
-                            />
-                            <Button type='button' onClick={() => remove_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
+                            <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
+                            <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
                         </div>
-                    ))}
+                        {item?.size_item?.map((e: any, j: any) => (
+                                <div key={i} className='flex item-center gap-x-4'>
+                                    <input
+                                        type="text"
+                                        {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
+                                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                        placeholder='Kích thước ...'
+                                    />
+                                    <input
+                                        type="text"
+                                        {...my_Form.register(`attributes[${i}].size_item[${j}].stock_item`, { required: true })}
+                                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                        placeholder='Số lượng ...'
+                                    />
+                                </div>
+                            ))}
+                        <Button type='button' onClick={() => remove_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
+                    </>))}
                     <Button type='button' onClick={add_Attribute} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
+
                 </div>
+                {stock_quantity && <div className='text-white flex flex-col gap-y-3'>
+                    <label>Số lượng :</label>
+                    <input
+                        type="text"
+                        {...my_Form.register(`stock`)}
+                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                        placeholder='Số lượng ...'
+                    />
+                </div>}
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="made_in">Xuất xứ sản phẩm :</label>
                     <input id='made_in' {...my_Form.register('made_in')}

@@ -6,24 +6,8 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <footer className="w-full lg:mt-[276px] bg-gradient-to-b from-[#1A1E26] to-[#01100B] mt-[182px]">
-            <div className="relative lg:pt-[323.5px] mb:pt-[238px] lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto">
-                {/* UNLOCK VOUCHER 20% */}
-                <div className="lg:w-full lg:left-0 lg:translate-x-0 w-full mb:left-1/2 mb:-translate-x-1/2 absolute top-0 -translate-y-1/2">
-                    <div className="bg-gradient-to-r from-gray-900 to-gray-800 lg:pb-[70px] px-6 py-[26px] lg:pt-[45px] lg:px-16 rounded-3xl">
-                        <h2 className="text-[31px]/[123%] -tracking-[0.8px] lg:text-[64px]/[110%] -translate-y-0.5 lg:mt-5 lg:-tracking-[4px] text-white font-semibold uppercase">
-                            UNLOCK 20% OFF YOUR <br className="hidden lg:block" />FIRST ORDER
-                        </h2>
-                        <p className="lg:text-xl text-[14px] text-[#C3D2CC] lg:my-6 mt-[34px]">
-                            Reveal coupon code by entering your email
-                        </p>
-                        <form className="border-t border-[#346654] lg:pt-8 md:pt-4 pt-1 lg:translate-y-2 translate-y-0.5 flex lg:flex-row flex-col lg:gap-y-0 gap-y-[14px] items-center lg:space-x-8">
-                            <input type="text" className="w-full border border-[#346654] rounded-full py-4 pr-4 pl-6 lg:py-6 lg:px-11" placeholder="Email Address" />
-                            <button className="btn lg:!h-[72px] lg:w-auto w-full text-left lg:text-center pl-11 py-4 lg:px-[45px] lg:py-6 bg-gray-900 whitespace-nowrap text-white rounded-[100px]">Reveal
-                                coupon</button>
-                        </form>
-                    </div>
-                </div>
+        <footer className="w-full bg-[#01100B]">
+            <div className="relative pt-20 lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto">
                 {/* ***** */}
                 <div className="flex lg:flex-row mb:flex-col lg:gap-x-16 lg:gap-y-0 gap-y-8 *:w-full">
                     <div className="lg:w-[385px]">
