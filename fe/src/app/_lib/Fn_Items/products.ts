@@ -190,3 +190,18 @@ export async function edit_items_admin (dataClient? : any) {
         return(error || "Lỗi rồi đại vương ơi!");
     }
 }
+
+// client : 
+export async function getRespon(page?: any) {
+    let api_item = `${apiURi}/products`;
+    if (page) {
+        api_item += `?_page=${page}`
+    }
+    const res = await fetch(api_item, { cache: 'no-cache' });
+    if (!res.ok) {
+        console.error('Lỗi rồi đại vương ơi!');
+        return res
+    }
+    const respon = await res.json()
+    return respon
+}

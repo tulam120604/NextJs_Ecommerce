@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import Link from 'next/link';
 import React from 'react'
@@ -30,14 +28,11 @@ const Form_auth = ({ mode }: any) => {
             routing.push('/');
         }
         else {
-            toast.success("Đăng kí tài khoản thành công!", { autoClose: 500 })
             routing.push('/login');
         }
     }
     return (
         <>
-            <ToastContainer className='absolute' />
-
             <div className="lg:grid max-w-[1400px] mx-auto lg:min-h-screen lg:grid-cols-[60%_35%] justify-between">
                 <section className="relative">
                     <img

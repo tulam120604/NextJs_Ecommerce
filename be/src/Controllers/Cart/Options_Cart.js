@@ -13,7 +13,7 @@ export async function Add_To_Cart(req, res) {
         let quantity_by_item = 0;
         let color_item;
         let size_attribute_item;
-        if (data_item.attributes) {
+        if (data_item.attributes.length > 0) {
             for (let i = 0; i < attribute_item.length; i++) {
                 // console.log(attribute_item[i]);
                 for (let j = 0; j < attribute_item[i]?.varriants.length; j++) {
@@ -21,16 +21,25 @@ export async function Add_To_Cart(req, res) {
                     if (attribute_item[i]?.varriants[j].color_item == color) {
                         // console.log(attribute_item[i]?.varriants[j].color_item);
                         for (let k of attribute_item[i]?.varriants[j]?.size_item) {
-                            // console.log(k);
-                            if (k.name_size == size_attribute) {
+                            if (k.name_size) {
+                                if (k.name_size == size_attribute) {
+                                    quantity_by_item = k.stock_item;
+                                    color_item = attribute_item[i]?.varriants[j].color_item;
+                                    size_attribute_item = k.name_size;
+                                }
+                            }
+                            else {
                                 quantity_by_item = k.stock_item;
                                 color_item = attribute_item[i]?.varriants[j].color_item;
-                                size_attribute_item = k.name_size;
                             }
+
                         }
                     }
                 }
             }
+        }
+        else {
+            quantity_by_item = quantity;
         }
         let data_cart = await Carts.findOne({ user_id });
         if (!data_cart) {
@@ -163,7 +172,7 @@ export async function remove_item_cart(req, res) {
                 message: "No data!"
             })
         };
-        console.log(data_cart)
+        // console.log(data_cart)
         data_cart.items = data_cart.items.filter((id_item) => id_item.product_id.toString() !== product_id);
         const data = await data_cart.save();
         return res.status(StatusCodes.OK).json({
@@ -187,6 +196,7 @@ export async function remove_all_item_cart(req, res) {
                 message: "No data!"
             })
         };
+        console.log(list_item);
         data_cart.items = data_cart.items.filter(item => (
             !list_item.some(id_item => item.product_id.toString() === id_item._id)
         ));

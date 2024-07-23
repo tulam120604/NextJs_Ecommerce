@@ -6,13 +6,13 @@ export async function get_list_Cart (id_user : any){
     try{
         const res = await fetch (`${apiURi}/cart/${id_user}`);
         if (!res.ok) {
-            console.warn('Kiểm tra lại server !')
+            return res.status
         };
         const data = await res.json();
         return data.cart
     }catch (error) {
         console.error(error);
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return (error || '<span>Lỗi rồi đại vương ơi!!</span>')
     }
 }
 

@@ -10,8 +10,7 @@ import { useForm } from 'react-hook-form';
 import { DataTable } from './data_table';
 import { columns } from './colum';
 import { Mutation_Order } from '../../_lib/Tanstack_Query/Order/Mutation_order';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Loading_animation from '../../Components/Loadings/Loading_animation';
 import { schemaValidateOrder } from '../../(Auth)/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -26,9 +25,8 @@ const Page = () => {
     const user = JSON.parse(localStorage.getItem('account') || '{}');
     user_id = user?.check_email?._id;
   }
-
-  const { register, handleSubmit, formState : {errors} } = useForm({
-    resolver : yupResolver(schemaValidateOrder) 
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schemaValidateOrder)
   });
   const { data, isLoading } = Get_MiddleWare_Cart_Order(user_id);
   const mutate_order = Mutation_Order('ADD');
@@ -50,27 +48,29 @@ const Page = () => {
   }
   if (mutate_order.isSuccess) {
     let timeoutId;
-    toast.success('Đại vương đã mua hàng thành công!', {autoClose : 500});
+    toast.success('Đại vương đã mua hàng thành công!', { autoClose: 500 });
     timeoutId = setTimeout(() => {
       routing.push('/');
     }, 500);
   }
 
   return (<Suspense fallback={<Loading />}>
-    <ToastContainer className='absolute' />
     <form onSubmit={handleSubmit(on_Order)} className={`relative ${mutate_order.isLoading && 'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
       <div className="lg:w-[1200px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[58%_38%] justify-between mb:grid-cols-[100%] justify-between *:w-full pb-10">
         {/* left */}
         <div>
           {/* list items */}
-          <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
-          {isLoading ? <span>Loading ...</span> :
-            <DataTable columns={columns} data={data?.data[0]?.items_middleware} />
-          }
-          <div className='whitespace-nowrap text-lg my-4'>
-            <span>Tổng tiền :</span>
-            <span className='w-full ml-1 whitespace-nowrap text-red-600'>{data?.data[0].items_middleware.reduce((last: any, first: any) => (last + first.total_price_item), 0).toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-          </div>
+          {data?.data.length > 0 ? (<>
+            <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
+            {isLoading ? <span>Loading ...</span> :
+              <DataTable columns={columns} data={data?.data[0]?.items_middleware} />
+            }
+            <div className='whitespace-nowrap text-lg my-4'>
+              <span>Tổng tiền :</span>
+              <span className='w-full ml-1 whitespace-nowrap text-red-600'>{data?.data[0]?.items_middleware.reduce((last: any, first: any) => (last + first.total_price_item), 0).toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+            </div>
+          </>) :<span>Không có đơn hàng nào!</span>}
+
         </div>
 
         {/* right */}
@@ -105,7 +105,7 @@ const Page = () => {
         <div className="block lg:hidden mt-[35px]">
           <Input placeholder="shadcn" />
 
-          <Button type='submit'>{mutate_order.isLoading ? <Loading_animation/> : 'Thanh toán'}</Button>
+          <Button type='submit'>{mutate_order.isLoading ? <Loading_animation /> : 'Thanh toán'}</Button>
         </div>
       </div>
     </form>

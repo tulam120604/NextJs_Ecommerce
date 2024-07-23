@@ -28,16 +28,21 @@ export async function GetAll_Admin(req, res) {
         const data = await Products.paginate(querry, options);
         const data_All = await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
         for (const id_data of data_All) {
-            const data_attribute = await Attribute.find({ id_item: id_data?._id.toString() })
-            let current = 0;
-            data_attribute.map(item => {
-                item.varriants.map((b) => {
-                    b.size_item.map(l => {
-                        current += l.stock_item
+            if (id_data.attributes.length > 0) {
+                const data_attribute = await Attribute.find({ id_item: id_data?._id.toString() })
+                let current = 0;
+                data_attribute.map(item => {
+                    item.varriants.map((b) => {
+                        b.size_item.map(l => {
+                            current += l.stock_item
+                        })
                     })
-                })
-            });
-            id_data.count_stock = current;
+                });
+                id_data.count_stock = current;
+            }
+            else {
+                id_data.count_stock = id_data.stock
+            }
         }
         // for (let i = 0; i < data_All.length; i++) {
         //     let totalStock = 0;
@@ -76,7 +81,7 @@ export async function GetAllClient(req, res) {
     const {
         _page = 1,
         _sort = '',
-        _limit = 20,
+        _limit = 100,
         _search = '',
         _categories_id = '',
     } = req.query;

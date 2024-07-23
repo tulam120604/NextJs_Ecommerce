@@ -17,8 +17,8 @@ const Header = () => {
             (window.addEventListener('scroll', () => {
                 if (toggleFixedHeader.current) {
                     (window.scrollY > 100) ?
-                        (toggleFixedHeader.current.classList.add('animate-[animationScrollYHeader_1s]', '-translate-y-9')) :
-                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '-translate-y-9'));
+                        (toggleFixedHeader.current.classList.add('animate-[animationScrollYHeader_1s]', '-translate-y-9', 'sticky')) :
+                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '-translate-y-9','sticky'));
                 }
             }))
         }
@@ -32,12 +32,6 @@ const Header = () => {
     // login
     const ref_User = useRef<HTMLAnchorElement>(null);
     const ref_Logo_User = useRef<HTMLAnchorElement>(null);
-    const ref_Login = useRef<HTMLDivElement>(null);
-    function handle_Login() {
-        if (ref_Login.current) {
-            ref_Login.current.classList.add('translate-y-0', 'opacity-100');
-        }
-    }
 
     useEffect(() => {
         const changeLogin = () => {
@@ -67,7 +61,7 @@ const Header = () => {
     // cart :
     function handleCart() {
         if (!localStorage.getItem('account')) {
-            handle_Login();
+            routing.push('/login')
         }
         else {
             routing.push('/cart');
@@ -84,20 +78,21 @@ const Header = () => {
             }
         }, [data_storage])
         const { data } = Get_Items_Cart(data_storage);
+        const new_arr = data?.items.filter((item :any) => (item?.product_id !== null) && item);
         return (<>
-            {data && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{data?.items?.length}</span>)}
+            {data && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{new_arr?.length}</span>)}
         </>
         )
     }
 
     return (<>
-        <header ref={toggleFixedHeader} className="w-full bg-none z-[4] duration-300 fixed top-0 lg:h-[103px] bg-gray-800 text-white">
+        <header ref={toggleFixedHeader} className="w-full bg-none z-[4] duration-300 top-0 lg:h-[103px] bg-gray-800 text-white">
             {/* top header */}
             <div className="w-full lg:h-[37px] mb:h-[34px] *:text-white flex justify-center items-center *:lg:text-sm *:mb:text-xs gap-x-4">
                 <span className="opacity-75 lg:w-auto mb:w-[266px] mb:truncate">Xin chào đại vương, chúc đại vương có một trải nghiệm thoải mái.</span>
             </div>
             {/* logo, search and cart */}
-            <div className="container lg:w-[1440px] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">
+            <div className="mx-auto lg:w-[1440px] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">
                 <div className=''>
                     <Link className='lg:text-2xl text-lg font-extrabold' href={'/'}>
                         Store88

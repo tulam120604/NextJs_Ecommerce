@@ -18,6 +18,7 @@ const Schema_Attribute = new mongoose.Schema({
                         required: true,
                         min: 1,
                     },
+                    price_attribute : Number
                 }
             ],
         }

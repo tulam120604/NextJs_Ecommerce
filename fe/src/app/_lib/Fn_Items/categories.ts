@@ -1,15 +1,17 @@
 'use client';
 
+import { toast } from "react-toastify";
+
 const apiURi = 'http://localhost:2000/v1';
 
 // list
-export async function list_Categories () {
+export async function list_Categories() {
     try {
-        const res = await fetch (`${apiURi}/category`);
+        const res = await fetch(`${apiURi}/category`);
         if (!res.ok) {
             console.warn('Call data failer!')
         }
-        const {data} = await res.json();
+        const data = await res.json();
         return data
     } catch (error) {
         return ('<span>Lỗi rồi đại vương ơi!!</span>')
@@ -17,71 +19,74 @@ export async function list_Categories () {
 }
 
 // detail
-export async function detail_Categories (id : any) {
+export async function detail_Categories(id: any) {
     try {
-        const res = await fetch (`${apiURi}/category/${id}`);
+        const res = await fetch(`${apiURi}/category/${id}`);
         if (!res.ok) {
             console.warn('Call data failer!')
         }
-        const {data} = await res.json();
+        const { data } = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return error || '<span>Lỗi rồi đại vương ơi!!</span>'
     }
 }
 
 // add
-export async function add_Categories (item : any) {
+export async function add_Categories(item: any) {
     try {
-        const res = await fetch (`${apiURi}/category/}`, {
-            method : 'post',
-            headers : {
-                'Content-Type' : 'application/json'
+        const res = await fetch(`${apiURi}/category`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify(item)
+            body: JSON.stringify(item)
         });
         if (!res.ok) {
-            console.warn('Call data failer!')
+            return res
         }
-        const {data} = await res.json();
+        if (res.status === 200) {
+            toast.success('Thêm thành công danh mục', { autoClose: 500 })
+        }
+        const data = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return error || '<span>Lỗi rồi đại vương ơi!!</span>'
     }
 }
 
 // edit
-export async function edit_Categories (item : any) {
+export async function edit_Categories(item: any) {
     try {
-        const res = await fetch (`${apiURi}/category/${item.id}}`, {
-            method : 'put',
-            headers : {
-                'Content-Type' : 'application/json'
+        const res = await fetch(`${apiURi}/category/${item.id}}`, {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            body : JSON.stringify(item)
+            body: JSON.stringify(item)
         });
         if (!res.ok) {
             console.warn('Call data failer!')
         }
-        const {data} = await res.json();
+        const data = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return error || '<span>Lỗi rồi đại vương ơi!!</span>'
     }
 }
 
 // remove
-export async function remove_Categories (id : any) {
+export async function remove_Categories(id: any) {
     try {
-        const res = await fetch (`${apiURi}/category/${id}}`, {
-            method : 'delete',
+        const res = await fetch(`${apiURi}/category/${id}}`, {
+            method: 'delete',
         });
         if (!res.ok) {
             console.warn('Call data failer!')
         }
-        const {data} = await res.json();
+        const { data } = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return error || '<span>Lỗi rồi đại vương ơi!!</span>'
     }
 }

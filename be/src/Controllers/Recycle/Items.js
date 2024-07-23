@@ -1,5 +1,6 @@
 import {StatusCodes} from 'http-status-codes';
 import Products from '../../Model/Products/Products';
+import Attribute from '../../Model/Products/Attribute';
 
 export async function get_recycle_items (req, res) {
     const {
@@ -25,7 +26,6 @@ export async function get_recycle_items (req, res) {
 };
 
 export async function restore_item (req, res) {
-    console.log(req.params.id);
     try {
         if (!req.params.id) {
             return res.status(StatusCodes.NOT_FOUND).json({
@@ -48,6 +48,7 @@ export async function restore_item (req, res) {
 export async function destroy_items (req, res) {
     try {
         await Products.findByIdAndDelete(req.params.id);
+        await Attribute.deleteMany({id_item : req.params.id});
         return res.status(StatusCodes.OK).json({
             message : 'Done delete!!'
         })

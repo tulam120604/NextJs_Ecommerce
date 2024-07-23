@@ -15,7 +15,6 @@ export async function Sign_In(item: any) {
             console.warn('Dang nhap that bai !');
         }
         else if (res.status === 200) {
-           
             const data = await res.json();
             // console.log(data.check_email)
             localStorage.setItem('account', JSON.stringify(data));

@@ -9,7 +9,10 @@ import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import Trash_Icon from "@/src/app/Components/Icons/trash";
 import Loading from "../loading";
 import Re_store from "@/src/app/Components/Icons/re_store";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/src/app/Components/ui/Tables/table";
+import { ColumnDef } from "@tanstack/react-table"
+import Image from "next/image";
+import { DataTable } from "../data_table";
+import { toast } from "react-toastify";
 
 const Page = () => {
     const [dataToken, set_DataToken] = useState();
@@ -36,12 +39,60 @@ const Page = () => {
     function next() {
         // setPage(page + 1);
     };
+    const columns: ColumnDef<any>[] = [
+        {
+            cell: ({ row }) => (
+                <div className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
+            ),
+            header: "Tên sản phẩm",
+        },
+        {
+            accessorKey: "category_id.category_name",
+            header: "Danh mục",
+        },
+        {
+            cell: ({ row }) => (
+                <Image width={100} height={100} className="w-[100px] h-[100px] rounded" src={row?.original?.feature_product} alt="Loading..." />
+            ),
+            header: "Ảnh",
+        },
+        {
+            cell: ({ row }) => (
+                <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+            ),
+            header: "Đơn giá",
+        },
+        {
+            accessorKey: "count_stock",
+            header: "Số lượng",
+        },
+        {
+            accessorKey: "made_in",
+            header: "Xuất xứ",
+        },
+        {
+            cell: ({ row }) => (<div className="flex items-center gap-x-2 *:duration-200">
+                <button className="hover:scale-110" onClick={() => handle_Restore(row?.original?._id)}>
+                    <Re_store />
+                </button>
+                <button className="hover:scale-110 text-red-500">
+                    <Trash_Icon />
+                </button>
+            </div>),
+            header: "options",
+        },
+    ]
     function handle_Restore(idItem?: string | number) {
         const item = {
             token: dataToken,
             id_item: idItem
         };
         on_Submit(item);
+        if (loading == 'call_error') {
+            toast.error(`Lỗi không thể khôi phục sản phẩm mã ${idItem}`, { autoClose: 600 })
+        } else {
+            toast.success(`Khôi phục thành công sản phẩm mã ${idItem}`, { autoClose: 600 })
+        }
     }
 
     return (
@@ -54,42 +105,14 @@ const Page = () => {
                     </Link>
                 </div>
                 {(Array.isArray(data)) ? (<>
-
-                    {data.length > 0 ?
-                        <Table className="rounded">
-                            <TableCaption>A list of your recent invoices.</TableCaption>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Tên</TableHead>
-                                    <TableHead>Thể loại</TableHead>
-                                    <TableHead>Danh mục</TableHead>
-                                    <TableHead>Ảnh</TableHead>
-                                    <TableHead>Giá</TableHead>
-                                    <TableHead>Số lượng bán</TableHead>
-                                    <TableHead>Options</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {data?.map((item: any) => (
-                                    <TableRow key={item?._id}>
-                                        <TableCell key={item?._id}>{item?.short_name}</TableCell>
-                                        <TableCell key={item?._id}>{item?.type_product}</TableCell>
-                                        <TableCell key={item?._id}>{item?.category_id?.category_name}</TableCell>
-                                        <TableCell key={item?._id}><img loading="lazy" className="w-16 h-16" width={80} height={80} src={item.feature_product} alt=""></img></TableCell>
-                                        <TableCell key={item?._id}>{item?.price_product}</TableCell>
-                                        <TableCell key={item?._id}>{item?.stock_item}</TableCell>
-                                        <TableCell key={item?._id} className="flex items-center h-full gap-x-4 !py-9 *:duration-300">
-                                                <button className="hover:scale-110" onClick={() => handle_Restore(item._id)}>
-                                                    <Re_store />
-                                                </button>
-                                                <button className="hover:scale-110 text-red-500">
-                                                    <Trash_Icon />
-                                                </button>
-                                        </TableCell>
-                                    </TableRow>))}
-                            </TableBody>
-                        </Table>
-                        : <span className="text-gray-100">Thùng rác trống!</span>}
+                    {
+                        data ? (<>
+                            {isLoading ? <span>Loading ...</span> :
+                                <DataTable columns={columns} data={data} />
+                            }
+                        </>)
+                            : <span className="text-gray-100">Thùng rác trống!</span>
+                    }
                     <div className="w-full flex justify-end text-white *:border *:px-1 *:py-0.5 *:rounded *:duration-200 gap-x-4">
                         {page > 1 ? <button onClick={previous} className="hover:bg-white hover:text-black">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6" /></svg>
@@ -106,3 +129,4 @@ const Page = () => {
 }
 
 export default Page
+

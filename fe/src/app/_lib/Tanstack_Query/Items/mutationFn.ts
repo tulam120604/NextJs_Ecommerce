@@ -42,7 +42,6 @@ export function Mutation_Items({action , onSuccess, onError, onSettled} : {actio
             }
         },
         onSettled: () => {
-            // Optionally handle any cleanup or additional logic after mutation
             query_client.invalidateQueries({
                 queryKey : ['Product_Key']
             });
@@ -57,5 +56,5 @@ export function Mutation_Items({action , onSuccess, onError, onSettled} : {actio
         mutate(data);
     }
 
-    return { mutate, my_Form, on_Submit,query_client,  loading, ...rest };
+    return { mutate, my_Form, on_Submit,query_client, onSuccess, onError,  loading, ...rest };
 }

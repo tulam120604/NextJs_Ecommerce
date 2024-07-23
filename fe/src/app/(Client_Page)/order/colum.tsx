@@ -6,7 +6,9 @@ import Image from "next/image"
 
 export const columns: ColumnDef<any>[] = [
   {
-    accessorKey: "product_id.short_name",
+    cell: ({row}) => (
+      <div className="max-w-[200px] line-clamp-3">{row?.original?.product_id.short_name}</div>
+    ),
     header: "Tên sản phẩm",
   },
   {

@@ -1,12 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import Link from "next/link";
-import Btn_Add_Cart from "../Btn/Btn_Add_Cart";
 
 const Product_Item = ({ dataProps }: any) => {
-    // console.log(typeof dataProps?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' }))
     return (
-        <Link href={`/products/${dataProps?._id}`} className="flex flex-col w-full snap-center border-[1.5px] hover:-translate-y-0.5 border-gray-300 hover:border-red-500 relative duration-150 cursor-pointer h-full rounded overflow-hidden">
+        <Link href={`/${dataProps?._id}`} className="flex flex-col w-full snap-center border-[1.5px] hover:-translate-y-0.5 border-gray-300 hover:border-red-500 relative duration-150 cursor-pointer h-full rounded overflow-hidden">
             {/* Image */}
             <div className="relative group w-full lg:h-[200px] shadow sm:h-[160px] h-[120px] bg-[#F4F4F4] overflow-hidden rounded grid place-items-center">
                 <Image loading='lazy' width={300} height={300} className="w-full h-full cursor-pointer" src={dataProps?.feature_product} alt='Loading...' />

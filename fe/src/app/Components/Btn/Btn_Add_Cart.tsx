@@ -1,9 +1,10 @@
 'use client';
 
 import { Mutation_Cart } from "@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart";
+import { useRouter } from "next/navigation";
 
 const Btn_Add_Cart = ({ data_Btn }: any) => {
-  // console.log(data_Btn)
+  const routing = useRouter();
   const { mutate } = Mutation_Cart('Add_Cart');
 
   function add_To_Cart() {
@@ -18,14 +19,12 @@ const Btn_Add_Cart = ({ data_Btn }: any) => {
       };
       mutate(items);
     } else {
-      console.log('khong co tai khoan')
+      routing.push('/login');
     }
   }
 
-
-
   return (
-    <button onClick={add_To_Cart} className="bg-black hover:scale-105 duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
+    <button onClick={add_To_Cart} className="bg-black hover:bg-white hover:text-black border border-black duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
       Thêm vào giỏ
     </button>
   )

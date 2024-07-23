@@ -8,6 +8,8 @@ import LoadingLandingPage from "./loading";
 
 
 const Layout_Home = () => {
+    //   const isClient = typeof window !== 'undefined';
+    // console.log(isClient);
   return (<>
     <Suspense fallback={<LoadingLandingPage />}>
       <Banner />
