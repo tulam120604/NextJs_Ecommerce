@@ -3,6 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { toast } from 'react-toastify';
 import { Query_Category, Query_Items } from "../Tanstack_Query/Items/query";
 import { Mutation_Items } from "../Tanstack_Query/Items/mutationFn";
 
@@ -35,19 +36,7 @@ export function Custome_Hooks({ mode }: any) {
             })
             my_Form.reset();
             const text_alert = edit_item ? `Sản phẩm mã ${edit_item} đã được sửa !` : "Đã thêm sản phẩm !";
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: text_alert,
-                showConfirmButton: false,
-                timer: 800,
-                heightAuto: false,
-                backdrop: '#33333366',
-                customClass: {
-                    popup: 'bg-transparent', // màu nền
-                    title: 'text-black' // màu chữ
-                },
-            });
+            toast.success(text_alert, {autoClose: 500})
             setTimeout(() => {
                 routing.push('/admin/list_products')
             }, 800);
@@ -77,8 +66,8 @@ export function Custome_Hooks({ mode }: any) {
             const attributesString = JSON.stringify(data_form.attributes);
             const formData = new FormData();
             formData.append('short_name', data_form.short_name);
-            formData.append('feature_product', data_form.feature_product[0]);
-            formData.append('price_product', data_form.price_product);
+            formData.append('feature_product', (typeof data_form.feature_product == 'string') ? data_form.feature_product :  data_form.feature_product[0]);
+            (data_form.price_product && formData.append('price_product', data_form.price_product))
             formData.append('des_product', data_form.des_product);
             formData.append('category_id', data_form.category_id && data_form.category_id);
             formData.append('made_in', data_form.made_in);

@@ -46,7 +46,6 @@ export async function list_carts(req, res) {
 };
 
 
-
 export async function checked_item_cart(req, res) {
     const { user_id, id_item, item_checkked } = req.body;
     try {

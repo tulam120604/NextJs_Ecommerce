@@ -33,7 +33,7 @@ export async function Create_Product(req, res) {
         const allData = {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
-            attributes: [],
+            attributes: null,
             feature_product: img_upload.secure_url
         };
         const { error } = validateProducts.validate(req.body, { abortEarly: false });
@@ -54,7 +54,8 @@ export async function Create_Product(req, res) {
                     (
                         {
                             name_size: size.name_size ? size.name_size.toString() : '',
-                            stock_item: size.stock_item ? size.stock_item : 0
+                            stock_item: size.stock_item ? size.stock_item : 0,
+                            price_attribute : size.price_attribute > 0 && size.price_attribute
                         }
                     )
                     )
@@ -66,7 +67,7 @@ export async function Create_Product(req, res) {
             }
             const new_attributes = await Attribute.create(attribute_data);
             await Products.findByIdAndUpdate(data._id, {
-                $push: { attributes: new_attributes.varriants.map(item => item._id) }
+                $set: { attributes: new_attributes._id }
             })
             return res.status(StatusCodes.CREATED).json({
                 message: "Create Done",

@@ -25,4 +25,4 @@ const Schema_Attribute = new mongoose.Schema({
     ]
 }, { timestamps: true, versionKey: false });
 
-export default mongoose.model('Attributes', Schema_Attribute);
+export default mongoose.model('Attribute', Schema_Attribute);

@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import React from 'react'
+import { Button } from '../../Components/ui/Shadcn/button'
 
-const Description = ({dataProps} : any) => {
+const Description = ({ dataProps }: any) => {
     return (
         <>
             {/* description */}
@@ -9,13 +10,11 @@ const Description = ({dataProps} : any) => {
                 {/* menu description */}
                 <span className="underline text-xl">Mô tả</span>
                 {/* text description */}
-                <div className="show_description">
-                    <section className="flex flex-col text-sm text-[#46494F] leading-[21px] gap-y-4 lg:py-6 mb:pt-[19px]">
-                        <p>{dataProps?.des_product}</p>
-                    </section>
+                <div className="show_description my-4">
+                    {dataProps?.des_product}
                 </div>
                 {/* detail comment */}
-                <section className="show_review">
+                <section className="show_review mt-8">
                     <span className="underline text-xl flex gap-x-2">Đánh giá
                         <p>(350)</p>
                     </span>
@@ -62,8 +61,7 @@ const Description = ({dataProps} : any) => {
                         </div>
                         {/*btn show more */}
                         <div className="flex justify-center my-1">
-                            <button className="px-5 py-2 text-[#17AF26] text-sm rounded-[100px] border hover:bg-[#F9F9F9] cursor-pointer duration-300">Show
-                                More</button>
+                            <Button>Xem thêm</Button>
                         </div>
                         {/* add comment */}
                         <div className="flex flex-col gap-y-6 border-t lg:pt-7 lg:pb-[22px]">
@@ -84,7 +82,7 @@ const Description = ({dataProps} : any) => {
                                 <div className="overflow-hidden lg:p-4 rounded border border-gray-200 shadow-sm focus-within:border-none focus-within:ring-1 focus-within:none mt-2">
                                     <textarea id="OrderNotes" className="w-full resize-none outline-none border-none align-top focus:ring-0 sm:text-sm" rows={3} placeholder="Enter your review" defaultValue={""} />
                                 </div>
-                                <button className="px-6 hover:bg-gray-700 duration-200 py-2 bg-black rounded text-base text-white mt-4">Submit</button>
+                                <Button className='mt-4'>Submit</Button>
                             </form>
                         </div>
                     </div>

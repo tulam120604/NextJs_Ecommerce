@@ -7,36 +7,48 @@ import Attribute from '../../Model/Products/Attribute';
 export async function Add_To_Cart(req, res) {
     const { user_id, product_id, quantity, color, size_attribute } = req.body;
     try {
-        const data_item = await Products.findById(product_id);
-        const attribute_item = await Attribute.find({ id_item: data_item?._id });
+        const data_item = await Products.findById(product_id).populate('attributes');
         let price_item = data_item?.price_product;
         let quantity_by_item = 0;
         let color_item;
         let size_attribute_item;
         if (data_item.attributes.length > 0) {
-            for (let i = 0; i < attribute_item.length; i++) {
-                // console.log(attribute_item[i]);
-                for (let j = 0; j < attribute_item[i]?.varriants.length; j++) {
-                    // console.log(attribute_item[i]?.varriants[j]);
-                    if (attribute_item[i]?.varriants[j].color_item == color) {
-                        // console.log(attribute_item[i]?.varriants[j].color_item);
-                        for (let k of attribute_item[i]?.varriants[j]?.size_item) {
-                            if (k.name_size) {
-                                if (k.name_size == size_attribute) {
-                                    quantity_by_item = k.stock_item;
-                                    color_item = attribute_item[i]?.varriants[j].color_item;
-                                    size_attribute_item = k.name_size;
-                                }
-                            }
-                            else {
-                                quantity_by_item = k.stock_item;
-                                color_item = attribute_item[i]?.varriants[j].color_item;
-                            }
-
+            data_item.attributes.filter(item => {
+                const varr = item.varriants.find(color_attr => color_attr.color_item === color)
+                if (varr) {
+                    for (let i of varr.size_item) {
+                        if (i.name_size) {
+                            color_item = varr.color_item;
+                            quantity_by_item = i.stock_item;
+                            size_attribute_item = i.name_size
+                        }
+                        else {
+                            color_item = varr.color_item,
+                            quantity_by_item = i.stock_item;
                         }
                     }
                 }
-            }
+            });
+            // for (let i of data_item.attributes) {
+            //     for (let j of i.varriants) {
+            //         if (j.color_item == color) {
+            //             for (let k of j.size_item) {
+            //                 if (k.name_size) {
+            //                     if (k.name_size == size_attribute) {
+            //                         quantity_by_item = k.stock_item;
+            //                         color_item = j.color_item;
+            //                         size_attribute_item = k.name_size;
+            //                     }
+            //                 }
+            //                 else {
+            //                     quantity_by_item = k.stock_item;
+            //                     color_item = j.color_item;
+            //                 }
+
+            //             }
+            //         }
+            //     }
+            // }
         }
         else {
             quantity_by_item = quantity;
@@ -196,9 +208,9 @@ export async function remove_all_item_cart(req, res) {
                 message: "No data!"
             })
         };
-        console.log(list_item);
+        // console.log(list_item);
         data_cart.items = data_cart.items.filter(item => (
-            !list_item.some(id_item => item.product_id.toString() === id_item._id)
+            !list_item.some(id_item => item.product_id.toString() === id_item.product_id._id)
         ));
         const data = await data_cart.save();
         return res.status(StatusCodes.OK).json({

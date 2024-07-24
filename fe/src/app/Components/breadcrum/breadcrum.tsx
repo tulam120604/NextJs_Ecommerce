@@ -36,12 +36,6 @@ const Breadcrum = ({textProps} : any) => {
                         className="absolute inset-y-1 -start-[2px] w-4 bg-black h-8 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"
                     >
                     </span>
-                    <Link
-                        href="/products"
-                        className="flex h-10 items-center bg-white lg:pe-4 ps-5 lg:ps-8 text-xs font-medium transition text-gray-800 hover:text-gray-900"
-                    >
-                        Sản phẩm
-                    </Link>
                     {textProps && <span
                         className="flex h-10 items-center cursor-default bg-white ps-5 text-xs font-medium transition text-gray-800 hover:text-gray-900"
                     >

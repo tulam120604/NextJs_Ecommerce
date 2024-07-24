@@ -3,6 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Product_Item = ({ dataProps }: any) => {
+    let min;
+    let max;
+    if (dataProps?.attributes) {
+        min = dataProps?.attributes?.varriants[0]?.size_item[0].price_attribute;
+        max = dataProps?.attributes?.varriants[0]?.size_item[0].price_attribute;
+        for (let i of dataProps?.attributes?.varriants) {
+            for (let j of i.size_item) {
+                if (j.price_attribute < min) {
+                    min = j.price_attribute;
+                }
+                if (j.price_attribute > max) {
+                    max = j.price_attribute;
+                }
+            }
+        }
+    }
     return (
         <Link href={`/${dataProps?._id}`} className="flex flex-col w-full snap-center border-[1.5px] hover:-translate-y-0.5 border-gray-300 hover:border-red-500 relative duration-150 cursor-pointer h-full rounded overflow-hidden">
             {/* Image */}
@@ -15,8 +31,15 @@ const Product_Item = ({ dataProps }: any) => {
             <div className="w-full p-4 flex flex-col gap-y-1.5 items-start h-[120px] justify-between">
                 <strong className="lg:text-base text-start w-full text-sm line-clamp-2 font-normal text-[#1A1E26]">{dataProps.short_name}</strong>
                 <div className="flex items-center gap-x-2">
-                <span className="text-[#EB2606]">{(dataProps?.price_product)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-                   <del className="text-gray-500 text-sm">100.000 đ</del>
+                    {
+                        dataProps?.price_product ?
+                            <span className="text-[#EB2606]">{(dataProps?.price_product)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
+                            <div className="flex items-center gap-x-1 line-clamp-2">
+                            <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>-
+                            <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                            </div>
+                    }
+
                     {/* <Btn_Add_Cart data_Btn={dataProps?._id} /> */}
                 </div>
             </div>

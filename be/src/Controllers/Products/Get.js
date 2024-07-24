@@ -1,5 +1,4 @@
 import Attribute from '../../Model/Products/Attribute';
-import Categories from '../../Model/Products/Categories';
 import Products from '../../Model/Products/Products';
 import { StatusCodes } from 'http-status-codes';
 
@@ -26,18 +25,16 @@ export async function GetAll_Admin(req, res) {
             ];
         };
         const data = await Products.paginate(querry, options);
-        const data_All = await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
-        for (const id_data of data_All) {
-            if (id_data.attributes.length > 0) {
-                const data_attribute = await Attribute.find({ id_item: id_data?._id.toString() })
+        await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
+        await Products.populate(data.docs, { path: 'attributes' });
+        for (const id_data of data.docs) {
+            if (id_data.attributes) {
                 let current = 0;
-                data_attribute.map(item => {
-                    item.varriants.map((b) => {
-                        b.size_item.map(l => {
-                            current += l.stock_item
-                        })
+                id_data.attributes.varriants.map((b) => {
+                    b.size_item.map(l => {
+                        current += l.stock_item
                     })
-                });
+                })
                 id_data.count_stock = current;
             }
             else {
@@ -58,14 +55,14 @@ export async function GetAll_Admin(req, res) {
         //     // console.log(data.docs[i])
         // }
         // console.log(data_All)
-        if (!data_All || data_All.length === 0) {
+        if (!data.docs || data.docs.length === 0) {
             return res.status(StatusCodes.OK).json({
                 message: "Khong co data!",
             })
         };
         return res.status(StatusCodes.OK).json({
             message: "Done!",
-            data_All
+            data_All : data.docs
         })
     }
     catch (error) {
@@ -112,6 +109,22 @@ export async function GetAllClient(req, res) {
         //     }
         // }
         const data = await Products.paginate(querry, options);
+        await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
+        await Products.populate(data.docs, { path: 'attributes' });
+        for (const id_data of data.docs) {
+            if (id_data.attributes) {
+                let current = 0;
+                id_data.attributes.varriants.map((b) => {
+                    b.size_item.map(l => {
+                        current += l.stock_item
+                    })
+                })
+                id_data.count_stock = current;
+            }
+            else {
+                id_data.count_stock = id_data.stock
+            }
+        }
         if (!data) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Khong co data!"
@@ -133,7 +146,7 @@ export async function GetAllClient(req, res) {
 
 export async function GetDetail(req, res) {
     try {
-        const data = await Products.findById(req.params.id);
+        const data = await Products.findById(req.params.id).populate('attributes');
         return res.status(StatusCodes.OK).json({
             message: "Done",
             data

@@ -12,7 +12,7 @@ import { DataTable } from "./data_table";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
-import Swal from "sweetalert2";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
 
 const Page = () => {
   const [dataToken, set_DataToken] = useState();
@@ -41,6 +41,7 @@ const Page = () => {
       default: return
     }
   }
+
   const columns: ColumnDef<any>[] = [
     {
       cell: ({ row }) => (
@@ -59,9 +60,29 @@ const Page = () => {
       header: "Ảnh",
     },
     {
-      cell: ({ row }) => (
-        <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-      ),
+      cell: ({ row }) => {
+        return (row?.original?.price_product ?
+          <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
+          row?.original?.attributes?.varriants?.map((item: any) => {
+            return (<>
+              <span>{item.color_item + ' - '}</span>
+              {
+                item?.size_item.map((i: any) => {
+                  if (i.name_size) {
+                    return (<>
+                      <span key={i._id}>{i?.name_size}</span><br />
+                      <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> <br />
+                    </>)
+                  }
+                  else {
+                    return <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                  }
+                })
+              }
+            </>)
+          }))
+
+      },
       header: "Đơn giá",
     },
     {
@@ -80,36 +101,34 @@ const Page = () => {
         <Link href={`/admin/list_products/${row?.original?._id}`} className="hover:scale-110 ">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /><path d="M8 18h1" /></svg>
         </Link>
-        <button className="hover:scale-110 text-red-500" onClick={() => handle_Remove(row?.original?._id)}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></svg>
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger>
+            <Trash_Icon />
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Xác nhận xóa sản phẩm?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Bạn chắc chắn xóa sản phẩm mã {row?.original?._id} ? Bạn có thể khôi phục tại thùng rác.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Hủy</AlertDialogCancel>
+              <AlertDialogAction className="bg-red-500" onClick={() => handle_Remove(row?.original?._id)}>Xác nhận</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>),
       header: "options",
     },
   ]
 
   function handle_Remove(idItem?: string | number) {
-    Swal.fire({
-      title: "Xác nhận xóa sản phẩm?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Xác nhận!",
-      cancelButtonText: 'Hủy'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const item = {
-          token: dataToken,
-          id_item: idItem
-        }
-        on_Submit(item);
-        Swal.fire({
-          title: "Xóa sản phẩm thành công! Bạn có thể khôi phục tại thùng rác.",
-          icon: "success"
-        });
-      }
-    });
+    const item = {
+      token: dataToken,
+      id_item: idItem
+    }
+    on_Submit(item);
   }
 
   return (
@@ -133,7 +152,7 @@ const Page = () => {
               <DataTable columns={columns} data={data} />
             }
           </>)
-            : <span>Không có dữ liệu</span>
+            : <span className="text-gray-200">Không có dữ liệu</span>
         }
 
         <div className="w-full flex justify-end text-white *:border *:px-1 *:py-0.5 *:rounded *:duration-200 gap-x-4">

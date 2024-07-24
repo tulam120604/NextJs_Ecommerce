@@ -78,9 +78,12 @@ const Header = () => {
             }
         }, [data_storage])
         const { data } = Get_Items_Cart(data_storage);
-        const new_arr = data?.items.filter((item :any) => (item?.product_id !== null) && item);
+        let new_arr;
+        if (data?.items ) {
+            new_arr = data?.items.filter((item :any) => (item?.product_id !== null) && item);
+        }
         return (<>
-            {data && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{new_arr?.length}</span>)}
+            {data?.items && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{new_arr?.length}</span>)}
         </>
         )
     }

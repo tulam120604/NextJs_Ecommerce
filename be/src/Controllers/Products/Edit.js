@@ -17,7 +17,6 @@ export async function edit_Product (req, res) {
         const {error} = validateProducts.validate(req.body, {abortEarly : false});
         if (error) {
             const message = error.details.map(e =>  e.message);
-            console.log(message)
             return res.status(StatusCodes.BAD_REQUEST).json({
                 message
             })
@@ -36,12 +35,16 @@ export async function edit_Product (req, res) {
                 message : 'Ten san pham da ton tai!'
             })
         };
-        const img_upload = await cloudinary.uploader.upload(req.file.path);
-        const convert_Attributes = JSON.parse(req.body.attributes)
+        let img_upload;
+        if (!req.body.feature_product) {
+            img_upload = await cloudinary.uploader.upload(req.file.path);
+        }
+        const convert_Attributes = JSON.parse(req.body.attributes);
+        console.log(req.body.attributes);
         const dataClient = {
             ... req.body,
             attributes : convert_Attributes,
-            feature_product : img_upload.secure_url
+            feature_product :img_upload ? img_upload.secure_url : req.body.feature_product
         }
         const data = await Products.findByIdAndUpdate(req.params.id, dataClient, {new : true});
         return res.status(StatusCodes.OK).json({

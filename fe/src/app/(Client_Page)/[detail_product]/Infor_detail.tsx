@@ -1,7 +1,15 @@
-import Image from "next/image"
 import Quantity_Items_Detail from "./quantity_Items";
 
 const Infor_Detail_Product = ({ dataProps }: any) => {
+  // const isClient = typeof window !== 'undefined';
+  // console.log(isClient);
+  const propsData = {
+    price: dataProps?.price_product,
+    attribute: dataProps?.attributes,
+    id_item: dataProps?._id,
+    stock: dataProps?.stock,
+    data_attribute: dataProps?.attributes
+  };
   return (
     <div className="h-full w-full *:w-full lg:mt-0 mb:mt-[42px]">
       <div className="flex flex-col gap-y-2 lg:gap-y-6">
@@ -21,24 +29,15 @@ const Infor_Detail_Product = ({ dataProps }: any) => {
                 <span className="text-[#C8C9CB]">Reviews</span>
               </div>
             </section>
-            <div className="flex items-center gap-x-2 items-end">
-              <span className="font-medium text-[#EB2606] lg:text-2xl lg:font-normal lg:tracking-[0.7px] mb:text-base flex items-center lg:gap-x-3 lg:mt-0.5 mb:gap-x-2">
-                <del className="font-light text-sm text-[#9D9EA2]">200.00 đ</del>{dataProps?.price_product?.toLocaleString('vi', {style : 'currency', currency : 'VND'})}</span>
-            </div>
+            {/* <Price_item dataProps={dataProps}/> */}
           </div>
         </div>
-        {/* row 2 */}
-        {/* <div className="flex flex-col gap-y-2 lg:pb-0 mb:pb-[21px]">
-          <span className="text-sm tracking-[1px] text-[#717378]">Mô tả ngắn</span>
-          <p className="text-[14px] text-[#46494F]">{dataProps?.des_product}</p>
-        </div> */}
-        {/* row 4 */}
         <div className="py-5 *:w-full rounded-xl lg:-mt-5 -mt-1">
           {/* quantity */}
-          <Quantity_Items_Detail data_Item_Detail={{price : dataProps?.price_product, attribute :dataProps?.attributes, id_item : dataProps?._id, stock : dataProps?.stock}}/>
+          <Quantity_Items_Detail data_Item_Detail={propsData} />
         </div>
         {/* different */}
-          <span className="flex items-center gap-x-10 text-[#717378]">Xuất xứ<p className="text-[#060709]">:&nbsp;&nbsp;&nbsp; Việt Nam</p></span>
+        <span className="flex items-center gap-x-10 text-[#717378]">Xuất xứ<p className="text-[#060709]">:&nbsp;&nbsp;&nbsp; Việt Nam</p></span>
       </div>
     </div>
   )

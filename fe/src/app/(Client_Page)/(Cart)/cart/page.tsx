@@ -35,7 +35,7 @@ const Cart = () => {
   useEffect(() => {
     if (!isLoading) {
       const new_arr: any = [];
-      data?.items?.map((item: any) => (new_arr.push(item.product_id)));
+      data?.items?.map((item: any) => (new_arr.push(item)));
       setarr_item_checkbox(new_arr);
     }
   }, [data, isLoading]);
@@ -48,8 +48,9 @@ const Cart = () => {
   console.count('re-render cart :');
 
   function remove_all_item_cart() {
+  const data_checked_true = arr_item_checkbox.filter((item : any) => item?.status_checked && item);
     Swal.fire({
-      title: `Xác nhận xóa ${arr_item_checkbox.length} sản phẩm?`,
+      title: `Xác nhận xóa ${data_checked_true.length} sản phẩm?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -60,7 +61,7 @@ const Cart = () => {
       if (result.isConfirmed) {
         const item = {
           user_id: id?._id,
-          list_item: arr_item_checkbox,
+          list_item: data_checked_true,
           key_action: 'remove_all'
         };
 
@@ -81,16 +82,6 @@ const Cart = () => {
       id_item: id_item
     };
     mutate(item);
-    if (!arr_item_checkbox.includes(id_item)) {
-      setarr_item_checkbox([...arr_item_checkbox, id_item]);
-      if ((arr_item_checkbox.length + 1) === data?.items.length) {
-        setCheck_all_item(true)
-      }
-    }
-    else {
-      setarr_item_checkbox(arr_item_checkbox.filter((item: any) => (item?._id !== id_item?._id)));
-    }
-    console.log(arr_item_checkbox);
   }
 
   // total_price

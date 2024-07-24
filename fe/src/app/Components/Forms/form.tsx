@@ -2,8 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
 import Loading from '../../(Admin_Page)/admin/list_products/loading';
 import { Custome_Hooks } from '../../_lib/Custome_Hooks/MyForm';
 import { Button } from '../ui/Tables/button';
@@ -13,6 +12,7 @@ import Form_category from './form_category';
 
 const MyForm: React.FC<any> = ({ mode }: any) => {
     const { dataToken, my_Form, submitForm, isLoading, loading, data_Category, routing, data_one_item } = Custome_Hooks({ mode });
+    const [change_img, setChange_img] = useState();
     const [stock_quantity, setStock_quantity] = useState<boolean>(false)
     const [category_form, setCategory_form] = useState<boolean>(false)
     const [attributes, setAttribute] = useState<any>([{
@@ -20,9 +20,21 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         size_item: [{
             name_size: '',
             stock_item: '',
+            price_attribute: 0
         }],
     }]);
 
+    useEffect(() => {
+        if (mode) {
+            let data_attr_detail;
+            if (data_one_item?.data?.attributes) {
+                for (let i of data_one_item?.data?.attributes) {
+                    data_attr_detail = (i?.varriants);
+                }
+            }
+            setAttribute(data_attr_detail);
+        }
+    }, [mode, data_one_item?.data?.attributes]);
 
     if (loading === 'dang_call') {
         return (<div className='grid place-items-center fixed z-[3] *:z-[4] w-screen h-screen top-0 left-0 bg-[#10182488]'>
@@ -39,13 +51,14 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
             size_item: [{
                 name_size: '',
                 stock_item: '',
+                price_attribute: 0
             }],
         }])
     }
 
     function add_Size_Attribute(i: any) {
         setStock_quantity(false);
-        const add_size_attribute = [...attributes]
+        const add_size_attribute = [...attributes];
         add_size_attribute[i].size_item.push({
             name_size: '',
             stock_item: '',
@@ -71,27 +84,21 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     }
 
     if (loading === 'call_ok') {
-        const text_alert = mode ? `Sản phẩm đã được sửa !` : "Đã thêm sản phẩm !"
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: text_alert,
-            showConfirmButton: false,
-            timer: 800,
-            heightAuto: false,
-            backdrop: '#33333366',
-            customClass: {
-                popup: 'bg-transparent', // màu nền
-                title: 'text-black' // màu chữ
-            },
-        });
-        setTimeout(() => {
-            routing.push('/admin/list_products')
-        }, 810);
+        routing.push('/admin/list_products')
     };
 
     function handle_category() {
         setCategory_form(!category_form);
+    }
+
+    function pushImage(e: any) {
+        if (e.target.files[0]) {
+            const render_img = new FileReader();
+            render_img.onloadend = () => {
+                setChange_img(render_img.result as any);
+            }
+            render_img.readAsDataURL(e.target.files[0])
+        }
     }
 
 
@@ -106,7 +113,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 <button onClick={handle_category} type='button' className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-black hover:bg-gray-800 duration-300">Thêm danh mục+</button>
                 {category_form && (<>
                     <div onClick={handle_category} className='fixed w-screen h-screen bg-[#00000066] top-0 z-[6] left-0'></div>
-                    <Form_category/>
+                    <Form_category />
                 </>)
                 }
             </div>
@@ -126,7 +133,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                 className="bg-[#1F2936] outline-none py-2 px-4 border border-black rounded"
                             >{
                                     data_Category?.data?.map((item: any) => (
-                                        <option key={item._id + item?.category_name} value={item?._id}>{item?.category_name}</option>
+                                        <option key={item?._id} value={item?._id}>{item?.category_name}</option>
                                     ))
                                 }
                             </select>
@@ -135,30 +142,24 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
 
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="feature_product">Ảnh sản phẩm :</label>
-                    {mode ? <div className='lg:flex'>
-                        <img className='w-[100px] h-[100px]' src={data_one_item?.data?.feature_product} />
+                    <div className='lg:flex'>
+                        <img className='w-[100px] h-[100px]' src={data_one_item?.data?.feature_product ? data_one_item?.data?.feature_product : change_img} />
                         <input type="file" accept='image/*' id='feature_product'  {...my_Form.register('feature_product')}
-                            className='bg-[#1F2936] outline-none py-2 px-4 rounded cursor-pointer' />
+                            className='bg-[#1F2936] outline-none py-2 px-4 rounded cursor-pointer' onChange={pushImage} />
                     </div>
-                        : <input type="file" accept='image/*' id='feature_product'  {...my_Form.register('feature_product')}
-                            className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded cursor-pointer' />
-                    }
                 </div>
 
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+                {stock_quantity && <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="price_product">Giá sản phẩm :</label>
                     <input type="text" id='price_product' {...my_Form.register('price_product')}
                         className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
-                </div>
+                </div>}
 
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="des_product">Mô tả sản phẩm :</label>
                     <textarea id='des_product' {...my_Form.register('des_product')}
                         className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Mô tả sản phẩm ...' />
                 </div>
-
-                {mode && console.log(attributes)}
-
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label>Thuộc tính sản phẩm (nếu có):</label>
                     {attributes?.map((item: any, i: any) => (<>
@@ -186,6 +187,12 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
                                     placeholder='Số lượng ...'
                                 />
+                                <input
+                                    type="text"
+                                    {...my_Form.register(`attributes[${i}].size_item[${j}].price_attribute`, { required: true })}
+                                    className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                    placeholder='Giá sản phẩm ...'
+                                />
                             </div>
                         ))}
                         <Button type='button' onClick={() => remove_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
@@ -208,7 +215,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 </div>
                 {loading === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}
                 <div className='w-full'>
-                    <button type='submit' className={`rounded px-8 py-3 text-sm font-medium text-white transition hover:scale-105 hover:shadow-xl focus:outline-none focus:ring ${mode ? 'bg-yellow-600 active:bg-yellow-500' : 'bg-indigo-600 active:bg-indigo-500'}`}>{mode ? "Cập nhật" : "Thêm"}</button>
+                    <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 active:bg-yellow-500' : 'bg-indigo-600'}`}>{mode ? "Cập nhật" : "Thêm"}</Button>
                 </div>
             </form>
         </section>

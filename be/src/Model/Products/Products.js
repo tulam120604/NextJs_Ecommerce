@@ -14,11 +14,7 @@ const schema_Products = new mongoose.Schema({
         type: Object,
     },
     gallery: [],
-    price_product: {
-        type: Number,
-        required: true,
-        min: 1,
-    },
+    price_product: Number,
     trending: {
         type: Boolean,
         default: false,
@@ -37,13 +33,12 @@ const schema_Products = new mongoose.Schema({
         type: Number,
         default: 1,
     },
-    attributes: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Attributes'
-        }
-    ],
-    stock : Number,
+    attributes:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Attribute'
+    },
+    stock: Number,
     made_in: {
         type: String,
     }
