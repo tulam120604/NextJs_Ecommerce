@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Loading from '../../(Admin_Page)/admin/list_products/loading';
+import Loading from '../../(DashBoard)/admin/list_products/loading';
 import { Custome_Hooks } from '../../_lib/Custome_Hooks/MyForm';
 import { Button } from '../ui/Tables/button';
 import Link from 'next/link';
@@ -23,14 +23,11 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
             price_attribute: 0
         }],
     }]);
-
     useEffect(() => {
         if (mode) {
             let data_attr_detail;
             if (data_one_item?.data?.attributes) {
-                for (let i of data_one_item?.data?.attributes) {
-                    data_attr_detail = (i?.varriants);
-                }
+                data_attr_detail = (data_one_item?.data?.attributes?.varriants);
             }
             setAttribute(data_attr_detail);
         }
@@ -123,15 +120,16 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                     <input type="text" id='short_name' {...my_Form.register('short_name')}
                         className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Nhập tên sản phẩm ...' />
                 </div>
-                {isLoading ? <span className='text-gray-100'>Loading ...</span> :
+                {isLoading ? <span className='text-gray-100'>Loa
+                    ding ...</span> :
                     <div className='flex flex-col text-gray-200 gap-y-3'>
                         <div>
                             <label htmlFor="category_id">Danh mục sản phẩm : </label>
                             <select
                                 id="category_id"
                                 {...my_Form.register('category_id')}
-                                className="bg-[#1F2936] outline-none py-2 px-4 border border-black rounded"
-                            >{
+                                className="bg-[#1F2936] outline-none py-2 px-4 border border-black rounded">
+                                {
                                     data_Category?.data?.map((item: any) => (
                                         <option key={item?._id} value={item?._id}>{item?.category_name}</option>
                                     ))
@@ -163,35 +161,35 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label>Thuộc tính sản phẩm (nếu có):</label>
                     {attributes?.map((item: any, i: any) => (<>
-                        <div key={i} className='flex item-center gap-x-4 w-full'>
+                        <div key={i} className='flex item-center gap-x-4 w-full text-sm'>
                             <input
                                 type="text"
                                 {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
                                 className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                placeholder='Màu sắc (nếu có)...' key={i}
+                                placeholder='Thông số 1 (nếu có)...' key={i}
                             />
                             <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
                             <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
                         </div>
                         {item?.size_item?.map((e: any, j: any) => (
-                            <div key={i} className='flex item-center gap-x-4'>
+                            <div key={i} className='flex item-center gap-x-4 text-sm'>
                                 <input
                                     type="text"
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                    placeholder='Kích thước ...'
+                                    placeholder='Thông số 2 (nếu có) ...'
                                 />
                                 <input
                                     type="text"
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].stock_item`, { required: true })}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                    placeholder='Số lượng ...'
+                                    placeholder='Số lượng (bắt buộc)...'
                                 />
                                 <input
                                     type="text"
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].price_attribute`, { required: true })}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                    placeholder='Giá sản phẩm ...'
+                                    placeholder='Giá (bắt buộc)...'
                                 />
                             </div>
                         ))}

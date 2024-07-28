@@ -20,7 +20,7 @@ const queryClient = new QueryClient(
 const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastContainer className='absolute' />
+      <ToastContainer position='bottom-right' />
       {children}
     </QueryClientProvider>
   )

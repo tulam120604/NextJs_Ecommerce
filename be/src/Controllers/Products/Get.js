@@ -1,10 +1,10 @@
-import Attribute from '../../Model/Products/Attribute';
+import mongoose from 'mongoose';
 import Products from '../../Model/Products/Products';
 import { StatusCodes } from 'http-status-codes';
 
 
 // get all
-export async function GetAll_Admin(req, res) {
+export async function get_Item_Dashboard(req, res) {
     const {
         _page = 1,
         _limit = 20,
@@ -41,20 +41,6 @@ export async function GetAll_Admin(req, res) {
                 id_data.count_stock = id_data.stock
             }
         }
-        // for (let i = 0; i < data_All.length; i++) {
-        //     let totalStock = 0;
-        //     for (let j = 0; j < data_All[i].attributes.length; j++) {
-        //         totalStock += data_All[i].attributes[j].stock_item;
-        //     }
-        //     data_All[i].count_stock = totalStock;
-        // }
-        // console.log(stock_quantity);
-        // const dataCate = await Products.find().populate('category_id');
-        // console.log(dataCate)
-        // for (let i = 0; i < data.docs.length; i++) {
-        //     // console.log(data.docs[i])
-        // }
-        // console.log(data_All)
         if (!data.docs || data.docs.length === 0) {
             return res.status(StatusCodes.OK).json({
                 message: "Khong co data!",
@@ -62,7 +48,7 @@ export async function GetAll_Admin(req, res) {
         };
         return res.status(StatusCodes.OK).json({
             message: "Done!",
-            data_All : data.docs
+            data_All: data.docs
         })
     }
     catch (error) {
@@ -74,7 +60,7 @@ export async function GetAll_Admin(req, res) {
 
 
 // get by categories, madeIn, panigation, ...
-export async function GetAllClient(req, res) {
+export async function get_Item_Client(req, res) {
     const {
         _page = 1,
         _sort = '',
@@ -144,7 +130,7 @@ export async function GetAllClient(req, res) {
 
 // get detail
 
-export async function GetDetail(req, res) {
+export async function get_Detail(req, res) {
     try {
         const data = await Products.findById(req.params.id).populate('attributes');
         return res.status(StatusCodes.OK).json({
@@ -158,3 +144,80 @@ export async function GetDetail(req, res) {
         })
     }
 };
+
+// get by category
+export async function get_item_by_category(req, res) {
+    const {
+        _page = 1,
+        _limit = 100,
+        _search = '',
+        _sort = '',
+    } = req.query;
+    try {
+        const options = {
+            page: _page,
+            limit: _limit
+        }
+        const querry = {
+            category_id: req.params.category_id
+        };
+        if (_search) {
+            querry.$and = [
+                {
+                    short_name: { $regex: new RegExp(_search, 'i') }
+                }
+            ]
+        }
+        const data = await Products.paginate(querry, options);
+        await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
+        await Products.populate(data.docs, { path: 'attributes' });
+        for (const id_data of data.docs) {
+            if (id_data.attributes) {
+                let current = 0;
+                id_data.attributes.varriants.map((b) => {
+                    b.size_item.map(l => {
+                        current += l.stock_item
+                    })
+                })
+                id_data.count_stock = current;
+            }
+            else {
+                id_data.count_stock = id_data.stock
+            }
+        }
+        return res.status(StatusCodes.OK).json({
+            message: 'Done!',
+            data
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Lỗi rồi đại vương ơi!'
+        })
+    }
+}
+
+// search
+export async function search_Item (req, res) {
+    const {
+        _search = ''
+    } = req.query;
+    try {
+        const querry = {};
+        if (_search) {
+            querry.$and = [
+                {
+                    short_name : { $regex : RegExp(_search, 'i')}
+                }
+            ]
+        }
+        const data = await Products.find(querry);
+        return res.status(StatusCodes.OK).json({
+            message : 'Done',
+            data
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Lỗi rồi đại vương ơi!'
+        })
+    }
+}

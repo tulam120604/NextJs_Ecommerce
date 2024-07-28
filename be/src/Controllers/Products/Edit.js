@@ -39,8 +39,10 @@ export async function edit_Product (req, res) {
         if (!req.body.feature_product) {
             img_upload = await cloudinary.uploader.upload(req.file.path);
         }
-        const convert_Attributes = JSON.parse(req.body.attributes);
-        console.log(req.body.attributes);
+        let convert_Attributes;
+        if (req.body.attributes) {
+         convert_Attributes = JSON.parse(req.body.attributes);
+        }
         const dataClient = {
             ... req.body,
             attributes : convert_Attributes,

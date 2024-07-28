@@ -13,6 +13,7 @@ export async function getAll(page?: number) {
         const res = await fetch(uri);
         if (!res.ok) {
             console.warn('Call data failer')
+            return res
         }
         const { data } = await res.json();
         return data.docs
@@ -27,6 +28,7 @@ export async function getLimit(countItem: number) {
         const res = await fetch(`${apiURi}/products?&_limit=${countItem}`);
         if (!res.ok) {
             console.warn('Call data failer')
+            return res
         }
         const { data } = await res.json();
         return data.docs
@@ -41,6 +43,7 @@ export async function getDetail(id: number | string) {
         const res = await fetch(`${apiURi}/products/${id}`);
         if (!res.ok) {
             console.warn('Call data failer')
+            return res
         }
         const data = await res.json();
         return data.data
@@ -62,6 +65,7 @@ export async function addItem(item: any) {
         });
         // console.log(res);
         if (!res.ok) {
+            toast.success(`Có lỗi xảy ra khi thêm sản phẩm !`, { autoClose: 500 })
             console.warn('Call data failer');
         }
         else {
@@ -84,6 +88,7 @@ export async function removeItem(item: any) {
             }
         });
         if (!res.ok) {
+            toast.success(`Có lỗi xảy ra khi xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 })
             console.warn('Call data failer');
         } else {
             toast.success(`Đã xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 })
@@ -165,6 +170,7 @@ export async function restore_items_admin(dataClient: any) {
             }
         });
         if (!res.ok) {
+            toast.success(`khôi phục sản phẩm mã ${dataClient.id_item} thất bại!`, { autoClose: 500 })
             console.warn('Call data failer');
         };
         console.log("Restore Success !");
@@ -186,6 +192,7 @@ export async function edit_items_admin(dataClient?: any) {
             body: dataClient.data_item
         });
         if (!res.ok) {
+            toast.error(`Có lỗi xảy ra khi sửa sản phẩm mã ${dataClient.id_item} !`, { autoClose: 500 })
             console.warn('Kiem tra lai server hoac internet!')
         }
         else {
@@ -195,19 +202,43 @@ export async function edit_items_admin(dataClient?: any) {
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
+};
+
+
+// get item by category :
+export async function get_item_by_category (page?: any, id_cateory?: any) {
+    try {
+        let uri = `${apiURi}/products/category/${id_cateory}`
+        if (page) {
+            uri += `?_page=${page}`
+        }
+        const res = await fetch(uri);
+        if (!res.ok) {
+            console.warn(res);
+            return res
+        }
+        const {data} = await res.json();
+        return data.docs
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
 }
 
-// client : 
-export async function getRespon(page?: any) {
-    let api_item = `${apiURi}/products`;
-    if (page) {
-        api_item += `?_page=${page}`
+// search
+export async function search_item (item?: any) {
+    try {
+        let uri = `${apiURi}/products/search`;
+        if(item) {
+            uri += `?&_search=${item}`;
+        }
+        const res = await fetch (uri);
+        if(!res.ok) {
+            console.warn (res);
+            return res
+        };
+        const {data} = await res.json();
+        return data
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
     }
-    const res = await fetch(api_item, { cache: 'no-cache' });
-    if (!res.ok) {
-        console.error('Lỗi rồi đại vương ơi!');
-        return res
-    }
-    const respon = await res.json()
-    return respon
 }

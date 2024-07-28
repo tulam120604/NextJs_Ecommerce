@@ -1,6 +1,6 @@
 'use client';
 
-import { getAll, getDetail, getLimit, list_ITems_Admin, list_Recycle_ITems_Admin } from "../../Fn_Items/products";
+import { getAll, getDetail, getLimit, list_ITems_Admin, list_Recycle_ITems_Admin, search_item } from "../../Fn_Items/products";
 import { detail_Categories, list_Categories } from "../../Fn_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
@@ -49,7 +49,7 @@ export function Query_Category(id?: string | number | undefined) {
 }
 
 // get list item admin
-export function Query_List_Items_Admin(token : any, page? : Number) {
+export function Query_List_Items_Admin(token: any, page?: Number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
@@ -58,13 +58,13 @@ export function Query_List_Items_Admin(token : any, page? : Number) {
             }
             return "Không xác minh tài khoản"
         },
-        enabled : !!token
+        enabled: !!token
     });
     return { data, ...rest };
 }
 
 // get list item admin
-export function Query_Recycle_Items_Admin(token : any, page? : Number) {
+export function Query_Recycle_Items_Admin(token: any, page?: Number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
@@ -73,14 +73,14 @@ export function Query_Recycle_Items_Admin(token : any, page? : Number) {
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled : !!token
+        enabled: !!token
     });
     return { data, ...rest };
 }
 
 
 // edit all field list item admin
-export function Query_Edit_Items_Admin(token : any, page? : Number) {
+export function Query_Edit_Items_Admin(token: any, page?: Number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
@@ -89,7 +89,7 @@ export function Query_Edit_Items_Admin(token : any, page? : Number) {
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled : !!token
+        enabled: !!token
     });
     return { data, ...rest };
 }

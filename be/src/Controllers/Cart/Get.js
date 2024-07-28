@@ -47,7 +47,7 @@ export async function list_carts(req, res) {
 
 
 export async function checked_item_cart(req, res) {
-    const { user_id, id_item, item_checkked } = req.body;
+    const { user_id, id_item, color, size } = req.body;
     try {
         const user = await Account.findById(user_id);
         if (!user) {
@@ -58,7 +58,24 @@ export async function checked_item_cart(req, res) {
         const data_cart = await Carts.findOne({ user_id }).populate('items.product_id');
         for (let i = 0; i < data_cart.items.length; i++) {
             if (data_cart.items[i].product_id._id.toString() == id_item._id) {
-                data_cart.items[i].status_checked = item_checkked
+                if (color && size) {
+                    if (data_cart.items[i].color_item == color && data_cart.items[i].size_attribute_item == size) {
+                        data_cart.items[i].status_checked = !data_cart.items[i].status_checked
+                    }
+                }
+                else if (color) {
+                    if (data_cart.items[i].color_item == color) {
+                        data_cart.items[i].status_checked = !data_cart.items[i].status_checked
+                    }
+                }
+                else if (size) {
+                    if (data_cart.items[i].size_attribute_item == size) {
+                        data_cart.items[i].status_checked = !data_cart.items[i].status_checked
+                    }
+                }
+                else {
+                    data_cart.items[i].status_checked = !data_cart.items[i].status_checked
+                }
             }
         }
         // console.log(data);

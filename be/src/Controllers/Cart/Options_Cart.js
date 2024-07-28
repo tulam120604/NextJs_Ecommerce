@@ -5,30 +5,28 @@ import Attribute from '../../Model/Products/Attribute';
 
 
 export async function Add_To_Cart(req, res) {
-    const { user_id, product_id, quantity, color, size_attribute } = req.body;
+    const { user_id, product_id, quantity, color, size_attribute, price_item_attr } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
-        let price_item = data_item?.price_product;
+        let price_item = (price_item_attr > 0) ? price_item_attr :  data_item?.price_product;
         let quantity_by_item = 0;
         let color_item;
         let size_attribute_item;
-        if (data_item.attributes.length > 0) {
-            data_item.attributes.filter(item => {
-                const varr = item.varriants.find(color_attr => color_attr.color_item === color)
-                if (varr) {
-                    for (let i of varr.size_item) {
-                        if (i.name_size) {
-                            color_item = varr.color_item;
+        if (data_item.attributes) {
+            const varr = data_item.attributes.varriants.find(color_attr => color_attr.color_item === color);
+            if (varr) {
+                for (let i of varr.size_item) {
+                    if (i.name_size) {
+                        color_item = varr.color_item;
+                        quantity_by_item = i.stock_item;
+                        size_attribute_item = i.name_size
+                    }
+                    else {
+                        color_item = varr.color_item,
                             quantity_by_item = i.stock_item;
-                            size_attribute_item = i.name_size
-                        }
-                        else {
-                            color_item = varr.color_item,
-                            quantity_by_item = i.stock_item;
-                        }
                     }
                 }
-            });
+            }
             // for (let i of data_item.attributes) {
             //     for (let j of i.varriants) {
             //         if (j.color_item == color) {
@@ -60,7 +58,7 @@ export async function Add_To_Cart(req, res) {
                 items: [],
             })
         };
-        if (data_cart.items.length === 0) {
+        if (data_cart.items.length < 1) {
             data_cart.items.push({
                 product_id,
                 quantity,
@@ -200,7 +198,7 @@ export async function remove_item_cart(req, res) {
 
 
 export async function remove_all_item_cart(req, res) {
-    const { user_id, list_item } = req.body;
+    const { user_id } = req.body;
     try {
         const data_cart = await Carts.findOne({ user_id });
         if (!data_cart) {
@@ -210,7 +208,7 @@ export async function remove_all_item_cart(req, res) {
         };
         // console.log(list_item);
         data_cart.items = data_cart.items.filter(item => (
-            !list_item.some(id_item => item.product_id.toString() === id_item.product_id._id)
+            !item.status_checked
         ));
         const data = await data_cart.save();
         return res.status(StatusCodes.OK).json({

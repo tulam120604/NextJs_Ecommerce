@@ -6,7 +6,6 @@ import cloudinary from "../../utils/cloudinary";
 import Attribute from "../../Model/Products/Attribute";
 
 
-
 // create 
 export async function Create_Product(req, res) {
     const { short_name, category_id } = req.body;
@@ -23,11 +22,14 @@ export async function Create_Product(req, res) {
         let checkNameCategory = await Categories.findOne({
             category_name: 'Chưa phân loại'
         })
-        if (!checkNameCategory) {
-            checkNameCategory = await Categories.create({
-                category_name: 'Chưa phân loại'
-            })
+        if (!category_id) {
+            if (!checkNameCategory) {
+                checkNameCategory = await Categories.create({
+                    category_name: 'Chưa phân loại'
+                })
+            }
         }
+
         const img_upload = await cloudinary.uploader.upload(req.file.path);
 
         const allData = {
@@ -46,7 +48,6 @@ export async function Create_Product(req, res) {
         if (dataClient.attributes) {
             const convert_Attributes = JSON.parse(dataClient.attributes);
             const data = await Products.create(allData);
-
             const varriant = convert_Attributes.map(item => (
                 {
                     color_item: convert_Attributes ? item.color_item : '',
@@ -55,7 +56,7 @@ export async function Create_Product(req, res) {
                         {
                             name_size: size.name_size ? size.name_size.toString() : '',
                             stock_item: size.stock_item ? size.stock_item : 0,
-                            price_attribute : size.price_attribute > 0 && size.price_attribute
+                            price_attribute: size.price_attribute > 0 && size.price_attribute
                         }
                     )
                     )

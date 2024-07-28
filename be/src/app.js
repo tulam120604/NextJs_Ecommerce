@@ -8,7 +8,6 @@ import RoutesAuth from './Routes/Auth/Auth';
 import RoutesCart from './Routes/Cart/Cart';
 import Routes_upload from './Routes/upload';
 import Routes_Order from './Routes/Order/Order';
-import Routes_Middleware_Cart_Order from './Routes/Middleware_Cart_Order';
 import Routes_Attribute from './Routes/Attribute/Attribute';
 dotenv.config();
 const app = express();
@@ -34,7 +33,5 @@ app.use('/v1', RoutesCart);
 // order
 app.use('/v1', Routes_Order);
 
-// middleware order and cart
-app.use('/v1', Routes_Middleware_Cart_Order)
 
 export const viteNodeApp = app;

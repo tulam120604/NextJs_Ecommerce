@@ -6,6 +6,7 @@ const schema_Categories = new mongoose.Schema({
         trim : true,
         maxlength : 50,
     },
+    category_img : Object,
 },
 {
     timestamps: true, versionKey: false

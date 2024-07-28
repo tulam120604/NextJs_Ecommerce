@@ -1,3 +1,6 @@
+'use client';
+
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { add_Categories } from "../../Fn_Items/categories";
@@ -41,7 +44,8 @@ export function Mutation_Category (action : Actions) {
     });
 
     const on_Submit_category : SubmitHandler<any> = async (data) => {
-        mutate(data)
+        mutate(data);
+
     }
     return {on_Submit_category, status_category, form_category, ...rest};
 }

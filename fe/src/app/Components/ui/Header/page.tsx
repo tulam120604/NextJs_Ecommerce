@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import Mini_Cart from '@/src/app/(Client_Page)/(Cart)/mini_cart/page';
+import Mini_Cart from '@/src/app/(Client)/(Cart)/mini_cart/page';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
 import Bell_icon from '../../Icons/bell';
 import Search_icon from '../../Icons/Search';
+import { Search_Component_Client } from '../../Forms/search';
 
 const Header = () => {
     const routing = useRouter();
@@ -95,27 +96,22 @@ const Header = () => {
                 <span className="opacity-75 lg:w-auto mb:w-[266px] mb:truncate">Xin chào đại vương, chúc đại vương có một trải nghiệm thoải mái.</span>
             </div>
             {/* logo, search and cart */}
-            <div className="mx-auto lg:w-[1440px] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">
+            <div className="mx-auto lg:w-[1440px] md:w-[95vw] w-[342px] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">
                 <div className=''>
                     <Link className='lg:text-2xl text-lg font-extrabold' href={'/'}>
                         Store88
                     </Link>
                 </div>
                 {/* form search */}
-                <div className='md:!block !hidden absolute md:w-[50%] w-[30%] left-1/2 -translate-x-1/2'>
-                    <form className={`relative w-full *:h-[36px] gap-x-2 shadow-2xl duration-300`}>
-                        <input type="text" className="border rounded-lg w-full pl-5 pr-14 text-sm outline-none font-normal text-gray-700" placeholder="Đại vương muốn mua gì nào?" />
-                        <button type='submit' className="absolute top-0 right-[2%] rounded-[50%] w-[36px] duration-300 cursor-pointer">
-                            <Search_icon />
-                        </button>
-                    </form>
+                <div className='md:!block !hidden absolute md:w-[50%] w-[30%] left-1/2 -translate-x-1/2 z-[7]'>
+                    <Search_Component_Client/>
                 </div>
 
                 <div className="lg:gap-x-6 mb:gap-x-4 flex items-center">
                     <div className='md:hidden block'>
                         <div className='group *:text-white relative'>
                             <Search_icon />
-                            <form className={`group-hover:block hidden absolute w-[200px] top-10 *:h-[36px] gap-x-2 shadow-2xl duration-300`}>
+                            <form className={`group-hover:block hidden absolute w-[200px] top-10 right-1/2 translate-x-1/2 *:h-[36px] gap-x-2 shadow-[0_35px_60px_100vh_rgba(0,0,0,0.3)] rounded-lg duration-300`}>
                                 <input type="text" className="border rounded-lg w-full pl-5 pr-14 text-xs outline-none font-normal text-gray-700" placeholder="Đại vương muốn mua gì nào?" />
                             </form>
                         </div>

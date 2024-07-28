@@ -1,4 +1,3 @@
-'use client';
 
 import { toast } from "react-toastify";
 
@@ -10,6 +9,7 @@ export async function list_Categories() {
         const res = await fetch(`${apiURi}/category`);
         if (!res.ok) {
             console.warn('Call data failer!')
+            return res
         }
         const data = await res.json();
         return data
@@ -24,6 +24,7 @@ export async function detail_Categories(id: any) {
         const res = await fetch(`${apiURi}/category/${id}`);
         if (!res.ok) {
             console.warn('Call data failer!')
+            return res
         }
         const { data } = await res.json();
         return data
@@ -38,9 +39,9 @@ export async function add_Categories(item: any) {
         const res = await fetch(`${apiURi}/category`, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(item)
+            body: item
         });
         if (!res.ok) {
             return res
@@ -67,6 +68,7 @@ export async function edit_Categories(item: any) {
         });
         if (!res.ok) {
             console.warn('Call data failer!')
+            return res
         }
         const data = await res.json();
         return data
@@ -83,6 +85,7 @@ export async function remove_Categories(id: any) {
         });
         if (!res.ok) {
             console.warn('Call data failer!')
+            return res
         }
         const { data } = await res.json();
         return data
