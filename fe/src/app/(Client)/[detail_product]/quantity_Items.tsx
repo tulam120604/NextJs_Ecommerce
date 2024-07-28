@@ -166,7 +166,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     const check_Color = new Set();
     min = varriants_attribute[0]?.size_item[0]?.price_attribute;
     max = varriants_attribute[0]?.size_item[0]?.price_attribute;
-    varriants_attribute = varriants_attribute?.filter((item : any) => {
+   varriants_attribute = varriants_attribute?.filter((item : any) => {
       if(check_Color.has(item?.color_item)){
         return false
       }else {
