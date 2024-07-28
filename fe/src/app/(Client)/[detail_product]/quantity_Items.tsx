@@ -11,7 +11,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
   const { mutate } = Mutation_Cart('Add_Cart');
   const [color, setColor] = useState<any>();
-  const [varriants_attribute, setVarriants_attribute] = useState<any>();
+  let [varriants_attribute, setVarriants_attribute] = useState<any>();
   const [size_attribute, setsize_attribute] = useState<any>();
   const [name_size, setName_size] = useState<any>();
   const [sizePropsCart, setSizePropsCart] = useState<any>();
@@ -21,13 +21,20 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const ref_validate_attribute = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     if (data_Item_Detail?.attributes?.varriants.length > 0) {
-      setVarriants_attribute(data_Item_Detail?.attributes?.varriants)
+      const a: any = [];
+      data_Item_Detail?.attributes?.varriants?.map((item: any) => {
+        item?.size_item.filter((data_attr: any) => {
+          if (data_attr?.stock_item > 0) {
+            a.push(item);
+          }
+        })
+      })
+      setVarriants_attribute(a)
     }
     else {
       setQuantity_attributes(data_Item_Detail?.stock);
     }
   }, []);
-
   function dow() {
     if (quantity > 1) {
       set_quantity(quantity - 1);
@@ -155,10 +162,19 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   // change price
   let min;
   let max;
-  if (data_Item_Detail?.attributes) {
-    min = data_Item_Detail?.attributes?.varriants[0]?.size_item[0]?.price_attribute;
-    max = data_Item_Detail?.attributes?.varriants[0]?.size_item[0]?.price_attribute;
-    for (let i of data_Item_Detail?.attributes?.varriants) {
+  if (varriants_attribute) {
+    const check_Color = new Set();
+    min = varriants_attribute[0]?.size_item[0]?.price_attribute;
+    max = varriants_attribute[0]?.size_item[0]?.price_attribute;
+    varriants_attribute = varriants_attribute?.filter((item : any) => {
+      if(check_Color.has(item?.color_item)){
+        return false
+      }else {
+        check_Color.add(item.color_item);
+        return true
+      }
+    })
+    for (let i of varriants_attribute) {
       for (let j of i.size_item) {
         if (j.price_attribute < min) {
           min = j.price_attribute;
@@ -177,17 +193,17 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
       const { check_email } = JSON.parse(localStorage.getItem('account') || '');
       const items_detail = {
         items: Object.values({
-          key : {
-            product_id : data_Item_Detail,
-            color_item : color,
-            quantity : quantity,
-            size_attribute_item : name_size,
-            price_item : data_Item_Detail?.price_product ? data_Item_Detail?.price_product : price_attr ,
-            total_price_item : price ? price : price_item_attr,
+          key: {
+            product_id: data_Item_Detail,
+            color_item: color,
+            quantity: quantity,
+            size_attribute_item: name_size,
+            price_item: data_Item_Detail?.price_product ? data_Item_Detail?.price_product : price_attr,
+            total_price_item: price ? price : price_item_attr,
           }
         }),
         user_id: check_email?._id,
-        action : 'detail_item',
+        action: 'detail_item',
       };
       if (varriants_attribute) {
         for (let k of varriants_attribute) {
@@ -230,12 +246,15 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
             {
               price_attr ? (<>
                 <span className="text-[#EB2606]">{(price_attr)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-              </>) : (<>
-                <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>-
-                <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-              </>)
+              </>) : (
+                (min === max) ? (<>
+                  <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                </>) : (<>
+                  <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>-
+                  <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                </>)
+              )
             }
-
           </div>
       }
     </div>
@@ -245,10 +264,11 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         <>
           <div className="flex items-center gap-x-4 *:relative *:border *:border-black *:px-2 *:py-1 *:text-sm *:rounded">
             {varriants_attribute?.map((item: any) => (
-              <button className={`after:border-black hover:bg-black hover:text-white duration-200'}
+              (item?.color_item !== '' || item?.color_item) && (<>
+                <button className={`after:border-black hover:bg-black hover:text-white duration-200'}
                 ${color == item?.color_item && 'text-white bg-black'}`}
-                key={Math.random()} onClick={() => handle_attributes('Color', item?.color_item)}>{item?.color_item}</button>
-            ))}
+                  key={Math.random()} onClick={() => handle_attributes('Color', item?.color_item)}>{item?.color_item}</button>
+              </>)))}
           </div>
           {Array.isArray(size_attribute) && <div className="flex items-center gap-x-4 *:relative *:border *:px-4 *:py-1 *:text-sm *:rounded *:border-black">
             {size_attribute?.map((item: any) => (
@@ -268,11 +288,11 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         <div className="border lg:py-2.5 lg:pr-6  mb:py-1 mb:pl-2 mb:pr-[18px] *:text-xs flex items-center gap-x-3 rounded">
           <div className="flex items-center *:w-9 *:h-9 gap-x-1 *:grid *:place-items-center">
             <button onClick={dow}>
-             <Minus_Icon/>
+              <Minus_Icon />
             </button>
             <div className="bg-[#F4F4F4]">{quantity}</div>
             <button onClick={up}>
-              <Plus_Icon/>
+              <Plus_Icon />
             </button>
           </div>
           <span className="lg:tracking-[0.5px] border-l pl-4 border-black">Còn lại {quantity_attributes} sản phẩm</span>

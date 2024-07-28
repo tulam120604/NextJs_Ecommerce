@@ -99,7 +99,7 @@ export async function get_Item_Client(req, res) {
         await Products.populate(data.docs, { path: 'attributes' });
         for (const id_data of data.docs) {
             if (id_data.attributes) {
-                let current = 0;
+                let current = 1;
                 id_data.attributes.varriants.map((b) => {
                     b.size_item.map(l => {
                         current += l.stock_item
@@ -110,7 +110,8 @@ export async function get_Item_Client(req, res) {
             else {
                 id_data.count_stock = id_data.stock
             }
-        }
+        };
+        data.docs = data.docs.filter((item) => item.count_stock > 0 && item)
         if (!data) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Khong co data!"
@@ -197,7 +198,7 @@ export async function get_item_by_category(req, res) {
 }
 
 // search
-export async function search_Item (req, res) {
+export async function search_Item(req, res) {
     const {
         _search = ''
     } = req.query;
@@ -206,13 +207,13 @@ export async function search_Item (req, res) {
         if (_search) {
             querry.$and = [
                 {
-                    short_name : { $regex : RegExp(_search, 'i')}
+                    short_name: { $regex: RegExp(_search, 'i') }
                 }
             ]
         }
         const data = await Products.find(querry);
         return res.status(StatusCodes.OK).json({
-            message : 'Done',
+            message: 'Done',
             data
         })
     } catch (error) {

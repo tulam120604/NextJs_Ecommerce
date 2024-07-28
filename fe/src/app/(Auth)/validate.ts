@@ -9,7 +9,7 @@ export const schemaValidateRegister = yup.object().shape({
 
 export const schemaValidateOrder = yup.object().shape({
     name_user: yup.string().required('Đại vương phải nhập tên!'),
-    email_user: yup.string().email('Email đại vương không hợp lệ!').required('Đại vương hãy nhập địa chỉ để giao hàng!'),
-    phone: yup.string().min(10, 'Số điện thoại đại vương phải 10 số!').required('Đại vương hãy nhập địa chỉ để giao hàng!'),
+    email_user: yup.string().email('Email đại vương không hợp lệ!').required('Đại vương hãy nhập email!'),
+    phone: yup.string().min(10, 'Số điện thoại đại vương phải 10 số!').required('Đại vương hãy nhập số điện thoại!'),
     address: yup.string().required('Đại vương hãy nhập địa chỉ để giao hàng!'),
 });
