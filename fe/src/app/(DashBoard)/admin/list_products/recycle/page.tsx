@@ -7,11 +7,11 @@ import LoadingPage from "@/src/app/Components/Loadings/LoadingPage";
 import { Query_Recycle_Items_Admin } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import Trash_Icon from "@/src/app/Components/Icons/trash";
-import Loading from "../loading";
+import Loading from "../_component/loading";
 import Re_store from "@/src/app/Components/Icons/re_store";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image";
-import { DataTable } from "../data_table";
+import { DataTable } from "../_component/data_table";
 import { toast } from "react-toastify";
 
 const Page = () => {

@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Products from '../../Model/Products/Products';
 import { StatusCodes } from 'http-status-codes';
 
@@ -119,7 +118,7 @@ export async function get_Item_Client(req, res) {
         }
         return res.status(StatusCodes.OK).json({
             message: 'Done',
-            data
+            data,
         })
     }
     catch (error) {

@@ -15,49 +15,49 @@ export async function create_Order(req, res) {
                 message: 'No user!'
             })
         };
-        for (let j of items_order) {
-            const data_product = await Products.find({ _id: j.product_id._id });
-            console.log(data_product);
-            // if (i._id.toString() === j.product_id._id.toString()) {
-            //     if (i.attributes) {
-            //         i.attributes.varriants.map(k => {
-            //             k.size_item.map(x => {
-            //                 if (k.color_item == j.color_item && x.name_size == j.size_attribute_item) {
-            //                     x.stock_item = x.stock_item - j.quantity;
-            //                     return;
-            //                 }
-            //                 if (k.color_item == j.color_item) {
-            //                     x.stock_item = x.stock_item - j.quantity
-            //                     return;
-            //                 }
-            //                 if (x.name_size == j.size_attribute_item) {
-            //                     x.stock_item = x.stock_item - j.quantity
-            //                     return;
-            //                 }
-            //             })
-            //         })
-            //     }
-            //     else {
-            //         i.count_stock = i.count_stock - j.quantity
-            //         return;
-            //     }
-            // }
+        const data_order = await Orders.create({ user_id, items_order, infor_user });
+        for (let i of items_order) {
+            if (i.product_id.attributes) {
+                const data_attr = await Attribute.find({ id_item: i.product_id._id });
+                for (let j of data_attr) {
+                    for (let k of j.varriants) {
+                        if (k.color_item == i.color_item) {
+                            for (let x of k.size_item) {
+                                if (x.name_size) {
+                                    if (x.name_size == i.size_attribute_item) {
+                                        x.stock_item = x.stock_item - i.quantity;
+                                    }
+                                } else {
+                                    x.stock_item = x.stock_item - i.quantity;
+                                }
+                            }
+                        }
+                    }
+                    await j.save();
+                }
+            }
+            else {
+                const data_item = await Products.find({ _id: i.product_id._id });
+                for (let a of data_item) {
+                    a.stock = a.stock - i.quantity;
+                    await a.save();
+                }
+            }
         }
-        // const data_order = await Orders.create({ user_id, items_order, infor_user });
-        // const data_cart = await Carts.findOne({ user_id: user_id });
-        // data_cart.items = data_cart.items.filter((i) => {
-        //     return !items_order.some((j) => {
-        //         const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
-        //         const check_Color = i.color_item ? i.color_item === j.color_item : true;
-        //         const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
-        //         return check_Product_Id && check_Color && check_Size
-        //     });
-        // });
+        const data_cart = await Carts.findOne({ user_id: user_id });
+        data_cart.items = data_cart.items.filter((i) => {
+            return !items_order.some((j) => {
+                const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
+                const check_Color = i.color_item ? i.color_item === j.color_item : true;
+                const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
+                return check_Product_Id && check_Color && check_Size
+            });
+        });
         const cart_item = await data_cart.save();
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
-            // data_order,
-            // cart_item
+            data_order,
+            cart_item,
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

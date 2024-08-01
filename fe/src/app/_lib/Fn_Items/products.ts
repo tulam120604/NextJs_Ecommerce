@@ -3,20 +3,17 @@ import { toast } from "react-toastify";
 
 const apiURi = 'http://localhost:2000/v1';
 
-// all client
-export async function getAll(page?: number) {
+// list item client
+export async function getLimit_and_paginate(page: number, count_item: number) {
     try {
-        let uri = `${apiURi}/products`
-        if (page) {
-            uri += `?_page=${page}`
-        }
+        const uri = `${apiURi}/products?_page=${page}&_limit=${count_item}`;
         const res = await fetch(uri);
         if (!res.ok) {
             console.warn('Call data failer')
             return res
         }
-        const { data } = await res.json();
-        return data.docs
+        const data = await res.json();
+        return data
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
@@ -30,8 +27,8 @@ export async function getLimit(countItem: number) {
             console.warn('Call data failer')
             return res
         }
-        const { data } = await res.json();
-        return data.docs
+        const data = await res.json();
+        return data
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
@@ -47,6 +44,31 @@ export async function getDetail(id: number | string) {
         }
         const data = await res.json();
         return data.data
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+
+// list items dashboard 
+export async function list_ITems_Dashboard(token: any, page: number, limit_item: number) {
+    try {
+        if (token) {
+            let uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
+            const res = await fetch(uri, {
+                method: 'get',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!res.ok) {
+                console.warn('Call data failer');
+            };
+            const { data_All } = await res.json();
+            return data_All
+        }
+        console.error('Không có quyền truy cập!');
+        return 'Không có quyền truy cập !';
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
@@ -95,34 +117,6 @@ export async function removeItem(item: any) {
         }
         await res.json();
         console.log("success delete!")
-    } catch (error) {
-        return (error || "Lỗi rồi đại vương ơi!");
-    }
-}
-
-// items adminstration 
-export async function list_ITems_Admin(token: any, page?: Number) {
-    try {
-        if (token) {
-            let uri = `${apiURi}/products/admin/`;
-            if (page) {
-                uri += `?_page=${page}`
-            }
-            const res = await fetch(uri, {
-                method: 'get',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!res.ok) {
-                console.warn('Call data failer');
-            };
-            const { data_All } = await res.json();
-            return data_All
-        }
-        console.error('Không có quyền truy cập!');
-        return 'Không có quyền truy cập !';
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
@@ -206,7 +200,7 @@ export async function edit_items_admin(dataClient?: any) {
 
 
 // get item by category :
-export async function get_item_by_category (page?: any, id_cateory?: any) {
+export async function get_item_by_category(page?: any, id_cateory?: any) {
     try {
         let uri = `${apiURi}/products/category/${id_cateory}`
         if (page) {
@@ -217,26 +211,26 @@ export async function get_item_by_category (page?: any, id_cateory?: any) {
             console.warn(res);
             return res
         }
-        const {data} = await res.json();
-        return data.docs
+        const data = await res.json();
+        return data
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
 }
 
 // search
-export async function search_item (item?: any) {
+export async function search_item(item?: any) {
     try {
         let uri = `${apiURi}/products/search`;
-        if(item) {
+        if (item) {
             uri += `?&_search=${item}`;
         }
-        const res = await fetch (uri);
-        if(!res.ok) {
-            console.warn (res);
+        const res = await fetch(uri);
+        if (!res.ok) {
+            console.warn(res);
             return res
         };
-        const {data} = await res.json();
+        const { data } = await res.json();
         return data
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");

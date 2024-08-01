@@ -1,14 +1,7 @@
 import Product_Item from '@/src/app/Components/Products/Product_Item';
-import { unstable_noStore as noStore } from 'next/cache';
 import Paginate_item from './Paginate';
-import { getLimit } from '../../_lib/Fn_Items/products';
 import Link from 'next/link';
 
-// async function getRespon() {
-//     const res = await fetch(`http://localhost:2000/v1/products?&_limit=40`, { cache: 'no-cache' })
-//     const respon = await res.json()
-//     return respon
-// }
 
 
 const Render_Products = ({data} : any) => {
@@ -25,8 +18,8 @@ const Render_Products = ({data} : any) => {
             </div></>) : (<>
                 <div className="mb:w-[342px] py-4 lg:w-full md:w-full grid rounded-lg lg:grid-cols-6 gap-y-6 gap-x-4 md:grid-cols-3 mb:grid-cols-2 lg:gap-y-8 text-center justify-between">
                     {
-                        Array.isArray (data) &&
-                        data?.map((item: any) => {
+                        Array.isArray (data?.data?.docs) &&
+                        data?.data?.docs?.map((item: any) => {
                             return (
                                 <Product_Item key={item._id} dataProps={item} />
                             )
@@ -36,7 +29,7 @@ const Render_Products = ({data} : any) => {
             </>)}
             <div className="mx-auto py-6">
                 {/* paginate page */}
-                <Paginate_item />
+                <Paginate_item totalPages={data?.data?.totalPages} page={data?.data?.page}/>
             </div>
         </div>
 

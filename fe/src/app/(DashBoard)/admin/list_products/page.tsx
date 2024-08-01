@@ -4,20 +4,21 @@
 import Link from "next/link"
 import { Suspense, useEffect, useState } from "react";
 import LoadingPage from "@/src/app/Components/Loadings/LoadingPage";
-import Loading from "./loading";
-import { Query_List_Items_Admin } from "@/src/app/_lib/Tanstack_Query/Items/query";
+import Loading from "./_component/loading";
+import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import Trash_Icon from "@/src/app/Components/Icons/trash";
-import { DataTable } from "./data_table";
+import { DataTable } from "./_component/data_table";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
 import { Search_Component_Dashboard } from "@/src/app/Components/Forms/search";
+import Pagination_Component from "./_component/Pagination";
 
 const Page = () => {
   const [dataToken, set_DataToken] = useState();
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading } = Query_List_Items_Admin(dataToken, page);
+  const { data, isLoading } = Query_List_Items_Dashboard(dataToken, page, 10);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
@@ -154,14 +155,8 @@ const Page = () => {
           </>)
             : <span className="text-gray-200">Không có dữ liệu</span>
         }
-
-        <div className="w-full flex justify-end text-white *:border *:px-1 *:py-0.5 *:rounded *:duration-200 gap-x-4">
-          {page > 1 ? <button onClick={() => changePage("DOW")} className="hover:bg-white hover:text-black">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6" /></svg>
-          </button> : ''}
-          <button onClick={() => changePage("UP")} className="hover:bg-white hover:text-black">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6" /></svg>
-          </button>
+        <div className="text-gray-100">
+          <Pagination_Component />
         </div>
         {/* </>)
           : <span className="text-white">Bạn không có quyền truy cập !</span>} */}

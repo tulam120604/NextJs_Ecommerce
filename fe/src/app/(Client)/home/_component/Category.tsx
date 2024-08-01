@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { unstable_noStore as noStore } from 'next/cache';
-import Custome_Swiper from '../../Components/Swipper/swiper';
 import Link from 'next/link';
-import { list_Categories } from '../../_lib/Fn_Items/categories';
+import { list_Categories } from '@/src/app/_lib/Fn_Items/categories';
+import Custome_Swiper from '@/src/app/Components/Swipper/swiper';
 
 const Service = async () => {
     noStore();

@@ -63,6 +63,7 @@ export function Custome_Hooks({ mode }: any) {
     }, [my_Form, data_one_item && data_one_item.data]);
     function submitForm(data_form: any) {
         try {
+            console.log(data_form);
             const attributesString = JSON.stringify(data_form.attributes);
             const formData = new FormData();
             formData.append('short_name', data_form.short_name);

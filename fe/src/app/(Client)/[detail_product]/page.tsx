@@ -45,7 +45,7 @@ const page = async ({ params }: any) => {
           <Description dataProps={data} />
           <div className="pt-4">
             <span className="lg:text-2xl text-xl lg:tracking-[-0.5px]">Sản phẩm liên quan</span>
-            <Related_Product />
+            <Related_Product dataProps={data?.category_id}/>
           </div>
         </>)}
     </main>

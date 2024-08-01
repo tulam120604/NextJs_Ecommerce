@@ -89,17 +89,20 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   function handle_attributes(action: any, item: any) {
     switch (action) {
       case 'Color':
+        set_quantity(1);
         varriants_attribute.filter((attr: any) => {
           ref_validate_attribute.current?.classList.remove('block');
           ref_validate_attribute.current?.classList.add('hidden');
           (attr.color_item == item) && (
             attr?.size_item.filter((s: any) => {
-              (s.name_size) ? setsize_attribute(attr.size_item) : (setQuantity_attributes(s.stock_item), set_price_attr(s.price_attribute));
+              (s.name_size) ? setsize_attribute(attr.size_item) :
+                (setQuantity_attributes(s.stock_item), set_price_attr(s.price_attribute), setsize_attribute(''));
             })
           )
         });
         return setColor(item);
       case 'size_attribute':
+        set_quantity(1);
         ref_validate_attribute.current?.classList.remove('block');
         ref_validate_attribute.current?.classList.add('hidden');
         for (let value of varriants_attribute) {
@@ -166,10 +169,10 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     const check_Color = new Set();
     min = varriants_attribute[0]?.size_item[0]?.price_attribute;
     max = varriants_attribute[0]?.size_item[0]?.price_attribute;
-   varriants_attribute = varriants_attribute?.filter((item : any) => {
-      if(check_Color.has(item?.color_item)){
+    varriants_attribute = varriants_attribute?.filter((item: any) => {
+      if (check_Color.has(item?.color_item)) {
         return false
-      }else {
+      } else {
         check_Color.add(item.color_item);
         return true
       }
@@ -258,7 +261,6 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
           </div>
       }
     </div>
-
     {data_Item_Detail?.attributes?.varriants && (
       <div className="flex flex-col gap-y-4 mb-1">
         <>

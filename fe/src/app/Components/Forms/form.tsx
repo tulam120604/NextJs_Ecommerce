@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Loading from '../../(DashBoard)/admin/list_products/loading';
+import Loading from '../../(DashBoard)/admin/list_products/_component/loading';
 import { Custome_Hooks } from '../../_lib/Custome_Hooks/MyForm';
 import { Button } from '../ui/Tables/button';
 import Link from 'next/link';
@@ -27,12 +27,24 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         if (mode) {
             let data_attr_detail;
             if (data_one_item?.data?.attributes) {
-                data_attr_detail = (data_one_item?.data?.attributes?.varriants);
+                data_attr_detail = my_Form.getValues()?.attributes?.varriants?.map((item: any) => ({
+                    color_item: item?.color_item,
+                    size_item: item?.size_item
+                }));
+                setAttribute(data_attr_detail);
             }
-            setAttribute(data_attr_detail);
+            else {
+                setAttribute([{
+                    color_item: '',
+                    size_item: [{
+                        name_size: '',
+                        stock_item: '',
+                        price_attribute: 0
+                    }],
+                }])
+            }
         }
-    }, [mode, data_one_item?.data?.attributes]);
-
+    }, [mode, my_Form.getValues()?.attributes?.varriants]);
     if (loading === 'dang_call') {
         return (<div className='grid place-items-center fixed z-[3] *:z-[4] w-screen h-screen top-0 left-0 bg-[#10182488]'>
             <Loading />
@@ -98,8 +110,6 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         }
     }
 
-
-
     return (<>
         <section className="bg-[#101824] flex flex-col gap-y-6 py-6 rounded">
             <div className='flex items-center justify-between'>
@@ -147,11 +157,20 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                     </div>
                 </div>
 
-                {stock_quantity && <div className='flex flex-col text-gray-200 gap-y-3'>
-                    <label htmlFor="price_product">Giá sản phẩm :</label>
-                    <input type="text" id='price_product' {...my_Form.register('price_product')}
-                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
-                </div>}
+                {
+                    stock_quantity && <div className='flex flex-col text-gray-200 gap-y-3'>
+                        <label htmlFor="price_product">Giá sản phẩm :</label>
+                        <input type="text" id='price_product' {...my_Form.register('price_product')}
+                            className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
+                    </div>
+                }
+                {
+                    (my_Form?.getValues()?.price_product) && <div className='flex flex-col text-gray-200 gap-y-3'>
+                        <label htmlFor="price_product">Giá sản phẩm :</label>
+                        <input type="text" id='price_product' {...my_Form.register('price_product')}
+                            className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
+                    </div>
+                }
 
                 <div className='flex flex-col text-gray-200 gap-y-3'>
                     <label htmlFor="des_product">Mô tả sản phẩm :</label>
@@ -165,8 +184,9 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                             <input
                                 type="text"
                                 {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
+                                defaultValue={item?.color_item}
                                 className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                placeholder='Thông số 1 (nếu có)...' key={i}
+                                placeholder={`Thông số ${i + 1} (nếu có)...`} key={i}
                             />
                             <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
                             <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
@@ -175,18 +195,21 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                             <div key={i} className='flex item-center gap-x-4 text-sm'>
                                 <input
                                     type="text"
+                                    defaultValue={e?.name_size}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
-                                    placeholder='Thông số 2 (nếu có) ...'
+                                    placeholder={`Thông số ${i + 2} (nếu có)...`}
                                 />
                                 <input
                                     type="text"
+                                    defaultValue={e?.stock_item}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].stock_item`, { required: true })}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
                                     placeholder='Số lượng (bắt buộc)...'
                                 />
                                 <input
                                     type="text"
+                                    defaultValue={e?.price_attribute}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].price_attribute`, { required: true })}
                                     className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
                                     placeholder='Giá (bắt buộc)...'

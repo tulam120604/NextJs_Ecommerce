@@ -1,31 +1,9 @@
 'use client';
 
-import { getAll, getDetail, getLimit, list_ITems_Admin, list_Recycle_ITems_Admin, search_item } from "../../Fn_Items/products";
+import { getDetail, getLimit, getLimit_and_paginate, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Fn_Items/products";
 import { detail_Categories, list_Categories } from "../../Fn_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
-
-// product list / detail
-export function Query_Items(id?: string | number) {
-    const key = id ? ['Product_Key', id] : ['Product_Key'];
-    const { data, ...rest } = useQuery({
-        queryKey: key,
-        queryFn: async () => {
-            return id ? await getDetail(id) : await getAll();
-        },
-        // refetchInterval: 1000,
-    })
-    return { data, ...rest };
-}
-
-// paginate item
-export function Paginate_Item(page?: number) {
-    const { data, ...rest } = useQuery({
-        queryKey: ['Product_Key', page],
-        queryFn: async () => await getAll(page)
-    })
-    return { data, ...rest }
-}
 
 // limit item 
 export function Limit_Item(countItem: number) {
@@ -49,14 +27,14 @@ export function Query_Category(id?: string | number | undefined) {
 }
 
 // get list item admin
-export function Query_List_Items_Admin(token: any, page?: Number) {
+export function Query_List_Items_Dashboard(token: any, page: number, limit_item: number, id?: string | number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
             if (token) {
-                return await list_ITems_Admin(token, page);
+                return id ? await getDetail(id) : await list_ITems_Dashboard(token, page, limit_item);
             }
-            return "Không xác minh tài khoản"
+            return "Không thể xác minh tài khoản"
         },
         enabled: !!token
     });
@@ -64,7 +42,7 @@ export function Query_List_Items_Admin(token: any, page?: Number) {
 }
 
 // get list item admin
-export function Query_Recycle_Items_Admin(token: any, page?: Number) {
+export function Query_Recycle_Items_Admin(token: any, page?: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
@@ -90,6 +68,19 @@ export function Query_Edit_Items_Admin(token: any, page?: Number) {
             return "Không thể xác minh tài khoản"
         },
         enabled: !!token
+    });
+    return { data, ...rest };
+}
+
+
+// paginate and limit client 
+// get list item admin
+export function Query_Paginate_Item_Client( page: number, limit_item: number) {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Product_Key', page, limit_item],
+        queryFn: async () => {
+                return await getLimit_and_paginate(page, limit_item);
+        },
     });
     return { data, ...rest };
 }

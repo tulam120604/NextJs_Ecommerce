@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Slide_show from '../../Components/Slide/slide_show';
 import Image from 'next/image';
+import Slide_show from '@/src/app/Components/Slide/slide_show';
 
 const Banner = () => {
   return (

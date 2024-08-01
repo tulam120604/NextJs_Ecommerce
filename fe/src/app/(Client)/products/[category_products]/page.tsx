@@ -3,7 +3,7 @@ import LoadingShops from './loading';
 import { unstable_noStore as noStore } from 'next/cache';
 import { get_item_by_category } from '@/src/app/_lib/Fn_Items/products';
 import { detail_Categories } from '@/src/app/_lib/Fn_Items/categories';
-import Render_Products from '../Render_Products';
+import Render_Products from '../_component/Render_Products';
 
 const Page = async ({ params }: any) => {
   noStore();
@@ -21,7 +21,7 @@ const Page = async ({ params }: any) => {
         </div>
         {/* product */}
         {
-          Array.isArray(data) &&
+          Array.isArray(data?.data?.docs) &&
           <Render_Products data={data} />
         }
       </div>
