@@ -2,46 +2,35 @@
 'use client';
 
 import Link from "next/link"
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import LoadingPage from "@/src/app/Components/Loadings/LoadingPage";
 import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
-import Trash_Icon from "@/src/app/Components/Icons/trash";
-import { DataTable } from "./_component/data_table";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
-import { Search_Component_Dashboard } from "@/src/app/Components/Forms/search";
 import Pagination_Component from "./_component/Pagination";
+import useToken from "@/src/app/_lib/Custome_Hooks/Token";
+import { Trash2 } from "lucide-react";
+import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 
 const Page = () => {
-  const [dataToken, set_DataToken] = useState();
-  const [page, setPage] = useState<number>(1);
-  const { data, isLoading } = Query_List_Items_Dashboard(dataToken, page, 10);
+  const token = useToken();
+  const [page, setPage]  = useState<number>(1)
+  function changePage(i: number) {
+    setPage(i);
+  }
+  const { data, isLoading } = Query_List_Items_Dashboard(token, page, 10);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
-  useEffect(() => {
-    const data_Token = localStorage.getItem('account');
-    if (data_Token) {
-      const token_Account = JSON.parse(data_Token);
-      set_DataToken(token_Account.token)
-    }
-  }, [dataToken]);
+
   if (isLoading) {
     return <Loading />
   };
 
-  function changePage(action: any) {
-    switch (action) {
-      case "DOW":
-        return (page > 1) && setPage(page - 1)
-      case "UP":
-        return setPage(page + 1)
-      default: return
-    }
-  }
+
 
   const columns: ColumnDef<any>[] = [
     {
@@ -104,7 +93,7 @@ const Page = () => {
         </Link>
         <AlertDialog>
           <AlertDialogTrigger>
-            <Trash_Icon />
+          <Trash2 className="text-red-600 w-5 h-5"/>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -126,7 +115,7 @@ const Page = () => {
 
   function handle_Remove(idItem?: string | number) {
     const item = {
-      token: dataToken,
+      token: token,
       id_item: idItem
     }
     on_Submit(item);
@@ -138,25 +127,24 @@ const Page = () => {
         <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
         {/* {(Array.isArray(data)) ? (<> */}
         <div className="flex items-center gap-x-20 sticky z-[2] top-[70px] bg-[#101824] py-4">
-          <Search_Component_Dashboard />
           <div className="flex gap-x-2">
-            <Link className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-black hover:bg-gray-800 duration-300" href={'/admin/list_products/add_item'}>Thêm sản phẩm +</Link>
+            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/admin/list_products/add_item'}>Thêm sản phẩm +</Link>
           </div>
           <Link href={'/admin/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
-            <Trash_Icon />
+            <Trash2 className="text-red-600"/>
             {/* <span className="absolute font-semibold !w-[18px] grid place-items-center bg-white text-black !h-[20px] rounded-xl text-xs -top-[10%] -right-[15%]">1</span> */}
           </Link>
         </div>
         {
           data ? (<>
             {isLoading ? <span>Loading ...</span> :
-              <DataTable columns={columns} data={data} />
+              <DataTable columns={columns} data={data?.data?.docs} />
             }
           </>)
             : <span className="text-gray-200">Không có dữ liệu</span>
         }
         <div className="text-gray-100">
-          <Pagination_Component />
+          <Pagination_Component change_page={changePage} totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
         </div>
         {/* </>)
           : <span className="text-white">Bạn không có quyền truy cập !</span>} */}

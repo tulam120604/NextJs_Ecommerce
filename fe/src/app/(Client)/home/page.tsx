@@ -3,7 +3,7 @@ import Banner from "./_component/Banner";
 import Service from "./_component/Category";
 import Products_Home from "./_component/Products";
 import LoadingLandingPage from "./_component/loading";
-import { getLimit } from "../../_lib/Fn_Items/products";
+import { getLimit } from "../../_lib/Services_Items/products";
 import { unstable_noStore as noStore } from "next/cache";
 
 

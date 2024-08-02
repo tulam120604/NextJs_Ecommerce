@@ -11,8 +11,8 @@ import Loading from "../_component/loading";
 import Re_store from "@/src/app/Components/Icons/re_store";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image";
-import { DataTable } from "../_component/data_table";
 import { toast } from "react-toastify";
+import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 
 const Page = () => {
     const [dataToken, set_DataToken] = useState();

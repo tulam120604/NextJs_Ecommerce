@@ -1,15 +1,20 @@
 import { StatusCodes } from 'http-status-codes';
 import Account from '../../Model/Auth/Account';
 
-export async function getAll (req, res) {
+export async function list_Account (req, res) {
     const {
         _page = 1,
         _limit = 20,
         _search = '',
     } = req.query;
     try {
+        const options = {
+            page : _page,
+            limit : _limit,
+        }
         const querry = {};
-        const data = await Account.find();
+        const data = await Account.paginate(querry, options);
+        const totalAccount = await Account.countDocuments();
         if (!data || data.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message : "Khong co data !"
@@ -17,7 +22,8 @@ export async function getAll (req, res) {
         }
         return res.status(StatusCodes.OK).json({
             message : "OK",
-            data
+            data,
+            totalAccount
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

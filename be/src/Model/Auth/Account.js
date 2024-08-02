@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const schema_Auth = new mongoose.Schema({
     user_name : {
@@ -27,5 +28,7 @@ const schema_Auth = new mongoose.Schema({
 {
     timestamp : true, versionKey : false
 });
+
+schema_Auth.plugin(mongoosePaginate)
 
 export default mongoose.model('Account', schema_Auth);

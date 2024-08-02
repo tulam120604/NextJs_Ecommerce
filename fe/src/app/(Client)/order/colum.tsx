@@ -8,6 +8,13 @@ import Link from "next/link"
 export const columns: ColumnDef<any>[] = [
   {
     cell: ({ row }) => (
+      <Link href={'/' + row?.original?.product_id?._id}>
+        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+      </Link>),
+    header: "Ảnh",
+  },
+  {
+    cell: ({ row }) => (
       <Link href={'/' + row?.original?.product_id?._id} className="max-w-[300px] flex flex-col gap-y-3">
         <span className="line-clamp-2">{row?.original?.product_id.short_name}</span>
         {
@@ -17,13 +24,6 @@ export const columns: ColumnDef<any>[] = [
       </Link>
     ),
     header: "Tên sản phẩm",
-  },
-  {
-    cell: ({ row }) => (
-      <Link href={'/' + row?.original?.product_id?._id}>
-        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
-      </Link>),
-    header: "Ảnh",
   },
   {
     cell: ({ row }) => (

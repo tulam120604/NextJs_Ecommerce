@@ -6,12 +6,12 @@ import { Input } from '../../Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../Components/ui/Shadcn/button';
 import { useForm } from 'react-hook-form';
-import { DataTable } from './data_table';
 import { columns } from './colum';
 import { Mutation_Order } from '../../_lib/Tanstack_Query/Order/Mutation_order';
 import Loading_animation from '../../Components/Loadings/Loading_animation';
 import { schemaValidateOrder } from '../../(Auth)/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DataTable } from '../../Components/ui/Tables/data_table';
 
 const Page = () => {
   const routing = useRouter();
@@ -65,7 +65,7 @@ const Page = () => {
           {list_item_order ? (<>
             <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
             {
-              list_item_order?.items ? (<>
+              list_item_order?.items ? (<div className='*:text-gray-800'>
                 <DataTable columns={columns} data={list_item_order?.items} />
                 <div className='whitespace-nowrap text-lg my-4'>
                   <span>Tổng tiền :</span>
@@ -73,7 +73,7 @@ const Page = () => {
                     {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
                   </span>
                 </div>
-              </>) :  routing.push('/')
+              </div>) :  routing.push('/')
             }
 
           </>) : <span>Không có đơn hàng nào!</span>}

@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Sign_In } from "../../Fn_Auth/Login";
-import { Create_Account } from "../../Fn_Auth/Register";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
+import { create_Account, sign_In } from "../../Services_Auth/Authen";
 
 
 type Actions = "LOGIN" | "REGISTER";
@@ -25,9 +24,9 @@ export function Mutation_Auth({ action }: { action: Actions }) {
             setStatus_Loading('pending_call')
             switch (action) {
                 case "LOGIN":
-                    return await Sign_In(dataForm);
+                    return await sign_In(dataForm);
                 case "REGISTER":
-                    return await Create_Account(dataForm);
+                    return await create_Account(dataForm);
                 default: return
             }
         }, onSuccess: (res: any) => {

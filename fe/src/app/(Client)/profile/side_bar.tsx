@@ -54,7 +54,7 @@ const Side_bar = () => {
     ]
 
     return (
-        <div className="flex h-screen flex-col justify-between bg-[#f2f7ff]">
+        <div className="flex h-full flex-col justify-between bg-[#f2f7ff]">
             <ul className="flex flex-col gap-y-2 rounded-b">
                 {arr?.map((item) => {
                     return (

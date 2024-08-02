@@ -143,7 +143,7 @@ const Cart = () => {
                                     </div>
                                   </div>
                                 </TableCell>
-                                <TableCell><span className="md:text-base mb:text-xs text-red-600">{item?.price_item.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
+                                <TableCell><span className="md:text-base mb:text-xs text-red-600">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <div className="w-[80%] flex gap-x-4 items-center justify-around md:py-2 mb:py-1 *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
                                     <Btn_dow id_props={{ id_item: item?.product_id?._id, id_user: id, quantity_item: item?.quantity, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
@@ -151,7 +151,7 @@ const Cart = () => {
                                     <Btn_up id_props={{ id_item: item?.product_id?._id, id_user: id, dataItems: item, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
                                   </div>
                                 </TableCell>
-                                <TableCell><span className="md:text-base mb:text-xs text-red-600">{(item?.total_price_item).toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
+                                <TableCell><span className="md:text-base mb:text-xs text-red-600">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <Remove_Item_Cart id_props={{ item: item?.product_id?._id, id_user: id }} />
                                 </TableCell>

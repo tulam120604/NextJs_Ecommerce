@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import SideBarDashboard from "./SideBar";
-import LoadingPage from "../Components/Loadings/LoadingPage";
-import Bell_icon from "../Components/Icons/bell";
+import { Search_Component_Dashboard } from "../Components/Forms/search";
+import { BellRing } from "lucide-react";
 // import {use}
 
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -16,11 +16,12 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
             <Link className='text-sm lg:text-xl font-extrabold font-sans text-gray-100' href={'/admin/dashboard'}>
               Store88
             </Link>
+          <Search_Component_Dashboard />
             {/* options */}
             <div className="flex items-center gap-x-8">
               {/* chuong */}
               <div className="cursor-pointer relative">
-               <Bell_icon/>
+               <BellRing className="text-gray-100"/>
                 <span className="absolute w-5 h-5 rounded-[50%] text-white flex items-center justify-center -top-[40%] -left-1/4 bg-red-500 text-xs">0</span>
               </div>
               {/* logo account */}
@@ -34,7 +35,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
             <div className="sticky top-[80px]">
               <SideBarDashboard />
             </div>
-            <div className="bg-[#111827] h-full rounded *:w-full *:px-4">
+            <div className="bg-[#111827] min-h-screen rounded *:w-full *:px-4">
               {children}
             </div>
           </main>

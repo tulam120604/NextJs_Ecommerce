@@ -5,7 +5,7 @@ import Breadcrum from '@/src/app/Components/breadcrum/breadcrum';
 import { revalidatePath } from 'next/cache';
 import Description from './Description';
 import Infor_seller from './Infor_seller';
-import { getDetail } from '../../_lib/Fn_Items/products';
+import { getDetail } from '../../_lib/Services_Items/products';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 

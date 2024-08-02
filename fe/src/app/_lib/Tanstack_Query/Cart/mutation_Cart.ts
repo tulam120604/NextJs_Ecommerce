@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { add_to_cart, checked_item_cart, dow_quantity, remove_all_item_cart, remove_item_cart, up_quantity } from "../../Fn_Cart/Cart";
+import { add_to_cart, checked_item_cart, dow_quantity, remove_all_item_cart, remove_item_cart, up_quantity } from "../../Services_Cart/Cart";
 
 type Action = 'Add_Cart' | 'UP' | 'DOW' | 'REMOVE' | 'CHECKED_AND_REMOVE_ALL';
 

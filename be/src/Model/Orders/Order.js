@@ -36,7 +36,7 @@ const Order_Schema = new mongoose.Schema({
     },
     status_item_order: {
         type: String,
-        enum: ['1', '2', '3', '4', '5'],
+        enum: ['1', '2', '3', '4', '5', '6'],
         default: '1'
     },
     date_time: {

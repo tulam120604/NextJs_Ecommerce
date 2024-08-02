@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import Render_Products from './_component/Render_Products';
-import { getLimit_and_paginate } from '../../_lib/Fn_Items/products';
+import { getLimit_and_paginate } from '../../_lib/Services_Items/products';
 import LoadingShops from './_component/loading';
 
 const Products = async ({searchParams} : any) => {

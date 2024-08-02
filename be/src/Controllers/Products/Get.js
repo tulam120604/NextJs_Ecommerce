@@ -47,7 +47,7 @@ export async function get_Item_Dashboard(req, res) {
         };
         return res.status(StatusCodes.OK).json({
             message: "Done!",
-            data_All: data.docs
+            data
         })
     }
     catch (error) {

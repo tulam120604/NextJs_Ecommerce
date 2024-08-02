@@ -77,6 +77,7 @@ export async function get_Order_User(req, res) {
         const options = {
             page: _page,
             limit: _limit,
+            sort : {date_time : -1}
         }
         const check_user = await Account.findById(user_id);
         if (!check_user) {
@@ -97,6 +98,7 @@ export async function get_Order_User(req, res) {
         const totalItems3 = await Orders.countDocuments({ status_item_order: 3 });
         const totalItems4 = await Orders.countDocuments({ status_item_order: 4 });
         const totalItems5 = await Orders.countDocuments({ status_item_order: 5 });
+        const totalItems6 = await Orders.countDocuments({ status_item_order: 6 });
         const data_order = await Orders.paginate(querry, options);
         return res.status(StatusCodes.OK).json({
             message: 'OK',
@@ -107,6 +109,7 @@ export async function get_Order_User(req, res) {
             totalItems3,
             totalItems4,
             totalItems5,
+            totalItems6
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -123,7 +126,8 @@ export async function get_all_Order(req, res) {
     } = req.query;
     const options = {
         page: _page,
-        limit: _limit
+        limit: _limit,
+        sort: { date_time: -1 }
     }
     try {
         const data_order = await Orders.paginate({}, options);

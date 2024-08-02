@@ -1,11 +1,11 @@
-const apiURi = 'http://localhost:2000/v1/order';
+const apiURi = 'http://localhost:2000/v1';
 import { toast } from "react-toastify";
 
 
 
 export async function add_order(item: any) {
     try {
-        const res = await fetch(`${apiURi}/add`, {
+        const res = await fetch(`${apiURi}/order/add`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,9 +29,8 @@ export async function add_order(item: any) {
 
 export async function get_order_user(id_user: any) {
     try {
-        const res = await fetch(`${apiURi}/${id_user}`);
+        const res = await fetch(`${apiURi}/order/${id_user}`);
         if (!res.ok) {
-            console.log('Lỗi rồi đại vương ơi!')
             return res
         }
         const data = await res.json();
@@ -44,7 +43,13 @@ export async function get_order_user(id_user: any) {
 export async function get_all_order(token: any) {
     try {
         if (token) {
-            const res = await fetch(`${apiURi}/all`);
+            const res = await fetch(`${apiURi}/list_orders`, {
+                method : 'get',
+                headers : {
+                    'Content-Type' : 'application/json',
+                    'Authorization' : `Bearer ${token}`,
+                } 
+            });
             if (!res.ok) {
                 toast.error('Lỗi, vui lòng kiếm tra lại kết nối internet!', { autoClose: 500 });
                 console.log('Lỗi rồi đại vương ơi!')
@@ -65,7 +70,7 @@ export async function get_all_order(token: any) {
 
 export async function update_status_order(dataClient: any) {
     try {
-        const res = await fetch(`${apiURi}/update_status/${dataClient.id_user}`, {
+        const res = await fetch(`${apiURi}/order/update_status/${dataClient.id_user}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
@@ -89,7 +94,7 @@ export async function update_status_order(dataClient: any) {
 
 export async function restore_buy_order(dataClient: any) {
     try {
-        const res = await fetch(`${apiURi}/restore_buy_item`, {
+        const res = await fetch(`${apiURi}/order/restore_buy_item`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'

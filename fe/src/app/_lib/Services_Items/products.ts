@@ -53,7 +53,7 @@ export async function getDetail(id: number | string) {
 export async function list_ITems_Dashboard(token: any, page: number, limit_item: number) {
     try {
         if (token) {
-            let uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
+            const uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
             const res = await fetch(uri, {
                 method: 'get',
                 headers: {
@@ -64,7 +64,7 @@ export async function list_ITems_Dashboard(token: any, page: number, limit_item:
             if (!res.ok) {
                 console.warn('Call data failer');
             };
-            const { data_All } = await res.json();
+            const data_All  = await res.json();
             return data_All
         }
         console.error('Không có quyền truy cập!');
@@ -73,6 +73,32 @@ export async function list_ITems_Dashboard(token: any, page: number, limit_item:
         return (error || "Lỗi rồi đại vương ơi!");
     }
 }
+
+
+export async function list_All_Item_Dashboard(token: any) {
+    try {
+        if (token) {
+            const uri = `${apiURi}/products/admin`;
+            const res = await fetch(uri, {
+                method: 'get',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!res.ok) {
+                console.warn('Call data failer');
+            };
+            const data = await res.json();
+            return data
+        }
+        console.error('Không có quyền truy cập!');
+        return 'Không có quyền truy cập !';
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+
 
 // add
 export async function addItem(item: any) {

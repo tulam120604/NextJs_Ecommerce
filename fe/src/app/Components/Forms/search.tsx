@@ -1,24 +1,24 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Search_icon from "../Icons/Search";
-import { search_item } from "../../_lib/Fn_Items/products";
+import { search_item } from "../../_lib/Services_Items/products";
 import Image from "next/image";
 import Link from "next/link";
+import { Search } from "lucide-react";
 
 
 export const Search_Component_Dashboard = () => {
   return (
-    <div className="relative">
+    <div className="relative w-[400px]">
       <input
         type="text"
         id="Search"
         placeholder="Search for..."
-        className="w-full rounded-md text-white border-gray-200 bg-[#1F2936] p-3 outline-none pe-10 shadow-sm sm:text-sm"
+        className="w-full rounded-md text-white border-gray-200 bg-gray-900 p-3 outline-none pe-10 shadow-sm sm:text-sm"
       />
       <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
         <button type="button" className="text-gray-100 hover:text-gray-300">
-          <Search_icon />
+          <Search />
         </button>
       </span>
     </div>
@@ -44,8 +44,8 @@ export function Search_Component_Client() {
     <form className={`relative w-full *:h-[36px] gap-x-2 shadow-2xl duration-300`}>
       <input type="text" className="border rounded-lg w-full px-5 text-sm outline-none font-normal text-gray-700" placeholder="Đại vương muốn mua gì nào?"
         onChange={(e) => setKey_search(e.target.value)} />
-      <button type='submit' className="absolute top-0 right-[2%] rounded-[50%] w-[36px] duration-300 cursor-pointer">
-        <Search_icon />
+      <button type='submit' className="absolute top-0 right-[2%] rounded-[50%] duration-300 cursor-pointer text-gray-800">
+        <Search />
       </button>
     </form>
     {

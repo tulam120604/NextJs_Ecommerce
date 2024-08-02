@@ -1,7 +1,7 @@
 'use client';
 
-import { getDetail, getLimit, getLimit_and_paginate, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Fn_Items/products";
-import { detail_Categories, list_Categories } from "../../Fn_Items/categories";
+import { getDetail, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services_Items/products";
+import { detail_Categories, list_Categories } from "../../Services_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
 
@@ -29,7 +29,7 @@ export function Query_Category(id?: string | number | undefined) {
 // get list item admin
 export function Query_List_Items_Dashboard(token: any, page: number, limit_item: number, id?: string | number) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Product_Key'],
+        queryKey: ['Product_Key', page],
         queryFn: async () => {
             if (token) {
                 return id ? await getDetail(id) : await list_ITems_Dashboard(token, page, limit_item);
@@ -41,7 +41,23 @@ export function Query_List_Items_Dashboard(token: any, page: number, limit_item:
     return { data, ...rest };
 }
 
-// get list item admin
+// get all item admin
+export function Query_List_All_Items_Dashboard(token: any) {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Product_Key'],
+        queryFn: async () => {
+            if (token) {
+                return await list_All_Item_Dashboard(token);
+            }
+            return "Không thể xác minh tài khoản"
+        },
+        enabled: !!token
+    });
+    return { data, ...rest };
+}
+
+
+// get the list in the trash
 export function Query_Recycle_Items_Admin(token: any, page?: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
