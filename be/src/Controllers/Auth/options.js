@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import Account from '../../Model/Auth/Account';
 import { Validate_Auth } from '../../Validates/Auth';
 import brcyptjs from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { createAccessToken, createRefeshToken } from '../../middleware/Auth';
 
 export async function create_Account (req, res) {
     try {
@@ -40,6 +42,54 @@ export async function create_Account (req, res) {
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message : error.message || 'Lỗi server rồi đại vương ơi!'
+        })
+    }
+}
+
+
+export async function Login (req, res) {
+    try {
+        const {email, password} = req.body;
+        const check_email = await Account.findOne({email});
+        if (!check_email) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                message : 'Email khong dung !'
+            })
+        };
+        const check_password = await brcyptjs.compare(password, check_email.password);
+        if (!check_password) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({
+                message : "Sai mat khau !"
+            })
+        };
+        const accessToken = createAccessToken(check_email._id);
+        const refeshToken = createRefeshToken(check_email._id);
+        check_email.password = undefined;
+        return res.status(StatusCodes.OK).json({
+            message : 'Login Done !',
+            check_email,
+            accessToken,
+            refeshToken
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message : error.message || "Lỗi server rồi đại vương ơi!"
+        })
+    }
+}
+
+export async function log_out (req, res) {
+    try {
+        const token = req.headers.authorization;
+        if (token) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message : 'No token'
+            })
+        }
+        
+    }catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message : error.message || "Lỗi server rồi đại vương ơi!"
         })
     }
 }

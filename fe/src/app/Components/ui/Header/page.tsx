@@ -12,6 +12,7 @@ import { Search_Component_Client } from '../../Forms/search';
 
 const Header = () => {
     const routing = useRouter();
+    const [checkLocal, setCheckLocal] = useState<boolean>(false)
     const toggleFixedHeader = useRef<HTMLHeadElement>(null);
     useEffect(() => {
         function handle_scroll_header() {
@@ -19,7 +20,7 @@ const Header = () => {
                 if (toggleFixedHeader.current) {
                     (window.scrollY > 100) ?
                         (toggleFixedHeader.current.classList.add('animate-[animationScrollYHeader_1s]', '-translate-y-9', 'sticky')) :
-                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '-translate-y-9','sticky'));
+                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '-translate-y-9', 'sticky'));
                 }
             }))
         }
@@ -31,33 +32,20 @@ const Header = () => {
     // }, [])
 
     // login
-    const ref_User = useRef<HTMLAnchorElement>(null);
-    const ref_Logo_User = useRef<HTMLAnchorElement>(null);
-
-    useEffect(() => {
-        const changeLogin = () => {
-            if (localStorage.getItem('account')) {
-                ref_User.current?.classList.add('hidden');
-                ref_User.current?.classList.remove('block');
-                ref_Logo_User.current?.classList.remove('hidden');
-                ref_Logo_User.current?.classList.add('block');
-            } else {
-                ref_User.current?.classList.remove('hidden');
-                ref_User.current?.classList.add('block');
-                ref_Logo_User.current?.classList.add('hidden');
-                ref_Logo_User.current?.classList.remove('block');
-            }
-        };
-        changeLogin();
-        const status_Storage = () => {
-            changeLogin();
-            if (!localStorage.getItem('account')) {
-                routing.push('/')
-            }
+    const status_Storage = () => {
+        if (!localStorage.getItem('account')) {
+            setCheckLocal(false)
+            routing.push('/');
         }
+        else {
+            setCheckLocal(true)
+        }
+    }
+    useEffect(() => {
+        status_Storage();
         window.addEventListener('storage', status_Storage);
         return () => window.removeEventListener('storage', status_Storage);
-    }, [])
+    }, [checkLocal])
 
     // cart :
     function handleCart() {
@@ -80,8 +68,8 @@ const Header = () => {
         }, [data_storage])
         const { data } = Get_Items_Cart(data_storage);
         let new_arr;
-        if (data?.items ) {
-            new_arr = data?.items.filter((item :any) => (item?.product_id !== null) && item);
+        if (data?.items) {
+            new_arr = data?.items.filter((item: any) => (item?.product_id !== null) && item);
         }
         return (<>
             {data?.items && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{new_arr?.length}</span>)}
@@ -104,7 +92,7 @@ const Header = () => {
                 </div>
                 {/* form search */}
                 <div className='md:!block !hidden absolute md:w-[50%] w-[30%] left-1/2 -translate-x-1/2 z-[7]'>
-                    <Search_Component_Client/>
+                    <Search_Component_Client />
                 </div>
 
                 <div className="lg:gap-x-6 mb:gap-x-4 flex items-center">
@@ -138,8 +126,8 @@ const Header = () => {
                                 <Mini_Cart />
                             </div> */}
                     </div>
-                    <Link href={'/login'} ref={ref_User} className="block text-xs lg:text-sm hover:text-gray-300 cursor-pointer duration-300 whitespace-nowrap">Đăng nhập</Link>
-                    <Link href={'/profile/infor'} ref={ref_Logo_User} className="hidden relative border-none p-0.5 cursor-pointer whitespace-nowrap group">
+                    <Link href={'/login'} className={`${checkLocal ? 'hidden' : 'block'} text-xs lg:text-sm hover:text-gray-300 cursor-pointer duration-300 whitespace-nowrap`}>Đăng nhập</Link>
+                    <Link href={'/profile/infor'} className={`${checkLocal ? 'block' : 'hidden'} relative border-none p-0.5 cursor-pointer whitespace-nowrap group`}>
                         <Image className='hover:scale-[1.2] duration-200 rounded-[50%]' width={30} height={30} src={'/Images/avatar.jpg'} alt=''></Image>
                         <span className='hidden group-hover:block duration-200 text-xs absolute right-0 translate-x-0 top-full'>Hồ sơ của bạn</span>
                     </Link>

@@ -9,7 +9,7 @@ import React from 'react'
 
 const Page = () => {
   const token = useToken();
-  const { data } = List_Order_Dashboard(token);
+  const { data } = List_Order_Dashboard(token.accessToken);
 
 
   function status_order(item: any) {

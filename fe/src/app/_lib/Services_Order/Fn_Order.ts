@@ -27,9 +27,13 @@ export async function add_order(item: any) {
     }
 };
 
-export async function get_order_user(id_user: any) {
+export async function get_order_user(id_user: any, status_item_order?: string | number) {
     try {
-        const res = await fetch(`${apiURi}/order/${id_user}`);
+        let uri = `${apiURi}/order/${id_user}`;
+        if (status_item_order) {
+            uri += `?&_status_item=${status_item_order}`
+        }
+        const res = await fetch(uri);
         if (!res.ok) {
             return res
         }
@@ -40,18 +44,18 @@ export async function get_order_user(id_user: any) {
     }
 }
 
-export async function get_all_order(token: any) {
+export async function get_all_order(accessToken: any) {
     try {
-        if (token) {
+        if (accessToken) {
             const res = await fetch(`${apiURi}/list_orders`, {
                 method : 'get',
                 headers : {
                     'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${token}`,
+                    'Authorization' : `Bearer ${accessToken}`,
                 } 
             });
             if (!res.ok) {
-                toast.error('Lỗi, vui lòng kiếm tra lại kết nối internet!', { autoClose: 500 });
+                toast.error('Lỗi, vui lòng kiếm tra lại!', { autoClose: 500 });
                 console.log('Lỗi rồi đại vương ơi!')
                 return res
             }

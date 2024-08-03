@@ -65,7 +65,6 @@ export async function get_Item_Client(req, res) {
         _sort = '',
         _limit = 100,
         _search = '',
-        _categories_id = '',
     } = req.query;
     const options = {
         page: _page,
@@ -81,18 +80,6 @@ export async function get_Item_Client(req, res) {
                 }
             ]
         };
-        // if (_categories_id) {
-        //     querry.categories_id = _categories_id;
-        // };
-        // if (_search || _categories_id) {
-        //     if (_search) {
-        //         querry.$and = [
-        //             {
-        //                 short_name: { $regex: new RegExp(_search, 'i') }
-        //             }
-        //         ]
-        //     }
-        // }
         const data = await Products.paginate(querry, options);
         await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
         await Products.populate(data.docs, { path: 'attributes' });
@@ -110,7 +97,7 @@ export async function get_Item_Client(req, res) {
                 id_data.count_stock = id_data.stock
             }
         };
-        data.docs = data.docs.filter((item) => item.count_stock > 0 && item)
+        data.docs = data.docs.filter((item) => item.count_stock > 0);
         if (!data) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Khong co data!"
@@ -130,7 +117,34 @@ export async function get_Item_Client(req, res) {
 
 // get detail
 
-export async function get_Detail(req, res) {
+export async function get_Detail_Client(req, res) {
+    try {
+        const data = await Products.findById(req.params.id).populate('attributes');
+        if (data.attributes.varriants) {
+            data.attributes.varriants = data.attributes.varriants.map(item => {
+                const dataAttr = item.size_item.filter(attr => attr.stock_item > 0)
+                return {
+                    ...item,
+                    size_item: dataAttr
+                }
+
+            })
+            await data.save()
+        }
+        return res.status(StatusCodes.OK).json({
+            message: "Done",
+            data
+        })
+    }
+    catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || "Lỗi server rồi đại vương ơi!"
+        })
+    }
+};
+
+
+export async function get_Detail_Dashboard(req, res) {
     try {
         const data = await Products.findById(req.params.id).populate('attributes');
         return res.status(StatusCodes.OK).json({

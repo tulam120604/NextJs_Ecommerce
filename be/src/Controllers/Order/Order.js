@@ -77,7 +77,7 @@ export async function get_Order_User(req, res) {
         const options = {
             page: _page,
             limit: _limit,
-            sort : {date_time : -1}
+            sort: { date_time: -1 }
         }
         const check_user = await Account.findById(user_id);
         if (!check_user) {

@@ -14,14 +14,16 @@ import Pagination_Component from "./_component/Pagination";
 import useToken from "@/src/app/_lib/Custome_Hooks/Token";
 import { Trash2 } from "lucide-react";
 import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
   const token = useToken();
-  const [page, setPage]  = useState<number>(1)
-  function changePage(i: number) {
-    setPage(i);
+  let page = 1;
+  const searchParams = useSearchParams();
+  if (searchParams.get('_page')) {
+    page = Number(searchParams.get('_page'))
   }
-  const { data, isLoading } = Query_List_Items_Dashboard(token, page, 10);
+  const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
@@ -29,8 +31,6 @@ const Page = () => {
   if (isLoading) {
     return <Loading />
   };
-
-
 
   const columns: ColumnDef<any>[] = [
     {
@@ -115,12 +115,12 @@ const Page = () => {
 
   function handle_Remove(idItem?: string | number) {
     const item = {
-      token: token,
+      accessToken: token,
+      refeshToken : token,
       id_item: idItem
     }
     on_Submit(item);
   }
-
   return (
     <Suspense fallback={<LoadingPage />}>
       <div className=" flex flex-col gap-y-6 py-6 rounded">
@@ -136,7 +136,7 @@ const Page = () => {
           </Link>
         </div>
         {
-          data ? (<>
+          data?.data ? (<>
             {isLoading ? <span>Loading ...</span> :
               <DataTable columns={columns} data={data?.data?.docs} />
             }
@@ -144,7 +144,7 @@ const Page = () => {
             : <span className="text-gray-200">Không có dữ liệu</span>
         }
         <div className="text-gray-100">
-          <Pagination_Component change_page={changePage} totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
+          <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
         </div>
         {/* </>)
           : <span className="text-white">Bạn không có quyền truy cập !</span>} */}

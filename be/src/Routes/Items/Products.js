@@ -1,5 +1,5 @@
 import express from 'express';
-import { get_Detail, get_item_by_category, get_Item_Client, get_Item_Dashboard, search_Item } from '../../Controllers/Products/Get';
+import { get_Detail_Client, get_Detail_Dashboard, get_item_by_category, get_Item_Client, get_Item_Dashboard, search_Item } from '../../Controllers/Products/Get';
 import { Create_Product } from '../../Controllers/Products/Create';
 import { middleWare } from '../../middleware/Auth';
 import upload from '../../middleware/multer';
@@ -13,7 +13,8 @@ RoutesProducts.get('/products/admin', middleWare , get_Item_Dashboard);
 RoutesProducts.get('/products', get_Item_Client);
 RoutesProducts.get('/products/search', search_Item);
 RoutesProducts.get('/products/category/:category_id', get_item_by_category);
-RoutesProducts.get('/products/:id' , get_Detail);
+RoutesProducts.get('/products/:id' , get_Detail_Client);
+RoutesProducts.get('/products/dashboard/:id' , get_Detail_Dashboard);
 RoutesProducts.post('/products', upload.single('feature_product'), middleWare , Create_Product);
 RoutesProducts.delete('/products/:id', middleWare , Soft_remove);
 RoutesProducts.delete('/products/destroy_item/:id', middleWare , destroy_items);

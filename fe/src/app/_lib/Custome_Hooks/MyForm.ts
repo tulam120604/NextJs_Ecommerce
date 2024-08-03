@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
-import { Query_Category, Query_Items } from "../Tanstack_Query/Items/query";
+import { Detail_Item_Dashboard, Query_Category } from "../Tanstack_Query/Items/query";
 import { Mutation_Items } from "../Tanstack_Query/Items/mutationFn";
 
 
@@ -13,7 +13,7 @@ export function Custome_Hooks({ mode }: any) {
     const { edit_item } = useParams();
     let data_one_item: any;
     if (mode === 'edit' && mode) {
-        data_one_item = Query_Items(String(edit_item));
+        data_one_item = Detail_Item_Dashboard(String(edit_item));
     }
     const [dataToken, set_DataToken] = useState();
     const routing = useRouter();
@@ -22,7 +22,7 @@ export function Custome_Hooks({ mode }: any) {
         const data_Token = localStorage.getItem('account');
         if (data_Token) {
             const token_Account = JSON.parse(data_Token);
-            set_DataToken(token_Account.token)
+            set_DataToken(token_Account.accessToken)
         }
     }, [dataToken]);
     const { data, isLoading } = Query_Category();
@@ -63,7 +63,6 @@ export function Custome_Hooks({ mode }: any) {
     }, [my_Form, data_one_item && data_one_item.data]);
     function submitForm(data_form: any) {
         try {
-            console.log(data_form);
             const attributesString = JSON.stringify(data_form.attributes);
             const formData = new FormData();
             formData.append('short_name', data_form.short_name);
@@ -75,12 +74,12 @@ export function Custome_Hooks({ mode }: any) {
             (data_form.stock ? formData.append('stock', data_form.stock) : formData.append('attributes', attributesString))
             // console.log(attributesString)
             let dataAll: any = {
-                token: dataToken,
+                accessToken: dataToken,
                 data_item: formData,
             }
             if (mode && edit_item) {
                 dataAll = {
-                    token: dataToken,
+                    accessToken: dataToken,
                     data_item: formData,
                     id_item: edit_item
                 }

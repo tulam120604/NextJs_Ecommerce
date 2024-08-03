@@ -16,7 +16,7 @@ const Schema_Attribute = new mongoose.Schema({
                     stock_item: {
                         type: Number,
                         required: true,
-                        min: 1,
+                        min: 0,
                     },
                     price_attribute : Number
                 }

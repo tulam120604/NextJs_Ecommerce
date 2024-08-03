@@ -1,31 +1,41 @@
 'use client';
 
+import { Infor_user } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Auth';
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 
-const page = () => {
+const Page = () => {
+  const [client, setClient] = useState<boolean>(false);
+  useEffect(() => {
+    setClient(true)
+  }, [])
+  const routing = useRouter();
+  let user: any;
+  if (typeof window !== 'undefined') {
+    if (!localStorage.getItem('account')) {
+      routing.push('/')
+    }
+    const dataLocal = JSON.parse(localStorage.getItem('account') || '{}');
+    user = dataLocal?.check_email
+  };
   return (
+    client ? 
     <div className="w-full px-6 py-4">
       <div className='flex items-center justify-between'>
-      <span className='lg:text-2xl text-xl'>Hồ sơ của tôi</span>
-      <Link className='text-sm underline' href={'/admin/dashboard'}>Đăng kí bán hàng</Link>
+        <span className='lg:text-2xl text-xl'>Hồ sơ của tôi</span>
+        <Link className='text-sm underline' href={'/admin/dashboard'}>Đăng kí bán hàng</Link>
       </div>
       <table className='lg:w-[50%] w-[80%] mx-auto'>
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
         <tbody>
           <tr className='*:my-6'>
             <td className='flex items-center justify-between'>
               Tên đăng nhập
-              <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>ahihihi 123</div>
+              <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.user_name}</div>
             </td>
             <td className='flex items-center justify-between'>
               Email tài khoản
-              <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>ahihihi***@*******</div>
+              <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.email}</div>
             </td>
             <td className='flex items-center justify-between'>
               Số điện thoại
@@ -59,8 +69,8 @@ const page = () => {
         </dl>
       </div>
     </div>
-
+    : <span>Loading..</span>
   )
 }
 
-export default page
+export default Page

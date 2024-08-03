@@ -1,24 +1,26 @@
 import { Button } from '@/src/app/Components/ui/button';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/src/app/Components/ui/pagination';
+import { useRouter } from 'next/navigation';
 
 
-export default function Pagination_Component({ change_page, totalPages, currentPage }: any) {
+export default function Pagination_Component({ totalPages, currentPage }: any) {
+    const routing = useRouter();
     function handle_page(i: number) {
-        change_page(i)
+        routing.push(`/admin/list_products?_page=${i}`);
     }
     function changePage(action: string) {
         switch (action) {
             case 'pre':
                 if (currentPage > 1) {
-                    change_page(currentPage - 1)
+                    routing.push(`/admin/list_products?_page=${currentPage - 1}`);
                 }
-            return;
+                return;
             case 'next':
                 if (currentPage <= totalPages) {
-                    change_page(currentPage + 1)
+                    routing.push(`/admin/list_products?_page=${currentPage + 1}`);
                 }
-            return;
-            default : return
+                return;
+            default: return
         }
     }
     return (
@@ -37,7 +39,7 @@ export default function Pagination_Component({ change_page, totalPages, currentP
                 {/* <PaginationItem>
                 <PaginationEllipsis />
             </PaginationItem> */}
-                <Button className={`${currentPage === totalPages && 'cursor-not-allowed'} hover:bg-[#F1F5F9] hover:text-gray-900`}  onClick={() => changePage('next')}>&#10095;</Button>
+                <Button className={`${currentPage === totalPages && 'cursor-not-allowed'} hover:bg-[#F1F5F9] hover:text-gray-900`} onClick={() => changePage('next')}>&#10095;</Button>
             </PaginationContent>
         </Pagination>
     )

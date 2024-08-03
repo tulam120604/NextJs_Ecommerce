@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const CustomersAdmin = () => {
     const token = useToken();
-    const { data } = List_Account(token);
+    const { data } = List_Account(token.accessToken);
 
     const columns: ColumnDef<any>[] = [
         {

@@ -32,7 +32,7 @@ export async function list_Account (req, res) {
     }
 }
 
-export async function getDetail (req, res) {
+export async function get_detail_user (req, res) {
     try {
         const data = await Account.findById(req.params.id);
         if (!data) {
@@ -45,7 +45,7 @@ export async function getDetail (req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).sjon({
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message : error.message || "Lỗi server rồi đại vương ơi!"
         })
     }

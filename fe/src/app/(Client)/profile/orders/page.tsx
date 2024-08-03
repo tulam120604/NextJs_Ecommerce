@@ -20,7 +20,6 @@ const Page = () => {
     const user = JSON.parse(localStorage.getItem('account') || '{}');
     user_id = user?.check_email?._id;
   }
-  const data = Query_Order(user_id);
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   function status_order(item: any) {
     switch (+item) {
@@ -87,18 +86,23 @@ const Page = () => {
       header: " ",
     },
   ]
-  //  hidden_scroll_x
+
+  let status_item_order : any; 
+  function handle_list_item_status(status: any) {
+    status_item_order = status;
+  }
+  const data = Query_Order(user_id, status_item_order);
 
   return (
     <div className='w-full relative'>
       <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-[#F2F7FF] *:border-b-2 *:border-[#F2F7FF] *:whitespace-nowrap'>
-        <button className='hover:border-gray-900 !border-gray-900'>Tất cả ({data?.data?.totalItems && data?.data?.totalItems})</button>
-        <button className='hover:border-gray-900'>Chờ xác nhận ({data?.data?.totalItems && data?.data?.totalItems1})</button>
-        <button className='hover:border-gray-900'>Đã xác nhận ({data?.data?.totalItems && data?.data?.totalItems2})</button>
-        <button className='hover:border-gray-900'>Đang chuẩn bị hàng ({data?.data?.totalItems && data?.data?.totalItems3})</button>
-        <button className='hover:border-gray-900'>Đang vận chuyển ({data?.data?.totalItems && data?.data?.totalItems4})</button>
-        <button className='hover:border-gray-900'>Giao thành công ({data?.data?.totalItems && data?.data?.totalItems5})</button>
-        <button className='hover:border-gray-900'>Đã hủy ({data?.data?.totalItems && data?.data?.totalItems6})</button>
+        <button onClick={() => handle_list_item_status('')} className='hover:border-gray-900 !border-gray-900'>Tất cả ({data?.data?.totalItems && data?.data?.totalItems})</button>
+        <button onClick={() => handle_list_item_status(1)} className='hover:border-gray-900'>Chưa xác nhận ({data?.data?.totalItems && data?.data?.totalItems1})</button>
+        <button onClick={() => handle_list_item_status(2)} className='hover:border-gray-900'>Đã xác nhận ({data?.data?.totalItems && data?.data?.totalItems2})</button>
+        <button onClick={() => handle_list_item_status(3)} className='hover:border-gray-900'>Đang chuẩn bị hàng ({data?.data?.totalItems && data?.data?.totalItems3})</button>
+        <button onClick={() => handle_list_item_status(4)} className='hover:border-gray-900'>Đang vận chuyển ({data?.data?.totalItems && data?.data?.totalItems4})</button>
+        <button onClick={() => handle_list_item_status(5)} className='hover:border-gray-900'>Giao thành công ({data?.data?.totalItems && data?.data?.totalItems5})</button>
+        <button onClick={() => handle_list_item_status(6)} className='hover:border-gray-900'>Đã hủy ({data?.data?.totalItems && data?.data?.totalItems6})</button>
       </div>
 
       <div className='pt-20'>

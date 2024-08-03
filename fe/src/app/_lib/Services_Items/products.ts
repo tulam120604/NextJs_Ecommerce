@@ -49,15 +49,30 @@ export async function getDetail(id: number | string) {
     }
 }
 
-// list items dashboard 
-export async function list_ITems_Dashboard(token: any, page: number, limit_item: number) {
+// detail dashboard
+export async function getDetailDashboard(id: number | string) {
     try {
-        if (token) {
+        const res = await fetch(`${apiURi}/products/dashboard/${id}`);
+        if (!res.ok) {
+            console.warn('Call data failer');
+            return res
+        }
+        const data = await res.json();
+        return data.data
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+
+// list items dashboard 
+export async function list_ITems_Dashboard(accessToken: any, page: number, limit_item: number) {
+    try {
+        if (accessToken) {
             const uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
             const res = await fetch(uri, {
                 method: 'get',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -106,7 +121,7 @@ export async function addItem(item: any) {
         const res = await fetch(`${apiURi}/products`, {
             method: 'post',
             headers: {
-                'authorization': `Bearer ${item.token}`,
+                'authorization': `Bearer ${item.accessToken}`,
                 // 'Content-Type': 'multipart/form-data'
             },
             body: item.data_item
@@ -206,7 +221,7 @@ export async function edit_items_admin(dataClient?: any) {
         const res = await fetch(uri, {
             method: 'PUT',
             headers: {
-                "authorization": `Bearer ${dataClient.token}`,
+                "authorization": `Bearer ${dataClient.accessToken}`,
                 // "Content-Type" : "application/json"
             },
             body: dataClient.data_item

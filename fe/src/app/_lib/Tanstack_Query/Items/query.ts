@@ -1,6 +1,6 @@
 'use client';
 
-import { getDetail, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services_Items/products";
+import { getDetailDashboard, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services_Items/products";
 import { detail_Categories, list_Categories } from "../../Services_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
@@ -27,63 +27,72 @@ export function Query_Category(id?: string | number | undefined) {
 }
 
 // get list item admin
-export function Query_List_Items_Dashboard(token: any, page: number, limit_item: number, id?: string | number) {
+export function Query_List_Items_Dashboard(accessToken: any, page: number, limit_item: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key', page],
         queryFn: async () => {
-            if (token) {
-                return id ? await getDetail(id) : await list_ITems_Dashboard(token, page, limit_item);
+            if (accessToken) {
+                return await list_ITems_Dashboard(accessToken, page, limit_item);
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled: !!token
+        enabled: !!accessToken
     });
     return { data, ...rest };
 }
 
+// detail
+export function Detail_Item_Dashboard (id : string | number)  {
+    const {data, ...rest}  = useQuery({
+        queryKey : ['Product_Key', id],
+        queryFn : () => getDetailDashboard(id)
+    })
+    return {data, ...rest}
+}
+
 // get all item admin
-export function Query_List_All_Items_Dashboard(token: any) {
+export function Query_List_All_Items_Dashboard(accessToken: any) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
-            if (token) {
-                return await list_All_Item_Dashboard(token);
+            if (accessToken) {
+                return await list_All_Item_Dashboard(accessToken);
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled: !!token
+        enabled: !!accessToken
     });
     return { data, ...rest };
 }
 
 
 // get the list in the trash
-export function Query_Recycle_Items_Admin(token: any, page?: number) {
+export function Query_Recycle_Items_Admin(accessToken: any, page?: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
-            if (token) {
-                return await list_Recycle_ITems_Admin(token, page);
+            if (accessToken) {
+                return await list_Recycle_ITems_Admin(accessToken, page);
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled: !!token
+        enabled: !!accessToken
     });
     return { data, ...rest };
 }
 
 
 // edit all field list item admin
-export function Query_Edit_Items_Admin(token: any, page?: Number) {
+export function Query_Edit_Items_Admin(accessToken: any, page?: Number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key'],
         queryFn: async () => {
-            if (token) {
-                return await list_Recycle_ITems_Admin(token, page);
+            if (accessToken) {
+                return await list_Recycle_ITems_Admin(accessToken, page);
             }
             return "Không thể xác minh tài khoản"
         },
-        enabled: !!token
+        enabled: !!accessToken
     });
     return { data, ...rest };
 }
