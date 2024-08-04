@@ -1,4 +1,3 @@
-import LoadingPage from "@/src/app/Components/Loadings/LoadingPage"
 import { Skeleton } from "@/src/app/Components/ui/Skeleton/skeleton"
 
 const LoadingCart = () => {

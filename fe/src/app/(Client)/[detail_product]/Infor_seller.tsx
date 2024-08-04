@@ -4,7 +4,7 @@ import React from 'react'
 
 const Infor_seller = () => {
   return (
-    <div className='py-2 lg:py-4 px-4 lg:px-10 flex items-center gap-x-8 my-10 bg-gray-50'>
+    <div className='py-4 lg:py-8 px-4 lg:px-10 flex items-center gap-x-8 my-6 bg-white'>
         <Image width={100} height={100} className='size-16 lg:size-20 rounded-[50%]' src={'/Images/avatar.jpg'} alt='Loading...'></Image>
         <div className='flex flex-col items-start gap-y-2'>
         <span className='text-lg lg:text-xl'>user name seller</span>

@@ -2,8 +2,7 @@
 'use client';
 
 import Link from "next/link"
-import { Suspense, useState } from "react";
-import LoadingPage from "@/src/app/Components/Loadings/LoadingPage";
+import { Suspense } from "react";
 import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import { ColumnDef } from "@tanstack/react-table"
@@ -11,10 +10,11 @@ import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
 import Pagination_Component from "./_component/Pagination";
-import useToken from "@/src/app/_lib/Custome_Hooks/Token";
 import { Trash2 } from "lucide-react";
 import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 import { useSearchParams } from "next/navigation";
+import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
+import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 
 const Page = () => {
   const token = useToken();
@@ -122,7 +122,7 @@ const Page = () => {
     on_Submit(item);
   }
   return (
-    <Suspense fallback={<LoadingPage />}>
+    <Suspense fallback={<Loading_Dots/>}>
       <div className=" flex flex-col gap-y-6 py-6 rounded">
         <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
         {/* {(Array.isArray(data)) ? (<> */}
@@ -136,8 +136,9 @@ const Page = () => {
           </Link>
         </div>
         {
+          data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
           data?.data ? (<>
-            {isLoading ? <span>Loading ...</span> :
+            {isLoading ? <Loading_Dots/> :
               <DataTable columns={columns} data={data?.data?.docs} />
             }
           </>)

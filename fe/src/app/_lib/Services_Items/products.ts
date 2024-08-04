@@ -78,6 +78,7 @@ export async function list_ITems_Dashboard(accessToken: any, page: number, limit
             });
             if (!res.ok) {
                 console.warn('Call data failer');
+                return res
             };
             const data_All  = await res.json();
             return data_All

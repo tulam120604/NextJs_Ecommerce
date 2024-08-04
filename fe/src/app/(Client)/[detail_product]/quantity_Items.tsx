@@ -239,8 +239,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
       routing.push('/login');
     }
   }
-  return (<>
-
+  return (<div>
     <div className="flex items-center gap-x-2 items-end font-medium text-[#EB2606] lg:text-2xl lg:font-normal mb:text-base mb-4">
       {
         data_Item_Detail?.price_product ?
@@ -316,7 +315,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         </button>
       </div>
     </div>
-  </>)
+  </div>)
 }
 
 export default Quantity_Items_Detail

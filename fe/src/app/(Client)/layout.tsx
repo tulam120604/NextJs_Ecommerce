@@ -12,7 +12,7 @@ export default function Layout_CLient({ children }: Readonly<{ children: React.R
     // routes.events.on('routeChangeStart', () => console.log('ahihi'))
     return (<>
             <Header />
-            <main >
+            <main className='bg-[#F5F5FA]'>
                 {children}
             </main>
             <Footer />

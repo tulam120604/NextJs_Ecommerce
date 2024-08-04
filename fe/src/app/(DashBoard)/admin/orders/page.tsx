@@ -1,16 +1,21 @@
 'use client';
 
-import useToken from '@/src/app/_lib/Custome_Hooks/Token';
+import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Order_Dashboard } from '@/src/app/_lib/Tanstack_Query/Order/Query_order';
+import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
 import { DataTable } from '@/src/app/Components/ui/Tables/data_table';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
-import React from 'react'
+import React, { Suspense } from 'react'
+import Loading from './loading';
 
 const Page = () => {
   const token = useToken();
-  const { data } = List_Order_Dashboard(token.accessToken);
-
+  const { data, isLoading } = List_Order_Dashboard(token.accessToken);
+  
+  if (isLoading) {
+    return <Loading />
+  }
 
   function status_order(item: any) {
     switch (+item) {
@@ -77,16 +82,18 @@ const Page = () => {
     }
   ]
   return (
-    <div className="flex flex-col gap-y-6 py-6 rounded">
-      <strong className="text-gray-200 lg:text-2xl">Đơn hàng</strong>
-      <div className="text-gray-200">
-        {
-          data?.data_order ?
-            <DataTable data={data?.data_order?.docs} columns={columns} /> :
-            <span>không thể xác minh danh tính</span>
-        }
+    <Suspense fallback={<Loading_Dots />}>
+      <div className="flex flex-col gap-y-6 py-6 rounded">
+        <strong className="text-gray-200 lg:text-2xl">Đơn hàng</strong>
+        <div className="text-gray-200">
+          {
+            data?.data_order ?
+              <DataTable data={data?.data_order?.docs} columns={columns} /> :
+              <span>không thể xác minh danh tính</span>
+          }
+        </div>
       </div>
-    </div>
+    </Suspense>
   )
 }
 

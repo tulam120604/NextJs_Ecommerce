@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import React from 'react'
 
-const Breadcrum = ({textProps} : any) => {
+const Breadcrum = ({ textProps }: any) => {
     return (
         <nav aria-label="Breadcrumb" className="flex">
             <ol className="flex overflow-hidden rounded-lg border-none text-gray-100">
@@ -36,12 +36,16 @@ const Breadcrum = ({textProps} : any) => {
                         className="absolute inset-y-1 -start-[2px] w-4 bg-black h-8 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180"
                     >
                     </span>
-                    {textProps && <span
-                        className="flex h-10 items-center cursor-default bg-white ps-5 text-xs font-medium transition text-gray-800 hover:text-gray-900"
+                    {textProps && <div
+                        className="flex gap-x-1 h-10 items-center cursor-default bg-none ps-5 text-xs font-medium transition text-gray-800 hover:text-gray-900"
                     >
-                        {textProps}
-                    </span>}
-                    
+                        {
+                            textProps.name_category &&
+                            <Link href={`/products/${textProps?.name_category?._id}`} >{textProps.name_category?.category_name}</Link>
+                        }
+                        /<span>{textProps.name_item}</span>
+                    </div>}
+
                 </li>
             </ol>
         </nav>

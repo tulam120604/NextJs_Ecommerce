@@ -8,12 +8,14 @@ import Infor_seller from './Infor_seller';
 import { getDetail } from '../../_lib/Services_Items/products';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
+import { detail_Categories } from '../../_lib/Services_Items/categories';
 
 const page = async ({ params }: any) => {
   noStore();
   //  const isClient = typeof window !== 'undefined';
   // console.log(isClient);
   const data = await getDetail(params?.detail_product);
+  const data_category = await detail_Categories(data?.category_id)
   // const {data} = await res.json();
   revalidatePath('/products/[detail_product]', 'page');
   // fake data
@@ -32,9 +34,12 @@ const page = async ({ params }: any) => {
             {/* <Link href={'/'} className='hover:text-black'>Trang chủ</Link>/
         <Link href={'/products'} className='hover:text-black'>Sản phẩm</Link>/
         <Link href={'/products'} className='hover:text-black'>Táo</Link> */}
-            <Breadcrum textProps={data?.short_name} />
+            <Breadcrum textProps={{
+              name_item : data?.short_name,
+              name_category : data_category
+            }} />
           </div>
-          <div className="lg:grid lg:grid-cols-[573px_auto] gap-x-20">
+          <div className="lg:grid lg:grid-cols-[573px_auto] gap-x-10 bg-white ">
             {/*  desktop : left  , mobile : row 1 */}
             <Img_Detail_Product dataProps={data} />
             {/*desktop: right, mobile : row 2 */}

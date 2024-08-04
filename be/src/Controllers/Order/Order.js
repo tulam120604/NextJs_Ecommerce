@@ -70,7 +70,7 @@ export async function get_Order_User(req, res) {
     const { user_id } = req.params;
     const {
         _page = 1,
-        _limit = 10,
+        _limit = 3,
         _status_item = ''
     } = req.query;
     try {

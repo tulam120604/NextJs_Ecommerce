@@ -6,7 +6,7 @@ const Related_Product =  async ({dataProps} : any) => {
   noStore();
   const data = await get_item_by_category('',dataProps)
   return (
-    <List_Products data={data}/>
+    <List_Products data={data?.data?.docs}/>
   )
 }
 

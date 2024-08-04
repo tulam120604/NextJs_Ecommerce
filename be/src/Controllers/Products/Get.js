@@ -120,14 +120,13 @@ export async function get_Item_Client(req, res) {
 export async function get_Detail_Client(req, res) {
     try {
         const data = await Products.findById(req.params.id).populate('attributes');
-        if (data.attributes.varriants) {
+        if (data.attributes) {
             data.attributes.varriants = data.attributes.varriants.map(item => {
                 const dataAttr = item.size_item.filter(attr => attr.stock_item > 0)
                 return {
                     ...item,
                     size_item: dataAttr
                 }
-
             })
             await data.save()
         }

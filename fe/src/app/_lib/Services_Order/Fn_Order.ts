@@ -27,11 +27,11 @@ export async function add_order(item: any) {
     }
 };
 
-export async function get_order_user(id_user: any, status_item_order?: string | number) {
+export async function get_order_user(id_user: any,page : number , limit : number, status_item_order?: string | number) {
     try {
-        let uri = `${apiURi}/order/${id_user}`;
+        let uri = `${apiURi}/order/${id_user}?_page=${page}&_limit=${limit}`;
         if (status_item_order) {
-            uri += `?&_status_item=${status_item_order}`
+            uri += `&_status_item=${status_item_order}`
         }
         const res = await fetch(uri);
         if (!res.ok) {

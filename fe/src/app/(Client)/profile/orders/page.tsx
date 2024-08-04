@@ -1,17 +1,25 @@
 'use client'
 
 import { Query_Order } from '@/src/app/_lib/Tanstack_Query/Order/Query_order'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/src/app/Components/ui/Shadcn/button"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import Link from "next/link"
 import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order'
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/Components/ui/alert-dialog'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/Components/ui/Tables/data_table'
+import Paginate_order from './paginate_order'
+import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots'
 
 const Page = () => {
+  const [status_item_order, setStatus_item_order] = useState<number>(0);
+  const searchParams = useSearchParams();
+  let page = 1;
+  if (searchParams.get('_page')) {
+    page = Number(searchParams.get('_page'))
+  }
   const routing = useRouter();
   let user_id: any;
   if (typeof window !== 'undefined') {
@@ -86,30 +94,36 @@ const Page = () => {
       header: " ",
     },
   ]
-
-  let status_item_order : any; 
   function handle_list_item_status(status: any) {
-    status_item_order = status;
+    setStatus_item_order(status);
   }
-  const data = Query_Order(user_id, status_item_order);
+  const data = Query_Order(user_id, page, 10, status_item_order);
 
   return (
-    <div className='w-full relative'>
-      <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-[#F2F7FF] *:border-b-2 *:border-[#F2F7FF] *:whitespace-nowrap'>
-        <button onClick={() => handle_list_item_status('')} className='hover:border-gray-900 !border-gray-900'>Tất cả ({data?.data?.totalItems && data?.data?.totalItems})</button>
-        <button onClick={() => handle_list_item_status(1)} className='hover:border-gray-900'>Chưa xác nhận ({data?.data?.totalItems && data?.data?.totalItems1})</button>
-        <button onClick={() => handle_list_item_status(2)} className='hover:border-gray-900'>Đã xác nhận ({data?.data?.totalItems && data?.data?.totalItems2})</button>
-        <button onClick={() => handle_list_item_status(3)} className='hover:border-gray-900'>Đang chuẩn bị hàng ({data?.data?.totalItems && data?.data?.totalItems3})</button>
-        <button onClick={() => handle_list_item_status(4)} className='hover:border-gray-900'>Đang vận chuyển ({data?.data?.totalItems && data?.data?.totalItems4})</button>
-        <button onClick={() => handle_list_item_status(5)} className='hover:border-gray-900'>Giao thành công ({data?.data?.totalItems && data?.data?.totalItems5})</button>
-        <button onClick={() => handle_list_item_status(6)} className='hover:border-gray-900'>Đã hủy ({data?.data?.totalItems && data?.data?.totalItems6})</button>
+    <div className='w-full relative pb-4'>
+      <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-white *:border-b-2 *:border-white *:whitespace-nowrap'>
+        {
+          Array.from({ length: 7 }, (_: any, i: number) =>
+            <button onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' : 'hover:border-gray-900'}>
+              {
+                i === 0 ? 'Tất cả' : i === 1 ? 'Chưa xác nhận' : i === 2 ? 'Đã xác nhận' : i === 3 ? 'Đang chuẩn bị hàng' : i === 4 ? 'Đang vận chuyển' : i === 5 ?
+                  'Giao thành công' : 'Đã hủy'
+              }
+            </button>
+          )
+        }
       </div>
 
-      <div className='pt-20'>
+      <div className='pt-16 pl-4'>
+        <div className='fixed z-[2] border top-1/2'>
+        </div>
+        {
+        data.isLoading && <div className='mt-20'><Loading_Dots/></div>
+        }
         {
           data ?
             data?.data?.data_order?.docs?.map((item: any) =>
-              <div className='shadow py-2 mb-6 px-4 lg:px-8' key={item?._id}>
+              <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white' key={item?._id}>
                 <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
                 <div className='*:!border-none *:text-gray-900'>
                   <DataTable data={item?.items_order} columns={columns} />
@@ -118,20 +132,25 @@ const Page = () => {
                   {
                     (+item?.status_item_order === 6) ?
                       <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua lại</Button> :
-                      <AlertDialog>
-                        <AlertDialogTrigger className="px-3 py-2 text-sm bg-red-500 hover:bg-red-700 rounded text-white">
-                          Hủy
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Hủy</AlertDialogCancel>
-                            <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id)}>Xác nhận</AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      (+item?.status_item_order === 5) ? (<div className='flex gap-x-4'>
+                        <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua tiếp</Button>
+                        <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Đánh giá</Button>
+                      </div>)
+                        :
+                        <AlertDialog>
+                          <AlertDialogTrigger className="px-3 py-2 text-sm bg-red-500 hover:bg-red-700 rounded text-white">
+                            Hủy
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Hủy</AlertDialogCancel>
+                              <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id)}>Xác nhận</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                   }
                 </div>
               </div>
@@ -145,7 +164,9 @@ const Page = () => {
             </div>
         }
       </div>
-
+      {data?.data?.data_order &&
+        <Paginate_order totalPages={data?.data?.data_order?.totalPages} page={data?.data?.data_order?.page} />
+      }
     </div>)
 }
 

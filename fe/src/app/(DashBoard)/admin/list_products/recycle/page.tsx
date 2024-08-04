@@ -3,7 +3,6 @@
 
 import Link from "next/link"
 import { Suspense, useEffect, useState } from "react";
-import LoadingPage from "@/src/app/Components/Loadings/LoadingPage";
 import { Query_Recycle_Items_Admin } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import Trash_Icon from "@/src/app/Components/Icons/trash";
@@ -13,21 +12,15 @@ import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
+import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
 
 const Page = () => {
-    const [dataToken, set_DataToken] = useState();
+    const token = useToken();
     const [page, setPage] = useState<number>(1);
-    const { data, isLoading } = Query_Recycle_Items_Admin(dataToken, page);
+    const { data, isLoading } = Query_Recycle_Items_Admin(token.accessToken, page);
     const { on_Submit, loading } = Mutation_Items({
         action: 'RESTORE'
     });
-    useEffect(() => {
-        const data_Token = localStorage.getItem('account');
-        if (data_Token) {
-            const token_Account = JSON.parse(data_Token);
-            set_DataToken(token_Account.token)
-        }
-    }, [dataToken]);
     if (isLoading) {
         return <Loading />
     };
@@ -84,7 +77,7 @@ const Page = () => {
     ]
     function handle_Restore(idItem?: string | number) {
         const item = {
-            token: dataToken,
+            token: token.accessToken,
             id_item: idItem
         };
         on_Submit(item);
@@ -96,7 +89,7 @@ const Page = () => {
     }
 
     return (
-        <Suspense fallback={<LoadingPage />}>
+        <Suspense fallback={'Loading...'}>
             <div className="flex flex-col gap-y-6 pb-6 rounded">
                 <div className="flex items-center justify-between gap-x-20 sticky top-0 py-6">
                     <strong className="text-gray-200 lg:text-2xl">Danh sách sản phẩm đã xóa</strong>

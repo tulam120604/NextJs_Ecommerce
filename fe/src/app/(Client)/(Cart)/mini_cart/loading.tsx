@@ -1,8 +1,7 @@
-import LoadingPage from "@/src/app/Components/Loadings/LoadingPage"
 
 const loading = () => {
   return (
-    <LoadingPage/>
+    <span>Loading...</span>
   )
 }
 

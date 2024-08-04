@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const useToken = () => {
+export const useToken = () => {
     const [accessToken, set_AccessToken] = useState();
     const [refeshToken, set_RefeshToken] = useState();
     useEffect(() => {
@@ -17,4 +17,4 @@ const useToken = () => {
     }
 }
 
-export default useToken
+ 

@@ -6,10 +6,13 @@ import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 import { Detail_Item_Dashboard, Query_Category } from "../Tanstack_Query/Items/query";
 import { Mutation_Items } from "../Tanstack_Query/Items/mutationFn";
+import { useToken } from "./User";
 
 
 
 export function Custome_Hooks({ mode }: any) {
+    const token = useToken();
+    console.log(token);
     const { edit_item } = useParams();
     let data_one_item: any;
     if (mode === 'edit' && mode) {

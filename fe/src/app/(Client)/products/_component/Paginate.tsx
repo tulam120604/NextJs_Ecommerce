@@ -1,6 +1,6 @@
 'use client';
 
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from '@/src/app/Components/ui/pagination';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/src/app/Components/ui/pagination';
 import { Button } from '@/src/app/Components/ui/Shadcn/button';
 import { useRouter } from 'next/navigation';
 import React from 'react'
