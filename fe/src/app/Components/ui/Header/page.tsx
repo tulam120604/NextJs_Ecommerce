@@ -78,10 +78,10 @@ const Header = () => {
     }
 
     return (<>
-        <header ref={toggleFixedHeader} className="w-full bg-none z-[4] duration-300 top-0 lg:h-[103px] bg-gray-800 text-white">
+        <header ref={toggleFixedHeader} className="w-full bg-none z-[4] duration-300 top-0 lg:h-[103px] bg-gray-900 text-white">
             {/* top header */}
             <div className="w-full lg:h-[37px] mb:h-[34px] *:text-white flex justify-center items-center *:lg:text-sm *:mb:text-xs gap-x-4">
-                <span className="opacity-75 lg:w-auto mb:w-[266px] mb:truncate">Xin chào đại vương, chúc đại vương có một trải nghiệm thoải mái.</span>
+                <span className="opacity-80 lg:w-auto mb:w-[266px] mb:truncate">Xin chào đại vương, chúc đại vương có một trải nghiệm thoải mái.</span>
             </div>
             {/* logo, search and cart */}
             <div className="mx-auto lg:w-[1440px] md:w-[95vw] w-[342px] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">

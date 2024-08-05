@@ -18,6 +18,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 
 const Cart = () => {
   const routing = useRouter();
+  const [content_note_order, setContent_note_order] = useState<string>('')
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
   let id: any;
   if (typeof window !== 'undefined') {
@@ -62,14 +63,20 @@ const Cart = () => {
     mutate(item);
   }
 
+  // notes_order
+  function handle_notes_order (e : any) {
+    setContent_note_order(e.target.value)
+  }
+
   // total_price
   // next order
-  const data_item_next_order = data?.items.filter((item: any) => (item?.status_checked && item));
+  const data_item_next_order = data?.items?.filter((item: any) => (item?.status_checked && item));
   function handle_next_order() {
     sessionStorage.removeItem('item_order');
     const item_cart_order = {
       ...data,
       items: data_item_next_order,
+      notes_order : content_note_order,
       action : 'cart_item',
     }
     sessionStorage.setItem('item_order', JSON.stringify(item_cart_order));
@@ -79,12 +86,12 @@ const Cart = () => {
   // console.count('re-render : ')
   return (
     <Suspense fallback={<LoadingCart />}>
-      <div className="lg:w-[1170px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[686px_420px] mb:grid-cols-[100%] justify-between *:w-full pb-10">
+      <div className="lg:w-[1440px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[67%_30%] mb:grid-cols-[100%] justify-between pb-10">
         {/* left */}
         <div>
-          <span className="text-xl flex mb-[1px] items-center justify-between pb-6">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base  mb:text-sm">(3)</p></span>
+          <span className="text-xl flex mb-[1px] items-center justify-between pb-6">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base mb:text-sm">(3)</p></span>
           {/* list items */}
-          <Table className="bg-white text-gray-900">
+          <Table className="bg-[#F5F5FA] text-gray-900">
             <TableHeader>
               <TableRow className="*:font-medium border-gray-500 *:text-gray-800 !hover:none">
                 <TableHead>
@@ -180,7 +187,7 @@ const Cart = () => {
                                     </div>
                                   </div>
                                 </TableCell>
-                                <TableCell><span className="md:text-base mb:text-xs text-red-500">{item?.price_item.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
+                                <TableCell><span className="md:text-base mb:text-xs text-red-500">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <div className="w-[80%] flex gap-x-4 items-center justify-around md:py-2 mb:py-1 *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
                                     <Btn_dow id_props={{ item: item?.product_id?._id, id_user: id }} />
@@ -188,7 +195,7 @@ const Cart = () => {
                                     <Btn_up id_props={{ item: item?.product_id?._id, id_user: id, quantity_items_cart: item?.quantity }} />
                                   </div>
                                 </TableCell>
-                                <TableCell ><span className="md:text-base mb:text-xs text-red-500">{(item?.total_price_item).toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
+                                <TableCell ><span className="md:text-base mb:text-xs text-red-500">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <Remove_Item_Cart id_props={{ item: item?.product_id?._id, id_user: id }} />
                                 </TableCell>
@@ -211,7 +218,7 @@ const Cart = () => {
             <div className="flex flex-col gap-y-4">
               <section className="flex justify-between text-sm">
                 <span className="text-[#9D9EA2]">Tạm tính </span>
-                <p className='text-red-600'>{data?.total_price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
+                <p className='text-red-600'>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
               </section>
               <section className="flex justify-between text-sm">
                 <span className="text-[#9D9EA2]">Giảm giá </span>
@@ -229,11 +236,11 @@ const Cart = () => {
               <button type='button' className="font-medium border border-black hover:bg-black hover:text-white duration-200 whitespace-nowrap text-sm rounded-[100px] px-5 py-2">Mã Voucher</button>
             </div>
             {/* *** */}
-            <textarea name="" id="" className='border rounded p-2 outline-none text-light text-sm' placeholder='ghi chú của bạn (nếu có)'></textarea>
+            <textarea onBlur={(e) => handle_notes_order(e)} name="" id="" className='border rounded p-2 outline-none text-light text-sm' placeholder='ghi chú của bạn (nếu có)'></textarea>
             <button onClick={handle_next_order} type='button' className="bg-black hover:bg-white hover:text-black border border-black duration-300 px-10 h-14 rounded-[100px] text-white flex my-[13px] gap-x-4 place-items-center justify-center">
               <span>Thanh toán</span>
               |
-              <span>{data?.total_price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+              <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
             </button>
             {/* payment */}
             <div className="flex flex-col gap-y-4 border-t mt-[3px] pt-[22px]">
@@ -254,7 +261,7 @@ const Cart = () => {
             <div className="flex flex-col gap-y-4">
               <section className="flex justify-between text-sm">
                 <span className="text-[#9D9EA2]">Tạm tính </span>
-                <p className='text-red-600'>{data?.total_price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
+                <p className='text-red-600'>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
               </section>
               <section className="flex justify-between text-sm">
                 <span className="text-[#9D9EA2]">Giảm giá </span>
@@ -275,7 +282,7 @@ const Cart = () => {
             <button onClick={handle_next_order} type='button' className="bg-black hover:bg-white hover:text-black border border-black duration-300 px-10 h-14 rounded-[100px] text-white flex my-[13px] gap-x-4 place-items-center justify-center">
               <span>Thanh toán</span>
               |
-              <span>{data?.total_price.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+              <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
             </button>
             {/* check out */}
             <div className="flex flex-col gap-y-4 border-t mt-[3px] pt-[22px]">

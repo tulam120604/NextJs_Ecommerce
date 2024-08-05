@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { Mutation_Category } from '../../_lib/Tanstack_Query/Items/mutation_category';
 import { Button } from '../ui/Shadcn/button';
-import Loading_animation from '../Loadings/Loading_animation';
 import Image from 'next/image';
+import Loading_Dots from '../Loadings/Loading_Dots';
 
 const Form_category = () => {
     const mutate_category = Mutation_Category('ADD');
@@ -42,7 +42,7 @@ const Form_category = () => {
                 </div>
             </div>
             {mutate_category.status_category === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}
-            <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 active:bg-yellow-500' : 'bg-indigo-600'}`}>{mode ? "Cập nhật" : "Thêm"} {mutate_category.isLoading && <Loading_animation />}</Button>
+            <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 active:bg-yellow-500' : 'bg-indigo-600'}`}>{mode ? "Cập nhật" : "Thêm"} {mutate_category.isLoading && <Loading_Dots />}</Button>
         </form>
     )
 }

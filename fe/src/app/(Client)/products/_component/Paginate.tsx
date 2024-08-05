@@ -15,13 +15,13 @@ const Paginate_item = ({ totalPages, page }: any) => {
                     routing.push(`?_page=${pre}`);
                 }
                 return;
-            case 'next' : 
-            if (page <= totalPages) {
-                const pre = page + 1
-                routing.push(`?_page=${pre}`);
-            }
-            return;
-            default : return;
+            case 'next':
+                if (page <= totalPages) {
+                    const pre = page + 1
+                    routing.push(`?_page=${pre}`);
+                }
+                return;
+            default: return;
         }
 
     }
@@ -30,22 +30,26 @@ const Paginate_item = ({ totalPages, page }: any) => {
     }
     return (
         <Pagination>
-            <PaginationContent>
-                <Button className={`${page === 1 && 'cursor-not-allowed'} bg-white hover:bg-[#F1F5F9] text-gray-800`} onClick={() => handlePage('pre')} >&#10094;</Button>
-                {
-                    Array.from({ length: totalPages }, (_: any, i) =>
-                        <PaginationItem className='cursor-pointer' key={i}>
-                            <PaginationLink className={`${i + 1 === page && 'border border-gray-400'}`} onClick={() => changePage(i + 1)}>
-                                {i + 1}
-                            </PaginationLink>
-                        </PaginationItem>
-                    )
-                }
-                {/* <PaginationItem>
+            {
+                totalPages > 1 &&
+                <PaginationContent>
+                    <Button className={`${page === 1 && 'cursor-not-allowed'} bg-white hover:bg-[#F1F5F9] text-gray-800`} onClick={() => handlePage('pre')} >&#10094;</Button>
+                    {
+                        Array.from({ length: totalPages }, (_: any, i) =>
+                            <PaginationItem className='cursor-pointer' key={i}>
+                                <PaginationLink className={`${i + 1 === page && 'border border-gray-400'}`} onClick={() => changePage(i + 1)}>
+                                    {i + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                        )
+                    }
+                    {/* <PaginationItem>
                     <PaginationEllipsis />
                 </PaginationItem> */}
-                <Button className={`${page === totalPages && 'cursor-not-allowed'} bg-white hover:bg-[#F1F5F9] text-gray-800`} onClick={() => handlePage('next')} >&#10095;</Button>
-            </PaginationContent>
+                    <Button className={`${page === totalPages && 'cursor-not-allowed'} bg-white hover:bg-[#F1F5F9] text-gray-800`} onClick={() => handlePage('next')} >&#10095;</Button>
+                </PaginationContent>
+            }
+
         </Pagination>
     )
 }

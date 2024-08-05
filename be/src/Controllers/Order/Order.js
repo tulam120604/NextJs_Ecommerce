@@ -7,7 +7,7 @@ import Attribute from '../../Model/Products/Attribute';
 
 
 export async function create_Order(req, res) {
-    const { user_id, items_order, infor_user } = req.body;
+    const { user_id, items_order, infor_user,notes_order, action_order } = req.body;
     try {
         const check_user = await Account.findById(user_id);
         if (!check_user) {
@@ -15,7 +15,7 @@ export async function create_Order(req, res) {
                 message: 'No user!'
             })
         };
-        const data_order = await Orders.create({ user_id, items_order, infor_user });
+        const data_order = await Orders.create({ user_id, items_order, infor_user, notes_order });
         for (let i of items_order) {
             if (i.product_id.attributes) {
                 const data_attr = await Attribute.find({ id_item: i.product_id._id });
@@ -43,21 +43,23 @@ export async function create_Order(req, res) {
                     await a.save();
                 }
             }
-        }
-        const data_cart = await Carts.findOne({ user_id: user_id });
-        data_cart.items = data_cart.items.filter((i) => {
-            return !items_order.some((j) => {
-                const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
-                const check_Color = i.color_item ? i.color_item === j.color_item : true;
-                const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
-                return check_Product_Id && check_Color && check_Size
+        };
+        if (action_order === 'cart_item') {
+            const data_cart = await Carts.findOne({ user_id: user_id });
+            data_cart.items = data_cart.items.filter((i) => {
+                return !items_order.some((j) => {
+                    const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
+                    const check_Color = i.color_item ? i.color_item === j.color_item : true;
+                    const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
+                    return check_Product_Id && check_Color && check_Size
+                });
             });
-        });
-        const cart_item = await data_cart.save();
+            await data_cart.save();
+        }
+
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
             data_order,
-            cart_item,
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

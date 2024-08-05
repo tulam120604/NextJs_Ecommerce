@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 
-const Comments_Schema = new mongoose.Schema({
+const Feedback_Schema = new mongoose.Schema({
     user_id : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Account',
@@ -14,10 +14,10 @@ const Comments_Schema = new mongoose.Schema({
     content  : {
         type : String,
         minLength : 3,
-        maxLength: 2500,
+        maxLength: 50000,
     }
 }, {timestamps : true, versionKey : false});
 
-Comments_Schema.plugin(mongoosePaginate);
+Feedback_Schema.plugin(mongoosePaginate);
 
-export default mongoose.model("Comment", Comments_Schema);
+export default mongoose.model("Feedback", Feedback_Schema);

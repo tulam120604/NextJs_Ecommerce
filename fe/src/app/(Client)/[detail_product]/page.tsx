@@ -39,17 +39,19 @@ const page = async ({ params }: any) => {
               name_category : data_category
             }} />
           </div>
-          <div className="lg:grid lg:grid-cols-[573px_auto] gap-x-10 bg-white ">
+          <div className="lg:grid lg:grid-cols-[573px_auto] gap-x-10 bg-white pb-4">
             {/*  desktop : left  , mobile : row 1 */}
             <Img_Detail_Product dataProps={data} />
             {/*desktop: right, mobile : row 2 */}
+            <div>
             <Infor_Detail_Product dataProps={data} />
+            </div>
           </div>
           <Infor_seller />
           {/* related products */}
           <Description dataProps={data} />
           <div className="pt-4">
-            <span className="lg:text-2xl text-xl lg:tracking-[-0.5px]">Sản phẩm liên quan</span>
+            <span className="lg:text-2xl text-xl mb-2">Sản phẩm liên quan</span>
             <Related_Product dataProps={data?.category_id}/>
           </div>
         </>)}

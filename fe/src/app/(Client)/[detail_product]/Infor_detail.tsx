@@ -5,7 +5,7 @@ const Infor_Detail_Product = ({ dataProps }: any) => {
   // const isClient = typeof window !== 'undefined';
   // console.log(isClient);
   return (
-    <div className="h-full w-full *:w-full lg:mt-0 mb:mt-[42px] bg-white px-10 pt-2 pb-10 rounded h-auto">
+    <div className="w-full *:w-full lg:mt-0 mb:mt-[42px] bg-white px-10 py-2 rounded">
       <div className="flex flex-col gap-y-2 lg:gap-y-6">
         {/* row 1 */}
         <div className="flex flex-col lg:gap-y-4 gap-y-2 ">

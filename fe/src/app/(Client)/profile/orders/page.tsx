@@ -10,7 +10,7 @@ import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_ord
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/Components/ui/alert-dialog'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/Components/ui/Tables/data_table'
-import Paginate_order from './paginate_order'
+import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots'
 
 const Page = () => {
@@ -78,6 +78,12 @@ const Page = () => {
               (row?.original?.color_item || row?.original?.size_attribute_item) &&
               <span className="text-sm">Phân loại : {row?.original?.color_item} - {row?.original?.size_attribute_item}</span>
             }
+            {
+              status_item_order === 5 &&
+              <div>
+                <Link href={`/profile/orders/feedback/${row?.original?._id}`} className="px-3 py-1.5 hover:bg-green-700 duration-200 bg-green-600 text-sm rounded text-white">Đánh giá</Link>
+              </div>
+            }
           </div>
         </Link>
       ),
@@ -85,9 +91,9 @@ const Page = () => {
     },
     {
       cell: ({ row }) => (
-        <div className="flex flex-col gap-y-2">
+        <div className="flex flex-col gap-y-2 text-end">
           <span className="text-red-600">{row?.original?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-          <div className="text-center">X {row?.original?.quantity}</div>
+          <div>X {row?.original?.quantity}</div>
           <span className="text-red-600">{row?.original?.total_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
         </div>
       ),
@@ -98,13 +104,12 @@ const Page = () => {
     setStatus_item_order(status);
   }
   const data = Query_Order(user_id, page, 10, status_item_order);
-
   return (
     <div className='w-full relative pb-4'>
       <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-white *:border-b-2 *:border-white *:whitespace-nowrap'>
         {
           Array.from({ length: 7 }, (_: any, i: number) =>
-            <button onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' : 'hover:border-gray-900'}>
+            <button key={i} onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' : 'hover:border-gray-900'}>
               {
                 i === 0 ? 'Tất cả' : i === 1 ? 'Chưa xác nhận' : i === 2 ? 'Đã xác nhận' : i === 3 ? 'Đang chuẩn bị hàng' : i === 4 ? 'Đang vận chuyển' : i === 5 ?
                   'Giao thành công' : 'Đã hủy'
@@ -118,10 +123,11 @@ const Page = () => {
         <div className='fixed z-[2] border top-1/2'>
         </div>
         {
-        data.isLoading && <div className='mt-20'><Loading_Dots/></div>
+          data.isLoading && <div className='mt-20'><Loading_Dots /></div>
         }
         {
-          data ?
+          data?.data?.data_order &&
+            data?.data?.data_order?.docs.length > 0 ?
             data?.data?.data_order?.docs?.map((item: any) =>
               <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white' key={item?._id}>
                 <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
@@ -134,14 +140,13 @@ const Page = () => {
                       <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua lại</Button> :
                       (+item?.status_item_order === 5) ? (<div className='flex gap-x-4'>
                         <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua tiếp</Button>
-                        <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Đánh giá</Button>
                       </div>)
                         :
                         <AlertDialog>
-                          <AlertDialogTrigger className="px-3 py-2 text-sm bg-red-500 hover:bg-red-700 rounded text-white">
+                          <AlertDialogTrigger className="px-3 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
                             Hủy
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent>z
                             <AlertDialogHeader>
                               <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
                             </AlertDialogHeader>
@@ -159,7 +164,7 @@ const Page = () => {
             <div className='grid place-items-center translate-y-full'>
               <div className='flex flex-col items-center gap-y-6'>
                 <Image width={100} height={100} src='/Images/document_icon.png' alt=''></Image>
-                <span className='flex items-center'>Chưa có đơn hàng nào! <Link className='underline' href={'/shops'}>Đi mua ngay</Link></span>
+                <span className='flex items-center'>Chưa có đơn hàng nào! <Link className='underline' href={'/products'}>Đi mua ngay</Link></span>
               </div>
             </div>
         }

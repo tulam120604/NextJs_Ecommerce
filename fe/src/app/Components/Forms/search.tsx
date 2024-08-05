@@ -42,7 +42,7 @@ export function Search_Component_Client() {
 
   return (<div className="relative">
     <form className={`relative w-full *:h-[36px] gap-x-2 shadow-2xl duration-300`}>
-      <input type="text" className="border rounded-lg w-full px-5 text-sm outline-none font-normal text-gray-700" placeholder="Đại vương muốn mua gì nào?"
+      <input type="text" className="border rounded-lg w-full px-5 text-sm outline-none text-gray-700" placeholder="Đại vương tìm gì?"
         onChange={(e) => setKey_search(e.target.value)} />
       <button type='submit' className="absolute top-0 right-[2%] rounded-[50%] duration-300 cursor-pointer text-gray-800">
         <Search />

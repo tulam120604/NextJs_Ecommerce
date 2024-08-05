@@ -4,8 +4,8 @@
 import Link from 'next/link';
 import React from 'react'
 import { Custome_Hooks_Auth } from '../../_lib/Custome_Hooks/Auth_Form';
-import Loading_animation from '../Loadings/Loading_animation';
 import Swal from 'sweetalert2';
+import Loading_Dots from '../Loadings/Loading_Dots';
 
 const Form_auth = ({ mode }: any) => {
     // console.log(mode);
@@ -103,7 +103,7 @@ const Form_auth = ({ mode }: any) => {
                         {mode === 'Register' ? <div>
                             {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm text-red-500'>* Tài khoản đã đã tồn tại! *</span>}
                             <button className="w-full grid place-items-center h-14 mb-5 text-sm font-bold leading-none text-white transition duration-300 bg-gray-900 hover:bg-gray-700 rounded-lg">
-                                {isLoading ? <Loading_animation /> : 'Tạo tài khoản'}
+                                {isLoading ? <Loading_Dots /> : 'Tạo tài khoản'}
                             </button>
                             <div className="flex items-center mb-3">
                                 <hr className="flex-grow border-gray-300" />
@@ -139,7 +139,7 @@ const Form_auth = ({ mode }: any) => {
                                 </div>
                                 {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm text-red-500 my-4'>* Thông tin tài khoản không chính xác! *</span>}
                                 <button className="w-full grid place-items-center h-14 mb-5 text-sm font-bold leading-none text-white transition duration-300 bg-gray-900 hover:bg-gray-700 rounded-lg">
-                                    {isLoading ? <Loading_animation /> : 'Đăng nhập'}
+                                    {isLoading ? <Loading_Dots /> : 'Đăng nhập'}
                                 </button>
                                 <div className="flex items-center mb-3">
                                     <hr className="flex-grow border-gray-300" />

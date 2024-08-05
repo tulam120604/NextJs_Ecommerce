@@ -11,12 +11,26 @@ const Order_Schema = new mongoose.Schema({
         auto: true,
         unique: true,
     },
-    items_order: [],
+    items_order: [
+        {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                auto: true
+            },
+            product_id: Object,
+            color_item: String,
+            quantity: Number,
+            size_attribute_item: String,
+            price_item: Number,
+            total_price_item: Number,
+        }
+
+    ],
     infor_user: {
-        name_user : {
-            type : String,
-            trim : true,
-            minleng : 2,
+        name_user: {
+            type: String,
+            trim: true,
+            minleng: 2,
         },
         address: {
             type: String,
@@ -34,6 +48,7 @@ const Order_Schema = new mongoose.Schema({
             trim: true
         },
     },
+    notes_order: String,
     status_item_order: {
         type: String,
         enum: ['1', '2', '3', '4', '5', '6'],

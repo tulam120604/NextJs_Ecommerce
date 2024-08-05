@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { Mutation_Cart } from "../../_lib/Tanstack_Query/Cart/mutation_Cart";
-import { Minus_Icon, Plus_Icon } from "../../Components/Icons/calculator";
+import { Minus, Plus } from "lucide-react";
 
 
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
@@ -35,34 +35,28 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
       setQuantity_attributes(data_Item_Detail?.stock);
     }
   }, []);
-  function dow() {
-    if (quantity > 1) {
-      set_quantity(quantity - 1);
+
+  // up, dow quantity
+  function change_options_quantity (action : string) {
+    switch (action) {
+      case  'dow':
+        if (quantity > 1) {
+          set_quantity(quantity - 1);
+        }
+        return; 
+      case 'up':
+        if (!quantity_attributes) {
+          validate_message()
+        }
+        else {
+          change_quantity()
+        }
+        return;
+        default : return
     }
   }
-  function up() {
-    if (varriants_attribute) {
-      check_varriant()
-    }
-    else {
-      change_quantity()
-    }
-  };
 
   // validate attribute
-  function check_varriant() {
-    for (let k of varriants_attribute) {
-      for (let x of k.size_item) {
-        if (k.color_item && (x.name_size !== '')) {
-          (color && name_size) ? change_quantity() : validate_message()
-        }
-        else if (k.color_item) {
-          (color) ? change_quantity() : validate_message()
-        }
-      }
-    }
-  }
-  // --
   function validate_message() {
     ref_validate_attribute.current?.classList.add('block');
     ref_validate_attribute.current?.classList.remove('hidden');
@@ -89,6 +83,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   function handle_attributes(action: any, item: any) {
     switch (action) {
       case 'Color':
+        setName_size('');
         set_quantity(1);
         varriants_attribute.filter((attr: any) => {
           ref_validate_attribute.current?.classList.remove('block');
@@ -286,17 +281,20 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     <div className={data_Item_Detail?.attribute?.varriants && "relative top-3"}>
       <div className="my-5 flex lg:flex-row mb:flex-col lg:gap-y-0 gap-y-[17px] gap-x-8 lg:items-center mb:items-start">
         {/* up , dow quantity */}
-        <div className="border lg:py-2.5 lg:pr-6  mb:py-1 mb:pl-2 mb:pr-[18px] *:text-xs flex items-center gap-x-3 rounded">
-          <div className="flex items-center *:w-9 *:h-9 gap-x-1 *:grid *:place-items-center">
-            <button onClick={dow}>
-              <Minus_Icon />
+        <div className="border lg:py-2.5 mb:py-1 mb:px-2 *:text-xs flex items-center gap-x-3 rounded">
+          <div className="flex items-center *:w-9 *:h-9 gap-x-3 *:grid *:place-items-center">
+            <button className="hover:*:bg-gray-100 *:rounded" onClick={() => change_options_quantity('dow')}>
+              <Minus className="w-5"/>
             </button>
-            <div className="bg-[#F4F4F4]">{quantity}</div>
-            <button onClick={up}>
-              <Plus_Icon />
+            <div className="bg-[#F4F4F4] rounded">{quantity}</div>
+            <button className="hover:*:bg-gray-100 *:rounded" onClick={() => change_options_quantity('up')}>
+              <Plus className="w-5"/>
             </button>
           </div>
-          <span className="lg:tracking-[0.5px] border-l pl-4 border-black">Còn lại {quantity_attributes} sản phẩm</span>
+          {
+            quantity_attributes &&
+            <span className="lg:tracking-[0.5px] border-l pl-4 border-black">Còn lại {quantity_attributes} sản phẩm</span>
+          }
         </div>
       </div>
       <div className="flex items-center font-medium lg:text-2xl lg:font-normal mb:text-base flex items-center lg:gap-x-3 my-4 mb:gap-x-2">
@@ -305,12 +303,12 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
       </div>
       {/* add cart */}
       <div className="flex items-center gap-x-5 mt-4 font-medium lg:text-base mb:text-sm *:duration-300">
-        <button onClick={add_To_Cart} className="bg-black hover:bg-white hover:text-black border border-black duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
+        <button onClick={add_To_Cart} className="bg-gray-900 hover:bg-white hover:text-black border border-black duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
           Thêm vào giỏ
         </button>
         {/* <Btn_Add_Cart data_Btn={{ id_item: data_Item_Detail?.id_item, color_item: color, size_attribute_item: sizePropsCart, quantity_item_add: quantity, data_attribute: varriants_attribute }} /> */}
         {/* add cart */}
-        <button onClick={next_order} className="bg-black hover:bg-white hover:text-black border border-black duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
+        <button onClick={next_order} className="bg-gray-900 hover:bg-white hover:text-black border border-black duration-200 lg:w-[128px] lg:h-[40px] w-[100px] h-[30px] grid place-items-center rounded-md text-xs lg:text-sm text-white">
           Thanh toán
         </button>
       </div>
