@@ -1,6 +1,6 @@
 import List_Products from "@/src/app/Components/Products/List_Products";
 import { unstable_noStore as noStore } from "next/cache";
-import { get_item_by_category } from "../../_lib/Services_Items/products";
+import { get_item_by_category } from "../../_lib/Services/Services_Items/products";
 
 const Related_Product =  async ({dataProps} : any) => {
   noStore();

@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import LoadingShops from './loading';
 import { unstable_noStore as noStore } from 'next/cache';
-import { get_item_by_category } from '@/src/app/_lib/Services_Items/products';
-import { detail_Categories } from '@/src/app/_lib/Services_Items/categories';
+import { get_item_by_category } from '@/src/app/_lib/Services/Services_Items/products';
+import { detail_Categories } from '@/src/app/_lib/Services/Services_Items/categories';
 import Render_Products from '../_component/Render_Products';
 
 const Page = async ({ params }: any) => {

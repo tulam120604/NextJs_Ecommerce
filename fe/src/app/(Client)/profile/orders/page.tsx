@@ -70,10 +70,12 @@ const Page = () => {
   const columns: ColumnDef<any>[] = [
     {
       cell: ({ row }) => (
-        <Link href={'/' + row?.original?.product_id?._id} className="flex gap-x-4 lg:gap-x-8">
-          <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+        <div className="flex gap-x-4 lg:gap-x-8">
+          <Link href={'/' + row?.original?.product_id?._id}>
+            <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+          </Link>
           <div className="w-full flex flex-col gap-y-3">
-            <span className="line-clamp-2">{row?.original?.product_id?.short_name}</span>
+            <Link href={'/' + row?.original?.product_id?._id} className="line-clamp-2">{row?.original?.product_id?.short_name}</Link>
             {
               (row?.original?.color_item || row?.original?.size_attribute_item) &&
               <span className="text-sm">Phân loại : {row?.original?.color_item} - {row?.original?.size_attribute_item}</span>
@@ -81,11 +83,11 @@ const Page = () => {
             {
               status_item_order === 5 &&
               <div>
-                <Link href={`/profile/orders/feedback/${row?.original?._id}`} className="px-3 py-1.5 hover:bg-green-700 duration-200 bg-green-600 text-sm rounded text-white">Đánh giá</Link>
+                <Button onClick={() => routing.push(`/profile/feedback?_rating=${row?.original?._id}`)} className="px-3 py-1.5 hover:bg-green-700 duration-200 bg-green-600 text-sm rounded text-white">Đánh giá</Button>
               </div>
             }
           </div>
-        </Link>
+        </div>
       ),
       header: " ",
     },

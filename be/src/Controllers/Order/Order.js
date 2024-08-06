@@ -198,3 +198,22 @@ export async function restore_buy_item_order(req, res) {
         })
     }
 }
+
+
+export async function get_item_order(req, res) {
+    try {
+        const id_item_order = req.params.id_item;
+        const data_item_orders = await Orders.findOne({
+            "items_order._id" : id_item_order
+        });
+        const data_item = data_item_orders.items_order.filter(item => item._id.toString() === id_item_order.toString());
+        return res.status(StatusCodes.OK).json({
+            message : 'OK',
+            data_item
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Loi server !'
+        })
+    }
+}

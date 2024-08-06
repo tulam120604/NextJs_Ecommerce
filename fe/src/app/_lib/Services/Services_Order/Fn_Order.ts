@@ -27,7 +27,7 @@ export async function add_order(item: any) {
     }
 };
 
-export async function get_order_user(id_user: any,page : number , limit : number, status_item_order?: string | number) {
+export async function get_order_user(id_user: any, page: number, limit: number, status_item_order?: string | number) {
     try {
         let uri = `${apiURi}/order/${id_user}?_page=${page}&_limit=${limit}`;
         if (status_item_order) {
@@ -48,11 +48,11 @@ export async function get_all_order(accessToken: any) {
     try {
         if (accessToken) {
             const res = await fetch(`${apiURi}/list_orders`, {
-                method : 'get',
-                headers : {
-                    'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${accessToken}`,
-                } 
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                }
             });
             if (!res.ok) {
                 toast.error('Lỗi, vui lòng kiếm tra lại!', { autoClose: 500 });
@@ -114,6 +114,20 @@ export async function restore_buy_order(dataClient: any) {
         }
         await res.json();
         return res
+    } catch (error) {
+        return error || 'Lỗi rồi đại vương ơi!';
+    }
+}
+
+export async function get_item_order(id_item: string | number) {
+    try {
+        const res = await fetch (`${apiURi}/order/feedback/${id_item}`);
+        if (!res.ok){
+            toast.error('Có lỗi xảy ra, vui lòng kiểm tra lại!', { autoClose: 500 });
+            return res
+        };
+        const data = await res.json();
+        return data
     } catch (error) {
         return error || 'Lỗi rồi đại vương ơi!';
     }

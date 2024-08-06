@@ -3,7 +3,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { add_Categories } from "../../Services_Items/categories";
+import { add_Categories } from "../../Services/Services_Items/categories";
 import { useState } from "react";
 
 

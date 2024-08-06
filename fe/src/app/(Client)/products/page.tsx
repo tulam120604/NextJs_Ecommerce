@@ -1,14 +1,11 @@
 import { Suspense } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import Render_Products from './_component/Render_Products';
-import { getLimit_and_paginate } from '../../_lib/Services_Items/products';
+import { getLimit_and_paginate } from '../../_lib/Services/Services_Items/products';
 import LoadingShops from './_component/loading';
 
 const Products = async ({searchParams} : any) => {
-  let page = 1;
-  if (searchParams._page){
-    page = searchParams._page
-  }
+  let page = searchParams._page ?? 1;
   noStore();
   const data = await getLimit_and_paginate(page, 30);
   //  const isClient = typeof window !== 'undefined';

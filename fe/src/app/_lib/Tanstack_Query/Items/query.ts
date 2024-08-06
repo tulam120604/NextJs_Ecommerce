@@ -1,7 +1,7 @@
 'use client';
 
-import { getDetailDashboard, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services_Items/products";
-import { detail_Categories, list_Categories } from "../../Services_Items/categories";
+import { getDetailDashboard, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services/Services_Items/products";
+import { detail_Categories, list_Categories } from "../../Services/Services_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
 

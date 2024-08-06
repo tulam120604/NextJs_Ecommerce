@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { search_item } from "../../_lib/Services_Items/products";
+import { search_item } from "../../_lib/Services/Services_Items/products";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";

@@ -18,11 +18,8 @@ import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 
 const Page = () => {
   const token = useToken();
-  let page = 1;
   const searchParams = useSearchParams();
-  if (searchParams.get('_page')) {
-    page = Number(searchParams.get('_page'))
-  }
+  let page = Number(searchParams.get('_page')) ?? 1;
   const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
@@ -93,7 +90,7 @@ const Page = () => {
         </Link>
         <AlertDialog>
           <AlertDialogTrigger>
-          <Trash2 className="text-red-600 w-5 h-5"/>
+            <Trash2 className="text-red-600 w-5 h-5" />
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -116,13 +113,13 @@ const Page = () => {
   function handle_Remove(idItem?: string | number) {
     const item = {
       accessToken: token,
-      refeshToken : token,
+      refeshToken: token,
       id_item: idItem
     }
     on_Submit(item);
   }
   return (
-    <Suspense fallback={<Loading_Dots/>}>
+    <Suspense fallback={<Loading_Dots />}>
       <div className=" flex flex-col gap-y-6 py-6 rounded">
         <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
         {/* {(Array.isArray(data)) ? (<> */}
@@ -131,18 +128,18 @@ const Page = () => {
             <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/admin/list_products/add_item'}>Thêm sản phẩm +</Link>
           </div>
           <Link href={'/admin/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
-            <Trash2 className="text-red-600"/>
+            <Trash2 className="text-red-600" />
             {/* <span className="absolute font-semibold !w-[18px] grid place-items-center bg-white text-black !h-[20px] rounded-xl text-xs -top-[10%] -right-[15%]">1</span> */}
           </Link>
         </div>
         {
           data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
-          data?.data ? (<>
-            {isLoading ? <Loading_Dots/> :
-              <DataTable columns={columns} data={data?.data?.docs} />
-            }
-          </>)
-            : <span className="text-gray-200">Không có dữ liệu</span>
+            data?.data ? (<>
+              {isLoading ? <Loading_Dots /> :
+                <DataTable columns={columns} data={data?.data?.docs} />
+              }
+            </>)
+              : <span className="text-gray-200">Không có dữ liệu</span>
         }
         <div className="text-gray-100">
           <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />

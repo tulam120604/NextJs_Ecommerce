@@ -1,6 +1,6 @@
 'use client';
 
-import { addItem, edit_items_admin, removeItem, restore_items_admin } from "../../Services_Items/products";
+import { addItem, edit_items_admin, removeItem, restore_items_admin } from "../../Services/Services_Items/products";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

@@ -5,10 +5,10 @@ import Breadcrum from '@/src/app/Components/breadcrum/breadcrum';
 import { revalidatePath } from 'next/cache';
 import Description from './Description';
 import Infor_seller from './Infor_seller';
-import { getDetail } from '../../_lib/Services_Items/products';
+import { getDetail } from '../../_lib/Services/Services_Items/products';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
-import { detail_Categories } from '../../_lib/Services_Items/categories';
+import { detail_Categories } from '../../_lib/Services/Services_Items/categories';
 
 const page = async ({ params }: any) => {
   noStore();

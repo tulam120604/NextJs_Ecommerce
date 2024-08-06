@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
-import { create_Account, sign_In } from "../../Services_Auth/Authen";
+import { create_Account, sign_In } from "../../Services/Services_Auth/Authen";
 
 
 type Actions = "LOGIN" | "REGISTER";
