@@ -24,7 +24,7 @@ const Page = () => {
     <div className="w-full px-6 py-4">
       <div className='flex items-center justify-between'>
         <span className='lg:text-2xl text-xl'>Hồ sơ của tôi</span>
-        <Link className='text-sm underline' href={'/admin/dashboard'}>Đăng kí bán hàng</Link>
+        <Link className='text-sm underline' href={'/profile/create_saller'}>Đăng kí bán hàng</Link>
       </div>
       <table className='lg:w-[50%] w-[80%] mx-auto'>
         <tbody>

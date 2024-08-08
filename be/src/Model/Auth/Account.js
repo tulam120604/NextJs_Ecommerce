@@ -21,7 +21,7 @@ const schema_Auth = new mongoose.Schema({
     },
     role: {
         type : String,
-        enum : ['admin_global', 'admin_local', 'user'],
+        enum : ['admin_global', 'admin_local', 'seller', 'user'],
         default : 'user',
     }
 },  

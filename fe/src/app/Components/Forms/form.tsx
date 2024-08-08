@@ -65,16 +65,6 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         }])
     }
 
-    function add_Size_Attribute(i: any) {
-        setStock_quantity(false);
-        const add_size_attribute = [...attributes];
-        add_size_attribute[i].size_item.push({
-            name_size: '',
-            stock_item: '',
-        })
-        setAttribute(add_size_attribute)
-    }
-
     function remove_Attribute(index: number) {
         const updatedAttributes = [...attributes];
         updatedAttributes.splice(index, 1);
@@ -84,6 +74,16 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         } else {
             setStock_quantity(false);
         }
+    }
+    // child option
+    function add_Size_Attribute(i: any) {
+        setStock_quantity(false);
+        const add_size_attribute = [...attributes];
+        add_size_attribute[i].size_item.push({
+            name_size: '',
+            stock_item: '',
+        })
+        setAttribute(add_size_attribute)
     }
 
     function remove_size_Attribute(index: number) {
@@ -178,18 +178,17 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                         className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Mô tả sản phẩm ...' />
                 </div>
                 <div className='flex flex-col text-gray-200 gap-y-3'>
-                    <label>Thuộc tính sản phẩm (nếu có):</label>
+                    <label>Options sản phẩm (nếu có):</label>
                     {attributes?.map((item: any, i: any) => (<>
-                        <div key={i} className='flex item-center gap-x-4 w-full text-sm'>
+                        <div key={i} className='flex item-center gap-4 w-full text-sm flex-wrap'>
                             <input
                                 type="text"
                                 {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
                                 defaultValue={item?.color_item}
-                                className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
                                 placeholder={`Thông số ${i + 1} (nếu có)...`} key={i}
                             />
-                            <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
-                            <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
+                            <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm</Button>
                         </div>
                         {item?.size_item?.map((e: any, j: any) => (
                             <div key={i} className='flex item-center gap-x-4 text-sm'>
@@ -197,28 +196,35 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                     type="text"
                                     defaultValue={e?.name_size}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
-                                    className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
                                     placeholder={`Thông số ${i + 2} (nếu có)...`}
                                 />
                                 <input
                                     type="text"
                                     defaultValue={e?.stock_item}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].stock_item`, { required: true })}
-                                    className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
                                     placeholder='Số lượng (bắt buộc)...'
                                 />
                                 <input
                                     type="text"
                                     defaultValue={e?.price_attribute}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].price_attribute`, { required: true })}
-                                    className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
                                     placeholder='Giá (bắt buộc)...'
                                 />
+                                {
+                                    item?.size_item?.length > 1 &&
+                                    <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 bg-red-600 hover:bg-red-800 duration-200'>Xóa</Button>
+                                }
                             </div>
                         ))}
-                        <Button type='button' onClick={() => remove_Attribute(i)} className='w-20 hover:scale-105 duration-200'>Xóa</Button>
+
+                        <Button type='button' onClick={() => remove_Attribute(i)} className='w-24 bg-red-600 hover:bg-red-800 duration-200'>Xóa options</Button>
                     </>))}
-                    <Button type='button' onClick={add_Attribute} className='w-20 hover:scale-105 duration-200'>Thêm</Button>
+                    <div>
+                        <Button type='button' onClick={add_Attribute} className='px-4 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm options</Button>
+                    </div>
                 </div>
                 {stock_quantity && <div className='text-white flex flex-col gap-y-3'>
                     <label>Số lượng :</label>
@@ -236,7 +242,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 </div>
                 {loading === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}
                 <div className='w-full'>
-                    <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 active:bg-yellow-500' : 'bg-indigo-600'}`}>{mode ? "Cập nhật" : "Thêm"}</Button>
+                    <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 hover:bg-yellow-800' : 'bg-indigo-600 hover:bg-indigo-800'}`}>{mode ? "Cập nhật sản phẩm" : "Tạo sản phẩm"}</Button>
                 </div>
             </form>
         </section>

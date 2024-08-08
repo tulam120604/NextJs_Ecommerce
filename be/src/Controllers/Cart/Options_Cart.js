@@ -8,7 +8,7 @@ export async function Add_To_Cart(req, res) {
     const { user_id, product_id, quantity, color, size_attribute, price_item_attr } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
-        let price_item = (price_item_attr > 0) ? price_item_attr :  data_item?.price_product;
+        let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
         let quantity_by_item = 0;
         let color_item;
         let size_attribute_item;
@@ -174,7 +174,7 @@ export async function dow_quantity(req, res) {
 }
 
 export async function remove_item_cart(req, res) {
-    const { user_id, product_id } = req.body;
+    const { user_id, item_id} = req.body;
     try {
         const data_cart = await Carts.findOne({ user_id });
         if (!data_cart) {
@@ -182,12 +182,10 @@ export async function remove_item_cart(req, res) {
                 message: "No data!"
             })
         };
-        // console.log(data_cart)
-        data_cart.items = data_cart.items.filter((id_item) => id_item.product_id.toString() !== product_id);
-        const data = await data_cart.save();
+        data_cart.items = data_cart.items.filter((id_item) => id_item._id.toString() !== item_id);
+        await data_cart.save();
         return res.status(StatusCodes.OK).json({
             message: "Done remove!",
-            data
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

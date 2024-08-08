@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import { Mutation_Cart } from "../../_lib/Tanstack_Query/Cart/mutation_Cart";
+import { Mutation_Cart } from "../../../_lib/Tanstack_Query/Cart/mutation_Cart";
 import { Minus, Plus } from "lucide-react";
 
 
@@ -37,13 +37,13 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   }, []);
 
   // up, dow quantity
-  function change_options_quantity (action : string) {
+  function change_options_quantity(action: string) {
     switch (action) {
-      case  'dow':
+      case 'dow':
         if (quantity > 1) {
           set_quantity(quantity - 1);
         }
-        return; 
+        return;
       case 'up':
         if (!quantity_attributes) {
           validate_message()
@@ -52,7 +52,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
           change_quantity()
         }
         return;
-        default : return
+      default: return
     }
   }
 
@@ -84,6 +84,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     switch (action) {
       case 'Color':
         setName_size('');
+        setQuantity_attributes('');
         set_quantity(1);
         varriants_attribute.filter((attr: any) => {
           ref_validate_attribute.current?.classList.remove('block');
@@ -97,6 +98,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         });
         return setColor(item);
       case 'size_attribute':
+        setQuantity_attributes('');
         set_quantity(1);
         ref_validate_attribute.current?.classList.remove('block');
         ref_validate_attribute.current?.classList.add('hidden');
@@ -127,29 +129,10 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         quantity: quantity,
         size_attribute: sizePropsCart,
       };
-      if (varriants_attribute) {
-        for (let k of varriants_attribute) {
-          for (let x of k.size_item) {
-            if (k.color_item && (x.name_size !== '')) {
-              if (color && name_size) {
-                mutate(items);
-                return;
-              }
-              else validate_message()
-            }
-            else if (k.color_item) {
-              if (color) {
-                mutate(items);
-                return;
-              }
-              else validate_message()
-            }
-          }
-        }
+      if (quantity_attributes) {
+        mutate(items);
       }
-      else {
-        mutate(items)
-      }
+      else validate_message()
     } else {
       routing.push('/login');
     }
@@ -284,11 +267,11 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         <div className="border lg:py-2.5 mb:py-1 mb:px-2 *:text-xs flex items-center gap-x-3 rounded">
           <div className="flex items-center *:w-9 *:h-9 gap-x-3 *:grid *:place-items-center">
             <button className="hover:*:bg-gray-100 *:rounded" onClick={() => change_options_quantity('dow')}>
-              <Minus className="w-5"/>
+              <Minus className="w-5" />
             </button>
             <div className="bg-[#F4F4F4] rounded">{quantity}</div>
             <button className="hover:*:bg-gray-100 *:rounded" onClick={() => change_options_quantity('up')}>
-              <Plus className="w-5"/>
+              <Plus className="w-5" />
             </button>
           </div>
           {

@@ -1,6 +1,8 @@
 'use client'
 
+import { Mutation_Feedback } from "@/src/app/_lib/Tanstack_Query/Feedback/Mutation_Feedback";
 import { Get_Item_Order } from "@/src/app/_lib/Tanstack_Query/Order/Query_order";
+import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 import { Button } from "@/src/app/Components/ui/Shadcn/button";
 import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 import { Textarea } from "@/src/app/Components/ui/textarea";
@@ -13,7 +15,10 @@ export default function Page() {
     const parameters = useSearchParams();
     let params_rating: any = parameters.get('_rating') ?? '';
     const data = Get_Item_Order(params_rating);
-    console.log(data?.data?.data_item);
+    let id_user: any;
+    if (typeof window !== 'undefined') {
+        id_user = JSON.parse(localStorage.getItem('account') || '{}') ?? '';
+    }
 
     const columns: ColumnDef<any>[] = [
         {
@@ -44,20 +49,35 @@ export default function Page() {
             header: " ",
         },
     ]
+    // add feedback
+    // user_id, item_id, content_feedback
+    const mutation_feedback = Mutation_Feedback('ADD');
+    function submit_Feedback(data_Form: any) {
+        const dataBody = {
+            user_id: id_user?.check_email?._id,
+            item_id: data?.data?.data_item[0],
+            item_order : data?.data?.data_item[0] ,
+            content_feedback: data_Form?.content_feedback
+        };
+        mutation_feedback.mutate(dataBody);
+    }
     return (
         <div className="pl-4">
-            {data?.data?.data_item &&
-            <div className="*:text-gray-900">
-                <DataTable data={data?.data?.data_item} columns={columns} />
-            </div>
-            }
-            <span>Đánh giá</span>
-            <div className="grid w-full gap-2 py-4">
-                <Textarea placeholder="Nhập đánh giá của bạn." />
-                <div>
-                    <Button>Gửi</Button>
+            <strong>Đánh giá đơn hàng</strong>
+            {data?.data?.data_item ? (<>
+                <div className="*:text-gray-900 *:!border-white">
+                    <DataTable data={data?.data?.data_item} columns={columns} />
                 </div>
-            </div>
+                <form onSubmit={mutation_feedback.form_feedback.handleSubmit(submit_Feedback)} className="grid w-full gap-2 py-4">
+                    <span>Đánh giá</span>
+                    <Textarea {...mutation_feedback.form_feedback.register('content_feedback')} placeholder="Nhập đánh giá của bạn." />
+                    <div>
+                        <Button>Gửi</Button>
+                    </div>
+                </form>
+            </>) :
+                <Loading_Dots />
+            }
         </div>
 
     )

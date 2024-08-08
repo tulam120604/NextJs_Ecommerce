@@ -160,7 +160,7 @@ const Cart = () => {
                                 </TableCell>
                                 <TableCell><span className="md:text-base mb:text-xs text-red-600">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
-                                  <Remove_Item_Cart id_props={{ item: item?.product_id?._id, id_user: id }} />
+                                  <Remove_Item_Cart id_props={{ item: item?._id, id_user: id }} />
                                 </TableCell>
                               </TableRow>
                               :

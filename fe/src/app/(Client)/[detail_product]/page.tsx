@@ -1,14 +1,14 @@
-import Img_Detail_Product from './Img_detail';
-import Infor_Detail_Product from './Infor_detail';
-import Related_Product from './Related_Product';
+import Img_Detail_Product from './_components/Img_detail';
 import Breadcrum from '@/src/app/Components/breadcrum/breadcrum';
 import { revalidatePath } from 'next/cache';
-import Description from './Description';
-import Infor_seller from './Infor_seller';
+import Description from './_components/Description';
+import Infor_seller from './_components/Infor_seller';
 import { getDetail } from '../../_lib/Services/Services_Items/products';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 import { detail_Categories } from '../../_lib/Services/Services_Items/categories';
+import Infor_Detail_Product from './_components/Infor_detail';
+import Related_Product from './_components/Related_Product';
 
 const page = async ({ params }: any) => {
   noStore();

@@ -28,7 +28,7 @@ export function DataTable<TData, TValue>({
     <div className="rounded-md text-gray-100">
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table?.getHeaderGroups()?.map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (

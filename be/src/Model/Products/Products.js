@@ -48,8 +48,10 @@ const schema_Products = new mongoose.Schema({
 
 schema_Products.plugin(mongoosePaginate);
 schema_Products.plugin(mongoooseDelete,
-    { overrideMethods: 'all' },
-    { deletedAt: true },
+    {
+        overrideMethods: 'all',
+        deletedAt: true
+    }
 )
 
 export default mongoose.model('Products', schema_Products);

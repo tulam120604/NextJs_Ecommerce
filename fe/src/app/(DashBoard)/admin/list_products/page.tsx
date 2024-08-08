@@ -48,16 +48,35 @@ const Page = () => {
     },
     {
       cell: ({ row }) => {
+        return (
+          row?.original?.attributes?.varriants?.map((item: any) => {
+            return (<div key={row?.original?._id} className="max-w-[200px]">
+              <span>{item.color_item}</span>
+              {
+                item?.size_item.map((i: any) => {
+                    return (<>
+                    {
+                      i?.name_size && <span>&#160; &#10539; &#160;</span>
+                    }
+                    <span key={i._id}>{i?.name_size}</span> <br />
+                    </>)
+                })
+              }
+            </div>)
+          }))
+      },
+      header: "Phân loại",
+    },
+    {
+      cell: ({ row }) => {
         return (row?.original?.price_product ?
           <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
           row?.original?.attributes?.varriants?.map((item: any) => {
             return (<div key={row?.original?._id} className="max-w-[200px]">
-              <span>{item.color_item + ' - '}</span>
               {
                 item?.size_item.map((i: any) => {
                   if (i.name_size) {
                     return (<>
-                      <span key={i._id}>{i?.name_size}</span><br />
                       <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> <br />
                     </>)
                   }
@@ -82,9 +101,6 @@ const Page = () => {
     },
     {
       cell: ({ row }) => (<div className="flex items-center gap-x-2 *:duration-200">
-        <Link className="hover:scale-110 " href={''}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="lucide lucide-receipt-text"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z" /><path d="M14 8H8" /><path d="M16 12H8" /><path d="M13 16H8" /></svg>
-        </Link>
         <Link href={`/admin/list_products/${row?.original?._id}`} className="hover:scale-110 ">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /><path d="M8 18h1" /></svg>
         </Link>
@@ -106,13 +122,13 @@ const Page = () => {
           </AlertDialogContent>
         </AlertDialog>
       </div>),
-      header: "options",
+      header: "Thao tác",
     },
   ]
 
   function handle_Remove(idItem?: string | number) {
     const item = {
-      accessToken: token,
+      accessToken: token.accessToken,
       refeshToken: token,
       id_item: idItem
     }

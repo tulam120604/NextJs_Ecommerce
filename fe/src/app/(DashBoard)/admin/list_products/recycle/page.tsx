@@ -32,36 +32,76 @@ const Page = () => {
     function next() {
         // setPage(page + 1);
     };
+
     const columns: ColumnDef<any>[] = [
         {
-            cell: ({ row }) => (
-                <div className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
-            ),
-            header: "Tên sản phẩm",
+          cell: ({ row }) => (
+            <div className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
+          ),
+          header: "Tên sản phẩm",
         },
         {
-            accessorKey: "category_id.category_name",
-            header: "Danh mục",
+          accessorKey: "category_id.category_name",
+          header: "Danh mục",
         },
         {
-            cell: ({ row }) => (
-                <Image width={100} height={100} className="w-[100px] h-[100px] rounded" src={row?.original?.feature_product} alt="Loading..." />
-            ),
-            header: "Ảnh",
+          cell: ({ row }) => (
+            <Image width={100} height={100} className="w-[100px] h-[100px] rounded" src={row?.original?.feature_product} alt="Loading..." />
+          ),
+          header: "Ảnh",
         },
         {
-            cell: ({ row }) => (
-                <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-            ),
-            header: "Đơn giá",
+          cell: ({ row }) => {
+            return (
+              row?.original?.attributes?.varriants?.map((item: any) => {
+                return (<div key={row?.original?._id} className="max-w-[200px]">
+                  <span>{item.color_item}</span>
+                  {
+                    item?.size_item.map((i: any) => {
+                        return (<>
+                        {
+                          i?.name_size && <span>&#160; &#10539; &#160;</span>
+                        }
+                        <span key={i._id}>{i?.name_size}</span> <br />
+                        </>)
+                    })
+                  }
+                </div>)
+              }))
+          },
+          header: "Phân loại",
         },
         {
-            accessorKey: "count_stock",
-            header: "Số lượng",
+          cell: ({ row }) => {
+            return (row?.original?.price_product ?
+              <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
+              row?.original?.attributes?.varriants?.map((item: any) => {
+                return (<div key={row?.original?._id} className="max-w-[200px]">
+                  {
+                    item?.size_item.map((i: any) => {
+                      if (i.name_size) {
+                        return (<>
+                          <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> <br />
+                        </>)
+                      }
+                      else {
+                        return <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                      }
+                    })
+                  }
+                </div>)
+              }))
+    
+          },
+          header: "Đơn giá",
         },
         {
-            accessorKey: "made_in",
-            header: "Xuất xứ",
+          accessorKey: "count_stock",
+          header: "Số lượng",
+        },
+        {
+          accessorKey: "made_in",
+          header: "Xuất xứ",
         },
         {
             cell: ({ row }) => (<div className="flex items-center gap-x-2 *:duration-200">
@@ -74,7 +114,7 @@ const Page = () => {
             </div>),
             header: "options",
         },
-    ]
+      ]
     function handle_Restore(idItem?: string | number) {
         const item = {
             token: token.accessToken,

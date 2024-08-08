@@ -7,12 +7,12 @@ export async function get_Item_Dashboard(req, res) {
     const {
         _page = 1,
         _limit = 20,
-        _sort = '',
         _search = ''
     } = req.query;
     const options = {
         page: _page,
-        limit: _limit
+        limit: _limit,
+        sort : {createdAt : -1}
     }
     try {
         const querry = {};
@@ -62,13 +62,13 @@ export async function get_Item_Dashboard(req, res) {
 export async function get_Item_Client(req, res) {
     const {
         _page = 1,
-        _sort = '',
         _limit = 100,
         _search = '',
     } = req.query;
     const options = {
         page: _page,
         limit: _limit,
+        sort : {createdAt: -1}
     };
 
     try {

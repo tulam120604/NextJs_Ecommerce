@@ -1,7 +1,7 @@
 // PRODUCTS
 import { toast } from "react-toastify";
 
-const apiURi = 'http://localhost:2000/v1';
+const apiURi = process.env.NEXT_PUBLIC_DB_HOST
 
 // list item client
 export async function getLimit_and_paginate(page: number, count_item: number) {
@@ -133,7 +133,7 @@ export async function addItem(item: any) {
             console.warn('Call data failer');
         }
         else {
-            toast.success(`Đã thêm sản phẩm !`, { autoClose: 500 })
+            toast.success(`Tạo sản phẩm thành công!`, { autoClose: 500 })
         }
         const data = await res.text();
         return data
@@ -148,12 +148,12 @@ export async function removeItem(item: any) {
         const res = await fetch(`${apiURi}/products/${item.id_item}`, {
             method: 'delete',
             headers: {
-                'authorization': `Bearer ${item.token}`
+                'authorization': `Bearer ${item.accessToken}`
             }
         });
         if (!res.ok) {
-            toast.success(`Có lỗi xảy ra khi xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 })
-            console.warn('Call data failer');
+            toast.error(`Có lỗi xảy ra khi xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 })
+            return res
         } else {
             toast.success(`Đã xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 })
         }

@@ -11,10 +11,11 @@ const Feedback_Schema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Products',
     },
-    content  : {
+    item_order : Object,
+    content_feedback  : {
         type : String,
         minLength : 3,
-        maxLength: 50000,
+        maxLength: 5000,
     }
 }, {timestamps : true, versionKey : false});
 

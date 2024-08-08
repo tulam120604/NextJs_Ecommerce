@@ -5,8 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useToast } from "@/src/app/Components/ui/use-toast";
 
 const Side_bar = () => {
+    const { toast } = useToast();
     const pathName = usePathname();
     const routing = useRouter();
     function log_out() {
@@ -20,7 +22,11 @@ const Side_bar = () => {
             cancelButtonText: 'Hủy'
         }).then((result) => {
             if (result.isConfirmed) {
-                toast.success('Đã đăng xuất!', { autoClose: 500 })
+                toast({
+                    title: "Đã đăng xuất",
+                    className: 'w-[200px] bg-gray-100 fixed right-0 bottom-0 text-gray-900 h-10',
+                    duration: 800
+                })
                 localStorage.removeItem('account');
                 routing.push('/');
             }

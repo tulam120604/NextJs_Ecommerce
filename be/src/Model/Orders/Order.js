@@ -23,6 +23,10 @@ const Order_Schema = new mongoose.Schema({
             size_attribute_item: String,
             price_item: Number,
             total_price_item: Number,
+            status_feedback : {
+                type : Boolean,
+                default : false
+            }
         }
 
     ],

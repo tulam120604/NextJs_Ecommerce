@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { ReactNode } from 'react'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from '../Components/ui/toaster';
 
 
 const queryClient = new QueryClient(
@@ -21,6 +22,7 @@ const Provider = ({ children }: { children: ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastContainer position='bottom-right' />
+      <Toaster />
       {children}
     </QueryClientProvider>
   )

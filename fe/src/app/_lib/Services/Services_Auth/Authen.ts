@@ -1,6 +1,6 @@
 'use client';
 
-const apiURi = 'http://localhost:2000/v1';
+const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 // login
 export async function sign_In(item: any) {

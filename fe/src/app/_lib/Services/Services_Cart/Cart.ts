@@ -1,6 +1,6 @@
 'use client';
 
-const apiURi = 'http://localhost:2000/v1';
+const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 export async function get_list_Cart (id_user : any){
     try{
@@ -113,7 +113,6 @@ export async function remove_item_cart (item: any) {
         if (!res.ok) {
             console.warn ('Kiem tra lai server!');
         };
-        await res.json();
         return res
     } catch (error) {
         console.error(error);

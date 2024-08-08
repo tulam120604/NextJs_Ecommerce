@@ -1,7 +1,7 @@
 
 import { toast } from "react-toastify";
 
-const apiURi = 'http://localhost:2000/v1';
+const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 // list
 export async function list_Categories() {

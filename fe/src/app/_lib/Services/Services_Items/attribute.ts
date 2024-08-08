@@ -1,9 +1,9 @@
-const apiURi = 'http://localhost:2000/v1/attribute';
+const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 // get attribute by item
 export async function get_attribute_by_item(id_item?: string | number) {
     try {
-        const res = await fetch(`${apiURi}/${id_item}`);
+        const res = await fetch(`${apiURi}/attribute/${id_item}`);
         if (!res.ok) {
             console.warn('Call data failer')
         }

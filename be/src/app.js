@@ -9,6 +9,8 @@ import RoutesCart from './Routes/Cart/Cart';
 import Routes_upload from './Routes/upload';
 import Routes_Order from './Routes/Order/Order';
 import Routes_Attribute from './Routes/Attribute/Attribute';
+import RoutesFeedback from './Routes/Feedback/Feedback';
+import RoutesNotification from './Routes/Notification/Notification';
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -32,6 +34,12 @@ app.use('/v1', RoutesCart);
 
 // order
 app.use('/v1', Routes_Order);
+
+// feedback
+app.use('/v1', RoutesFeedback);
+
+// notification
+app.use('/v1', RoutesNotification)
 
 
 export const viteNodeApp = app;

@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/Components/ui/Tables/data_table'
 import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots'
+import { CircleCheck } from 'lucide-react'
 
 const Page = () => {
   const [status_item_order, setStatus_item_order] = useState<number>(0);
@@ -82,9 +83,16 @@ const Page = () => {
             }
             {
               status_item_order === 5 &&
-              <div>
-                <Button onClick={() => routing.push(`/profile/feedback?_rating=${row?.original?._id}`)} className="px-3 py-1.5 hover:bg-green-700 duration-200 bg-green-600 text-sm rounded text-white">Đánh giá</Button>
-              </div>
+              (
+                row?.original?.status_feedback ?
+                  <div className='flex items-center gap-x-2'>
+                    <CircleCheck className='text-green-600' />
+                    <span className="text-sm">Đã đánh giá</span>
+                  </div> :
+                  <div>
+                    <Button onClick={() => routing.push(`/profile/feedback?_rating=${row?.original?._id}`)} className="px-3 py-1.5 hover:bg-green-700 duration-200 bg-green-600 text-sm rounded text-white">Đánh giá</Button>
+                  </div>
+              )
             }
           </div>
         </div>
@@ -138,26 +146,22 @@ const Page = () => {
                 </div>
                 <div key={+item?._id + Math.random()} className='flex justify-end'>
                   {
-                    (+item?.status_item_order === 6) ?
-                      <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua lại</Button> :
-                      (+item?.status_item_order === 5) ? (<div className='flex gap-x-4'>
-                        <Button onClick={() => restore_by_order(item)} className="px-3 py-2 text-sm rounded text-white">Mua tiếp</Button>
-                      </div>)
-                        :
-                        <AlertDialog>
-                          <AlertDialogTrigger className="px-3 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
-                            Hủy
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>z
-                            <AlertDialogHeader>
-                              <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Hủy</AlertDialogCancel>
-                              <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id)}>Xác nhận</AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                    (+item?.status_item_order === 6 || +item?.status_item_order === 5) ?
+                      <Button onClick={() => restore_by_order(item)} className="px-3 bg-green-600 hover:!bg-green-700 mt-2 py-2 text-sm rounded text-white">Mua lại</Button> :
+                      <AlertDialog>
+                        <AlertDialogTrigger className="px-3 mt-2 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
+                          Hủy
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>z
+                          <AlertDialogHeader>
+                            <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Hủy</AlertDialogCancel>
+                            <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id)}>Xác nhận</AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                   }
                 </div>
               </div>
