@@ -2,7 +2,7 @@
 'use client';
 
 import Link from "next/link"
-import { Suspense } from "react";
+import { Suspense} from "react";
 import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import { ColumnDef } from "@tanstack/react-table"
@@ -15,7 +15,9 @@ import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 import { useSearchParams } from "next/navigation";
 import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
+import io from 'socket.io-client';
 
+const socket = io('http://localhost:3000');
 const Page = () => {
   const token = useToken();
   const searchParams = useSearchParams();
@@ -29,10 +31,22 @@ const Page = () => {
     return <Loading />
   };
 
+  
+  function handle_Remove(idItem?: {id_item : string , name_item : string}) {
+    const item = {
+      accessToken: token.accessToken,
+      refeshToken: token,
+      id_item: idItem?.id_item
+    }
+    on_Submit(item);
+    socket.emit('send_message', idItem)
+  }
+
+
   const columns: ColumnDef<any>[] = [
     {
       cell: ({ row }) => (
-        <div className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
+        <div key={row?.original?._id} className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
       ),
       header: "Tên sản phẩm",
     },
@@ -117,7 +131,7 @@ const Page = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Hủy</AlertDialogCancel>
-              <AlertDialogAction className="bg-red-500" onClick={() => handle_Remove(row?.original?._id)}>Xác nhận</AlertDialogAction>
+              <AlertDialogAction className="bg-red-500" onClick={() => handle_Remove({id_item : row?.original?._id , name_item : row?.original?.short_name})}>Xác nhận</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -126,14 +140,6 @@ const Page = () => {
     },
   ]
 
-  function handle_Remove(idItem?: string | number) {
-    const item = {
-      accessToken: token.accessToken,
-      refeshToken: token,
-      id_item: idItem
-    }
-    on_Submit(item);
-  }
   return (
     <Suspense fallback={<Loading_Dots />}>
       <div className=" flex flex-col gap-y-6 py-6 rounded">
@@ -145,7 +151,6 @@ const Page = () => {
           </div>
           <Link href={'/admin/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
             <Trash2 className="text-red-600" />
-            {/* <span className="absolute font-semibold !w-[18px] grid place-items-center bg-white text-black !h-[20px] rounded-xl text-xs -top-[10%] -right-[15%]">1</span> */}
           </Link>
         </div>
         {

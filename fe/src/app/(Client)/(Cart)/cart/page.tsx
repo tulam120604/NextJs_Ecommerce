@@ -14,9 +14,29 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Checkbox } from '@/src/app/Components/ui/Shadcn/checkbox';
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
+import io from 'socket.io-client';
+import { useToast } from '@/src/app/Components/ui/use-toast'; 
+import { ToastAction } from '@/src/app/Components/ui/toast';
 
 
+const socket = io('http://localhost:3000');
 const Cart = () => {
+  const { toast } =  useToast();
+
+  // socket
+  useEffect(() => {
+    socket.on('res_message', (data : any) => {
+      toast({
+        title: "Thông báo!",
+        description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
+        className : 'border border-gray-800',
+        action: (
+          <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+        ),
+      })
+    })
+  }, [socket])
+
   const routing = useRouter();
   const [content_note_order, setContent_note_order] = useState<string>('')
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");

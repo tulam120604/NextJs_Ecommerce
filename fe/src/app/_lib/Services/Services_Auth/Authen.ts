@@ -1,4 +1,5 @@
 'use client';
+import { toast } from "react-toastify";
 
 const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
@@ -13,7 +14,8 @@ export async function sign_In(item: any) {
             body: JSON.stringify(item)
         });
         if (!res.ok) {
-            console.warn('Dang nhap that bai !');
+            toast.error('Tạo tài khoản thất bại!', {autoClose : 500})
+            return res
         }
         else if (res.status === 200) {
             const data = await res.json();
@@ -22,13 +24,12 @@ export async function sign_In(item: any) {
         }
         return res
     } catch (error) {
-        return error || '<span>Lỗi rồi đại vương ơi!!</span>'
+        return error || 'Lỗi rồi đại vương ơi!!'
     }
 }
 
 // register
 
-import { toast } from "react-toastify";
 
 export async function create_Account(item: any) {
     try {
@@ -40,35 +41,36 @@ export async function create_Account(item: any) {
             body: JSON.stringify(item)
         });
         if (!res.ok) {
-            console.warn('Dang ki that bai !');
+            toast.error('Tạo tài khoản thất bại!', {autoClose : 500})
+            return res
         }
         if (res.status === 201) {
             toast.success("Đăng kí tài khoản thành công!", { autoClose: 500 });
         }
         return res
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return 'Lỗi rồi đại vương ơi!!'
     }
 }
 
 // infor
 export async function infor_user(id: string | number) {
     try {
-        const res = await fetch (`${apiURi}/infor/${id}`);
+        const res = await fetch(`${apiURi}/infor/${id}`);
         if (!res.ok) {
             return res
         }
         const data = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return 'Lỗi rồi đại vương ơi!!'
     }
 }
 
 // logout
 
-export async function log_out (){
-    
+export async function log_out() {
+
 }
 
 // get
@@ -87,6 +89,28 @@ export async function list_Account(accessToken: string) {
         const data = await res.json();
         return data
     } catch (error) {
-        return ('<span>Lỗi rồi đại vương ơi!!</span>')
+        return 'Lỗi rồi đại vương ơi!!'
+    }
+}
+
+// granting_premissions
+export async function granting_premissions(id_user: string | number) {
+    try {
+        const res = await fetch(`${apiURi}/granting_premissions`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id_user)
+        });
+        if (!res.ok) {
+            toast.error('Cấp quyền thất bại!', {autoClose : 500})
+        }
+        else {
+            toast.success('Cấp quyền thành công!', {autoClose : 500})
+        }
+        return res
+    } catch (error) {
+        return 'Lỗi rồi đại vương ơi!!'
     }
 }

@@ -36,6 +36,7 @@
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "redux": "^5.0.1",
+    "socket.io-client": "^4.7.5",
     "sweetalert2": "^11.12.1",
     "swiper": "^11.1.4",
     "tailwind-merge": "^2.4.0",

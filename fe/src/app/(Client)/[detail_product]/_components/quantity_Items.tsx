@@ -5,10 +5,31 @@ import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { Mutation_Cart } from "../../../_lib/Tanstack_Query/Cart/mutation_Cart";
 import { Minus, Plus } from "lucide-react";
+import io from 'socket.io-client';
+import { useToast } from "@/src/app/Components/ui/use-toast";
 
 
+const socket = io('http://localhost:3000');
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
+  const { toast } = useToast();
+  useEffect(() => {
+    socket.on('res_message', (data : any) => {
+      toast({
+        title: "Thông báo!",
+        description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
+        className : 'border border-gray-800',
+        duration : 3000
+      });
+      const timeOut = setTimeout(() => {
+        routing.push('/')
+      }, 1000);
+      return () => {
+        clearTimeout(timeOut)
+      }
+    })
+  }, [socket])
+
   const { mutate } = Mutation_Cart('Add_Cart');
   const [color, setColor] = useState<any>();
   let [varriants_attribute, setVarriants_attribute] = useState<any>();
@@ -20,20 +41,25 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const [price_attr, set_price_attr] = useState(0);
   const ref_validate_attribute = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    if (data_Item_Detail?.attributes?.varriants.length > 0) {
-      const a: any = [];
-      data_Item_Detail?.attributes?.varriants?.map((item: any) => {
-        item?.size_item.filter((data_attr: any) => {
-          if (data_attr?.stock_item > 0) {
-            a.push(item);
-          }
+    if (data_Item_Detail) {
+      if (data_Item_Detail?.attributes?.varriants.length > 0) {
+        const a: any = [];
+        data_Item_Detail?.attributes?.varriants?.map((item: any) => {
+          item?.size_item.filter((data_attr: any) => {
+            if (data_attr?.stock_item > 0) {
+              a.push(item);
+            }
+          })
         })
-      })
-      setVarriants_attribute(a)
+        setVarriants_attribute(a)
+      }
+      else {
+        setQuantity_attributes(data_Item_Detail?.stock);
+      }
+    } else {
+      routing.push('/')
     }
-    else {
-      setQuantity_attributes(data_Item_Detail?.stock);
-    }
+  
   }, []);
 
   // up, dow quantity

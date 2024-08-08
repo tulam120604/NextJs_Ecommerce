@@ -47,14 +47,17 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
           {/* options */}
           <div className="flex items-center gap-x-8">
             {/* chuong */}
-            <Link href={'/admin/notification'} className="cursor-pointer relative">
+            <Link href={'/admin/notification'} className="cursor-pointer relative text-gray-100 group">
               <BellRing className="text-gray-100" />
               {
                 data?.data &&
                 <span className="absolute w-5 h-5 rounded-[50%] text-white flex items-center justify-center -bottom-[20%] -right-1/4 bg-red-500 text-xs">{total_bell?.length}</span>
               }
+              {
+                data?.data &&
+                <span className="hidden group-hover:block z-[10] fixed text-sm -translate-x-3/4 top-14 p-2 bg-[#111827] rounded">Bạn có {total_bell?.length} thông báo!</span>
+              }
             </Link>
-
             {/* logo account */}
             <div>
               <Image className="rounded-[50%] cursor-pointer hover:scale-110 duration-200" width={30} height={30} src={'/Images/avatar.jpg'} alt='avatar'></Image>
@@ -62,7 +65,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
           </div>
         </header>
         {/* side bar */}
-        <main className="flex items-start gap-x-6 w-full grid lg:grid-cols-[200px_auto] grid-cols-[15%_auto] gap-x-10">
+        <main className="items-start gap-x-6 w-full grid lg:grid-cols-[200px_auto] grid-cols-[auto_auto] gap-x-10">
           <div className="sticky top-[80px]">
             <SideBarDashboard />
           </div>

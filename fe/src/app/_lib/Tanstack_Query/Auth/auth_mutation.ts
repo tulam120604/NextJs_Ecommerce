@@ -3,10 +3,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
-import { create_Account, sign_In } from "../../Services/Services_Auth/Authen";
+import { create_Account, granting_premissions, sign_In } from "../../Services/Services_Auth/Authen";
 
 
-type Actions = "LOGIN" | "REGISTER";
+type Actions = "LOGIN" | "REGISTER" | "GRANTING_PREMISSIONS";
 
 export function Mutation_Auth({ action }: { action: Actions }) {
     let check_validate_register : any;
@@ -20,13 +20,15 @@ export function Mutation_Auth({ action }: { action: Actions }) {
     const querry_Client = useQueryClient();
 
     const { mutate, ...rest } = useMutation({
-        mutationFn: async (dataForm: any) => {
+        mutationFn: async (dataClient: any) => {
             setStatus_Loading('pending_call')
             switch (action) {
                 case "LOGIN":
-                    return await sign_In(dataForm);
+                    return await sign_In(dataClient);
                 case "REGISTER":
-                    return await create_Account(dataForm);
+                    return await create_Account(dataClient);
+                case "GRANTING_PREMISSIONS" :
+                    return await granting_premissions(dataClient);
                 default: return
             }
         }, onSuccess: (res: any) => {

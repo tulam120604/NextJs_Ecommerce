@@ -18,6 +18,7 @@ const page = async ({ params }: any) => {
   const data_category = await detail_Categories(data?.category_id)
   // const {data} = await res.json();
   revalidatePath('/products/[detail_product]', 'page');
+  
   // fake data
   // const data = [1,1,1,1,1]
   return (

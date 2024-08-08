@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react'
+import io from 'socket.io-client';
 import Loading from './loading';
 import { Input } from '../../Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
@@ -12,8 +13,13 @@ import { schemaValidateOrder } from '../../(Auth)/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DataTable } from '../../Components/ui/Tables/data_table';
 import Loading_Dots from '../../Components/Loadings/Loading_Dots';
+import { useToast } from '../../Components/ui/use-toast';
+import { ToastAction } from '../../Components/ui/toast';
 
+
+const socket = io('http://localhost:3000');
 const Page = () => {
+  const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
   let user_id: any;
@@ -22,7 +28,7 @@ const Page = () => {
       routing.push('/')
     }
     const user = JSON.parse(localStorage.getItem('account') || '{}');
-    user_id = user?.check_email?._id;
+    user_id = user?.check_email?._id ?? '';
   }
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -52,12 +58,31 @@ const Page = () => {
   if (mutate_order.status_api === 'call_ok') {
     routing.push('/')
   }
+  // socket 
   useEffect(() => {
     if (typeof window) {
-      const data_session = JSON.parse(sessionStorage.getItem('item_order') || '{}');
+      let data_session = JSON.parse(sessionStorage.getItem('item_order') || '{}');
+      socket.on('res_message', (data: any) => {
+        if (data_session) {
+          sessionStorage.removeItem('item_order');
+          data_session.items = data_session?.items?.filter((item: any) => (
+            item?.product_id?._id !== data?.id_item && item
+          ));
+          sessionStorage.setItem('item_order', JSON.stringify(data_session));
+          setList_item_order(data_session);
+        }
+        toast({
+          title: "Thông báo!",
+          description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
+          className : 'border border-gray-800',
+          action: (
+            <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+          ),
+        })
+      })
       setList_item_order(data_session);
     }
-  }, []);
+  }, [socket]);
   return (<Suspense fallback={<Loading />}>
     <form onSubmit={handleSubmit(on_Order)} className={`relative ${mutate_order.isLoading && 'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
       {

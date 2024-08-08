@@ -29,7 +29,9 @@ export async function add_notification(req, res) {
 
 export async function get_notification(req, res) {
     try {
-        const data_notification = await Notifications.find({ sender_id: req.params.sender_id }).populate('sender_id');
+        const data_notification = await Notifications.find({ receiver_id: req.params.receiver_id }).sort({
+            createdAt: -1
+        }).populate('sender_id');
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data_notification

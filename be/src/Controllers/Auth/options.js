@@ -93,3 +93,24 @@ export async function log_out (req, res) {
         })
     }
 }
+
+export async function granting_premissions (req, res) {
+    const id_user = req.body._id;
+    try {
+        const data = await Account.findOne({_id : id_user});
+        if (!data) {
+            return res.status(StatusCodes.NOT_FOUND).jsoN({
+                message : 'No data!'
+            })
+        };
+        data.role = 'seller';
+        await data.save();
+        return res.status(StatusCodes.OK).json({
+            message : 'OK'
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error || "Lỗi rồi đại vương ơi!!"
+        })
+    }
+}

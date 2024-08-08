@@ -5,12 +5,15 @@ import { List_Account } from "@/src/app/_lib/Tanstack_Query/Auth/Query_Auth";
 import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 import { ColumnDef } from "@tanstack/react-table";
+import io from 'socket.io-client'
 import Image from "next/image";
 import { Suspense } from "react";
 import Loading from "./loading";
 
 
 const CustomersAdmin = () => {
+    const socket = io('localhost:2000');
+    console.log(socket);
     const token = useToken();
     const { data, isLoading } = List_Account(token.accessToken);
 

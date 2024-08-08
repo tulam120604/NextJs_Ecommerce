@@ -12,6 +12,11 @@ export async function list_carts(req, res) {
             })
         }
         const cart = await Carts.findOne({ user_id }).populate('items.product_id');
+        if (!cart) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message : 'No data'
+            })
+        }
         const count_total_price = cart.items.reduce((past_value, present_value) => {
             if (present_value.product_id === null || !present_value.product_id) {
                 return past_value;
