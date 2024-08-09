@@ -3,11 +3,13 @@
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
 import { Button } from '@/src/app/Components/ui/Shadcn/button'
 import { Checkbox } from '@/src/app/Components/ui/Shadcn/checkbox'
+import io from 'socket.io-client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 export default function Page() {
+    const socket = io('http://localhost:3000');
     const routing = useRouter();
     let user: any;
     if (typeof window !== 'undefined') {
@@ -23,14 +25,15 @@ export default function Page() {
             sender_id: user?.check_email?._id,
             receiver_id: 'admin@admin.com',
             notification_message: dataForm?.note_shop,
-            notes : dataForm?.address_shop
+            notes: dataForm?.address_shop
         }
-        mutate_notification.mutate(data_body)
+        mutate_notification.mutate(data_body);
+        socket.emit('create_seller_message', `Đại vương có 1 thông báo mới từ ${ user?.check_email?.user_name}`)
     }
     return (
         <div className='pl-4'>
             <div className='text-center'>
-            <strong className='text-lg'>Đăng kí kênh người bán</strong>
+                <strong className='text-lg'>Đăng kí kênh người bán</strong>
             </div>
             <form onSubmit={mutate_notification.form_notification.handleSubmit(onSendMessage)} className='max-w-[600px] mx-auto mt-6'>
                 <div className='flex flex-col gap-y-2 my-4'>
@@ -60,7 +63,7 @@ export default function Page() {
                 <div className='flex flex-col gap-y-2 my-4'>
                     <label htmlFor="note_shop">Ghi chú</label>
                     <textarea className='px-3 py-2 rounded outline-1 text-sm' id='note_shop' placeholder='Enter' cols={6}
-                        {...mutate_notification.form_notification.register('note_shop')} defaultValue={' '}/>
+                        {...mutate_notification.form_notification.register('note_shop')} defaultValue={' '} />
                 </div>
                 <div className="flex items-center space-x-2 my-4">
                     <Checkbox id="terms" />

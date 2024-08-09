@@ -11,35 +11,18 @@ import Routes_Order from './Routes/Order/Order';
 import Routes_Attribute from './Routes/Attribute/Attribute';
 import RoutesFeedback from './Routes/Feedback/Feedback';
 import RoutesNotification from './Routes/Notification/Notification';
+import { handle_socket_event } from './socket/handle_socket';
 import { createServer } from 'node:http'
 import { Server } from 'socket.io';
+import mongoose from 'mongoose';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-// web socket
-const server = createServer(app)
-const io = new Server(server, {
-    cors : {
-        origin: 'http://localhost:5000',
-    }
-});
 
-const a = 'ahjihi'
 
-io.on('connection', (socket) => {
-    console.log(`Client id ${socket.id} connected`);
-
-    socket.on('send_message', (a) => {
-        io.emit('res_message', a)
-    })
-
-    socket.on('disconnect' ,  () => {
-        console.log('Client disconnect!')
-    })
-})
 
 ConnectDB(process.env.DB_MONGO);
 
@@ -67,9 +50,19 @@ app.use('/v1', RoutesFeedback);
 app.use('/v1', RoutesNotification)
 
 
-server.listen(3000, () => {
-    console.log('server running!')
-})
+// web socket
+// const server = createServer(app)
+// const io = new Server(server, {
+//     cors: {
+//         origin: process.env.HOST_SOCKET,
+//     }
+// });
+
+// handle_socket_event(io)
+
+// server.listen(process.env.PORT_SOCKET, () => {
+//     console.log('server running!');
+// })
 
 
 export const viteNodeApp = app;

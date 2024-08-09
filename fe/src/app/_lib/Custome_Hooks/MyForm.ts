@@ -12,22 +12,13 @@ import { useToken } from "./User";
 
 export function Custome_Hooks({ mode }: any) {
     const token = useToken();
-    console.log(token);
     const { edit_item } = useParams();
     let data_one_item: any;
     if (mode === 'edit' && mode) {
         data_one_item = Detail_Item_Dashboard(String(edit_item));
     }
-    const [dataToken, set_DataToken] = useState();
     const routing = useRouter();
-
-    useEffect(() => {
-        const data_Token = localStorage.getItem('account');
-        if (data_Token) {
-            const token_Account = JSON.parse(data_Token);
-            set_DataToken(token_Account.accessToken)
-        }
-    }, [dataToken]);
+   
     const { data, isLoading } = Query_Category();
     const data_Category = data;
     // console.log(data_Category)
@@ -77,12 +68,12 @@ export function Custome_Hooks({ mode }: any) {
             (data_form.stock ? formData.append('stock', data_form.stock) : formData.append('attributes', attributesString))
             // console.log(attributesString)
             let dataAll: any = {
-                accessToken: dataToken,
+                accessToken: token.accessToken,
                 data_item: formData,
             }
             if (mode && edit_item) {
                 dataAll = {
-                    accessToken: dataToken,
+                    accessToken: token.accessToken,
                     data_item: formData,
                     id_item: edit_item
                 }
@@ -94,7 +85,6 @@ export function Custome_Hooks({ mode }: any) {
     };
 
     return {
-        dataToken,
         my_Form,
         submitForm,
         routing,

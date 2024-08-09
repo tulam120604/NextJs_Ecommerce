@@ -1,0 +1,20 @@
+export function handle_socket_event (io) {
+    io.on("connect", (socket) => {
+        console.log(`Client ID ${socket.id} connect to socket!`);
+        socket.on("send_message" , (data) => {
+            io.emit('res_message' ,  data)
+        })
+
+        socket.on('confirm_granting_premission_account', (data) => {
+            io.emit('notification_granting_premission_account', data)
+        })
+
+        socket.on('create_seller_message', (data) => {
+            io.emit('res_seller_message', data)
+        })
+
+        socket.on("disconnect", () => {
+            console.log('Client disconnected!')
+        })
+    })
+}

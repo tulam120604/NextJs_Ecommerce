@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import Mini_Cart from '@/src/app/(Client)/(Cart)/mini_cart/page';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
-import Bell_icon from '../../Icons/bell';
 import Search_icon from '../../Icons/Search';
 import { Search_Component_Client } from '../../Forms/search';
+import Bell_component from '../../Notification/Bell_component';
 
 const Header = () => {
     const routing = useRouter();
@@ -72,7 +71,7 @@ const Header = () => {
             new_arr = data?.items.filter((item: any) => (item?.product_id !== null) && item);
         }
         return (<>
-            {data?.items && (<span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">{new_arr?.length}</span>)}
+            {data?.items && (<span className="z-[1] absolute bg-red-500 -top-[20%] -right-1/4 grid place-items-center rounded-[50%] w-5 h-5 text-xs text-white">{new_arr?.length}</span>)}
         </>
         )
     }
@@ -106,8 +105,9 @@ const Header = () => {
                     </div>
                     {/* bell */}
                     <div className='relative cursor-pointer'>
-                        <Bell_icon />
-                        <span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">0</span>
+                        {/* <Bell_icon />
+                        <span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">0</span> */}
+                        <Bell_component/>
                     </div>
                     {/* cart */}
                     <div className="h-[24px] relative group cursor-pointer">

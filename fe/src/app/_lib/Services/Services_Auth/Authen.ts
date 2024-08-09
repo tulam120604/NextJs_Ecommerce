@@ -14,7 +14,6 @@ export async function sign_In(item: any) {
             body: JSON.stringify(item)
         });
         if (!res.ok) {
-            toast.error('Tạo tài khoản thất bại!', {autoClose : 500})
             return res
         }
         else if (res.status === 200) {
@@ -67,12 +66,6 @@ export async function infor_user(id: string | number) {
     }
 }
 
-// logout
-
-export async function log_out() {
-
-}
-
 // get
 export async function list_Account(accessToken: string) {
     try {
@@ -104,11 +97,32 @@ export async function granting_premissions(id_user: string | number) {
             body: JSON.stringify(id_user)
         });
         if (!res.ok) {
-            toast.error('Cấp quyền thất bại!', {autoClose : 500})
+            toast.error('Cấp quyền thất bại!', {autoClose : 500});
+            return res
         }
         else {
             toast.success('Cấp quyền thành công!', {autoClose : 500})
         }
+        return res
+    } catch (error) {
+        return 'Lỗi rồi đại vương ơi!!'
+    }
+}
+
+
+// log out
+export async function logout (token : string) {
+    try {
+        const res = await fetch (`${apiURi}/logout`, {
+            method : 'post',
+            headers : {
+                'Authorization' : `${token}`
+            }
+        });
+        if (!res.ok){
+            toast.error('Đăng xuất thất bại, vui lòng thử lại sau!', {autoClose : 500})
+            return res;
+        };
         return res
     } catch (error) {
         return 'Lỗi rồi đại vương ơi!!'

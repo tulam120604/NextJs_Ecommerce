@@ -1,5 +1,6 @@
 'use client';
 
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
@@ -10,31 +11,35 @@ const Page = () => {
     setClient(true)
   }, [])
   const routing = useRouter();
-  let user: any;
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-      routing.push('/')
-    }
-    const dataLocal = JSON.parse(localStorage.getItem('account') || '{}');
-    user = dataLocal?.check_email
-  };
+  let user = useCheck_user() ?? undefined;
+  if (!user) {
+    routing.push('/')
+  }
+ 
   return (
     client ?
       <div className="w-full px-6 py-4">
         <div className='flex items-center justify-between'>
           <span className='lg:text-2xl text-xl'>Hồ sơ của tôi</span>
-          <Link className='text-sm underline' href={'/profile/create_saller'}>Đăng kí bán hàng</Link>
+          {
+            user?.check_email?.role === 'user' ?
+            <Link className='text-sm underline' href={'/profile/create_saller'}>Kênh phân phối</Link> :
+            user?.check_email?.role === 'seller' ?
+            <Link className='text-sm underline' href={'/profile/create_saller'}>Đi đến kho phân phối</Link> :
+            <Link className='text-sm underline' href={'/adminstrations/dashboard'}>Bảng điều khiển</Link>
+            
+          }
         </div>
         <table className='lg:w-[50%] w-[80%] mx-auto'>
           <tbody>
             <tr className='*:my-6'>
               <td className='flex items-center justify-between'>
                 Tên đăng nhập
-                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.user_name}</div>
+                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.user_name}</div>
               </td>
               <td className='flex items-center justify-between'>
                 Email tài khoản
-                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.email}</div>
+                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.email}</div>
               </td>
               <td className='flex items-center justify-between'>
                 Số điện thoại

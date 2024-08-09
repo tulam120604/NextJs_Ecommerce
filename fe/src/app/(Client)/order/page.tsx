@@ -15,6 +15,7 @@ import { DataTable } from '../../Components/ui/Tables/data_table';
 import Loading_Dots from '../../Components/Loadings/Loading_Dots';
 import { useToast } from '../../Components/ui/use-toast';
 import { ToastAction } from '../../Components/ui/toast';
+import { useCheck_user } from '../../_lib/Custome_Hooks/User';
 
 
 const socket = io('http://localhost:3000');
@@ -22,13 +23,9 @@ const Page = () => {
   const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
-  let user_id: any;
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-      routing.push('/')
-    }
-    const user = JSON.parse(localStorage.getItem('account') || '{}');
-    user_id = user?.check_email?._id ?? '';
+  let user = useCheck_user() ?? undefined;
+  if (!user){
+    routing.push('/')
   }
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -40,7 +37,7 @@ const Page = () => {
   const mutate_order = Mutation_Order('ADD_and_RESTORE_BUY_ITEM');
   function on_Order(infor_user_form: any) {
     const data_order = {
-      user_id: user_id,
+      user_id: user?.check_email?._id,
       action_mutate: action_mutation,
       action_order: list_item_order?.action,
       items_order: list_item_order?.items,

@@ -3,8 +3,8 @@
 import React from 'react'
 import MyForm from '@/src/app/Components/Forms/form';
 
-const Add_item_Page = () => {
+const page = () => {
     return (<MyForm/>)
 }
 
-export default Add_item_Page
+export default page

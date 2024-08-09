@@ -4,18 +4,23 @@ import Link from "next/link";
 import Image from "next/image";
 import SideBarDashboard from "./SideBar";
 import { Search_Component_Dashboard } from "../Components/Forms/search";
-import { BellRing } from "lucide-react";
 import { Query_Notification } from "../_lib/Tanstack_Query/Notification/Query_Notification";
 import { useEffect, useState } from "react";
+import io from 'socket.io-client'
 import { useToast } from "../Components/ui/use-toast";
+import Notification_Component from "../Components/Notification/Notification";
+import { useCheck_user } from "../_lib/Custome_Hooks/User";
+import { useRouter } from "next/navigation";
 
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  const routing = useRouter()
+  const socket = io('http://localhost:3000');
+  let user = useCheck_user() ?? '';
+  if(user?.check_email?.role !== 'admin_global' && user?.check_email?.role !== 'admin_local'){
+    routing.push('/');
+  }
   const { toast } = useToast();
   const [count_bell, setCount_bell] = useState(0)
-  let user: any;
-  if (typeof window !== 'undefined') {
-    user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
-  }
   const data = Query_Notification(user?.check_email?._id);
   useEffect(() => {
     if (!data?.isLoading && !data?.isError) {
@@ -30,6 +35,16 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
       }
     }
   }, [data?.data?.data_notification, count_bell]);
+
+  useEffect(() => {
+    socket.on('res_seller_message', (data: string) => {
+      toast({
+        title: data,
+        className: 'bg-gray-900 border-none text-white',
+        duration: 800
+      })
+    })
+  }, [socket])
 
   let total_bell: any;
   if (data?.data?.data_notification) {
@@ -48,15 +63,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
           <div className="flex items-center gap-x-8">
             {/* chuong */}
             <Link href={'/admin/notification'} className="cursor-pointer relative text-gray-100 group">
-              <BellRing className="text-gray-100" />
-              {
-                data?.data &&
-                <span className="absolute w-5 h-5 rounded-[50%] text-white flex items-center justify-center -bottom-[20%] -right-1/4 bg-red-500 text-xs">{total_bell?.length}</span>
-              }
-              {
-                data?.data &&
-                <span className="hidden group-hover:block z-[10] fixed text-sm -translate-x-3/4 top-14 p-2 bg-[#111827] rounded">Bạn có {total_bell?.length} thông báo!</span>
-              }
+              <Notification_Component dataProps={{ data: data?.data, total_bell: total_bell }} />
             </Link>
             {/* logo account */}
             <div>
@@ -65,7 +72,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
           </div>
         </header>
         {/* side bar */}
-        <main className="items-start gap-x-6 w-full grid lg:grid-cols-[200px_auto] grid-cols-[auto_auto] gap-x-10">
+        <main className="items-start gap-x-6 w-full grid lg:grid-cols-[200px_auto] grid-cols-[50px_auto] gap-x-10">
           <div className="sticky top-[80px]">
             <SideBarDashboard />
           </div>

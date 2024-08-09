@@ -30,7 +30,6 @@ const Page = () => {
   if (isLoading) {
     return <Loading />
   };
-
   
   function handle_Remove(idItem?: {id_item : string , name_item : string}) {
     const item = {
@@ -147,9 +146,9 @@ const Page = () => {
         {/* {(Array.isArray(data)) ? (<> */}
         <div className="flex items-center gap-x-20 sticky z-[2] top-[70px] bg-[#101824] py-4">
           <div className="flex gap-x-2">
-            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/admin/list_products/add_item'}>Thêm sản phẩm +</Link>
+            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>
           </div>
-          <Link href={'/admin/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
+          <Link href={'/adminstrations/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
             <Trash2 className="text-red-600" />
           </Link>
         </div>

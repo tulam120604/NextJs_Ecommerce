@@ -133,7 +133,7 @@ const Page = () => {
             <div className="flex flex-col gap-y-6 pb-6 rounded">
                 <div className="flex items-center justify-between gap-x-20 sticky top-0 py-6">
                     <strong className="text-gray-200 lg:text-2xl">Danh sách sản phẩm đã xóa</strong>
-                    <Link href={'/admin/list_products/'} className="*:w-[25px] *:h-[30px] text-white hover:underline hover:text-sky-500 cursor-pointer">
+                    <Link href={'/adminstrations/list_products/'} className="*:w-[25px] *:h-[30px] text-white hover:underline hover:text-sky-500 cursor-pointer">
                         Quay lại
                     </Link>
                 </div>

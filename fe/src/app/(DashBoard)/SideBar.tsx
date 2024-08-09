@@ -10,27 +10,27 @@ const SideBarDashboard = () => {
         {
             icon : <House/> ,
             name: 'Bảng điều khiển',
-            pathName: '/admin/dashboard',
+            pathName: '/adminstrations/dashboard',
         },
         {
             icon : <Package/> ,
             name: 'Sản phẩm',
-            pathName: '/admin/list_products',
+            pathName: '/adminstrations/list_products',
         },
         {
             icon : <Contact/> ,
             name: 'Khách hàng',
-            pathName: '/admin/customers',
+            pathName: '/adminstrations/customers',
         },
         {
             icon : <ShoppingBag/> ,
             name: 'Đặt hàng',
-            pathName: '/admin/orders'
+            pathName: '/adminstrations/orders'
         },
         {
             icon : <Settings/> ,
             name: 'Settings',
-            pathName: '/admin/settings'
+            pathName: '/adminstrations/settings'
         }
     ]
 

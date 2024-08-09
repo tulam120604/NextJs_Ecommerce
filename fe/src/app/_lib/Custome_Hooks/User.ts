@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react'
 
-export const useToken = () => {
+export function useToken (){
     const [accessToken, set_AccessToken] = useState();
     const [refeshToken, set_RefeshToken] = useState();
     useEffect(() => {
@@ -17,4 +19,12 @@ export const useToken = () => {
     }
 }
 
- 
+
+export function useCheck_user () {
+    if(typeof window !== 'undefined') {
+        if(localStorage.getItem("account")) {
+            return JSON.parse(localStorage.getItem("account") || '{}');
+        }
+        return;
+    }
+}

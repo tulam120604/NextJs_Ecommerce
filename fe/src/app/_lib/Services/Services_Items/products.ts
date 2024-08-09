@@ -90,7 +90,6 @@ export async function list_ITems_Dashboard(accessToken: any, page: number, limit
     }
 }
 
-
 export async function list_All_Item_Dashboard(token: any) {
     try {
         if (token) {
@@ -98,7 +97,7 @@ export async function list_All_Item_Dashboard(token: any) {
             const res = await fetch(uri, {
                 method: 'get',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${token.accessToken}`,
                     'Content-Type': 'application/json'
                 }
             });

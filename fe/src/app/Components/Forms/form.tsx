@@ -3,15 +3,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Loading from '../../(DashBoard)/admin/list_products/_component/loading';
+import Loading from '../../(DashBoard)/adminstrations/list_products/_component/loading';
 import { Custome_Hooks } from '../../_lib/Custome_Hooks/MyForm';
 import { Button } from '../ui/Tables/button';
 import Link from 'next/link';
 import Form_category from './form_category';
+import { redirect } from 'next/navigation';
 
 
 const MyForm: React.FC<any> = ({ mode }: any) => {
-    const { dataToken, my_Form, submitForm, isLoading, loading, data_Category, routing, data_one_item } = Custome_Hooks({ mode });
+    const { my_Form, submitForm, isLoading, loading, data_Category, routing, data_one_item } = Custome_Hooks({ mode });
     const [change_img, setChange_img] = useState();
     const [stock_quantity, setStock_quantity] = useState<boolean>(false)
     const [category_form, setCategory_form] = useState<boolean>(false)
@@ -25,24 +26,30 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     }]);
     useEffect(() => {
         if (mode) {
-            let data_attr_detail;
-            if (data_one_item?.data?.attributes) {
-                data_attr_detail = my_Form.getValues()?.attributes?.varriants?.map((item: any) => ({
-                    color_item: item?.color_item,
-                    size_item: item?.size_item
-                }));
-                setAttribute(data_attr_detail);
+            if(data_one_item?.data) {
+                let data_attr_detail;
+                if (data_one_item?.data?.attributes) {
+                    data_attr_detail = my_Form.getValues()?.attributes?.varriants?.map((item: any) => ({
+                        color_item: item?.color_item,
+                        size_item: item?.size_item
+                    }));
+                    setAttribute(data_attr_detail);
+                }
+                else {
+                    setAttribute([{
+                        color_item: '',
+                        size_item: [{
+                            name_size: '',
+                            stock_item: '',
+                            price_attribute: 0
+                        }],
+                    }])
+                }
             }
             else {
-                setAttribute([{
-                    color_item: '',
-                    size_item: [{
-                        name_size: '',
-                        stock_item: '',
-                        price_attribute: 0
-                    }],
-                }])
+                redirect('/adminstrations/list_products')
             }
+           
         }
     }, [mode, my_Form.getValues()?.attributes?.varriants]);
     if (loading === 'dang_call') {
@@ -114,7 +121,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         <section className="bg-[#101824] flex flex-col gap-y-6 py-6 rounded">
             <div className='flex items-center justify-between'>
                 <strong className="text-gray-200 lg:text-2xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
-                <Link className='text-white hover:text-gray-200 hover:underline' href={'/admin/list_products'}>Quay lại</Link>
+                <Link className='text-white hover:text-gray-200 hover:underline' href={'/adminstrations/list_products'}>Quay lại</Link>
             </div>
             <div className='relative'>
                 <button onClick={handle_category} type='button' className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-black hover:bg-gray-800 duration-300">Thêm danh mục+</button>

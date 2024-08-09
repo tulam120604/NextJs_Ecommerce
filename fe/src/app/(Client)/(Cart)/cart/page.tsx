@@ -17,12 +17,12 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import io from 'socket.io-client';
 import { useToast } from '@/src/app/Components/ui/use-toast'; 
 import { ToastAction } from '@/src/app/Components/ui/toast';
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 
-const socket = io('http://localhost:3000');
 const Cart = () => {
+const socket = io('http://localhost:3000');
   const { toast } =  useToast();
-
   // socket
   useEffect(() => {
     socket.on('res_message', (data : any) => {
@@ -40,15 +40,11 @@ const Cart = () => {
   const routing = useRouter();
   const [content_note_order, setContent_note_order] = useState<string>('')
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
-  let id: any;
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-      routing.push('/')
-    }
-    const user = JSON.parse(localStorage.getItem('account') || '{}');
-    id = user.check_email;
+  let user = useCheck_user() ?? undefined;
+  if (!user) {
+    routing.push('/')
   }
-  const { data, isLoading } = Get_Items_Cart(id?._id);
+  const { data, isLoading } = Get_Items_Cart(user?.check_email?._id);
   const [arr_item_checkbox, setarr_item_checkbox] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -63,11 +59,11 @@ const Cart = () => {
     )
   };
 
-  console.count('re-render cart :');
+  // console.count('re-render cart :');
   const data_checked_true = arr_item_checkbox.filter((item: any) => item?.status_checked && item);
   function remove_all_item_cart() {
     const item = {
-      user_id: id?._id,
+      user_id: user?.check_email?._id,
       key_action: 'remove_all'
     };
     mutate(item);
@@ -75,7 +71,7 @@ const Cart = () => {
 
   function handle_Checkked(id_item: any, color_item: any, size_item: any) {
     const item = {
-      user_id: id?._id,
+      user_id: user?.check_email?._id,
       id_item: id_item,
       color: color_item,
       size: size_item
@@ -173,14 +169,14 @@ const Cart = () => {
                                 <TableCell><span className="md:text-base mb:text-xs text-red-600">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <div className="w-[80%] flex gap-x-4 items-center justify-around md:py-2 mb:py-1 *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
-                                    <Btn_dow id_props={{ id_item: item?.product_id?._id, id_user: id, quantity_item: item?.quantity, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
+                                    <Btn_dow id_props={{ id_item: item?.product_id?._id, id_user: user?.check_email, quantity_item: item?.quantity, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
                                     <strong className="cursor-default">{item?.quantity}</strong>
-                                    <Btn_up id_props={{ id_item: item?.product_id?._id, id_user: id, dataItems: item, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
+                                    <Btn_up id_props={{ id_item: item?.product_id?._id, id_user: user?.check_email, dataItems: item, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
                                   </div>
                                 </TableCell>
                                 <TableCell><span className="md:text-base mb:text-xs text-red-600">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
-                                  <Remove_Item_Cart id_props={{ item: item?._id, id_user: id }} />
+                                  <Remove_Item_Cart id_props={{ item: item?._id, id_user: user?.check_email }} />
                                 </TableCell>
                               </TableRow>
                               :
@@ -210,14 +206,14 @@ const Cart = () => {
                                 <TableCell><span className="md:text-base mb:text-xs text-red-500">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
                                   <div className="w-[80%] flex gap-x-4 items-center justify-around md:py-2 mb:py-1 *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
-                                    <Btn_dow id_props={{ item: item?.product_id?._id, id_user: id }} />
+                                    <Btn_dow id_props={{ item: item?.product_id?._id, id_user: user?.check_email }} />
                                     <strong className="cursor-default">{item?.quantity}</strong>
-                                    <Btn_up id_props={{ item: item?.product_id?._id, id_user: id, quantity_items_cart: item?.quantity }} />
+                                    <Btn_up id_props={{ item: item?.product_id?._id, id_user: user?.check_email, quantity_items_cart: item?.quantity }} />
                                   </div>
                                 </TableCell>
                                 <TableCell ><span className="md:text-base mb:text-xs text-red-500">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
-                                  <Remove_Item_Cart id_props={{ item: item?.product_id?._id, id_user: id }} />
+                                  <Remove_Item_Cart id_props={{ item: item?.product_id?._id, id_user: user?.check_email }} />
                                 </TableCell>
                               </TableRow>
                           )

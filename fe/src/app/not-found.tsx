@@ -1,9 +1,7 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
-const Not_found = () => {
+const NotFound = () => {
     return (
         <div className="grid h-screen place-content-center bg-white px-4">
             <div className="text-center flex flex-col gap-y-2 items-center">
@@ -23,4 +21,4 @@ const Not_found = () => {
     )
 }
 
-export default Not_found
+export default NotFound

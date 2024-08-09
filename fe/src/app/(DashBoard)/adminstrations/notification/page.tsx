@@ -4,12 +4,15 @@ import { Mutation_Auth } from '@/src/app/_lib/Tanstack_Query/Auth/auth_mutation'
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification';
 import { Query_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Query_Notification';
 import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import io from 'socket.io-client';
 import { AlertDialog } from '@/src/app/Components/ui/alert-dialog';
 import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/Components/ui/dialog/alert-dialog';
 import { CircleCheck } from 'lucide-react';
 import React from 'react'
 
+
 export default function Page() {
+    const socket = io('http://localhost:3000');
     let user: any;
     if (typeof window !== 'undefined') {
         user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
@@ -31,8 +34,9 @@ export default function Page() {
         action: 'GRANTING_PREMISSIONS'
     });
 
-    function onSubmitGranting (id_sender : string | number) {
-        granting_premission?.onSubmit(id_sender);
+    function onSubmitGranting (item : any) {
+        granting_premission?.onSubmit(item);
+        socket.emit('confirm_granting_premission_account', 'Đại vương có 1 thông báo mới!')
     }
 
     return (
@@ -54,7 +58,7 @@ export default function Page() {
                                         <AlertDialogTrigger asChild onClick={() => sendMessage(item)}>
                                             <li className='block h-full rounded-lg border border-gray-700 p-4 hover:border-gray-500 cursor-pointer *:flex *:justify-between'>
                                                 <div>
-                                                    <strong className="font-medium text-white">{item?.sender_id?.user_name}</strong>
+                                                    <strong className="font-medium text-white">Từ {item?.sender_id?.user_name}</strong>
                                                     {item.status_message &&
                                                         <span className='text-sm flex gap-x-2 items-center font-medium text-gray-300'><CircleCheck className='w-4 text-green-500' />Đã xem </span>
                                                     }
@@ -93,7 +97,7 @@ export default function Page() {
                                                 <div className='flex gap-x-3'>
                                                     {
                                                         item?.notes &&
-                                                        <AlertDialogCancel onClick={() => onSubmitGranting(item?.sender_id)} className='text-gray-100 border-none bg-green-600 hover:!bg-green-800 hover:!text-gray-200'>
+                                                        <AlertDialogCancel onClick={() => onSubmitGranting(item)} className='text-gray-100 border-none bg-green-600 hover:!bg-green-800 hover:!text-gray-200'>
                                                             Chấp nhận
                                                         </AlertDialogCancel>
                                                     }
