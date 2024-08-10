@@ -14,7 +14,7 @@ const Page = () => {
   const { data: account } = List_Account(token.accessToken);
   const { data: category } = Query_Category();
   return (
-    <Suspense fallback={<Loading_Dots/>}>
+    <Suspense fallback={<Loading_Dots />}>
       <div className='py-4 text-gray-100'>
         <strong className='text-2xl'>Bảng điều khiển</strong>
         <div className='grid lg:grid-cols-4 grid-cols-3 *:p-6 *:rounded-xl *:border *:border-gray-200 gap-6 my-6'>

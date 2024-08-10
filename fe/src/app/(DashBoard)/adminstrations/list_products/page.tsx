@@ -2,20 +2,20 @@
 'use client';
 
 import Link from "next/link"
-import { Suspense} from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
-import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
 import Pagination_Component from "./_component/Pagination";
 import { Trash2 } from "lucide-react";
-import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
 import { useSearchParams } from "next/navigation";
 import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 import io from 'socket.io-client';
+import { Button } from "@/src/app/Components/ui/dialog/button";
+
 
 const socket = io('http://localhost:3000');
 const Page = () => {
@@ -27,118 +27,147 @@ const Page = () => {
     action: "REMOVE"
   });
 
+  // close socket 
+  useEffect(() => {
+    socket.on("connect_error", () => {
+      socket.disconnect();
+    })
+    return () => { socket.disconnect() };
+  }, []);
+
   if (isLoading) {
     return <Loading />
   };
-  
-  function handle_Remove(idItem?: {id_item : string , name_item : string}) {
+
+  function handle_Remove(idItem?: { id_item: string, name_item: string }) {
     const item = {
       accessToken: token.accessToken,
       refeshToken: token,
       id_item: idItem?.id_item
     }
     on_Submit(item);
-    socket.emit('send_message', idItem)
+    socket.emit('send_message', idItem);
   }
 
+  // render items and attributes
+  function Data_table({ dataTable }: any) {
+    return (<>
+      <div className="grid text-gray-200 grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between py-4">
+        <span>Ảnh</span>
+        <span>Tên</span>
+        <span>Thể loại</span>
+        <span>Doanh số</span>
+        <span>Giá tiền</span>
+        <span>Số lượng</span>
+        <span>Xuất xứ</span>
+        <span>Thao tác</span>
+      </div>
+      {
+        dataTable?.map((data: any) => {
+          return (
+            <div key={data?._id} className="flex flex-col w-full text-gray-100 border-y border-gray-600">
+              <div className="grid grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between py-4">
+                {/* image */}
+                <Image width={100} height={100} className="rounded" src={data?.feature_product} alt="Loading..." />
+                {/* name */}
+                <span className="line-clamp-3">{data?.short_name}</span>
+                {/* category */}
+                <span className="line-clamp-2">{data?.category_id?.category_name}</span>
+                {/* sales */}
+                <span className="line-clamp-2">{0}</span>
+                {/* price */}
+                <span className="line-clamp-2">{data?.price_product}</span>
+                {/* stock */}
+                <span className="line-clamp-2">{data?.stock}</span>
+                {/* made in */}
+                <span className="line-clamp-2">{data?.made_in}</span>
+                {/* options */}
+                <div className="flex justify-center items-center gap-x-2 *:duration-200">
+                  <Link href={`/admin/list_products/${data?._id}`} className="hover:scale-110 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /><path d="M8 18h1" /></svg>
+                  </Link>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Trash2 className="text-red-600 w-5 h-5" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Xác nhận xóa sản phẩm?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Bạn chắc chắn xóa sản phẩm mã {data?._id} ? Bạn có thể khôi phục tại thùng rác.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Hủy</AlertDialogCancel>
+                        <AlertDialogAction className="bg-red-500" onClick={() => handle_Remove({ id_item: data?._id, name_item: data?.short_name })}>Xác nhận</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
+              {/* options */}
 
-  const columns: ColumnDef<any>[] = [
-    {
-      cell: ({ row }) => (
-        <div key={row?.original?._id} className="max-w-[200px] line-clamp-3">{row?.original?.short_name}</div>
-      ),
-      header: "Tên sản phẩm",
-    },
-    {
-      accessorKey: "category_id.category_name",
-      header: "Danh mục",
-    },
-    {
-      cell: ({ row }) => (
-        <Image width={100} height={100} className="w-[100px] h-[100px] rounded" src={row?.original?.feature_product} alt="Loading..." />
-      ),
-      header: "Ảnh",
-    },
-    {
-      cell: ({ row }) => {
-        return (
-          row?.original?.attributes?.varriants?.map((item: any) => {
-            return (<div key={row?.original?._id} className="max-w-[200px]">
-              <span>{item.color_item}</span>
               {
-                item?.size_item.map((i: any) => {
-                    return (<>
-                    {
-                      i?.name_size && <span>&#160; &#10539; &#160;</span>
-                    }
-                    <span key={i._id}>{i?.name_size}</span> <br />
-                    </>)
-                })
-              }
-            </div>)
-          }))
-      },
-      header: "Phân loại",
-    },
-    {
-      cell: ({ row }) => {
-        return (row?.original?.price_product ?
-          <span className="text-red-600">{row?.original?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
-          row?.original?.attributes?.varriants?.map((item: any) => {
-            return (<div key={row?.original?._id} className="max-w-[200px]">
-              {
-                item?.size_item.map((i: any) => {
-                  if (i.name_size) {
-                    return (<>
-                      <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> <br />
-                    </>)
+                data?.attributes &&
+                <details className="group [&_summary::-webkit-details-marker]:hidden" open={true}>
+                  <summary
+                    className="flex cursor-pointer items-center justify-between px-4 py-1 w-[100px] mx-auto ">
+                    <span className="group-open:block hidden">Đóng</span>
+                    <span className="group-open:hidden">Hiện</span>
+                    <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </summary>
+                  {
+                    data?.attributes &&
+                    (
+                      data?.attributes?.varriants?.map((item: any) => (
+                        item?.size_item?.map((value: any) => (
+                          <div key={item?._id} className="grid border-y duration-200 border-gray-800 grid-cols-[100px_200px_150px_100px_150px_150px_150px_50px] items-center text-start justify-between py-4">
+                            <div></div>
+                            {/* attributes */}
+                            <div className="flex gap-x-2 w-full">
+                              <span className="line-clamp-3">{item?.color_item}</span>,
+                              <span className="line-clamp-3">{value?.name_size}</span>
+                            </div>
+                            {/* div giả */}
+                            <div></div>
+                            {/* sales */}
+                            <span>0</span>
+                            {/* price */}
+                            <span className="line-clamp-1 text-red-600">{value?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                            {/* quantity */}
+                            <div>
+                              {
+                                value?.stock_item > 0 ?
+                                  <span className="line-clamp-2">{value?.stock_item}</span> :
+                                  <span className="line-clamp-2 text-red-500">Hết hàng!</span>
+                              }
+                            </div>
+                          </div>
+                        ))
+                      ))
+                    )
                   }
-                  else {
-                    return <span key={i._id} className="text-red-600">{i?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-                  }
-                })
+                </details>
               }
-            </div>)
-          }))
-
-      },
-      header: "Đơn giá",
-    },
-    {
-      accessorKey: "count_stock",
-      header: "Số lượng",
-    },
-    {
-      accessorKey: "made_in",
-      header: "Xuất xứ",
-    },
-    {
-      cell: ({ row }) => (<div className="flex items-center gap-x-2 *:duration-200">
-        <Link href={`/admin/list_products/${row?.original?._id}`} className="hover:scale-110 ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /><path d="M8 18h1" /></svg>
-        </Link>
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <Trash2 className="text-red-600 w-5 h-5" />
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Xác nhận xóa sản phẩm?</AlertDialogTitle>
-              <AlertDialogDescription>
-                Bạn chắc chắn xóa sản phẩm mã {row?.original?._id} ? Bạn có thể khôi phục tại thùng rác.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Hủy</AlertDialogCancel>
-              <AlertDialogAction className="bg-red-500" onClick={() => handle_Remove({id_item : row?.original?._id , name_item : row?.original?.short_name})}>Xác nhận</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      </div>),
-      header: "Thao tác",
-    },
-  ]
-
+            </div>
+          )
+        })
+      }
+    </>)
+  }
   return (
     <Suspense fallback={<Loading_Dots />}>
       <div className=" flex flex-col gap-y-6 py-6 rounded">
@@ -156,7 +185,7 @@ const Page = () => {
           data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
             data?.data ? (<>
               {isLoading ? <Loading_Dots /> :
-                <DataTable columns={columns} data={data?.data?.docs} />
+                <Data_table dataTable={data?.data?.docs} />
               }
             </>)
               : <span className="text-gray-200">Không có dữ liệu</span>
@@ -164,8 +193,6 @@ const Page = () => {
         <div className="text-gray-100">
           <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
         </div>
-        {/* </>)
-          : <span className="text-white">Bạn không có quyền truy cập !</span>} */}
       </div>
     </Suspense>
   )

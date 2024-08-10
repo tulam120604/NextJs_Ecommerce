@@ -77,7 +77,7 @@ export async function list_Account(accessToken: string) {
             }
         })
         if (!res.ok) {
-            console.error('Lỗi rồi đại vương ơi!!')
+            return res
         };
         const data = await res.json();
         return data
@@ -120,11 +120,47 @@ export async function logout (token : string) {
             }
         });
         if (!res.ok){
-            toast.error('Đăng xuất thất bại, vui lòng thử lại sau!', {autoClose : 500})
+            toast.error('Đăng xuất thất bại, vui lòng thử lại sau!', {autoClose : 500});
             return res;
         };
         return res
     } catch (error) {
         return 'Lỗi rồi đại vương ơi!!'
+    }
+}
+
+// refesh token 
+export async function refesh_token (token : { refeshToken : string }) {
+    try {
+        const res = await fetch (`${apiURi}/refesh_token`, {
+            method : 'post',
+            headers : {
+                'Authorization' : token?.refeshToken
+            }
+        })
+        if (!res.ok){
+            toast.error('Không thể xác minh danh tính, vui lòng đăng nhập và thử lại sau!', {autoClose : 500});
+            return res
+        }
+        const data = await res.json();
+        return data
+    } catch (error){
+        return 'Lỗi rồi đại vương ơi!!' || error
+    }
+}
+
+
+// check token expired 
+export async function check_token_expired (accessToken : string) {
+    try {
+        const res = await fetch (`${apiURi}/check_token_expired`, {
+            method : 'get',
+            headers : {
+                "Authorization" : `Bearer ${accessToken}`
+            }
+        })
+        return res
+    } catch (error) {
+        return 'Lỗi rồi đại vương ơi!!' || error
     }
 }

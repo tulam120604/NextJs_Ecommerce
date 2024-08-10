@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 import { AlertDialog } from '@/src/app/Components/ui/alert-dialog';
 import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/Components/ui/dialog/alert-dialog';
 import { CircleCheck } from 'lucide-react';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 export default function Page() {
@@ -28,6 +28,13 @@ export default function Page() {
             mutate_notification.mutate(data_body);
         }
     }
+
+    useEffect(() => {
+        socket.on('disconnect', () => {
+            socket.disconnect()
+        })
+        return () => {socket.disconnect()}
+    }, [])
 
     // granting premissionss
     const granting_premission = Mutation_Auth({

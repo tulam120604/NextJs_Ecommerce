@@ -100,7 +100,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     }
 
     if (loading === 'call_ok') {
-        routing.push('/admin/list_products')
+        routing.push('/adminstrations/list_products')
     };
 
     function handle_category() {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { infor_user, list_Account } from "../../Services/Services_Auth/Authen";
+import { check_token_expired, infor_user, list_Account } from "../../Services/Services_Auth/Authen";
 
 export function List_Account(accessToken: any) {
     const { data, ...rest } = useQuery({
@@ -12,19 +12,29 @@ export function List_Account(accessToken: any) {
         },
         enabled: !!accessToken
     })
-    return {data, ...rest};
-} 
+    return { data, ...rest };
+}
 
-export function Infor_user (id : string | number) {
-    const {data, ...rest} = useQuery({
-        queryKey : ['Account_Key', id],
-        queryFn : async () => {
+export function Infor_user(id: string | number) {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Account_Key', id],
+        queryFn: async () => {
             if (id) {
                 return await infor_user(id);
             };
             return 'Không thể xác minh danh tính!!'
         },
-        enabled : !!id
+        enabled: !!id
     });
-    return {data, ...rest};
+    return { data, ...rest };
+}
+
+
+// check expired
+export function Check_token_expired(accessToken: any) {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Check_expired_Key', accessToken],
+        queryFn: () => check_token_expired(accessToken)
+    })
+    return { data, ...rest }
 }

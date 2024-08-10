@@ -1,5 +1,5 @@
 import express from 'express';
-import { get_Detail_Client, get_Detail_Dashboard, get_item_by_category, get_Item_Client, get_Item_Dashboard, search_Item } from '../../Controllers/Products/Get';
+import { get_Detail_Client, get_Detail_Dashboard, get_item_by_category, get_item_by_user, get_Item_Client, get_Item_Dashboard, search_Item } from '../../Controllers/Products/Get';
 import { Create_Product } from '../../Controllers/Products/Create';
 import { middleWare } from '../../middleware/Auth';
 import upload from '../../middleware/multer';
@@ -21,6 +21,7 @@ RoutesProducts.delete('/products/destroy_item/:id', middleWare , destroy_items);
 RoutesProducts.put('/products/admin/:id',upload.single('feature_product'), middleWare , edit_Product);
 RoutesProducts.get('/products/admin/trash', middleWare , get_recycle_items);
 RoutesProducts.patch('/products/admin/trash/:id', middleWare , restore_item);
+RoutesProducts.get('/product/sellers/:id_user', get_item_by_user)
 
 
 export default RoutesProducts;

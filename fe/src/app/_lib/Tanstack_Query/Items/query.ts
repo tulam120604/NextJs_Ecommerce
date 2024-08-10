@@ -53,7 +53,7 @@ export function Detail_Item_Dashboard (id : string | number)  {
 // get all item admin
 export function Query_List_All_Items_Dashboard(accessToken: any) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Product_Key'],
+        queryKey: ['Product_Key', accessToken],
         queryFn: async () => {
             if (accessToken) {
                 return await list_All_Item_Dashboard(accessToken);

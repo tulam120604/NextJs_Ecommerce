@@ -3,12 +3,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
-import { create_Account, granting_premissions, logout, sign_In } from "../../Services/Services_Auth/Authen";
+import { create_Account, granting_premissions, logout, refesh_token, sign_In } from "../../Services/Services_Auth/Authen";
+import { useCheck_user } from "../../Custome_Hooks/User";
 
 
-type Actions = "LOGIN" | "REGISTER" | "GRANTING_PREMISSIONS" | "LOGOUT";
+type Actions = "LOGIN" | "REGISTER" | "GRANTING_PREMISSIONS" | "LOGOUT" | "REFESH_TOKEN";
 
 export function Mutation_Auth({ action }: { action: Actions }) {
+    const user = useCheck_user();
     let check_validate_register: any;
     if (action === 'REGISTER') {
         check_validate_register = yupResolver(schemaValidateRegister)
@@ -31,6 +33,8 @@ export function Mutation_Auth({ action }: { action: Actions }) {
                     return await granting_premissions(dataClient);
                 case "LOGOUT":
                     return await logout(dataClient);
+                case "REFESH_TOKEN" :
+                    return await refesh_token(dataClient)
                 default: return
             }
         }, onSuccess: (res: any) => {
@@ -42,6 +46,13 @@ export function Mutation_Auth({ action }: { action: Actions }) {
             }
             else {
                 setStatus_Loading('call_error');
+            }
+            if (res?.new_token) {
+                const new_localStorage = {
+                    ...user,
+                    accessToken : res?.new_token,
+                }
+                localStorage.setItem('account' , JSON.stringify(new_localStorage))
             }
         }
     })

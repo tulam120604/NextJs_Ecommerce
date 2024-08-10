@@ -13,6 +13,10 @@ const schema_Products = new mongoose.Schema({
     feature_product: {
         type: Object,
     },
+    id_user_seller : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Account'
+    },
     gallery: [],
     price_product: Number,
     trending: {

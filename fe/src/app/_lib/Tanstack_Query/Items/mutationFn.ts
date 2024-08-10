@@ -34,7 +34,7 @@ export function Mutation_Items({action , onSuccess, onError, onSettled} : {actio
             query_client.invalidateQueries({
                 queryKey: ['Product_Key']
             });
-            if (res.status === 400) {
+            if (res.status === 400 || res.status === 500) {
                 setLoading('call_error');
             }
             else {

@@ -9,19 +9,24 @@ import { useEffect, useState } from "react";
 import io from 'socket.io-client'
 import { useToast } from "../Components/ui/use-toast";
 import Notification_Component from "../Components/Notification/Notification";
-import { useCheck_user } from "../_lib/Custome_Hooks/User";
+import { useCheck_user, useToken } from "../_lib/Custome_Hooks/User";
 import { useRouter } from "next/navigation";
+import { Check_token_expired } from "../_lib/Tanstack_Query/Auth/Query_Auth";
+import { Button } from "../Components/ui/Shadcn/button";
+import { Mutation_Auth } from "../_lib/Tanstack_Query/Auth/auth_mutation";
 
+const socket = io('http://localhost:3000');
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  const routing = useRouter()
-  const socket = io('http://localhost:3000');
+  const routing = useRouter();
+  const token = useToken();
   let user = useCheck_user() ?? '';
-  if(user?.check_email?.role !== 'admin_global' && user?.check_email?.role !== 'admin_local'){
+  if (user?.check_email?.role !== 'admin_global' && user?.check_email?.role !== 'admin_local') {
     routing.push('/');
   }
   const { toast } = useToast();
   const [count_bell, setCount_bell] = useState(0)
   const data = Query_Notification(user?.check_email?._id);
+
   useEffect(() => {
     if (!data?.isLoading && !data?.isError) {
       let data_old = data?.data?.data_notification?.length ?? 0;
@@ -46,9 +51,29 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
     })
   }, [socket])
 
+  useEffect(() => {
+    socket.on('connect_error', () => {
+      socket.disconnect();
+    });
+    return () => { socket.disconnect() }
+  }, []);
   let total_bell: any;
   if (data?.data?.data_notification) {
     total_bell = data?.data?.data_notification?.filter((item: any) => item?.status_message !== true) ?? ''
+  }
+
+  // check token expired
+  const check_expired: any = Check_token_expired(token?.accessToken);
+  const [status_token_expired, setStatus_token_expired] = useState<number>();
+  useEffect(() => {
+    setStatus_token_expired(check_expired?.data?.status)
+  }, [check_expired]);
+  console.log(status_token_expired);
+
+  //  refesh token
+  const mutate_auth = Mutation_Auth({ action: "REFESH_TOKEN" })
+  function refesh_Token() {
+    mutate_auth.onSubmit(token)
   }
   return (
     <div className="w-full bg-[#1F2936] min-h-screen">
@@ -77,7 +102,13 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
             <SideBarDashboard />
           </div>
           <div className="bg-[#111827] min-h-screen rounded *:w-full *:px-4">
-            {children}
+            {
+              (check_expired?.data?.status === 200) ?
+                children :
+                <div className="flex justify-center *:hover:underline *:text-gray-100 my-10">
+                  <Button onClick={refesh_Token}>Làm mới!</Button>
+                </div>
+            }
           </div>
         </main>
         <footer className="text-white text-center py-4 relative mt-auto">@Copyright by Tu Lam</footer>

@@ -90,19 +90,19 @@ export async function list_ITems_Dashboard(accessToken: any, page: number, limit
     }
 }
 
-export async function list_All_Item_Dashboard(token: any) {
+export async function list_All_Item_Dashboard(accessToken: string) {
     try {
-        if (token) {
+        if (accessToken) {
             const uri = `${apiURi}/products/admin`;
             const res = await fetch(uri, {
                 method: 'get',
                 headers: {
-                    'Authorization': `Bearer ${token.accessToken}`,
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
                 }
             });
             if (!res.ok) {
-                console.warn('Call data failer');
+                return res
             };
             const data = await res.json();
             return data
@@ -117,6 +117,7 @@ export async function list_All_Item_Dashboard(token: any) {
 
 // add
 export async function addItem(item: any) {
+    console.log(item);
     try {
         const res = await fetch(`${apiURi}/products`, {
             method: 'post',
@@ -128,8 +129,8 @@ export async function addItem(item: any) {
         });
         // console.log(res);
         if (!res.ok) {
-            toast.success(`Có lỗi xảy ra khi thêm sản phẩm !`, { autoClose: 500 })
-            console.warn('Call data failer');
+            toast.error(`Có lỗi xảy ra khi thêm sản phẩm !`, { autoClose: 500 })
+            return res
         }
         else {
             toast.success(`Tạo sản phẩm thành công!`, { autoClose: 500 })

@@ -12,7 +12,7 @@ export async function get_Item_Dashboard(req, res) {
     const options = {
         page: _page,
         limit: _limit,
-        sort : {createdAt : -1}
+        sort: { createdAt: -1 }
     }
     try {
         const querry = {};
@@ -46,7 +46,7 @@ export async function get_Item_Dashboard(req, res) {
             })
         };
         return res.status(StatusCodes.OK).json({
-            message: "Done!",
+            message: "OK!",
             data
         })
     }
@@ -68,7 +68,7 @@ export async function get_Item_Client(req, res) {
     const options = {
         page: _page,
         limit: _limit,
-        sort : {createdAt: -1}
+        sort: { createdAt: -1 }
     };
 
     try {
@@ -226,6 +226,40 @@ export async function search_Item(req, res) {
         const data = await Products.find(querry);
         return res.status(StatusCodes.OK).json({
             message: 'Done',
+            data
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Lỗi rồi đại vương ơi!'
+        })
+    }
+}
+
+// get item by user
+export async function get_item_by_user(req, res) {
+    const id_user = req.params.id_user;
+    const {
+        _page = 1,
+        _limit = 50,
+        _search = ''
+    } = req.query
+    try {
+        const options = {
+            page: _page,
+            limit: _limit
+        };
+        const querry = { id_user_seller: id_user };
+        if (_search) {
+            querry.$and = [
+                {
+                    short_name: { $regex: new RegExp(_search, 'i') }
+                }
+            ]
+        }
+        const data = await Products.paginate(querry, options);
+        await Products.populate(data.docs, { path: 'attributes' });
+        return res.status(StatusCodes.OK).json({
+            message: 'OK',
             data
         })
     } catch (error) {

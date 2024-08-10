@@ -4,13 +4,13 @@ import Account from '../Model/Auth/Account';
 import blacklist_token from '../Model/Blacklist_Token/blacklist_token';
 
 
-async function black_list_token(token) {
-    const tokenBlackList = await blacklist_token.findOne({ token: token });
+export async function black_list_token(tokenClient) {
+    const tokenBlackList = await blacklist_token.findOne({ token: tokenClient });
     return !!tokenBlackList
 }
 
 export function createAccessToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '1d' })
+    return jwt.sign({ userId }, 'tulam', { expiresIn: '20s' })
 }
 
 export function createRefeshToken(userId) {

@@ -1,16 +1,17 @@
 'use client';
 
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { toast } from 'react-toastify';
 import { Detail_Item_Dashboard, Query_Category } from "../Tanstack_Query/Items/query";
 import { Mutation_Items } from "../Tanstack_Query/Items/mutationFn";
-import { useToken } from "./User";
+import { useCheck_user, useToken } from "./User";
 
 
 
 export function Custome_Hooks({ mode }: any) {
+    const user = useCheck_user();
     const token = useToken();
     const { edit_item } = useParams();
     let data_one_item: any;
@@ -18,7 +19,7 @@ export function Custome_Hooks({ mode }: any) {
         data_one_item = Detail_Item_Dashboard(String(edit_item));
     }
     const routing = useRouter();
-   
+
     const { data, isLoading } = Query_Category();
     const data_Category = data;
     // console.log(data_Category)
@@ -30,7 +31,7 @@ export function Custome_Hooks({ mode }: any) {
             })
             my_Form.reset();
             const text_alert = edit_item ? `Sản phẩm mã ${edit_item} đã được sửa !` : "Đã thêm sản phẩm !";
-            toast.success(text_alert, {autoClose: 500})
+            toast.success(text_alert, { autoClose: 500 })
             setTimeout(() => {
                 routing.push('/admin/list_products')
             }, 800);
@@ -60,9 +61,10 @@ export function Custome_Hooks({ mode }: any) {
             const attributesString = JSON.stringify(data_form.attributes);
             const formData = new FormData();
             formData.append('short_name', data_form.short_name);
-            formData.append('feature_product', (typeof data_form.feature_product == 'string') ? data_form.feature_product :  data_form.feature_product[0]);
+            formData.append('feature_product', (typeof data_form.feature_product == 'string') ? data_form.feature_product : data_form.feature_product[0]);
             (data_form.price_product && formData.append('price_product', data_form.price_product))
             formData.append('des_product', data_form.des_product);
+            formData.append('id_user_seller',user?.check_email?._id )
             formData.append('category_id', data_form.category_id && data_form.category_id);
             formData.append('made_in', data_form.made_in);
             (data_form.stock ? formData.append('stock', data_form.stock) : formData.append('attributes', attributesString))
