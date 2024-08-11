@@ -13,7 +13,7 @@ export default function Notification_Component({dataProps} : any) {
               }
               {
                 dataProps?.data &&
-                <span className="hidden group-hover:block z-[10] fixed text-sm -translate-x-3/4 top-14 p-2 bg-[#111827] rounded">Bạn có {dataProps?.total_bell?.length} thông báo!</span>
+                <span className="hidden whitespace-nowrap group-hover:block z-[10] fixed text-sm -translate-x-3/4 top-14 p-2 bg-[#111827] rounded">Bạn có {dataProps?.total_bell?.length} thông báo!</span>
               }
     </div>
   )

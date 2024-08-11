@@ -1,11 +1,14 @@
 'use client';
 
 import { Suspense } from "react"
+import { Auth_Wrap_Admins } from "../_Auth_Wrap/Page";
 
 const Setting_Admin = () => {
   return (
     <Suspense fallback={'Loading'}>
-      <div>page</div>
+      <Auth_Wrap_Admins>
+        <div>page</div>
+      </Auth_Wrap_Admins>
     </Suspense>
   )
 }

@@ -30,7 +30,7 @@ const Form_category = () => {
     // category 
     return (<>
         {mutate_category.isLoading &&
-            <div className='fixed w-screen h-screen bg-[#33333377] top-0 right-0 !z-[5]'>
+            <div className='fixed w-screen h-screen bg-[#33333377] top-0 right-0 !z-[5] grid place-items-center'>
                 <Loading_Dots />
             </div>
         }

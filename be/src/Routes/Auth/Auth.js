@@ -11,11 +11,7 @@ RoutesAuth.post('/login', Login);
 RoutesAuth.post('/granting_premissions',middleWare, granting_premissions);
 RoutesAuth.post('/logout', logout);
 RoutesAuth.post('/refesh_token', refesh_token);
-RoutesAuth.get('/check_token_expired', middleWare , (req, res) => {
-    return res.status(200).json({
-        message : 'Token còn sống'
-    })
-})
+RoutesAuth.get('/check_token_expired/:id', middleWare , get_detail_user)
 
 
 export default RoutesAuth

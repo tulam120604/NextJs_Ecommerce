@@ -31,10 +31,10 @@ export function Infor_user(id: string | number) {
 
 
 // check expired
-export function Check_token_expired(accessToken: any) {
+export function Check_token_expired(user: any) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Check_expired_Key', accessToken],
-        queryFn: () => check_token_expired(accessToken)
+        queryKey: ['Auth_Key', user],
+        queryFn: () => check_token_expired(user)
     })
     return { data, ...rest }
 }

@@ -124,7 +124,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 <Link className='text-white hover:text-gray-200 hover:underline' href={'/adminstrations/list_products'}>Quay lại</Link>
             </div>
             <div className='relative'>
-                <button onClick={handle_category} type='button' className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-black hover:bg-gray-800 duration-300">Thêm danh mục+</button>
+                <button onClick={handle_category} type='button' className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-indigo-500 hover:bg-indigo-800 duration-300">Thêm danh mục+</button>
                 {category_form && (<>
                     <div onClick={handle_category} className='fixed w-screen h-screen bg-[#00000066] top-0 z-[6] left-0'></div>
                     <Form_category />

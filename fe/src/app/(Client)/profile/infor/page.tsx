@@ -25,9 +25,8 @@ const Page = () => {
             user?.check_email?.role === 'user' ?
             <Link className='text-sm underline' href={'/profile/create_saller'}>Kênh phân phối</Link> :
             user?.check_email?.role === 'seller' ?
-            <Link className='text-sm underline' href={'/profile/create_saller'}>Đi đến kho phân phối</Link> :
+            <Link className='text-sm underline' href={'/adminstrations/list_products'}>Đi đến kho phân phối</Link> :
             <Link className='text-sm underline' href={'/adminstrations/dashboard'}>Bảng điều khiển</Link>
-            
           }
         </div>
         <table className='lg:w-[50%] w-[80%] mx-auto'>

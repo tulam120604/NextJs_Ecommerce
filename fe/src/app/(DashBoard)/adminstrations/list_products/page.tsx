@@ -2,7 +2,7 @@
 'use client';
 
 import Link from "next/link"
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect } from "react";
 import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import Image from "next/image"
@@ -11,22 +11,23 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import Pagination_Component from "./_component/Pagination";
 import { Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
+import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
 import io from 'socket.io-client';
-import { Button } from "@/src/app/Components/ui/dialog/button";
+import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
 
-const socket = io('http://localhost:3000');
 const Page = () => {
+  const socket = io('http://localhost:3000');
   const token = useToken();
+  const user = useCheck_user();
   const searchParams = useSearchParams();
   let page = Number(searchParams.get('_page')) ?? 1;
+  console.log(user)
   const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
-
   // close socket 
   useEffect(() => {
     socket.on("connect_error", () => {
@@ -170,30 +171,32 @@ const Page = () => {
   }
   return (
     <Suspense fallback={<Loading_Dots />}>
-      <div className=" flex flex-col gap-y-6 py-6 rounded">
-        <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
-        {/* {(Array.isArray(data)) ? (<> */}
-        <div className="flex items-center gap-x-20 sticky z-[2] top-[70px] bg-[#101824] py-4">
-          <div className="flex gap-x-2">
-            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>
+      <Auth_Wrap_Seller>
+        <div className=" flex flex-col gap-y-6 py-6 rounded">
+          <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
+          {/* {(Array.isArray(data)) ? (<> */}
+          <div className="flex items-center gap-x-20 sticky z-[2] top-[70px] bg-[#101824] py-4">
+            <div className="flex gap-x-2">
+              <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>
+            </div>
+            <Link href={'/adminstrations/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
+              <Trash2 className="text-red-600" />
+            </Link>
           </div>
-          <Link href={'/adminstrations/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
-            <Trash2 className="text-red-600" />
-          </Link>
+          {
+            data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
+              data?.data ? (<>
+                {isLoading ? <Loading_Dots /> :
+                  <Data_table dataTable={data?.data?.docs} />
+                }
+              </>)
+                : <span className="text-gray-200">Không có dữ liệu</span>
+          }
+          <div className="text-gray-100">
+            <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
+          </div>
         </div>
-        {
-          data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
-            data?.data ? (<>
-              {isLoading ? <Loading_Dots /> :
-                <Data_table dataTable={data?.data?.docs} />
-              }
-            </>)
-              : <span className="text-gray-200">Không có dữ liệu</span>
-        }
-        <div className="text-gray-100">
-          <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
-        </div>
-      </div>
+      </Auth_Wrap_Seller>
     </Suspense>
   )
 }

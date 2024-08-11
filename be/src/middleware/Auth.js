@@ -10,7 +10,7 @@ export async function black_list_token(tokenClient) {
 }
 
 export function createAccessToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '20s' })
+    return jwt.sign({ userId }, 'tulam', { expiresIn: '1d' })
 }
 
 export function createRefeshToken(userId) {
@@ -26,6 +26,7 @@ export async function middleWare(req, res, next) {
                 message: "Khong tim thay token !"
             })
         }
+        console.log(req.headers.authorization)
         const token = req.headers.authorization.split(" ")[1];
         if (await black_list_token(token)) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -52,7 +53,7 @@ export async function middleWare(req, res, next) {
                         message: 'Người dùng không tồn tại!!'
                     })
                 };
-                if (user.role === 'admin_global') {
+                if (user.role === 'admin_global' || user.role === 'seller') {
                     return next();
                 }
                 else if (user.role === 'admin_local') {
