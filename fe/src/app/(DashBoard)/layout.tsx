@@ -6,12 +6,10 @@ import SideBarDashboard from "./SideBar";
 import { Search_Component_Dashboard } from "../Components/Forms/search";
 import { Query_Notification } from "../_lib/Tanstack_Query/Notification/Query_Notification";
 import React, { useEffect, useState } from "react";
-import io from 'socket.io-client'
 import { useToast } from "../Components/ui/use-toast";
 import Notification_Component from "../Components/Notification/Notification";
 import { useCheck_user } from "../_lib/Custome_Hooks/User";
 
-const socket = io('http://localhost:3000');
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   let user = useCheck_user() ?? '';
   // if (user?.check_email?.role === 'user') {
@@ -35,22 +33,6 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
     }
   }, [data?.data?.data_notification, count_bell]);
 
-  useEffect(() => {
-    socket.on('res_seller_message', (data: string) => {
-      toast({
-        title: data,
-        className: 'bg-gray-900 border-none text-white',
-        duration: 800
-      })
-    })
-  }, [socket])
-
-  useEffect(() => {
-    socket.on('connect_error', () => {
-      socket.disconnect();
-    });
-    return () => { socket.disconnect() }
-  }, []);
   let total_bell: any;
   if (data?.data?.data_notification) {
     total_bell = data?.data?.data_notification?.filter((item: any) => item?.status_message !== true) ?? ''
@@ -60,14 +42,14 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
       <div className="lg:w-[1540px] w-[90vw] mx-auto">
         {/* header */}
         <header className="w-full z-[1] bg-[#1F2936] h-[70px] flex items-center justify-between sticky top-0">
-          <Link className='text-sm lg:text-xl font-extrabold font-sans text-gray-100' href={'/admin/dashboard'}>
+          <Link className='text-sm lg:text-xl font-extrabold font-sans text-gray-100' href={'/'}>
             Store88
           </Link>
           <Search_Component_Dashboard />
           {/* options */}
           <div className="flex items-center gap-x-8">
             {/* notification */}
-            <Link href={'/admin/notification'} className="cursor-pointer relative text-gray-100 group">
+            <Link href={'/adminstrations/notification'} className="cursor-pointer relative text-gray-100 group">
               <Notification_Component dataProps={{ data: data?.data, total_bell: total_bell }} />
             </Link>
             {/* logo account */}

@@ -65,10 +65,13 @@ export async function getDetailDashboard(id: number | string) {
 }
 
 // list items dashboard 
-export async function list_ITems_Dashboard(accessToken: any, page: number, limit_item: number) {
+export async function list_ITems_Dashboard(accessToken: any, page: number, limit_item: number, id_user?: string | number) {
     try {
         if (accessToken) {
-            const uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
+            let uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
+            if (id_user){
+                uri =  `${apiURi}/products/sellers/${id_user}?_page=${page}&_limit=${limit_item}`
+            }
             const res = await fetch(uri, {
                 method: 'get',
                 headers: {

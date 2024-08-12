@@ -15,12 +15,12 @@ export function List_Account(accessToken: any) {
     return { data, ...rest };
 }
 
-export function Infor_user(id: string | number) {
+export function Infor_user(id: string | number, accessToken : string) {
     const { data, ...rest } = useQuery({
         queryKey: ['Account_Key', id],
         queryFn: async () => {
             if (id) {
-                return await infor_user(id);
+                return await infor_user(id, accessToken);
             };
             return 'Không thể xác minh danh tính!!'
         },

@@ -53,9 +53,14 @@ export async function create_Account(item: any) {
 }
 
 // infor
-export async function infor_user(id: string | number) {
+export async function infor_user(id: string | number, accessToken : string) {
     try {
-        const res = await fetch(`${apiURi}/infor/${id}`);
+        const res = await fetch(`${apiURi}/infor/${id}`, {
+            method : 'get',
+            headers : {
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        });
         if (!res.ok) {
             return res
         }
@@ -87,14 +92,15 @@ export async function list_Account(accessToken: string) {
 }
 
 // granting_premissions
-export async function granting_premissions(id_user: string | number) {
+export async function granting_premissions(dataForm : {id_user: string | number , accessToken : string}) {
     try {
         const res = await fetch(`${apiURi}/granting_premissions`, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${dataForm?.accessToken}`
             },
-            body: JSON.stringify(id_user)
+            body: JSON.stringify(dataForm?.id_user)
         });
         if (!res.ok) {
             toast.error('Cấp quyền thất bại!', {autoClose : 500});

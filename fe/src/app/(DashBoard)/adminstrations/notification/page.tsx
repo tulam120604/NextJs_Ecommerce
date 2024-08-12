@@ -10,10 +10,12 @@ import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDia
 import { CircleCheck } from 'lucide-react';
 import React, { Suspense, useEffect } from 'react'
 import { Auth_Wrap_Seller } from '../_Auth_Wrap/Page';
+import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 
 
 export default function Page() {
     const socket = io('http://localhost:3000');
+    const token = useToken();
     let user: any;
     if (typeof window !== 'undefined') {
         user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
@@ -35,14 +37,18 @@ export default function Page() {
             socket.disconnect()
         })
         return () => { socket.disconnect() }
-    }, [])
+    }, [socket])
 
     // granting premissionss
     const granting_premission = Mutation_Auth({
         action: 'GRANTING_PREMISSIONS'
     });
 
-    function onSubmitGranting(item: any) {
+    function onSubmitGranting(dataForm: any) {
+        const item =  {
+            id_user : dataForm,
+            accessToken : token?.accessToken
+        }
         granting_premission?.onSubmit(item);
         socket.emit('confirm_granting_premission_account', 'Đại vương có 1 thông báo mới!')
     }

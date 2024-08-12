@@ -25,7 +25,7 @@ export function Auth_Wrap_Admins({ children }: Readonly<{ children: React.ReactN
     return <Loading_Dots />
   }
   if (isError || !data?.data?.role || !role_user.includes(data?.data?.role)) {
-    routing.push('/')
+    // routing.push('/')
   }
   return (<>{children}</>)
 }

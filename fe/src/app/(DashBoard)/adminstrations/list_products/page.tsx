@@ -18,16 +18,23 @@ import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
 
 const Page = () => {
+  let id_user;
   const socket = io('http://localhost:3000');
   const token = useToken();
   const user = useCheck_user();
   const searchParams = useSearchParams();
+  const role_user = ['admin_global', 'admin_local'];
   let page = Number(searchParams.get('_page')) ?? 1;
-  console.log(user)
-  const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10);
+  if(!role_user.includes(user?.check_email?.role)){
+    if (user?.check_email?.role === 'seller'){
+      id_user = user?.check_email?._id
+    }
+  }
+  const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10, id_user);
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
+  console.log(data)
   // close socket 
   useEffect(() => {
     socket.on("connect_error", () => {

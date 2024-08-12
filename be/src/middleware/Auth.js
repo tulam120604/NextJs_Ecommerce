@@ -26,7 +26,6 @@ export async function middleWare(req, res, next) {
                 message: "Khong tim thay token !"
             })
         }
-        console.log(req.headers.authorization)
         const token = req.headers.authorization.split(" ")[1];
         if (await black_list_token(token)) {
             return res.status(StatusCodes.UNAUTHORIZED).json({

@@ -14,7 +14,7 @@ import RoutesNotification from './Routes/Notification/Notification';
 import { handle_socket_event } from './socket/handle_socket';
 import { createServer } from 'node:http'
 import { Server } from 'socket.io';
-import mongoose from 'mongoose';
+import RoutesAddress from './Routes/Auth/Address';
 
 dotenv.config();
 const app = express();
@@ -48,6 +48,9 @@ app.use('/v1', RoutesFeedback);
 
 // notification
 app.use('/v1', RoutesNotification)
+
+// address 
+app.use('/v1', RoutesAddress)
 
 
 // web socket

@@ -35,8 +35,14 @@ const Product_Item = ({ dataProps }: any) => {
                         dataProps?.price_product ?
                             <span className="text-[#EB2606]">{(dataProps?.price_product)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
                             <div className="flex items-center gap-x-1 line-clamp-2">
-                            <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>-
-                            <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                                {
+                                    (min === max) ?
+                                        <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
+                                        <>
+                                            <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> -
+                                            <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                                        </>
+                                }
                             </div>
                     }
                     {/* <Btn_Add_Cart data_Btn={dataProps?._id} /> */}

@@ -21,7 +21,7 @@ RoutesProducts.delete('/products/destroy_item/:id', middleWare , destroy_items);
 RoutesProducts.put('/products/admin/:id',upload.single('feature_product'), middleWare , edit_Product);
 RoutesProducts.get('/products/admin/trash', middleWare , get_recycle_items);
 RoutesProducts.patch('/products/admin/trash/:id', middleWare , restore_item);
-RoutesProducts.get('/product/sellers/:id_user', get_item_by_user)
+RoutesProducts.get('/products/sellers/:id_user', get_item_by_user)
 
 
 export default RoutesProducts;
