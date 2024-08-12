@@ -2,16 +2,16 @@
 
 import { Query_Order } from '@/src/app/_lib/Tanstack_Query/Order/Query_order'
 import React, { useState } from 'react'
-import { Button } from "@/src/app/Components/ui/Shadcn/button"
+import { Button } from "@/src/app/_Components/ui/Shadcn/button"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import Link from "next/link"
 import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order'
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/Components/ui/alert-dialog'
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/_Components/ui/alert-dialog'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { DataTable } from '@/src/app/Components/ui/Tables/data_table'
+import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './_component/paginate_order'
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots'
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { CircleCheck } from 'lucide-react'
 
 const Page = () => {

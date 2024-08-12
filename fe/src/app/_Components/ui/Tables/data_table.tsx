@@ -1,6 +1,6 @@
 "use client"
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/src/app/Components/ui/Shadcn/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/src/app/_Components/ui/Shadcn/table"
 import {
   ColumnDef,
   flexRender,

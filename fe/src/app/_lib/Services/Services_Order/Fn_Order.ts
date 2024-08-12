@@ -44,10 +44,15 @@ export async function get_order_user(id_user: any, page: number, limit: number, 
     }
 }
 
-export async function get_all_order(accessToken: any) {
+// list order admin and seller
+export async function get_all_order(accessToken: string, id_seller?: string | number) {
     try {
         if (accessToken) {
-            const res = await fetch(`${apiURi}/list_orders`, {
+            let uri = `${apiURi}/list_orders`
+            if (id_seller) {
+                uri = `${apiURi}/list_order_seller/${id_seller}`
+            }
+            const res = await fetch(uri, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,11 +87,22 @@ export async function update_status_order(dataClient: any) {
             body: JSON.stringify(dataClient.item)
         })
         if (!res.ok) {
-            toast.error('Hủy đơn không thành công!', { autoClose: 500 });
-            console.log('Lỗi rồi đại vương ơi!')
+            if (dataClient?.action === 'admin') {
+                toast.error('Cập nhật không thành công!', { autoClose: 500 });
+                console.log('Lỗi rồi đại vương ơi!')
+            }
+            else {
+                toast.error('Hủy đơn không thành công!', { autoClose: 500 });
+                console.log('Lỗi rồi đại vương ơi!')
+            }
             return res
         } else {
-            toast.success('Hủy đơn hàng thành công!', { autoClose: 500 });
+            if (dataClient?.action === 'admin') {
+                toast.error('Cập nhật trạng thái đơn hàng thành công!', { autoClose: 500 });
+            }
+            else {
+                toast.success('Hủy đơn hàng thành công!', { autoClose: 500 });
+            }
         }
         await res.json();
         return res
@@ -121,8 +137,8 @@ export async function restore_buy_order(dataClient: any) {
 
 export async function get_item_order(id_item: string | number) {
     try {
-        const res = await fetch (`${apiURi}/order/feedback/${id_item}`);
-        if (!res.ok){
+        const res = await fetch(`${apiURi}/order/feedback/${id_item}`);
+        if (!res.ok) {
             toast.error('Có lỗi xảy ra, vui lòng kiểm tra lại!', { autoClose: 500 });
             return res
         };

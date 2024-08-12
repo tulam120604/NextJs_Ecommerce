@@ -1,5 +1,5 @@
-import Footer from '../Components/ui/Footer/page';
-import Header from '../Components/ui/Header/page';
+import Footer from '../_Components/ui/Footer/page';
+import Header from '../_Components/ui/Header/page';
 
 export default function Layout_CLient({ children }: Readonly<{ children: React.ReactNode }>) {
     // const routes = useRouter();

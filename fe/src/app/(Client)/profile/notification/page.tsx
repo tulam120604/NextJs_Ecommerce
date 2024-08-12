@@ -2,15 +2,15 @@
 
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
 import { Query_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Query_Notification'
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots'
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/Components/ui/dialog/alert-dialog'
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog'
 import { CircleCheck } from 'lucide-react'
 import Image from 'next/image'
 import io from 'socket.io-client'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { useToast } from '@/src/app/Components/ui/use-toast'
-import { ToastAction } from '@/src/app/Components/ui/toast'
+import { useToast } from '@/src/app/_Components/ui/use-toast'
+import { ToastAction } from '@/src/app/_Components/ui/toast'
 import Link from 'next/link'
 
 
@@ -40,6 +40,7 @@ const Page = () => {
 
   useEffect(() => {
     socket.on('notification_granting_premission_account', (data: string) => {
+      console.log(data)
       toast({
         title: "Thông báo!",
         description: data,

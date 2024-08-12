@@ -1,4 +1,4 @@
-import { Skeleton } from "@/src/app/Components/ui/Skeleton/skeleton"
+import { Skeleton } from "@/src/app/_Components/ui/Skeleton/skeleton"
 
 const LoadingCart = () => {
   return (

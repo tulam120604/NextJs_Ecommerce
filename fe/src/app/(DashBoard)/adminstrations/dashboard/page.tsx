@@ -6,7 +6,7 @@ import { ChartData } from './_component/Chart';
 import { Query_Category, Query_List_All_Items_Dashboard } from '@/src/app/_lib/Tanstack_Query/Items/query';
 import {  List_Account } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Auth';
 import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { Auth_Wrap_Admins } from '../_Auth_Wrap/Page';
 
 const Page = () => {
@@ -16,7 +16,7 @@ const Page = () => {
   const { data: category } = Query_Category();
 
   return (
-    <Suspense fallback={<Loading_Dots />}>
+    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
       <Auth_Wrap_Admins>
         <div className='py-4 text-gray-100'>
           <strong className='text-2xl'>Bảng điều khiển</strong>

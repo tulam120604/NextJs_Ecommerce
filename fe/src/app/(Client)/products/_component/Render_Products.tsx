@@ -1,7 +1,7 @@
-import Product_Item from '@/src/app/Components/Products/Product_Item';
+import Product_Item from '@/src/app/_Components/Products/Product_Item';
 import Paginate_item from './Paginate';
 import Link from 'next/link';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 
 
 

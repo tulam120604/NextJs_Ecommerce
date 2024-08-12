@@ -1,5 +1,5 @@
 import Img_Detail_Product from './_components/Img_detail';
-import Breadcrum from '@/src/app/Components/breadcrum/breadcrum';
+import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
 import { revalidatePath } from 'next/cache';
 import Description from './_components/Description';
 import Infor_seller from './_components/Infor_seller';

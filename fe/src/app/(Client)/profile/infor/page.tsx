@@ -2,7 +2,7 @@
 
 import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'

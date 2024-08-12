@@ -235,7 +235,7 @@ export async function search_Item(req, res) {
     }
 }
 
-// get item by user
+// get item by seller
 export async function get_item_by_user(req, res) {
     const id_user = req.params.id_user;
     const {

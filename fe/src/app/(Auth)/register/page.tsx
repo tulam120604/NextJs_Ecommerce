@@ -1,6 +1,6 @@
 'use client';
 
-import Form_auth from "../../Components/Forms/form_auth";
+import Form_auth from "../../_Components/Forms/form_auth";
 
 
 const Register = () => {

@@ -1,7 +1,7 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { Button } from '../../../Components/ui/Shadcn/button'
+import { Button } from '../../../_Components/ui/Shadcn/button'
 import { get_feedBack_in_item } from '../../../_lib/Services/Service_Feedback/Feedback'
 
 const Description = async ({ dataProps }: any) => {

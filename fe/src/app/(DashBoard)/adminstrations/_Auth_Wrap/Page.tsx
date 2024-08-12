@@ -2,7 +2,7 @@
 
 import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import { Check_token_expired } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Auth';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
@@ -22,7 +22,7 @@ export function Auth_Wrap_Admins({ children }: Readonly<{ children: React.ReactN
   const token = useToken();
   const { data, isLoading, isError } = service_check_token(user?.check_email?._id, token?.accessToken);
   if (isLoading) {
-    return <Loading_Dots />
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'><Loading_Dots /></div>
   }
   if (isError || !data?.data?.role || !role_user.includes(data?.data?.role)) {
     // routing.push('/')
@@ -38,7 +38,7 @@ export function Auth_Wrap_Seller({ children }: Readonly<{ children: React.ReactN
   const user = useCheck_user();
   const { data, isLoading } = service_check_token(user?.check_email?._id, token?.accessToken);
   if (isLoading) {
-    return <Loading_Dots />
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'><Loading_Dots /></div>
   }
   if (!data?.data?.role || !role_user.includes(data?.data?.role)) {
     // routing.push('/')

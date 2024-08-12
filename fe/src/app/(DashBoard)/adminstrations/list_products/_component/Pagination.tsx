@@ -1,5 +1,5 @@
-import { Button } from '@/src/app/Components/ui/button';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/src/app/Components/ui/pagination';
+import { Button } from '@/src/app/_Components/ui/button';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from '@/src/app/_Components/ui/pagination';
 import { useRouter } from 'next/navigation';
 
 

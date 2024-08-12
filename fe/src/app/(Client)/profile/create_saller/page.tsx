@@ -1,8 +1,8 @@
 'use client'
 
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
-import { Button } from '@/src/app/Components/ui/Shadcn/button'
-import { Checkbox } from '@/src/app/Components/ui/Shadcn/checkbox'
+import { Button } from '@/src/app/_Components/ui/Shadcn/button'
+import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox'
 import io from 'socket.io-client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

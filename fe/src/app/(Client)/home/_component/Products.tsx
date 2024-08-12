@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react'
-import List_Products from '../../../Components/Products/List_Products';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import List_Products from '../../../_Components/Products/List_Products';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 
 const Products_Home = ({ dataProps }: any) => {
     // const respon = await getRespon();

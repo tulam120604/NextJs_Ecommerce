@@ -5,14 +5,15 @@ import Link from "next/link"
 import { Suspense, useEffect, useState } from "react";
 import { Query_Recycle_Items_Admin } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
-import Trash_Icon from "@/src/app/Components/Icons/trash";
+import Trash_Icon from "@/src/app/_Components/Icons/trash";
 import Loading from "../_component/loading";
-import Re_store from "@/src/app/Components/Icons/re_store";
+import Re_store from "@/src/app/_Components/Icons/re_store";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image";
 import { toast } from "react-toastify";
-import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
+import { DataTable } from "@/src/app/_Components/ui/Tables/data_table";
 import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 const Page = () => {
     const token = useToken();
@@ -129,7 +130,7 @@ const Page = () => {
     }
 
     return (
-        <Suspense fallback={'Loading...'}>
+        <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
             <div className="flex flex-col gap-y-6 pb-6 rounded">
                 <div className="flex items-center justify-between gap-x-20 sticky top-0 py-6">
                     <strong className="text-gray-200 lg:text-2xl">Danh sách sản phẩm đã xóa</strong>

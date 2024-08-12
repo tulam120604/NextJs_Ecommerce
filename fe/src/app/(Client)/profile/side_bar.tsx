@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Swal from "sweetalert2";
-import { useToast } from "@/src/app/Components/ui/use-toast";
-import Bell_component from "../../Components/Notification/Bell_component";
+import { useToast } from "@/src/app/_Components/ui/use-toast";
+import Bell_component from "../../_Components/Notification/Bell_component";
 import { Box, Heart, User } from "lucide-react";
 import { Mutation_Auth } from "../../_lib/Tanstack_Query/Auth/auth_mutation";
 import { useToken } from "../../_lib/Custome_Hooks/User";
+import { eventEmit } from "../../_Components/ui/Header/Event_emit";
 
 const Side_bar = () => {
     const { toast } = useToast();
@@ -35,11 +36,11 @@ const Side_bar = () => {
                     duration: 800
                 })
                 localStorage.removeItem('account');
-                mutation_auth.onSubmit(token?.accessToken)
-                routing.push('/');
+                mutation_auth.onSubmit(token?.accessToken);
+                eventEmit.emit('logout')
+                // routing.push('/');
             }
         });
-
     }
     return (
         <div className="flex h-full flex-col justify-between bg-white">

@@ -11,12 +11,12 @@ export function Query_Order(id_user: any, page: number, limit: number, status_it
 }
 
 
-export function List_Order_Dashboard(accessToken: any) {
+export function List_Order_Dashboard(accessToken: string | undefined, id_seller: string | number | undefined) {
     const { data, ...rest } = useQuery({
         queryKey: ['Key_Order', accessToken],
         queryFn: async () => {
             if (accessToken) {
-                return await get_all_order(accessToken);
+                return await get_all_order(accessToken, id_seller);
             }
             return 'Đại vương là giả mạo!!'
         }

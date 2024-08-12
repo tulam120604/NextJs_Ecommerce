@@ -1,12 +1,12 @@
 'use client';
 
-import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/src/app/Components/ui/Tables/table";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/src/app/_Components/ui/Tables/table";
 import { Suspense } from "react";
 import { Auth_Wrap_Admins } from "../_Auth_Wrap/Page";
 
 const page = () => {
-  return (<Suspense fallback={<Loading_Dots />}>
+  return (<Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
     <Auth_Wrap_Admins>
       <div className="py-6">
         <strong className="text-gray-200 lg:text-2xl">Tất cả danh mục</strong>

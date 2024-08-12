@@ -10,13 +10,13 @@ import Btn_dow from './_options/btn_dow';
 import Btn_up from './_options/btn_up';
 import Remove_Item_Cart from './_options/remove';
 import { useRouter } from 'next/navigation';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/app/Components/ui/Tables/table';
-import { Checkbox } from '@/src/app/Components/ui/Shadcn/checkbox';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/app/_Components/ui/Tables/table';
+import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
 import io from 'socket.io-client';
-import { useToast } from '@/src/app/Components/ui/use-toast'; 
-import { ToastAction } from '@/src/app/Components/ui/toast';
+import { useToast } from '@/src/app/_Components/ui/use-toast'; 
+import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 

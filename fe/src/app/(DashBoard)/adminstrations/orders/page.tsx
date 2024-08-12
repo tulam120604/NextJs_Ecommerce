@@ -1,21 +1,45 @@
 'use client';
 
-import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
+import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Order_Dashboard } from '@/src/app/_lib/Tanstack_Query/Order/Query_order';
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
-import { DataTable } from '@/src/app/Components/ui/Tables/data_table';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
+import { DataTable } from '@/src/app/_Components/ui/Tables/data_table';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import React, { Suspense } from 'react'
 import Loading from './loading';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
+import { Button } from '@/src/app/_Components/ui/Shadcn/button';
+import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order';
 
 const Page = () => {
   const token = useToken();
-  const { data, isLoading } = List_Order_Dashboard(token.accessToken);
-  
+  const role_user = ['admin_global', 'admin_local'];
+  const user = useCheck_user();
+  let id_seller: string | undefined;
+  if (!role_user.includes(user?.check_email?.role)) {
+    if (user?.check_email?.role === 'seller') {
+      id_seller = user?.check_email?._id
+    }
+  }
+  const { data, isLoading } = List_Order_Dashboard(token?.accessToken, id_seller);
   if (isLoading) {
     return <Loading />
   }
+
+  // update status order
+  // const mutation_status_order = Mutation_Order('UPDATE_STATUS');
+  function change_status(id_item: string, status: number) {
+    // mutation_status_order.mutate({
+    //   order_id: id_item,
+    //   status_item_order: status,
+    //   action: 'admin'
+    // })
+  }
+
+  // if (mutation_status_order?.isLoading) {
+  //   return <Loading_Dots />
+  // }
 
   function status_order(item: any) {
     switch (+item) {
@@ -50,7 +74,6 @@ const Page = () => {
     {
       cell: ({ row }) => (
         row?.original?.items_order?.map((item: any) => {
-          console.log(item);
           return (<div key={item?.product_id?._id} className='flex items-center gap-x-4'>
             <Image width={70} height={100} className='h-[90px] rounded' src={item?.product_id?.feature_product} alt='Loading...' />
             <div className='flex flex-col gap-y-1'>
@@ -72,17 +95,50 @@ const Page = () => {
         </div>
       ),
       'header': "Thông tin"
-    }
-    ,
+    },
     {
       cell: ({ row }) => (
         status_order(row?.original?.status_item_order)
       ),
       'header': "Trạng thái"
+    },
+    {
+      cell: ({ row }) => (row?.original?.status_item_order !== '5' && row?.original?.status_item_order !== '6') &&
+        <div className='flex gap-x-2'>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button className="bg-green-500 hover:!bg-green-700">Xác nhận</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Xác nhận đơn hàng {row?.original?.code_order}?</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Hủy</AlertDialogCancel>
+                <AlertDialogAction className="bg-green-500" onClick={() => change_status(row?.original?._id, 2)}>Xác nhận</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button className="bg-red-500 hover:!bg-red-700">Từ chối</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Từ chối đơn hàng {row?.original?.code_order}?</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Hủy</AlertDialogCancel>
+                <AlertDialogAction className="bg-red-500" onClick={() => change_status(row?.original?._id, 6)}>Từ chối</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>,
+      'header': "Thao tác"
     }
   ]
   return (
-    <Suspense fallback={<Loading_Dots />}>
+    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <div className="flex flex-col gap-y-6 py-6 rounded">
         <strong className="text-gray-200 lg:text-2xl">Đơn hàng</strong>
         <div className="text-gray-200">

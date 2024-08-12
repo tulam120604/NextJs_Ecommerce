@@ -2,8 +2,8 @@
 
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import { List_Account } from "@/src/app/_lib/Tanstack_Query/Auth/Query_Auth";
-import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
-import { DataTable } from "@/src/app/Components/ui/Tables/data_table";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
+import { DataTable } from "@/src/app/_Components/ui/Tables/data_table";
 import { ColumnDef } from "@tanstack/react-table";
 import io from 'socket.io-client'
 import Image from "next/image";
@@ -56,7 +56,7 @@ const CustomersAdmin = () => {
 
 
     return (
-        <Suspense fallback={<Loading_Dots />}>
+        <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
             <Auth_Wrap_Admins>
                 <div className="flex flex-col gap-y-6 py-6 rounded">
                     <strong className="text-gray-200 lg:text-2xl">Khách hàng</strong>

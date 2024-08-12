@@ -7,12 +7,12 @@ import Loading from "./_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Tanstack_Query/Items/query";
 import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/Components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
 import Pagination_Component from "./_component/Pagination";
 import { Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
-import Loading_Dots from "@/src/app/Components/Loadings/Loading_Dots";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 import io from 'socket.io-client';
 import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
@@ -177,7 +177,7 @@ const Page = () => {
     </>)
   }
   return (
-    <Suspense fallback={<Loading_Dots />}>
+    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
       <Auth_Wrap_Seller>
         <div className=" flex flex-col gap-y-6 py-6 rounded">
           <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
@@ -193,7 +193,7 @@ const Page = () => {
           {
             data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
               data?.data ? (<>
-                {isLoading ? <Loading_Dots /> :
+                {isLoading ? <div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>:
                   <Data_table dataTable={data?.data?.docs} />
                 }
               </>)

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCheck_user, useToken } from "../_lib/Custome_Hooks/User";
 import { service_check_token } from "./adminstrations/_Auth_Wrap/Page";
-import Loading_Dots from "../Components/Loadings/Loading_Dots";
+import Loading_Dots from "../_Components/Loadings/Loading_Dots";
 
 const SideBarDashboard = () => {
     const token = useToken();

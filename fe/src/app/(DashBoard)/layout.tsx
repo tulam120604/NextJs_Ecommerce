@@ -3,11 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import SideBarDashboard from "./SideBar";
-import { Search_Component_Dashboard } from "../Components/Forms/search";
+import { Search_Component_Dashboard } from "../_Components/Forms/search";
 import { Query_Notification } from "../_lib/Tanstack_Query/Notification/Query_Notification";
 import React, { useEffect, useState } from "react";
-import { useToast } from "../Components/ui/use-toast";
-import Notification_Component from "../Components/Notification/Notification";
+import { useToast } from "../_Components/ui/use-toast";
+import Notification_Component from "../_Components/Notification/Notification";
 import { useCheck_user } from "../_lib/Custome_Hooks/User";
 
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {

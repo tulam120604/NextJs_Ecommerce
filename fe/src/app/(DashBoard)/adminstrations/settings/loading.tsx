@@ -1,6 +1,6 @@
 'use client';
 
-import Loading_Dots from '@/src/app/Components/Loadings/Loading_Dots';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import React from 'react';
 
 const Loading = () => {

@@ -157,20 +157,20 @@ export async function refesh_token (token : { refeshToken : string }) {
 
 
 // check token expired 
-export async function check_token_expired (user : {id : string , accessToken : string}) {
-    try {
-        const res = await fetch (`${apiURi}/check_token_expired/${user?.id}`, {
-            method : 'get',
-            headers : {
-                "Authorization" : `Bearer ${user?.accessToken}`
-            }
-        });
-        if (!res.ok) {
-            return res;
-        }
-        const data_user = await res.json()
-        return data_user
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!' || error
-    }
-}
+// export async function check_token_expired (user : {id : string , accessToken : string}) {
+//     try {
+//         const res = await fetch (`${apiURi}/check_token_expired/${user?.id}`, {
+//             method : 'get',
+//             headers : {
+//                 "Authorization" : `Bearer ${user?.accessToken}`
+//             }
+//         });
+//         if (!res.ok) {
+//             return res;
+//         }
+//         const data_user = await res.json()
+//         return data_user
+//     } catch (error) {
+//         return 'Lỗi rồi đại vương ơi!!' || error
+//     }
+// }

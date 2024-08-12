@@ -8,6 +8,8 @@ import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
 import Search_icon from '../../Icons/Search';
 import { Search_Component_Client } from '../../Forms/search';
 import Bell_component from '../../Notification/Bell_component';
+import { ShoppingBag } from 'lucide-react';
+import { eventEmit } from './Event_emit';
 
 const Header = () => {
     const routing = useRouter();
@@ -26,21 +28,18 @@ const Header = () => {
         window.addEventListener('scroll', handle_scroll_header);
         return () => window.addEventListener('scroll', handle_scroll_header);
     }, []);
-    // useEffect (() => {
-    //    console.log(window.location.pathname)
-    // }, [])
-
     // login
-    const status_Storage = () => {
-        if (!localStorage.getItem('account')) {
-            setCheckLocal(false)
-            routing.push('/');
-        }
-        else {
-            setCheckLocal(true)
-        }
-    }
     useEffect(() => {
+        const status_Storage = () => {
+            if (!localStorage.getItem('account')) {
+                setCheckLocal(false)
+                routing.push('/');
+            }
+            else {
+                setCheckLocal(true)
+            }
+        }
+        eventEmit.on('logout', () => { setCheckLocal(false) })
         status_Storage();
         window.addEventListener('storage', status_Storage);
         return () => window.removeEventListener('storage', status_Storage);
@@ -104,18 +103,16 @@ const Header = () => {
                         </div>
                     </div>
                     {/* bell */}
-                    <div className='relative cursor-pointer'>
-                        {/* <Bell_icon />
-                        <span className="z-[1] absolute bg-red-500 top-0 -right-1/4 grid place-items-center rounded-[50%] w-[16px] h-[16px] text-xs text-white">0</span> */}
-                        <Bell_component/>
-                    </div>
+                    {
+                        checkLocal &&
+                        <Link href={'/profile/notification'} className='relative cursor-pointer'>
+                            <Bell_component />
+                        </Link>
+                    }
                     {/* cart */}
                     <div className="h-[24px] relative group cursor-pointer">
                         <button onClick={handleCart} className='z-[1] relative' >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 w-[24px]">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 
-                                1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                            </svg>
+                            <ShoppingBag />
                             <Count_Cart />
                         </button>
 
