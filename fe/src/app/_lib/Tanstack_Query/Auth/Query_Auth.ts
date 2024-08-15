@@ -15,7 +15,7 @@ export function List_Account(accessToken: any) {
     return { data, ...rest };
 }
 
-export function Infor_user(id: string | number, accessToken : string) {
+export function Infor_user(id: string | number, accessToken: string) {
     const { data, ...rest } = useQuery({
         queryKey: ['Account_Key', id],
         queryFn: async () => {
@@ -34,7 +34,8 @@ export function Infor_user(id: string | number, accessToken : string) {
 export function Check_token_expired(user: any) {
     const { data, ...rest } = useQuery({
         queryKey: ['Auth_Key', user],
-        queryFn: () => check_token_expired(user)
+        queryFn: () => check_token_expired(user),
+        enabled : !!user?.accessToken
     })
     return { data, ...rest }
 }

@@ -25,8 +25,8 @@ const Page = () => {
   const searchParams = useSearchParams();
   const role_user = ['admin_global', 'admin_local'];
   let page = Number(searchParams.get('_page')) ?? 1;
-  if(!role_user.includes(user?.check_email?.role)){
-    if (user?.check_email?.role === 'seller'){
+  if (!role_user.includes(user?.check_email?.role)) {
+    if (user?.check_email?.role === 'seller') {
       id_user = user?.check_email?._id
     }
   }
@@ -34,7 +34,6 @@ const Page = () => {
   const { on_Submit } = Mutation_Items({
     action: "REMOVE"
   });
-  console.log(data)
   // close socket 
   useEffect(() => {
     socket.on("connect_error", () => {
@@ -60,7 +59,7 @@ const Page = () => {
   // render items and attributes
   function Data_table({ dataTable }: any) {
     return (<>
-      <div className="grid text-gray-200 grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between py-4">
+      <div className="grid text-gray-900 grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between p-4">
         <span>Ảnh</span>
         <span>Tên</span>
         <span>Thể loại</span>
@@ -73,8 +72,8 @@ const Page = () => {
       {
         dataTable?.map((data: any) => {
           return (
-            <div key={data?._id} className="flex flex-col w-full text-gray-100 border-y border-gray-600">
-              <div className="grid grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between py-4">
+            <div key={data?._id} className="flex flex-col w-full text-gray-800 border-t border-gray-300">
+              <div className="grid grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between p-4">
                 {/* image */}
                 <Image width={100} height={100} className="rounded" src={data?.feature_product} alt="Loading..." />
                 {/* name */}
@@ -91,7 +90,7 @@ const Page = () => {
                 <span className="line-clamp-2">{data?.made_in}</span>
                 {/* options */}
                 <div className="flex justify-center items-center gap-x-2 *:duration-200">
-                  <Link href={`/admin/list_products/${data?._id}`} className="hover:scale-110 ">
+                  <Link href={`/adminstrations/list_products/${data?._id}`} className="hover:scale-110 ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2" /><path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" /><path d="M8 18h1" /></svg>
                   </Link>
                   <AlertDialog>
@@ -142,7 +141,7 @@ const Page = () => {
                     (
                       data?.attributes?.varriants?.map((item: any) => (
                         item?.size_item?.map((value: any) => (
-                          <div key={item?._id} className="grid border-y duration-200 border-gray-800 grid-cols-[100px_200px_150px_100px_150px_150px_150px_50px] items-center text-start justify-between py-4">
+                          <div key={item?._id} className="grid border-t duration-200 border-gray-300 grid-cols-[100px_200px_150px_100px_150px_150px_150px_50px] items-center text-start justify-between py-4">
                             <div></div>
                             {/* attributes */}
                             <div className="flex gap-x-2 w-full">
@@ -177,24 +176,21 @@ const Page = () => {
     </>)
   }
   return (
-    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
+    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Seller>
-        <div className=" flex flex-col gap-y-6 py-6 rounded">
-          <strong className="text-gray-200 lg:text-2xl">Danh mục sản phẩm</strong>
+        <div className=" flex flex-col gap-y-6 py-4 rounded">
+        <strong className='text-2xl'>Danh sách sản phẩm</strong>
           {/* {(Array.isArray(data)) ? (<> */}
-          <div className="flex items-center gap-x-20 sticky z-[2] top-[70px] bg-[#101824] py-4">
-            <div className="flex gap-x-2">
-              <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>
-            </div>
-            <Link href={'/adminstrations/list_products/recycle'} className="absolute right-0 *:w-[25px] *:h-[30px] cursor-pointer">
-              <Trash2 className="text-red-600" />
-            </Link>
+          <div className="sticky z-[2] top-20">
+            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>
           </div>
           {
-            data?.status === 401 ? <span className="text-gray-200 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
+            data?.status === 401 ? <span className="text-gray-900 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
               data?.data ? (<>
-                {isLoading ? <div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>:
-                  <Data_table dataTable={data?.data?.docs} />
+                {isLoading ? <div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div> :
+                  <div className="bg-white rounded-lg border px-4">
+                    <Data_table dataTable={data?.data?.docs} />
+                  </div>
                 }
               </>)
                 : <span className="text-gray-200">Không có dữ liệu</span>

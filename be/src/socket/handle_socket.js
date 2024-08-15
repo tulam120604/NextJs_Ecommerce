@@ -13,6 +13,10 @@ export function handle_socket_event (io) {
             io.emit('res_seller_message', data)
         })
 
+        socket.on('send_status_item_order_to_user', (data) => {
+            io.emit('res_status_item_order_to_user', data)
+        })
+
         socket.on("disconnect", () => {
             console.log('Client disconnected!')
         })

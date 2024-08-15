@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from "@/src/app/_Components/ui/Shadcn/button";
 import { Mutation_Cart } from "@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart";
 import Swal from "sweetalert2";
 
@@ -42,7 +43,7 @@ const Btn_dow = ({ id_props }: any) => {
     }
   }
   return (
-    <button type="button" onClick={() => dow_quantity(id_props.id_item)} className='border-none px-1.5 hover:scale-110 duration-200'>&#8722;</button>
+    <Button type="button" onClick={() => dow_quantity(id_props.id_item)} className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>&#8722;</Button>
   )
 }
 

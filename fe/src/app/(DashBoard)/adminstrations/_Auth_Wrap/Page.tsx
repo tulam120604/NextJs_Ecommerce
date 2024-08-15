@@ -22,10 +22,15 @@ export function Auth_Wrap_Admins({ children }: Readonly<{ children: React.ReactN
   const token = useToken();
   const { data, isLoading, isError } = service_check_token(user?.check_email?._id, token?.accessToken);
   if (isLoading) {
-    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'><Loading_Dots /></div>
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'>
+      <div className='flex flex-col gap-y-3'>
+        <Loading_Dots />
+        <span className='text-gray-900'>Đang xác minh danh tính</span>
+      </div>
+    </div>
   }
-  if (isError || !data?.data?.role || !role_user.includes(data?.data?.role)) {
-    // routing.push('/')
+  if (!role_user.includes(data?.data?.role)) {
+    routing.push('/')
   }
   return (<>{children}</>)
 }
@@ -38,10 +43,15 @@ export function Auth_Wrap_Seller({ children }: Readonly<{ children: React.ReactN
   const user = useCheck_user();
   const { data, isLoading } = service_check_token(user?.check_email?._id, token?.accessToken);
   if (isLoading) {
-    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'><Loading_Dots /></div>
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'>
+      <div className='flex flex-col gap-y-3'>
+        <Loading_Dots />
+        <span className='text-gray-100'>Đang xác minh danh tính</span>
+      </div>
+    </div>
   }
   if (!data?.data?.role || !role_user.includes(data?.data?.role)) {
-    // routing.push('/')
+    routing.push('/')
   }
   return (<>{children}</>)
 }

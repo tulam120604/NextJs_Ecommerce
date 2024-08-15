@@ -15,21 +15,21 @@ import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
 import io from 'socket.io-client';
-import { useToast } from '@/src/app/_Components/ui/use-toast'; 
+import { useToast } from '@/src/app/_Components/ui/use-toast';
 import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 
 const Cart = () => {
-const socket = io('http://localhost:3000');
-  const { toast } =  useToast();
+  const socket = io('http://localhost:3000');
+  const { toast } = useToast();
   // socket
   useEffect(() => {
-    socket.on('res_message', (data : any) => {
+    socket.on('res_message', (data: any) => {
       toast({
         title: "Thông báo!",
         description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
-        className : 'border border-gray-800',
+        className: 'border border-gray-800',
         action: (
           <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
         ),
@@ -80,7 +80,7 @@ const socket = io('http://localhost:3000');
   }
 
   // notes_order
-  function handle_notes_order (e : any) {
+  function handle_notes_order(e: any) {
     setContent_note_order(e.target.value)
   }
 
@@ -92,8 +92,8 @@ const socket = io('http://localhost:3000');
     const item_cart_order = {
       ...data,
       items: data_item_next_order,
-      notes_order : content_note_order,
-      action : 'cart_item',
+      notes_order: content_note_order,
+      action: 'cart_item',
     }
     sessionStorage.setItem('item_order', JSON.stringify(item_cart_order));
     routing.push('/order');
@@ -111,12 +111,12 @@ const socket = io('http://localhost:3000');
             <TableHeader>
               <TableRow className="*:font-medium border-gray-500 *:text-gray-800 !hover:none">
                 <TableHead>
-                  <Checkbox checked={(data_item_next_order?.length == data?.items?.length &&  data?.items?.length > 0) ? true : false} />
+                  <Checkbox checked={(data_item_next_order?.length == data?.items?.length && data?.items?.length > 0) ? true : false} />
                 </TableHead>
                 <TableHead className='w-[100px]'>Ảnh</TableHead>
                 <TableHead />
                 <TableHead>Đơn giá</TableHead>
-                <TableHead>Số lượng</TableHead>
+                <TableHead className='text-center'>Số lượng</TableHead>
                 <TableHead>Số tiền</TableHead>
                 <TableHead className="px-2 w-[30px] !text-red-600">
                   <AlertDialog>
@@ -168,9 +168,9 @@ const socket = io('http://localhost:3000');
                                 </TableCell>
                                 <TableCell><span className="md:text-base mb:text-xs text-red-600">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span></TableCell>
                                 <TableCell>
-                                  <div className="w-[80%] flex gap-x-4 items-center justify-around md:py-2 mb:py-1 *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
+                                  <div className="w-[90%] mx-auto grid grid-cols-3 *:text-gray-900 gap-x-1 items-center justify-around *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
                                     <Btn_dow id_props={{ id_item: item?.product_id?._id, id_user: user?.check_email, quantity_item: item?.quantity, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
-                                    <strong className="cursor-default">{item?.quantity}</strong>
+                                    <strong className="cursor-default border h-full grid place-items-center rounded">{item?.quantity}</strong>
                                     <Btn_up id_props={{ id_item: item?.product_id?._id, id_user: user?.check_email, dataItems: item, color: item?.color_item, size_attribute: item?.size_attribute_item }} />
                                   </div>
                                 </TableCell>

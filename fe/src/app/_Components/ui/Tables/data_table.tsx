@@ -25,7 +25,7 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   })
   return (
-    <div className="rounded-md text-gray-100">
+    <div className="rounded-md text-gray-800">
       <Table>
         <TableHeader>
           {table?.getHeaderGroups()?.map((headerGroup) => (

@@ -132,9 +132,9 @@ const Page = () => {
     return (
         <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
             <div className="flex flex-col gap-y-6 pb-6 rounded">
-                <div className="flex items-center justify-between gap-x-20 sticky top-0 py-6">
-                    <strong className="text-gray-200 lg:text-2xl">Danh sách sản phẩm đã xóa</strong>
-                    <Link href={'/adminstrations/list_products/'} className="*:w-[25px] *:h-[30px] text-white hover:underline hover:text-sky-500 cursor-pointer">
+                <div className="flex items-center justify-between gap-x-20 sticky top-0 py-4">
+                    <strong className="text-gray-900 lg:text-2xl">Danh sách sản phẩm đã xóa</strong>
+                    <Link href={'/adminstrations/list_products/'} className="*:w-[25px] *:h-[30px] text-gray-900 hover:underline hover:text-sky-500 cursor-pointer">
                         Quay lại
                     </Link>
                 </div>
@@ -142,7 +142,7 @@ const Page = () => {
                     {
                         data ? (<>
                             {isLoading ? <span>Loading ...</span> :
-                                <DataTable columns={columns} data={data} />
+                                <div className="bg-white border rounded-lg px-4"><DataTable columns={columns} data={data} /></div>
                             }
                         </>)
                             : <span className="text-gray-100">Thùng rác trống!</span>

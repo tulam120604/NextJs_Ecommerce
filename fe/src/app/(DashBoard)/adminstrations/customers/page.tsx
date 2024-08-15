@@ -56,11 +56,11 @@ const CustomersAdmin = () => {
 
 
     return (
-        <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
+        <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
             <Auth_Wrap_Admins>
-                <div className="flex flex-col gap-y-6 py-6 rounded">
-                    <strong className="text-gray-200 lg:text-2xl">Khách hàng</strong>
-                    <div className="text-gray-200">
+                <div className="flex flex-col gap-y-6 py-4 rounded">
+                    <strong className="text-gray-900 lg:text-2xl">Khách hàng</strong>
+                    <div className="border border-gray-300 rounded-lg px-4">
                         {
                             data?.data &&
                             <DataTable data={data?.data?.docs} columns={columns} />

@@ -63,7 +63,7 @@ const Page = () => {
         }
         <ul className="space-y-2">
           {
-            data?.data?.data_notification ?
+            (data?.data?.data_notification.length || data?.data?.data_notification.length?.length > 0)  ?
               (
                 data?.data?.data_notification?.map((item: any) => (
                   <AlertDialog key={item?._id}>
@@ -107,9 +107,9 @@ const Page = () => {
                       <AlertDialogFooter className='flex !justify-between w-full items-end'>
                         <AlertDialogDescription>- {item?.createdAt?.slice(0, 10)} -</AlertDialogDescription>
                         <div className='flex gap-x-3'>
-                            <AlertDialogCancel className='text-gray-100 border-none bg-indigo-600 hover:!bg-indigo-800 hover:!text-gray-200'>
-                              <Link href={'/login'}>Đăng nhập</Link>
-                            </AlertDialogCancel>
+                          <AlertDialogCancel className='text-gray-100 border-none bg-indigo-600 hover:!bg-indigo-800 hover:!text-gray-200'>
+                            <Link href={'/login'}>Đăng nhập</Link>
+                          </AlertDialogCancel>
                           <AlertDialogCancel className='text-gray-800'>Đóng</AlertDialogCancel>
                         </div>
                       </AlertDialogFooter>
@@ -117,7 +117,7 @@ const Page = () => {
                   </AlertDialog>
                 ))
               ) :
-              <div className='grid place-items-center'>
+              <div className='grid place-items-center min-h-[50vh]'>
                 <div className='flex flex-col items-center gap-y-6'>
                   <Image width={100} height={100} src='/Images/no_bell.png' alt=''></Image>
                   <span>Bạn không có thông báo gì !</span>

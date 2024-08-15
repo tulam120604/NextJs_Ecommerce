@@ -18,9 +18,9 @@ const Page = () => {
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots/></div>}>
       <Auth_Wrap_Admins>
-        <div className='py-4 text-gray-100'>
+        <div className='py-4'>
           <strong className='text-2xl'>Bảng điều khiển</strong>
-          <div className='grid lg:grid-cols-4 grid-cols-3 *:p-6 *:rounded-xl *:border *:border-gray-200 gap-6 my-6'>
+          <div className='grid lg:grid-cols-4 grid-cols-3 *:p-6 *:rounded-xl *:border *:border-gray-300 gap-6 my-6'>
             <Box dataProps={{ text: 'Tổng doanh thu', number: '45.231,89 đ' }} />
             <Box dataProps={{ text: 'Tổng mặt hàng', number: data?.data?.totalDocs }} />
             <Box dataProps={{ text: 'Danh mục', number: category?.data.length }} />
@@ -28,7 +28,7 @@ const Page = () => {
             <Box dataProps={{ text: 'Người bán', number: account?.data?.totalDocs }} />
           </div>
           {/* chart */}
-          <div className='grid grid-cols-[60%_38%]'>
+          <div className='grid grid-cols-[60%_38%] *:border *:border-gray-300'>
             <ChartData />
           </div>
         </div>

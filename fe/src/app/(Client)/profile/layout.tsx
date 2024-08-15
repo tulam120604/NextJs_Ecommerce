@@ -1,10 +1,30 @@
 'use client';
 
-import React from 'react'
-import Side_bar from './side_bar'
+import React, { useEffect } from 'react';
+import Side_bar from './side_bar';
+import io from 'socket.io-client';
 import { useRouter } from 'next/navigation';
+import { useToast } from '../../_Components/ui/use-toast';
+import { ToastAction } from '../../_Components/ui/toast';
 
 const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
+  const socket = io('http://localhost:3000');
+  const { toast } = useToast();
+
+  useEffect(() => {
+    socket.on('res_status_item_order_to_user', (data) => {
+      console.log(data)
+      toast({
+        title: "Thông báo!",
+        description: data,
+        className: 'border border-gray-800',
+        action: (
+          <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+        ),
+      })
+    })
+  }, [socket])
+
   const routing = useRouter();
   if (typeof window !== 'undefined') {
     if (!localStorage.getItem('account')) {

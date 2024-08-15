@@ -98,7 +98,7 @@ export async function update_status_order(dataClient: any) {
             return res
         } else {
             if (dataClient?.action === 'admin') {
-                toast.error('Cập nhật trạng thái đơn hàng thành công!', { autoClose: 500 });
+                toast.success('Cập nhật trạng thái đơn hàng thành công!', { autoClose: 500 });
             }
             else {
                 toast.success('Hủy đơn hàng thành công!', { autoClose: 500 });

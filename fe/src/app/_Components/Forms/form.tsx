@@ -118,34 +118,34 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     }
 
     return (<>
-        <section className="bg-[#101824] flex flex-col gap-y-6 py-6 rounded">
+        <section className="bg-white border border-gray-300 rounded-lg flex flex-col gap-y-6 py-6 rounded">
             <div className='flex items-center justify-between'>
-                <strong className="text-gray-200 lg:text-2xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
+                <strong className="text-gray-900 lg:text-2xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
                 <Link className='text-white hover:text-gray-200 hover:underline' href={'/adminstrations/list_products'}>Quay lại</Link>
             </div>
             <div className='relative'>
-                <button onClick={handle_category} type='button' className="border-none text-gray-100 h-full px-5 py-2.5 rounded bg-indigo-500 hover:bg-indigo-800 duration-300">Thêm danh mục+</button>
+                <button onClick={handle_category} type='button' className="border-none text-sm text-gray-100 h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-indigo-800 duration-300">Thêm danh mục+</button>
                 {category_form && (<>
                     <div onClick={handle_category} className='fixed w-screen h-screen bg-[#00000066] top-0 z-[6] left-0'></div>
                     <Form_category />
                 </>)
                 }
             </div>
-            <form onSubmit={my_Form.handleSubmit(submitForm)} className="bg-[#1F2936] w-full px-4 flex flex-col gap-y-5 py-4 rounded">
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+            <form onSubmit={my_Form.handleSubmit(submitForm)} className="w-full px-4 flex flex-col gap-y-5 py-4 rounded">
+                <div className='flex flex-col text-gray-800 gap-y-3'>
                     <label htmlFor="short_name">Tên sản phẩm :</label>
                     <input type="text" id='short_name' {...my_Form.register('short_name')}
-                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Nhập tên sản phẩm ...' />
+                        className='outline-none py-2 px-4 border border-gray-300 rounded' placeholder='Nhập tên sản phẩm ...' />
                 </div>
                 {isLoading ? <span className='text-gray-100'>Loa
                     ding ...</span> :
-                    <div className='flex flex-col text-gray-200 gap-y-3'>
+                    <div className='flex flex-col text-gray-800 gap-y-3'>
                         <div>
                             <label htmlFor="category_id">Danh mục sản phẩm : </label>
                             <select
                                 id="category_id"
                                 {...my_Form.register('category_id')}
-                                className="bg-[#1F2936] outline-none py-2 px-4 border border-black rounded">
+                                className="outline-none py-2 px-4 border border-gray-300 rounded">
                                 {
                                     data_Category?.data?.map((item: any) => (
                                         <option key={item?._id} value={item?._id}>{item?.category_name}</option>
@@ -155,36 +155,36 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                         </div>
                     </div>}
 
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+                <div className='flex flex-col text-gray-800 gap-y-3'>
                     <label htmlFor="feature_product">Ảnh sản phẩm :</label>
                     <div className='lg:flex'>
                         <img className='w-[100px] h-[100px]' src={data_one_item?.data?.feature_product ? data_one_item?.data?.feature_product : change_img} />
                         <input type="file" accept='image/*' id='feature_product'  {...my_Form.register('feature_product')}
-                            className='bg-[#1F2936] outline-none py-2 px-4 rounded cursor-pointer' onChange={pushImage} />
+                            className='outline-none py-2 px-4 rounded cursor-pointer' onChange={pushImage} />
                     </div>
                 </div>
 
                 {
-                    stock_quantity && <div className='flex flex-col text-gray-200 gap-y-3'>
+                    stock_quantity && <div className='flex flex-col text-gray-800 gap-y-3'>
                         <label htmlFor="price_product">Giá sản phẩm :</label>
                         <input type="text" id='price_product' {...my_Form.register('price_product')}
-                            className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
+                            className='outline-none py-2 px-4 border border-gray-300 rounded' placeholder='Giá sản phẩm ...' />
                     </div>
                 }
                 {
                     (my_Form?.getValues()?.price_product) && <div className='flex flex-col text-gray-200 gap-y-3'>
                         <label htmlFor="price_product">Giá sản phẩm :</label>
                         <input type="text" id='price_product' {...my_Form.register('price_product')}
-                            className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Giá sản phẩm ...' />
+                            className='outline-none py-2 px-4 border border-gray-300 rounded' placeholder='Giá sản phẩm ...' />
                     </div>
                 }
 
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+                <div className='flex flex-col text-gray-800 gap-y-3'>
                     <label htmlFor="des_product">Mô tả sản phẩm :</label>
                     <textarea id='des_product' {...my_Form.register('des_product')}
-                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Mô tả sản phẩm ...' />
+                        className='outline-none py-2 px-4 border border-gray-300 rounded min-h-[200px]' placeholder='Mô tả sản phẩm ...' />
                 </div>
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+                <div className='flex flex-col text-gray-800 gap-y-3'>
                     <label>Options sản phẩm (nếu có):</label>
                     {attributes?.map((item: any, i: any) => (<>
                         <div key={i} className='flex item-center gap-4 w-full text-sm flex-wrap'>
@@ -192,7 +192,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                 type="text"
                                 {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
                                 defaultValue={item?.color_item}
-                                className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
+                                className='outline-none py-2 px-4 border border-gray-300 rounded'
                                 placeholder={`Thông số ${i + 1} (nếu có)...`} key={i}
                             />
                             <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm</Button>
@@ -203,31 +203,31 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                     type="text"
                                     defaultValue={e?.name_size}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
-                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
+                                    className='outline-none py-2 px-4 border border-gray-300 rounded'
                                     placeholder={`Thông số ${i + 2} (nếu có)...`}
                                 />
                                 <input
                                     type="text"
                                     defaultValue={e?.stock_item}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].stock_item`, { required: true })}
-                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
+                                    className='outline-none py-2 px-4 border border-gray-300 rounded'
                                     placeholder='Số lượng (bắt buộc)...'
                                 />
                                 <input
                                     type="text"
                                     defaultValue={e?.price_attribute}
                                     {...my_Form.register(`attributes[${i}].size_item[${j}].price_attribute`, { required: true })}
-                                    className='bg-gray-900 outline-none py-2 px-4 border border-black rounded'
+                                    className='outline-none py-2 px-4 border border-gray-300 rounded'
                                     placeholder='Giá (bắt buộc)...'
                                 />
                                 {
                                     item?.size_item?.length > 1 &&
-                                    <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 bg-red-600 hover:bg-red-800 duration-200'>Xóa</Button>
+                                    <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 bg-red-500 hover:bg-red-600 duration-200'>Xóa</Button>
                                 }
                             </div>
                         ))}
 
-                        <Button type='button' onClick={() => remove_Attribute(i)} className='w-24 bg-red-600 hover:bg-red-800 duration-200'>Xóa options</Button>
+                        <Button type='button' onClick={() => remove_Attribute(i)} className='w-24 bg-red-500 hover:bg-red-600 duration-200'>Xóa options</Button>
                     </>))}
                     <div>
                         <Button type='button' onClick={add_Attribute} className='px-4 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm options</Button>
@@ -238,18 +238,18 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                     <input
                         type="text"
                         {...my_Form.register(`stock`)}
-                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded'
+                        className='outline-none py-2 px-4 border border-gray-300 rounded'
                         placeholder='Số lượng ...'
                     />
                 </div>}
-                <div className='flex flex-col text-gray-200 gap-y-3'>
+                <div className='flex flex-col text-gray-800 gap-y-3'>
                     <label htmlFor="made_in">Xuất xứ sản phẩm :</label>
                     <input id='made_in' {...my_Form.register('made_in')}
-                        className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Xuất xứ sản phẩm ...' />
+                        className='outline-none py-2 px-4 border border-gray-300 rounded' placeholder='Xuất xứ sản phẩm ...' />
                 </div>
                 {loading === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}
                 <div className='w-full'>
-                    <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-600 hover:bg-yellow-800' : 'bg-indigo-600 hover:bg-indigo-800'}`}>{mode ? "Cập nhật sản phẩm" : "Tạo sản phẩm"}</Button>
+                    <Button type='submit' className={`text-sm font-medium text-white ${mode ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-indigo-600 hover:bg-indigo-800'}`}>{mode ? "Cập nhật sản phẩm" : "Tạo sản phẩm"}</Button>
                 </div>
             </form>
         </section>

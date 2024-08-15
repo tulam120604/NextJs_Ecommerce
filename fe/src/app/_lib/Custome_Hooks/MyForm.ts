@@ -13,10 +13,10 @@ import { useCheck_user, useToken } from "./User";
 export function Custome_Hooks({ mode }: any) {
     const user = useCheck_user();
     const token = useToken();
-    const { edit_item } = useParams();
+    const { update_item } = useParams();
     let data_one_item: any;
     if (mode === 'edit' && mode) {
-        data_one_item = Detail_Item_Dashboard(String(edit_item));
+        data_one_item = Detail_Item_Dashboard(String(update_item));
     }
     const routing = useRouter();
 
@@ -24,13 +24,13 @@ export function Custome_Hooks({ mode }: any) {
     const data_Category = data;
     // console.log(data_Category)
     const { my_Form, on_Submit, loading, query_client } = Mutation_Items({
-        action: edit_item ? "EDIT" : "ADD",
+        action: update_item ? "EDIT" : "ADD",
         onSuccess: () => {
             query_client.invalidateQueries({
                 queryKey: ['Product_Key']
             })
             my_Form.reset();
-            const text_alert = edit_item ? `Sản phẩm mã ${edit_item} đã được sửa !` : "Đã thêm sản phẩm !";
+            const text_alert = update_item ? `Sản phẩm mã ${update_item} đã được sửa !` : "Đã thêm sản phẩm !";
             toast.success(text_alert, { autoClose: 500 })
             setTimeout(() => {
                 routing.push('/admin/list_products')
@@ -51,7 +51,7 @@ export function Custome_Hooks({ mode }: any) {
         }
     });
     useEffect(() => {
-        if (edit_item && mode) {
+        if (update_item && mode) {
             my_Form.reset(data_one_item.data);
         }
         // console.count('re-render')
@@ -73,11 +73,11 @@ export function Custome_Hooks({ mode }: any) {
                 accessToken: token.accessToken,
                 data_item: formData,
             }
-            if (mode && edit_item) {
+            if (mode && update_item) {
                 dataAll = {
                     accessToken: token.accessToken,
                     data_item: formData,
-                    id_item: edit_item
+                    id_item: update_item
                 }
             }
             on_Submit(dataAll);

@@ -6,13 +6,15 @@ import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
-import React, { Suspense } from 'react'
+import React, { Suspense } from 'react';
+import io from 'socket.io-client';
 import Loading from './loading';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order';
 
 const Page = () => {
+  const socket = io('http://localhost:3000');
   const token = useToken();
   const role_user = ['admin_global', 'admin_local'];
   const user = useCheck_user();
@@ -23,23 +25,26 @@ const Page = () => {
     }
   }
   const { data, isLoading } = List_Order_Dashboard(token?.accessToken, id_seller);
-  if (isLoading) {
-    return <Loading />
-  }
+
 
   // update status order
-  // const mutation_status_order = Mutation_Order('UPDATE_STATUS');
-  function change_status(id_item: string, status: number) {
-    // mutation_status_order.mutate({
-    //   order_id: id_item,
-    //   status_item_order: status,
-    //   action: 'admin'
-    // })
+  const mutation_status_order = Mutation_Order('UPDATE_STATUS');
+  function change_status(id_item: {_id : string, code_order : string | number}, status: number) {
+    mutation_status_order.mutate({
+      id_user: user?.check_email?._id,
+      item: {
+        order_id: id_item?._id,
+        status_item_order: status,
+      },
+      action: 'admin'
+    });
+    socket.emit('send_status_item_order_to_user', (status === 2) ? `Đơn hàng ${id_item?.code_order} đã được xác nhận, người bán đang chuẩn bị hàng để giao đến bạn` :
+      (status === 6) && `Người bán đã từ chối đơn hàng ${id_item?.code_order}, vui lòng chọn sản phẩm khác!`)
   }
 
-  // if (mutation_status_order?.isLoading) {
-  //   return <Loading_Dots />
-  // }
+  if (isLoading || mutation_status_order?.isLoading) {
+    return <Loading />
+  }
 
   function status_order(item: any) {
     switch (+item) {
@@ -103,7 +108,7 @@ const Page = () => {
       'header': "Trạng thái"
     },
     {
-      cell: ({ row }) => (row?.original?.status_item_order !== '5' && row?.original?.status_item_order !== '6') &&
+      cell: ({ row }) => (row?.original?.status_item_order === '1') &&
         <div className='flex gap-x-2'>
           <AlertDialog>
             <AlertDialogTrigger>
@@ -115,7 +120,7 @@ const Page = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Hủy</AlertDialogCancel>
-                <AlertDialogAction className="bg-green-500" onClick={() => change_status(row?.original?._id, 2)}>Xác nhận</AlertDialogAction>
+                <AlertDialogAction className="bg-green-500" onClick={() => change_status(row?.original, 2)}>Xác nhận</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -129,7 +134,7 @@ const Page = () => {
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Hủy</AlertDialogCancel>
-                <AlertDialogAction className="bg-red-500" onClick={() => change_status(row?.original?._id, 6)}>Từ chối</AlertDialogAction>
+                <AlertDialogAction className="bg-red-500" onClick={() => change_status(row?.original, 6)}>Từ chối</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -139,9 +144,9 @@ const Page = () => {
   ]
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
-      <div className="flex flex-col gap-y-6 py-6 rounded">
-        <strong className="text-gray-200 lg:text-2xl">Đơn hàng</strong>
-        <div className="text-gray-200">
+      <div className="flex flex-col gap-y-6 py-4 rounded">
+        <strong className="text-gray-900 lg:text-2xl">Đơn hàng</strong>
+        <div className="border bg-white rounded px-4">
           {
             data?.data_order ?
               <DataTable data={data?.data_order?.docs} columns={columns} /> :

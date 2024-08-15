@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { add_order, restore_buy_order, update_status_order } from "../../Services/Services_Order/Fn_Order";
 import { useState } from "react";
 
-type Actions = 'ADD_and_RESTORE_BUY_ITEM' | 'EDIT' | 'UPDATE_STATUS' | 'RESTORE_BUY_ITEM'
+type Actions = 'ADD_and_RESTORE_BUY_ITEM' | 'UPDATE_STATUS' | 'RESTORE_BUY_ITEM'
 
 export function Mutation_Order(action: Actions) {
     const [status_api, setStatus_api] = useState('no_call')
@@ -18,7 +18,7 @@ export function Mutation_Order(action: Actions) {
                         return await add_order(dataClient);
                     }
                 case "UPDATE_STATUS":
-                    return await update_status_order(dataClient)
+                    return await update_status_order(dataClient);
                 default: return
             }
         }, onSuccess: (res: any) => {
