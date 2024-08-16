@@ -15,6 +15,7 @@ import { handle_socket_event } from './socket/handle_socket';
 import { createServer } from 'node:http'
 import { Server } from 'socket.io';
 import RoutesAddress from './Routes/Auth/Address';
+import RoutesPayment from './Routes/Payment/Payment';
 
 dotenv.config();
 const app = express();
@@ -51,6 +52,9 @@ app.use('/v1', RoutesNotification)
 
 // address 
 app.use('/v1', RoutesAddress)
+
+// payment
+app.use('/v1', RoutesPayment)
 
 
 // web socket

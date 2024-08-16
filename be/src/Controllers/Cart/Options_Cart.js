@@ -5,7 +5,7 @@ import Attribute from '../../Model/Products/Attribute';
 
 
 export async function Add_To_Cart(req, res) {
-    const { user_id, product_id, quantity, color, size_attribute, price_item_attr } = req.body;
+    const { user_id, product_id, quantity, color, size_attribute, price_item_attr, item_in_stock } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
         let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
@@ -57,6 +57,10 @@ export async function Add_To_Cart(req, res) {
                             data_cart.items[i].quantity = data_cart.items[i].quantity + quantity;
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
                             check_item = true
+                        }
+                        if (data_cart.items[i].quantity >= item_in_stock) {
+                            data_cart.items[i].quantity = item_in_stock;
+                            data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
                         }
                     }
                 }

@@ -64,7 +64,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
         {/* side bar */}
         <main className="items-start gap-x-6 w-full mt-20 grid lg:grid-cols-[200px_auto] grid-cols-[50px_auto] gap-x-10">
           <div className="sticky top-20 -translate-y-20 pt-[80px] bg-white after:bg-white relative after:absolute after:w-full after:h-screen after:top-0 after:left-0 
-          after:border after:border-gray-300 after:z-[-1] after:rounded">
+          after:border-r after:border-gray-300 after:z-[-1] after:rounded">
             <SideBarDashboard />
           </div>
           <div className="min-h-screen !text-gray-900 rounded *:w-full *:px-4">

@@ -16,15 +16,20 @@ import Loading_Dots from '../../_Components/Loadings/Loading_Dots';
 import { useToast } from '../../_Components/ui/use-toast';
 import { ToastAction } from '../../_Components/ui/toast';
 import { useCheck_user } from '../../_lib/Custome_Hooks/User';
+import { Label } from '@/src/app/_Components/ui/Shadcn/label'
+import { RadioGroup, RadioGroupItem } from '../../_Components/ui/radio-group';
+import Breadcrum from '../../_Components/breadcrum/breadcrum';
+import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 
 
 const socket = io('http://localhost:3000');
 const Page = () => {
+  const [check_payment, setCheck_payment] = useState<boolean>(true)
   const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
   let user = useCheck_user() ?? undefined;
-  if (!user){
+  if (!user) {
     routing.push('/')
   }
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -34,6 +39,7 @@ const Page = () => {
   if (list_item_order?.action === 'restore_buy_item') {
     action_mutation = list_item_order?.action
   }
+  // notes_order
   const mutate_order = Mutation_Order('ADD_and_RESTORE_BUY_ITEM');
   function on_Order(infor_user_form: any) {
     const data_order = {
@@ -55,6 +61,13 @@ const Page = () => {
   if (mutate_order.status_api === 'call_ok') {
     routing.push('/')
   }
+
+  // mutation payment
+  const mutation_payment = Mutation_Payment('CREATE');
+  function next_payment() {
+    const total_price = list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item
+    mutation_payment?.mutate(total_price);
+  }
   // socket 
   useEffect(() => {
     if (typeof window) {
@@ -71,7 +84,7 @@ const Page = () => {
         toast({
           title: "Thông báo!",
           description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
-          className : 'border border-gray-800',
+          className: 'border border-gray-800',
           action: (
             <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
           ),
@@ -80,47 +93,45 @@ const Page = () => {
       setList_item_order(data_session);
     }
   }, [socket]);
+
   return (<Suspense fallback={<Loading />}>
-    <form onSubmit={handleSubmit(on_Order)} className={`relative ${mutate_order.isLoading && 'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
+    <div className='lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto mt-2'>
+      <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
+    </div>
+
+    <form onSubmit={handleSubmit(on_Order)} className={`relative py-6 ${mutate_order.isLoading &&
+      'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
       {
         mutate_order.isLoading &&
         <div className='fixed top-1/2 left-1/2'>
           <Loading_Dots />
         </div>
       }
-      <div className="lg:w-[1440px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[58%_38%] justify-between mb:grid-cols-[100%] justify-between *:w-full pb-10">
-        {/* left */}
-        <div>
-          {/* list items */}
-          {list_item_order ? (<>
-            <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
-            {
-              list_item_order?.items ? (<div className='*:text-gray-800'>
-                <DataTable columns={columns} data={list_item_order?.items} />
-                <div className='flex justify-between whitespace-nowrap text-lg my-4'>
-                  <div>
-                    <span>Tổng tiền :</span>
-                    <span className='w-full ml-1 whitespace-nowrap text-red-600'>
-                      {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
-                    </span>
-                  </div>
+      {/* item */}
+      <div className='lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto bg-white p-4 rounded'>
+        {/* list items */}
+        {list_item_order ? (<>
+          <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
+          {
+            list_item_order?.items ? (<div className='*:text-gray-800'>
+              <DataTable columns={columns} data={list_item_order?.items} />
+              <div className='flex justify-between whitespace-nowrap text-lg my-4'>
+              </div>
+              {
+                list_item_order?.notes_order &&
+                <div className='whitespace-normal text-base'>
+                  <span>Ghi chú đơn hàng : </span>
+                  <p>{list_item_order?.notes_order}</p>
                 </div>
-                {
-                  list_item_order?.notes_order &&
-                  <div className='whitespace-normal text-base'>
-                    <span>Ghi chú đơn hàng : </span>
-                    <p>{list_item_order?.notes_order}</p>
-                  </div>
-                }
+              }
 
-              </div>) : routing.push('/')
-            }
-
-          </>) : <span>Không có đơn hàng nào!</span>}
-        </div>
-
-        {/* right */}
-        <div className="hidden lg:block">
+            </div>) : routing.push('/')
+          }
+        </>) : <span>Không có đơn hàng nào!</span>}
+      </div>
+      {/* infor */}
+      <div className="lg:w-[1440px] md:w-[90vw] grid grid-cols-2 gap-x-20 mb:w-[342px] mx-auto mt-6 bg-white p-4 rounded">
+        <div>
           <span className="flex mb-[1px] items-center justify-between pb-6">Thông tin nhận hàng</span>
           <div className='flex flex-col gap-y-5'>
             <div>
@@ -144,10 +155,49 @@ const Page = () => {
               {errors.address && <p className="text-red-500 md:text-sm text-xs">{errors.address.message}</p>}
             </div>
           </div>
-          <Button className='my-4' type='submit'>Thanh toán</Button>
         </div>
-        <div className="block lg:hidden mt-[35px]">
-          <Button type='submit'>{mutate_order.isLoading ? <Loading_Dots /> : 'Thanh toán'}</Button>
+        <div>
+          <div>
+            <span className='text-gray-700'>Tổng tiền :</span>
+            <span className='w-full ml-1 whitespace-nowrap text-red-600'>
+              {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+            </span>
+          </div>
+          <div className='my-2'>
+            <span className='text-gray-700'>Phí vận chuyển :</span>
+            <span className='w-full ml-1 whitespace-nowrap text-red-600'>
+              {0?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+            </span>
+          </div>
+          <div>
+            <span className='text-gray-700'>Voucher :</span>
+            <span className='w-full ml-1 whitespace-nowrap text-red-600'>
+              {0?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+            </span>
+          </div>
+          <div className='my-2'>
+            <span className='text-gray-700'>Tổng thanh toán :</span>
+            <span className='w-full ml-1 whitespace-nowrap text-red-600 text-2xl'>
+              {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+            </span>
+          </div>
+          <RadioGroup defaultValue="comfortable">
+            <div className="flex items-center space-x-2 mt-4">
+              <RadioGroupItem value="comfortable" id="r1" onClick={() => setCheck_payment(true)} />
+              <Label htmlFor="r1">Thanh toán khi nhận hàng</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="default" id="r2" onClick={() => setCheck_payment(false)} />
+              <Label htmlFor="r2">Thanh toán bằng ZaloPay</Label>
+            </div>
+            {
+              check_payment ?
+                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>{mutate_order.isLoading ? <Loading_Dots /> : 'Thanh toán'}</Button> :
+                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='button' onClick={next_payment}>
+                  {mutate_order.isLoading ? <Loading_Dots /> : 'Đến cổng thanh toán'}
+                </Button>
+            }
+          </RadioGroup>
         </div>
       </div>
     </form>

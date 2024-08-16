@@ -100,14 +100,4 @@ export async function edit_Product (req, res) {
     }
 }
 
-// edit one field
-
-// export async function edit_Field_Product (req, res) {
-//     try {
-        
-//     } catch (error) {
-//         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-//             message : error.message || "Loi server!"
-//         })
-//     }
-// }
+// update quantity item when order 

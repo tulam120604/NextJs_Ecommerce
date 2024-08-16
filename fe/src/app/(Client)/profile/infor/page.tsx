@@ -6,6 +6,8 @@ import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { Button } from '@/src/app/_Components/ui/Shadcn/button';
+import Address_component from '../_components/address';
 
 const Page = () => {
   const token = useToken();
@@ -55,10 +57,13 @@ const Page = () => {
         </table>
         <section className='flex items-center justify-between my-5 py-5 border-t'>
           <span className='lg:text-2xl text-xl'>Địa chỉ</span>
-          <button className='border h-full py-1 lg:py-2 rounded bg-black text-white hover:bg-gray-700 duration-200 px-6'>Thêm địa chỉ +</button>
+          <Button>Thêm địa chỉ +</Button>
         </section>
+        <div className='fixed w-screen h-screen top-0 left-0 grid place-items-center'>
+          <Address_component />
+        </div>
         {isLoading && <Loading_Dots />}
-        {data?.data.length > 0 ?
+        {data?.data && data?.data.length > 0 ?
           data?.data?.map((item: any) => (
             <div key={item?._id} className="rounded-lg py-3 border">
               <dl className="text-sm px-4">
@@ -76,7 +81,7 @@ const Page = () => {
                   <dt className="font-medium text-gray-900">Vị trí</dt>
                   <dd className="text-gray-700 sm:col-span-2">{item?.about_address?.address}</dd>
                 </div>
-                  <dd className="text-gray-700 sm:col-span-2">{item?.about_address?.status_address}</dd>
+                <dd className="text-gray-700 sm:col-span-2">{item?.about_address?.status_address}</dd>
                 <button className="text-gray-700 sm:col-span-2 py-1 items-right px-4 border mt-4 rounded bg-yellow-500 text-white hover:scale-105 duration-300">sửa</button>
                 <button className="text-gray-700 sm:col-span-2 py-1 items-right px-4 border mt-4 rounded bg-sky-500 text-white mx-6 hover:scale-105 duration-300">Đặt làm mặc định</button>
               </dl>
