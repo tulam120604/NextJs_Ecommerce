@@ -7,7 +7,7 @@ import { Input } from '../../_Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../_Components/ui/Shadcn/button';
 import { useForm } from 'react-hook-form';
-import { columns } from './colum';
+import { columns } from './_components/colum';
 import { Mutation_Order } from '../../_lib/Tanstack_Query/Order/Mutation_order';
 import { schemaValidateOrder } from '../../(Auth)/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +20,6 @@ import { Label } from '@/src/app/_Components/ui/Shadcn/label'
 import { RadioGroup, RadioGroupItem } from '../../_Components/ui/radio-group';
 import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
-
 
 const socket = io('http://localhost:3000');
 const Page = () => {
@@ -95,7 +94,7 @@ const Page = () => {
   }, [socket]);
 
   return (<Suspense fallback={<Loading />}>
-    <div className='lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto mt-2'>
+    <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] mx-auto mt-2'>
       <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
     </div>
 
@@ -108,7 +107,7 @@ const Page = () => {
         </div>
       }
       {/* item */}
-      <div className='lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto bg-white p-4 rounded'>
+      <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] mx-auto bg-white p-4 rounded'>
         {/* list items */}
         {list_item_order ? (<>
           <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
@@ -130,7 +129,7 @@ const Page = () => {
         </>) : <span>Không có đơn hàng nào!</span>}
       </div>
       {/* infor */}
-      <div className="lg:w-[1440px] md:w-[90vw] grid grid-cols-2 gap-x-20 mb:w-[342px] mx-auto mt-6 bg-white p-4 rounded">
+      <div className="max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] grid grid-cols-2 gap-x-20 mx-auto mt-6 bg-white p-4 rounded">
         <div>
           <span className="flex mb-[1px] items-center justify-between pb-6">Thông tin nhận hàng</span>
           <div className='flex flex-col gap-y-5'>
@@ -192,7 +191,7 @@ const Page = () => {
             </div>
             {
               check_payment ?
-                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>{mutate_order.isLoading ? <Loading_Dots /> : 'Thanh toán'}</Button> :
+                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>Thanh toán</Button> :
                 <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='button' onClick={next_payment}>
                   {mutate_order.isLoading ? <Loading_Dots /> : 'Đến cổng thanh toán'}
                 </Button>

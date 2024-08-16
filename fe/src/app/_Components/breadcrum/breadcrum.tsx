@@ -5,7 +5,7 @@ import React from 'react'
 
 const Breadcrum = ({ textProps }: any) => {
     return (
-        <nav aria-label="Breadcrumb" className="flex">
+        <nav aria-label="Breadcrumb" className="flex whitespace-nowrap truncate">
             <ol className="flex overflow-hidden rounded-lg border-none text-gray-100">
                 <li className="flex items-center">
                     <Link

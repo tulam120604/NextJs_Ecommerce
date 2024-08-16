@@ -7,7 +7,7 @@ import React from 'react'
 const Footer = () => {
     return (
         <footer className="w-full bg-[#01100B]">
-            <div className="relative pt-20 lg:w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto">
+            <div className="relative pt-20 max-w-[1440px] md:w-[90vw] mb:w-[342px] mx-auto">
                 {/* ***** */}
                 <div className="flex lg:flex-row mb:flex-col lg:gap-x-16 lg:gap-y-0 gap-y-8 justify-between">
                     <div className="lg:w-[385px]">

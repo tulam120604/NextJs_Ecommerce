@@ -14,7 +14,7 @@ export async function list_carts(req, res) {
         const cart = await Carts.findOne({ user_id }).populate('items.product_id');
         if (!cart) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message : 'No data'
+                message: 'No data'
             })
         }
         const count_total_price = cart.items.reduce((past_value, present_value) => {
@@ -94,4 +94,18 @@ export async function checked_item_cart(req, res) {
             mesage: error.message || 'Loi server!'
         })
     }
+}
+
+// update quantity item in cart when order
+export async function update_quantity_item_in_cart(user_id, items_order) {
+    const data_cart = await Carts.findOne({ user_id: user_id });
+    data_cart.items = data_cart.items.filter((i) => {
+        return !items_order.some((j) => {
+            const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
+            const check_Color = i.color_item ? i.color_item === j.color_item : true;
+            const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
+            return check_Product_Id && check_Color && check_Size
+        });
+    });
+    await data_cart.save();
 }

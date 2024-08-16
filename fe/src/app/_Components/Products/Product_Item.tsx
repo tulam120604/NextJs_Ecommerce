@@ -24,8 +24,8 @@ const Product_Item = ({ dataProps }: any) => {
             {/* Image */}
             <div className="relative group w-full lg:h-[200px] sm:h-[160px] h-[120px] bg-[#F4F4F4] overflow-hidden rounded grid place-items-center">
                 <Image loading='lazy' width={300} height={300} className="w-full h-full cursor-pointer" src={dataProps?.feature_product} alt='Loading...' />
-                <section className="absolute top-0 lg:text-base sm:text-sm text-xs cursor-default left-0 bg-[#F2BC1B] px-3 lg:py-1 rounded py-0.5 text-white">- 20%
-                </section>
+                {/* <section className="absolute top-0 lg:text-base sm:text-sm text-xs cursor-default left-0 bg-[#F2BC1B] px-3 lg:py-1 rounded py-0.5 text-white">- 20%
+                </section> */}
             </div>
             {/* about */}
             <div className="w-full p-4 flex flex-col gap-y-1.5 items-start h-[120px] justify-between">

@@ -3,15 +3,23 @@ import { StatusCodes } from 'http-status-codes';
 
 export async function create_address(req, res) {
     try {
-        const user_id = req.params.id_user;
+        const user_id = req.params.user_id;
         if (!user_id) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No user'
             })
         };
+        const total_address = await Address.countDocuments();
+        let default_address;
+        if (total_address < 1){
+            default_address = true
+        } else {
+            default_address = false
+        }
         const data = await Address.create({
             user_id: user_id,
-            about_address: req.body.about_address
+            about_address: req.body.about_address,
+            status_address: default_address
         })
         return res.status(StatusCodes.OK).json({
             message: 'OK',

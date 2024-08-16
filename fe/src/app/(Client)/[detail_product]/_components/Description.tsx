@@ -6,13 +6,12 @@ import { get_feedBack_in_item } from '../../../_lib/Services/Service_Feedback/Fe
 
 const Description = async ({ dataProps }: any) => {
     const data = await get_feedBack_in_item(dataProps?._id);
-    console.log(data?.data_feedback?.docs)
     // console.log(data?.data_feedback?.docs)
     const formattedDescription = dataProps?.des_product.replace(/\n/g, '<br />');
     return (
         <>
             {/* description */}
-            <div className="flex flex-col rounded">
+            <div className="flex flex-col rounded max-w-[1440px]">
                 {/* menu description */}
                 <div className='p-4 rounded bg-white'>
                     <span className="text-xl">Mô tả</span>

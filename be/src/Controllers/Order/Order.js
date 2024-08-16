@@ -1,9 +1,8 @@
 import Account from '../../Model/Auth/Account';
 import Orders from '../../Model/Orders/Order';
-import Carts from '../../Model/Cart/Cart';
-import Products from '../../Model/Products/Products'
 import { StatusCodes } from 'http-status-codes';
-import Attribute from '../../Model/Products/Attribute';
+import { update_quantity_item } from '../Products/Edit';
+import { update_quantity_item_in_cart } from '../Cart/Get';
 
 
 export async function create_Order(req, res) {
@@ -16,47 +15,9 @@ export async function create_Order(req, res) {
             })
         };
         const data_order = await Orders.create({ user_id, items_order, infor_user, notes_order });
-        for (let i of items_order) {
-            if (i.product_id.attributes) {
-                const data_attr = await Attribute.find({ id_item: i.product_id._id });
-                for (let j of data_attr) {
-                    for (let k of j.varriants) {
-                        if (k.color_item == i.color_item) {
-                            for (let x of k.size_item) {
-                                if (x.name_size) {
-                                    if (x.name_size == i.size_attribute_item) {
-                                        x.stock_item = x.stock_item - i.quantity;
-                                    }
-                                } else {
-                                    x.stock_item = x.stock_item - i.quantity;
-                                }
-                            }
-                        }
-                    }
-                    await j.save();
-                }
-            }
-            else {
-                const data_item = await Products.find({ _id: i.product_id._id });
-                for (let a of data_item) {
-                    a.stock = a.stock - i.quantity;
-                    await a.save();
-                }
-            }
-        };
         if (action_order === 'cart_item') {
-            const data_cart = await Carts.findOne({ user_id: user_id });
-            data_cart.items = data_cart.items.filter((i) => {
-                return !items_order.some((j) => {
-                    const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
-                    const check_Color = i.color_item ? i.color_item === j.color_item : true;
-                    const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
-                    return check_Product_Id && check_Color && check_Size
-                });
-            });
-            await data_cart.save();
+            await update_quantity_item_in_cart(user_id, items_order)
         }
-
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
             data_order,
@@ -95,23 +56,11 @@ export async function get_Order_User(req, res) {
             ]
         }
         const totalItems = await Orders.countDocuments(querry);
-        const totalItems1 = await Orders.countDocuments({ status_item_order: 1 });
-        const totalItems2 = await Orders.countDocuments({ status_item_order: 2 });
-        const totalItems3 = await Orders.countDocuments({ status_item_order: 3 });
-        const totalItems4 = await Orders.countDocuments({ status_item_order: 4 });
-        const totalItems5 = await Orders.countDocuments({ status_item_order: 5 });
-        const totalItems6 = await Orders.countDocuments({ status_item_order: 6 });
         const data_order = await Orders.paginate(querry, options);
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data_order,
             totalItems,
-            totalItems1,
-            totalItems2,
-            totalItems3,
-            totalItems4,
-            totalItems5,
-            totalItems6
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -159,6 +108,9 @@ export async function update_status_order(req, res) {
                 message: "Không tìm thấy đơn hàng!"
             })
         };
+        if (status_item_order === 2){
+            await update_quantity_item(item_order.items_order);
+        }
         item_order.status_item_order = status_item_order;
         const data_order = await item_order.save();
         return res.status(StatusCodes.OK).json({

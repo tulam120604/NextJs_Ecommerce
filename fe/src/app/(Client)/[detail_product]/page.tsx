@@ -22,9 +22,9 @@ const page = async ({ params }: any) => {
   // fake data
   // const data = [1,1,1,1,1]
   return (
-    <main className="w-full *:lg:w-[1440px] *:w-[342px] *:mx-auto *:h-full py-2">
+    <main className="max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] *:mx-auto *:h-full py-2">
       {data?.status === 404 ? (<><div className='min-h-[70vh] grid place-items-center'>
-        <div className='flex flex-col gap-y-2'>
+        <div className='flex flex-col gap-y-2 max-w-[1440px]'>
           Ôi hỏng!
           <span>Có vẻ như đã có lỗi xảy ra :(( </span>
           <Link className='underline text-sky-500' href={'/'}>Trở về trang chủ!</Link>
@@ -32,9 +32,6 @@ const page = async ({ params }: any) => {
         </div></>)
         : (<>
           <div className='flex items-center text-sm gap-x-2 font-medium capitalize text-gray-700 mb-4'>
-            {/* <Link href={'/'} className='hover:text-black'>Trang chủ</Link>/
-        <Link href={'/products'} className='hover:text-black'>Sản phẩm</Link>/
-        <Link href={'/products'} className='hover:text-black'>Táo</Link> */}
             <Breadcrum textProps={{
               name_item : data?.short_name,
               name_category : data_category

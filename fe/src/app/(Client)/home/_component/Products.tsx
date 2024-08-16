@@ -7,7 +7,7 @@ const Products_Home = ({ dataProps }: any) => {
     // const respon = await getRespon();
     // console.log(respon);
     return (
-        <div className='lg:w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] flex flex-col mb:py-7 border-b'>
+        <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] flex flex-col mb:py-7 border-b'>
             {dataProps?.status === 404 ? (<><div className='min-h-[70vh] grid place-items-center'>
                 <div className='flex flex-col gap-y-2'>
                     Ôi hỏng!
@@ -16,7 +16,7 @@ const Products_Home = ({ dataProps }: any) => {
                 </div>
             </div></>) :
                 (<>
-                    <div className="mx-auto lg:w-[1440px] md:w-[90vw] w-[342px] relative text-center mb-4 lg:mb-8">
+                    <div className="mx-auto max-w-[1440px] md:w-[90vw] w-[342px] relative text-center mb-4 lg:mb-8">
                         <strong className="relative z-[2] text-[gray-800 font-medium bg-[#F5F5FA] lg:text-xl px-4 mb:text-lg">GỢI Ý HÔM NAY</strong>
                         <div className="absolute w-full h-[1px] bg-gray-400 top-1/2 z-[1]"></div>
                     </div>

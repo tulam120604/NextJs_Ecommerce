@@ -8,7 +8,7 @@ const Service = async () => {
     noStore();
     const { data } = await list_Categories();
     return (
-        <div className="lg:w-[1440px] mx-auto mb:w-[342px] md:w-[90vw] py-4">
+        <div className="max-w-[1440px] mx-auto mb:w-[342px] md:w-[90vw] py-4">
             <strong className="relative font-medium lg:text-xl px-4 mb:text-lg">Danh mục</strong>
             {data?.status === 404 ? (<><div className='min-h-[70vh] grid place-items-center'>
                 <div className='flex flex-col gap-y-2'>

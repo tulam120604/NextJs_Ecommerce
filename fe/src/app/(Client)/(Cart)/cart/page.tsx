@@ -102,7 +102,7 @@ const Cart = () => {
   // console.count('re-render : ')
   return (
     <Suspense fallback={<LoadingCart />}>
-      <div className="lg:w-[1440px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[67%_30%] mb:grid-cols-[100%] justify-between pb-10">
+      <div className="max-w-[1440px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[67%_30%] mb:grid-cols-[100%] justify-between pb-10">
         {/* left */}
         <div>
           <span className="text-xl flex mb-[1px] items-center justify-between pb-6">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base mb:text-sm">(3)</p></span>
