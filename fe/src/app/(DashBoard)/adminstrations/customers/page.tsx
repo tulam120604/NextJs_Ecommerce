@@ -41,7 +41,8 @@ const CustomersAdmin = () => {
         },
         {
             cell: ({ row }) => (
-                <span>{(row?.original?.role) === 'admin_global' ? 'Quản lí' : (row?.original?.role === 'admin_local') ? 'Nhân viên' : 'Người dùng'}</span>
+                <span>{(row?.original?.role) === 'admin_global' ? 'Quản lí' : (row?.original?.role === 'admin_local') ? 'Nhân viên'
+                : (row?.original?.role === 'seller') ? 'Người bán' : 'Người dùng'}</span>
             ),
             'header': 'Vai trò'
         },
@@ -63,7 +64,7 @@ const CustomersAdmin = () => {
                     <div className="border border-gray-300 rounded-lg px-4">
                         {
                             data?.data &&
-                            <DataTable data={data?.data?.docs} columns={columns} />
+                            <DataTable data={data?.data?.docs} columns={columns}/>
                         }
                     </div>
                 </div>

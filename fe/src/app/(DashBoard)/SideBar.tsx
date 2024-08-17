@@ -59,7 +59,7 @@ const SideBarDashboard = () => {
                         <Link key={item.pathName} href={item.pathName} className={`${usePathName === item.pathName ? 'group px-4 py-2 bg-[#2563EB] text-gray-100' :
                             'px-4 py-2 hover:bg-[#2563EB] hover:text-gray-100'}`}>
                             {item?.icon}
-                            <span className="hidden lg:block">{item?.name}</span>
+                            <span className="hidden lg:block text-sm">{item?.name}</span>
                         </Link>
                     )
                 })

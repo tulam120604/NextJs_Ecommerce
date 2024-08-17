@@ -9,7 +9,7 @@ import Image from "next/image"
 import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
 import Pagination_Component from "./_component/Pagination";
-import { Trash2 } from "lucide-react";
+import { ChevronUp, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
@@ -40,7 +40,7 @@ const Page = () => {
       socket.disconnect();
     })
     return () => { socket.disconnect() };
-  }, []);
+  }, [socket]);
 
   if (isLoading) {
     return <Loading />
@@ -59,7 +59,7 @@ const Page = () => {
   // render items and attributes
   function Data_table({ dataTable }: any) {
     return (<>
-      <div className="grid text-gray-900 grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between p-4">
+      <div className="grid text-gray-900 grid-cols-[70px_180px_150px_100px_150px_100px_150px_auto] gap-x-4 items-center justify-between p-4 text-sm whitespace-nowrap">
         <span>Ảnh</span>
         <span>Tên</span>
         <span>Thể loại</span>
@@ -72,10 +72,10 @@ const Page = () => {
       {
         dataTable?.map((data: any) => {
           return (
-            <div key={data?._id} className="flex flex-col w-full text-gray-800 border-t border-gray-300">
-              <div className="grid grid-cols-[100px_200px_150px_100px_150px_150px_150px_auto] items-center justify-between p-4">
+            <div key={data?._id} className="flex flex-col w-full text-gray-800 border-t border-gray-300 text-sm">
+              <div className="grid grid-cols-[70px_180px_150px_100px_150px_100px_150px_auto] gap-x-4 items-center justify-between p-4">
                 {/* image */}
-                <Image width={100} height={100} className="rounded" src={data?.feature_product} alt="Loading..." />
+                <Image width={100} height={100} className="rounded border" src={data?.feature_product} alt="Loading..." />
                 {/* name */}
                 <span className="line-clamp-3">{data?.short_name}</span>
                 {/* category */}
@@ -122,18 +122,7 @@ const Page = () => {
                     <span className="group-open:block hidden">Đóng</span>
                     <span className="group-open:hidden">Hiện</span>
                     <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                     <ChevronUp className="h-4"/>
                     </span>
                   </summary>
                   {
@@ -141,7 +130,8 @@ const Page = () => {
                     (
                       data?.attributes?.varriants?.map((item: any) => (
                         item?.size_item?.map((value: any) => (
-                          <div key={item?._id} className="grid border-t duration-200 border-gray-300 grid-cols-[100px_200px_150px_100px_150px_150px_150px_50px] items-center text-start justify-between py-4">
+                          <div key={item?._id} className="grid border-t duration-200 border-gray-300 gap-x-4 
+                          grid-cols-[100px_180px_150px_100px_150px_100px_150px_40px] items-center text-start justify-between py-4">
                             <div></div>
                             {/* attributes */}
                             <div className="flex gap-x-2 w-full">

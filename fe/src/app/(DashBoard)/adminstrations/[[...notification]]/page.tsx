@@ -56,7 +56,7 @@ export default function Page() {
     return (
         <Suspense>
             <Auth_Wrap_Seller>
-                <div className='text-gray-100 py-4'>
+                <div className='text-gray-900 py-4 !px-0'>
                     <strong className='text-lg'>Thông báo</strong>
                     {
                         granting_premission?.isLoading &&
@@ -71,25 +71,25 @@ export default function Page() {
                                     data?.data?.data_notification?.map((item: any) => (
                                         <AlertDialog key={item?._id}>
                                             <AlertDialogTrigger asChild onClick={() => sendMessage(item)}>
-                                                <li className='block h-full rounded-lg border border-gray-700 p-4 hover:border-gray-500 cursor-pointer *:flex *:justify-between'>
+                                                <li className='block h-full rounded-lg border border-gray-300 p-4 hover:border-gray-400 cursor-pointer *:flex *:justify-between'>
                                                     <div>
-                                                        <strong className="font-medium text-white">Từ {item?.sender_id?.user_name}</strong>
+                                                        <strong className="font-medium text-gray-800">Từ {item?.sender_id?.user_name}</strong>
                                                         {item.status_message &&
-                                                            <span className='text-sm flex gap-x-2 items-center font-medium text-gray-300'><CircleCheck className='w-4 text-green-500' />Đã xem </span>
+                                                            <span className='text-sm flex gap-x-2 items-center font-medium text-gray-800'><CircleCheck className='w-4 text-green-500' />Đã xem </span>
                                                         }
                                                     </div>
                                                     <div>
                                                         <div>
-                                                            <p className="mt-1 text-sm font-medium text-gray-300">
+                                                            <p className="mt-1 text-sm font-medium text-gray-800">
                                                                 Nội dung: {item?.notification_message}
                                                             </p>
                                                             {item?.notes &&
-                                                                <p className="mt-1 text-sm font-medium text-gray-300">
+                                                                <p className="mt-1 text-sm font-medium text-gray-800">
                                                                     Địa chỉ: {item?.notes}
                                                                 </p>}
                                                         </div>
 
-                                                        <p className="mt-1 text-sm font-medium text-gray-300">
+                                                        <p className="mt-1 text-sm font-medium text-gray-800">
                                                             {item?.createdAt?.slice(0, 10)}
                                                         </p>
                                                     </div>
@@ -111,6 +111,7 @@ export default function Page() {
                                                     <AlertDialogDescription className='!text-gray-200'>- {item?.createdAt?.slice(0, 10)} -</AlertDialogDescription>
                                                     <div className='flex gap-x-3'>
                                                         {
+                                                            !item.status_message && 
                                                             item?.notes &&
                                                             <AlertDialogCancel onClick={() => onSubmitGranting(item)} className='text-gray-100 border-none bg-green-600 hover:!bg-green-800 hover:!text-gray-200'>
                                                                 Chấp nhận
@@ -118,7 +119,6 @@ export default function Page() {
                                                         }
                                                         <AlertDialogCancel className='text-gray-800'>Đóng</AlertDialogCancel>
                                                     </div>
-
                                                 </AlertDialogFooter>
                                             </AlertDialogContent>
                                         </AlertDialog>

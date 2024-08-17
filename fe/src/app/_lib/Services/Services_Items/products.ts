@@ -209,9 +209,35 @@ export async function restore_items_admin(dataClient: any) {
             }
         });
         if (!res.ok) {
-            toast.success(`khôi phục sản phẩm mã ${dataClient.id_item} thất bại!`, { autoClose: 500 })
+            toast.error(`khôi phục sản phẩm mã ${dataClient.id_item} thất bại!`, { autoClose: 500 })
             console.warn('Call data failer');
-        };
+        }
+        else {
+            toast.success(`khôi phục sản phẩm mã ${dataClient.id_item} thành công!`, { autoClose: 500 })
+        }
+        console.log("Restore Success !");
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+// destroy item ( no restore )
+export async function destroy_items_admin(dataClient: any) {
+    console.log(dataClient?.id_item)
+    try {
+        let uri = `${apiURi}/products/destroy_item/${dataClient.id_item}`;
+        const res = await fetch(uri, {
+            method: 'delete',
+            headers: {
+                'Authorization': `Bearer ${dataClient.token}`,
+            }
+        });
+        if (!res.ok) {
+            toast.error(`Xóa sản phẩm mã ${dataClient.id_item} thất bại!`, { autoClose: 500 })
+            console.warn('Call data failer');
+        }
+        else {
+            toast.success(`Xóa sản phẩm mã ${dataClient.id_item} thành công!`, { autoClose: 500 })
+        }
         console.log("Restore Success !");
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");

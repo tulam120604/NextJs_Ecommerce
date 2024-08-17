@@ -1,7 +1,9 @@
+'use client'
+
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
-import Trash_Icon from '@/src/app/_Components/Icons/trash';
 import React from 'react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
+import { Trash2 } from 'lucide-react';
 
 
 const Remove_Item_Cart = ({ id_props }: any) => {
@@ -18,7 +20,7 @@ const Remove_Item_Cart = ({ id_props }: any) => {
 
     <AlertDialog>
       <AlertDialogTrigger>
-        <Trash_Icon />
+        <Trash2 className='text-red-500 h-5 hover:scale-105 duration-200'/>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

@@ -12,6 +12,7 @@ import Loading from './loading';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order';
+import { CircleCheck } from 'lucide-react';
 
 const Page = () => {
   const socket = io('http://localhost:3000');
@@ -51,13 +52,13 @@ const Page = () => {
       case 1:
         return <span>Chờ xác nhận</span>;
       case 2:
-        return <span>Đã xác nhận</span>;
+        return <span className='flex items-center text-green-500'><CircleCheck className='h-4'/>Đã xác nhận</span>;
       case 3:
         return <span>Đang chuẩn bị hàng</span>;
       case 4:
         return <span>Đang vận chuyển</span>;
       case 5:
-        return <span className='text-green-500'>Giao thành công</span>;
+        return <span className='flex items-center text-sky-500'><CircleCheck className='h-4'/>Giao thành công</span>;
       case 6:
         return <span className='text-red-500'>ĐÃ HỦY</span>;
       default: return;
@@ -67,7 +68,7 @@ const Page = () => {
   const columns: ColumnDef<any>[] = [
     {
       cell: ({ row }) => (
-        <div className='flex flex-col gap-y-2'>
+        <div className='flex flex-col gap-y-2 text-sm'>
           <span>Tên : {row?.original?.infor_user?.name_user}</span>
           <span>Địa chỉ : {row?.original?.infor_user?.address}</span>
           <span>SĐT : {row?.original?.infor_user?.phone}</span>
@@ -81,7 +82,7 @@ const Page = () => {
         row?.original?.items_order?.map((item: any) => {
           return (<div key={item?.product_id?._id} className='flex items-center gap-x-4'>
             <Image width={70} height={100} className='h-[90px] rounded' src={item?.product_id?.feature_product} alt='Loading...' />
-            <div className='flex flex-col gap-y-1'>
+            <div className='flex flex-col gap-y-1 *:text-sm'>
               <span className='max-w-[200px] line-clamp-1'>{item?.product_id?.short_name}</span>
               <span className='text-red-500'>{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
               <span>X {item?.quantity}</span>
@@ -95,7 +96,7 @@ const Page = () => {
     {
       cell: ({ row }) => (
         <div className='flex flex-col gap-y-2'>
-          <span>Ngày đặt : {row?.original?.date_time}</span>
+          <span>Ngày đặt : {row?.original?.date_time?.slice(0,10)}</span>
           <span>Mã đơn : {row?.original?.code_order}</span>
         </div>
       ),
@@ -109,10 +110,10 @@ const Page = () => {
     },
     {
       cell: ({ row }) => (row?.original?.status_item_order === '1') &&
-        <div className='flex gap-x-2'>
+        <div className='flex flex-col gap-y-2'>
           <AlertDialog>
             <AlertDialogTrigger>
-              <Button className="bg-green-500 hover:!bg-green-700">Xác nhận</Button>
+              <Button className="bg-green-500 rounded hover:!bg-green-700 h-auto py-1 px-1.5 text-xs">Xác nhận</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -126,7 +127,7 @@ const Page = () => {
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger>
-              <Button className="bg-red-500 hover:!bg-red-700">Từ chối</Button>
+              <Button className="bg-red-500 hover:!bg-red-700 rounded h-auto py-1 px-1.5 text-xs">Từ chối</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -150,7 +151,7 @@ const Page = () => {
           {
             data?.data_order ?
               <DataTable data={data?.data_order?.docs} columns={columns} /> :
-              <span>không thể xác minh danh tính</span>
+              <span className='border-none'>không thể xác minh danh tính</span>
           }
         </div>
       </div>
