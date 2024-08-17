@@ -68,7 +68,7 @@ export async function destroy_items(req, res) {
             message: 'Done delete!!'
         })
     } catch (error) {
-        return res.statud(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message: error.message || "Lỗi server rồi đại vương ơi!"
         })
     }

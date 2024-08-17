@@ -20,7 +20,7 @@ const SideBarDashboard = () => {
         {
             icon: <House />,
             name: 'Bảng điều khiển',
-            pathName: '/adminstrations/dashboard',
+            pathName: '/adminstrations/dashboard/overview',
         },
         {
             icon: <Package />,

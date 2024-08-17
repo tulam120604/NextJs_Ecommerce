@@ -14,7 +14,7 @@ export async function list_Account (req, res) {
         }
         const querry = {};
         const data = await Account.paginate(querry, options);
-        const totalAccount = await Account.countDocuments();
+        const account_seller = await Account.find({role : 'seller'});
         if (!data || data.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message : "Khong co data !"
@@ -23,7 +23,7 @@ export async function list_Account (req, res) {
         return res.status(StatusCodes.OK).json({
             message : "OK",
             data,
-            totalAccount
+            account_seller
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
