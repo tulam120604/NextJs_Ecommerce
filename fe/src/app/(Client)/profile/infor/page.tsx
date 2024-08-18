@@ -1,6 +1,6 @@
 'use client';
 
-import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
@@ -19,7 +19,7 @@ const Page = () => {
     setClient(true)
   }, [])
   const routing = useRouter();
-  let user = useCheck_user() ?? undefined;
+  const user = useCheck_user() ?? undefined;
 
   // address 
   const { data, isLoading } = List_Address(user?.check_email?._id);
@@ -40,9 +40,6 @@ const Page = () => {
     eventEmit.on('close_form_create_address', () => { handle_Close_Form_Create_Address() })
   }, [])
 
-  if (!user) {
-    routing.push('/')
-  }
   return (
     client ?
       <div className="w-full px-6 py-4">

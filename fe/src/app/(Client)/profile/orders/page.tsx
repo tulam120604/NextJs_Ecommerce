@@ -13,6 +13,7 @@ import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { CircleCheck } from 'lucide-react'
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 const Page = () => {
   const [status_item_order, setStatus_item_order] = useState<number>(0);
@@ -22,13 +23,8 @@ const Page = () => {
     page = Number(searchParams.get('_page'))
   }
   const routing = useRouter();
-  let user_id: any;
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-    }
-    const user = JSON.parse(localStorage.getItem('account') || '{}');
-    user_id = user?.check_email?._id;
-  }
+  const data_user = useCheck_user();
+  const user_id= data_user ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   function status_order(item: any) {
     switch (+item) {
@@ -49,7 +45,7 @@ const Page = () => {
   }
   function cancle_order(id_order: any) {
     const dataClient = {
-      id_user: user_id,
+      id_user: user_id?.check_email?._id,
       item: {
         order_id: id_order,
         status_item_order: 6

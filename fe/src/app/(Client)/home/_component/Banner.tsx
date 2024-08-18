@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image';
 import Slide_show from '@/src/app/_Components/Slide/slide_show';
 

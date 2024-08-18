@@ -27,10 +27,12 @@ const Page = () => {
   const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
-  let user = useCheck_user() ?? undefined;
+  const user = useCheck_user() ?? undefined;
+ useEffect(() => {
   if (!user) {
     routing.push('/')
   }
+ }, [routing, user])
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
   });

@@ -7,17 +7,12 @@ import io from 'socket.io-client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 export default function Page() {
     const socket = io('http://localhost:3000');
-    const routing = useRouter();
-    let user: any;
-    if (typeof window !== 'undefined') {
-        if (!localStorage.getItem('account')) {
-            routing.push('/')
-        }
-        user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
-    }
+    const data_user = useCheck_user()
+    const user = data_user ?? '';
     // console.log(user?.check_email)
     const mutate_notification = Mutation_Notification('ADD');
     function onSendMessage(dataForm: any) {

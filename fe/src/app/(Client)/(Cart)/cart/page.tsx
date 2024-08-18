@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image'
-import React, { Suspense, useEffect, useRef, useState } from 'react'
+import React, { Suspense, use, useEffect, useRef, useState } from 'react'
 import LoadingCart from './loading';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
 import Link from 'next/link';
@@ -40,10 +40,12 @@ const Cart = () => {
   const routing = useRouter();
   const [content_note_order, setContent_note_order] = useState<string>('')
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
-  let user = useCheck_user() ?? undefined;
-  if (!user) {
-    routing.push('/')
-  }
+  const user = useCheck_user() ?? undefined;
+  useEffect(() => {
+    if (!user) {
+      routing.push('/')
+    }
+  }, [routing, user])
   const { data, isLoading } = Get_Items_Cart(user?.check_email?._id);
   const [arr_item_checkbox, setarr_item_checkbox] = useState<any>([]);
   useEffect(() => {

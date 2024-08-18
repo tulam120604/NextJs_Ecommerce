@@ -12,20 +12,14 @@ import React, { useEffect } from 'react'
 import { useToast } from '@/src/app/_Components/ui/use-toast'
 import { ToastAction } from '@/src/app/_Components/ui/toast'
 import Link from 'next/link'
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 
 const Page = () => {
   const socket = io('http://localhost:3000');
-
+  const data_user = useCheck_user();
   const { toast } = useToast()
-  const routing = useRouter();
-  let user: any;
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-      routing.push("/")
-    }
-    user = JSON.parse(localStorage.getItem("account") || '{}') ?? '';
-  }
+  const user = data_user ?? '';
   const data = Query_Notification(user?.check_email?._id);
   const mutate_notification = Mutation_Notification('SEND');
   function sendMessage(item: any) {
@@ -63,7 +57,7 @@ const Page = () => {
         }
         <ul className="space-y-2">
           {
-            (data?.data?.data_notification.length || data?.data?.data_notification.length?.length > 0)  ?
+            (data?.data?.data_notification.length || data?.data?.data_notification.length?.length > 0) ?
               (
                 data?.data?.data_notification?.map((item: any) => (
                   <AlertDialog key={item?._id}>

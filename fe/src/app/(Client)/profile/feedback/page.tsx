@@ -10,16 +10,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useCheck_user } from "@/src/app/_lib/Custome_Hooks/User";
 
 export default function Page() {
     const parameters = useSearchParams();
+    const data_user = useCheck_user();
     let params_rating: any = parameters.get('_rating') ?? '';
     const data = Get_Item_Order(params_rating);
-    let id_user: any;
-    if (typeof window !== 'undefined') {
-        id_user = JSON.parse(localStorage.getItem('account') || '{}') ?? '';
-    }
-
+    const id_user = data_user ?? '';
     const columns: ColumnDef<any>[] = [
         {
             cell: ({ row }) => (

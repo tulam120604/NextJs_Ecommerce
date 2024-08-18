@@ -1,3 +1,5 @@
+'use client'
+
 import { CardContent, CardHeader, CardTitle } from '@/src/app/_Components/ui/Chart/card'
 import Image from 'next/image'
 import React from 'react'

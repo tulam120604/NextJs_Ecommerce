@@ -26,11 +26,13 @@ const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
   }, [socket])
 
   const routing = useRouter();
-  if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('account')) {
-    routing.push('/')
-  }
-  }
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (!localStorage.getItem('account')) {
+      routing.push('/')
+    }
+    }
+  }, [])
   return (
     <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] grid lg:grid-cols-[250px_auto] grid-cols-[50px_auto] pt-4 *:rounded overflow-hidden'>
       <Side_bar />
