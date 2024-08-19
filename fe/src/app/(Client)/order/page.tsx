@@ -21,18 +21,18 @@ import { RadioGroup, RadioGroupItem } from '../../_Components/ui/radio-group';
 import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 
-const socket = io('http://localhost:3000');
 const Page = () => {
+  const socket = io('http://localhost:3000');
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
   const user = useCheck_user() ?? undefined;
- useEffect(() => {
-  if (!user) {
-    routing.push('/')
-  }
- }, [routing, user])
+  useEffect(() => {
+    if (!user) {
+      routing.push('/')
+    }
+  }, [routing, user])
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
   });

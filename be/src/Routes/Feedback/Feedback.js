@@ -1,5 +1,5 @@
 import express from 'express';
-import { add_feedback, get_feedback_detail_item } from '../../Controllers/Feedbacks/Options';
+import { add_feedback, get_feedback_detail_item } from '../../Controllers/Feedbacks/Options.js';
 
 const RoutesFeedback = express.Router();
 

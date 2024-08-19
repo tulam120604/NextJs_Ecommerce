@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import Products from '../../Model/Products/Products';
-import Attribute from '../../Model/Products/Attribute';
+import Products from '../../Model/Products/Products.js';
+import Attribute from '../../Model/Products/Attribute.js';
 
 export async function get_recycle_items(req, res) {
     const {

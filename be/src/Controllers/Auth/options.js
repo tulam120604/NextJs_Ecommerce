@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import Account from '../../Model/Auth/Account';
-import { Validate_Auth } from '../../Validates/Auth';
+import Account from '../../Model/Auth/Account.js';
+import { Validate_Auth } from '../../Validates/Auth.js';
 import brcyptjs from 'bcryptjs';
-import Notifications from '../../Model/Notifications/Notifications';
-import { black_list_token, createAccessToken, createRefeshToken } from '../../middleware/Auth';
-import Blacklist_token from '../../Model/Blacklist_Token/blacklist_token';
+import Notifications from '../../Model/Notifications/Notifications.js';
+import { black_list_token, createAccessToken, createRefeshToken } from '../../middleware/Auth.js';
+import Blacklist_token from '../../Model/Blacklist_Token/blacklist_token.js';
 import jwt from 'jsonwebtoken';
 
 export async function create_Account(req, res) {

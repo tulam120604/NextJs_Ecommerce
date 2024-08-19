@@ -43,7 +43,7 @@ const SideBarDashboard = () => {
             pathName: '/adminstrations/list_products/recycle',
         },
         {
-            icon: <Settings />,
+            icon: <Settings/>,
             name: 'Settings',
             pathName: '/adminstrations/settings'
         }
@@ -56,8 +56,8 @@ const SideBarDashboard = () => {
             {
                 arr?.map((item) => {
                     return (
-                        <Link key={item.pathName} href={item.pathName} className={`${usePathName === item.pathName ? 'group px-4 py-2 bg-[#2563EB] text-gray-100' :
-                            'px-4 py-2 hover:bg-[#2563EB] hover:text-gray-100'}`}>
+                        <Link key={item.pathName} href={item.pathName} className={`${usePathName === item.pathName ? 'group lg:px-4 lg:py-2 p-1.5 bg-[#2563EB] text-gray-100' :
+                            'lg:px-4 lg:py-2 p-1.5 hover:bg-[#2563EB] hover:text-gray-100'}`}>
                             {item?.icon}
                             <span className="hidden lg:block text-sm">{item?.name}</span>
                         </Link>

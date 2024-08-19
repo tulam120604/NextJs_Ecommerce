@@ -1,8 +1,8 @@
-import Account from '../../Model/Auth/Account';
+import Account from '../../Model/Auth/Account.js';
 import { StatusCodes } from 'http-status-codes';
-import Orders from '../../Model/Orders/Order';
-import Products from '../../Model/Products/Products';
-import Feedback from '../../Model/Feedback/Feedback';
+import Orders from '../../Model/Orders/Order.js';
+import Products from '../../Model/Products/Products.js';
+import Feedback from '../../Model/Feedback/Feedback.js';
 
 export async function add_feedback(req, res) {
     const { user_id, item_id, content_feedback } = req.body;

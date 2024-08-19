@@ -1,27 +1,26 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import ConnectDB from './Connect/database';
-import RoutesProducts from './Routes/Items/Products';
-import RoutesCategories from './Routes/Items/Categories';
-import RoutesAuth from './Routes/Auth/Auth';
-import RoutesCart from './Routes/Cart/Cart';
-import Routes_upload from './Routes/upload';
-import Routes_Order from './Routes/Order/Order';
-import Routes_Attribute from './Routes/Attribute/Attribute';
-import RoutesFeedback from './Routes/Feedback/Feedback';
-import RoutesNotification from './Routes/Notification/Notification';
-import { handle_socket_event } from './socket/handle_socket';
+import ConnectDB from './Connect/database.js';
+import RoutesProducts from './Routes/Items/Products.js';
+import RoutesCategories from './Routes/Items/Categories.js';
+import RoutesAuth from './Routes/Auth/Auth.js';
+import RoutesCart from './Routes/Cart/Cart.js';
+import Routes_upload from './Routes/upload.js';
+import Routes_Order from './Routes/Order/Order.js';
+import Routes_Attribute from './Routes/Attribute/Attribute.js';
+import RoutesFeedback from './Routes/Feedback/Feedback.js';
+import RoutesNotification from './Routes/Notification/Notification.js';
+import { handle_socket_event } from './socket/handle_socket.js';
 import { createServer } from 'node:http'
 import { Server } from 'socket.io';
-import RoutesAddress from './Routes/Auth/Address';
-import RoutesPayment from './Routes/Payment/Payment';
+import RoutesAddress from './Routes/Auth/Address.js';
+import RoutesPayment from './Routes/Payment/Payment.js';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
 
 
 
@@ -58,18 +57,18 @@ app.use('/v1', RoutesPayment)
 
 
 // web socket
-// const server = createServer(app)
-// const io = new Server(server, {
-//     cors: {
-//         origin: process.env.HOST_SOCKET,
-//     }
-// });
+const server = createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+    }
+});
 
-// handle_socket_event(io)
+handle_socket_event(io)
 
-// server.listen(process.env.PORT_SOCKET, () => {
-//     console.log('server running!');
-// })
+app.listen(process.env.PORT_SERVER, () => {
+    console.log('server running!');
+})
 
 
 export const viteNodeApp = app;

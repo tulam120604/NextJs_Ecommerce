@@ -8,10 +8,10 @@ import { useToast } from '../../_Components/ui/use-toast';
 import { ToastAction } from '../../_Components/ui/toast';
 
 const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
-  const socket = io('http://localhost:3000');
   const { toast } = useToast();
 
   useEffect(() => {
+    const socket = io();
     socket.on('res_status_item_order_to_user', (data) => {
       console.log(data)
       toast({
@@ -22,22 +22,25 @@ const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
           <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
         ),
       })
-    })
-  }, [socket])
+    });
+    return () => {
+      socket.disconnect();
+    }
+  }, [])
 
   const routing = useRouter();
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (!localStorage.getItem('account')) {
-      routing.push('/')
-    }
+        routing.push('/')
+      }
     }
   }, [])
   return (
     <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] grid lg:grid-cols-[250px_auto] grid-cols-[50px_auto] pt-4 *:rounded overflow-hidden'>
       <Side_bar />
       <div className='min-h-[90vh]'>
-      {children}
+        {children}
       </div>
     </div>
   )

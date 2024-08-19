@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import cloudinary from '../utils/cloudinary';
-import upload from '../middleware/multer';
+import cloudinary from '../utils/cloudinary.js';
+import upload from '../middleware/multer.js';
 const Routes_upload = Router();
 
 Routes_upload.post('/upload', upload.single('image'), function (req, res) {

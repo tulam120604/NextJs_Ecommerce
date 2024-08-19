@@ -1,4 +1,4 @@
-import Products from '../../Model/Products/Products';
+import Products from '../../Model/Products/Products.js';
 import { StatusCodes } from 'http-status-codes';
 
 

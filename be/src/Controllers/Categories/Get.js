@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import Categories from '../../Model/Products/Categories';
+import Categories from '../../Model/Products/Categories.js';
 
 export async function GetAllCategories(req, res) {
     try {

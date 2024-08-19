@@ -1,8 +1,8 @@
 import express from 'express';
-import { Get_detail_category, GetAllCategories } from '../../Controllers/Categories/Get';
-import { Create_Categories } from '../../Controllers/Categories/Create';
-import { AddProductToCategories } from '../../Controllers/Categories/Edit';
-import upload from '../../middleware/multer';
+import { Get_detail_category, GetAllCategories } from '../../Controllers/Categories/Get.js';
+import { Create_Categories } from '../../Controllers/Categories/Create.js';
+import { AddProductToCategories } from '../../Controllers/Categories/Edit.js';
+import upload from '../../middleware/multer.js';
 
 const RoutesCategories = express.Router();
 

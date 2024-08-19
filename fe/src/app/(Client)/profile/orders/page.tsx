@@ -24,7 +24,7 @@ const Page = () => {
   }
   const routing = useRouter();
   const data_user = useCheck_user();
-  const user_id= data_user ?? '';
+  const user_id= data_user?.check_email?._id ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   function status_order(item: any) {
     switch (+item) {
@@ -45,7 +45,7 @@ const Page = () => {
   }
   function cancle_order(id_order: any) {
     const dataClient = {
-      id_user: user_id?.check_email?._id,
+      id_user: user_id,
       item: {
         order_id: id_order,
         status_item_order: 6
