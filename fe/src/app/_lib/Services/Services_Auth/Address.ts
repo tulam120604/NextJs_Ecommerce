@@ -58,13 +58,10 @@ export async function edit_address(item: { id_user: string | number, address: st
 }
 
 
-export async function remove_address(id_address: string | number, accessToken: string) {
+export async function remove_address(id_address: string | number) {
     try {
         const res = await fetch(`${apiURi}/address/${id_address}`, {
             method: 'delete',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
         });
         if (!res.ok) {
             return res

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { create_address, get_address } from "../../Services/Services_Auth/Address";
+import { create_address, get_address, remove_address } from "../../Services/Services_Auth/Address";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { schemaValidateAddress } from "@/src/app/(Auth)/validate";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -30,6 +30,8 @@ export function Mutation_Address(action: Actions) {
             switch (action) {
                 case "CREATE":
                     return await create_address(dataClient);
+                case 'REMOVE':
+                    return await remove_address(dataClient);
                 default: return
             }
         },

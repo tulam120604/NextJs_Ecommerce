@@ -116,12 +116,7 @@ const Header = () => {
                             <Count_Cart />
                         </button>
 
-                        {/* show mini cart */}
-                        {/* <div className='absolute scale-0 group-hover:scale-100 duration-300 top-[100%] right-0 w-[30vw] lg:block hidden bg-white rounded shadow-xl 
-                                border after:w-20 after:h-10 after:absolute after:bg-none after:z-[-1] after:-translate-y-[80%] after:top-0 after:-right-[20px] 
-                                -translate-y-[50%] translate-x-1/2 group-hover:translate-x-0 group-hover:translate-y-[10px]'>
-                                <Mini_Cart />
-                            </div> */}
+                    
                     </div>
                     <Link href={'/login'} className={`${checkLocal ? 'hidden' : 'block'} text-xs lg:text-sm hover:text-gray-300 cursor-pointer duration-300 whitespace-nowrap`}>Đăng nhập</Link>
                     <Link href={'/profile/infor'} className={`${checkLocal ? 'block' : 'hidden'} relative border-none p-0.5 cursor-pointer whitespace-nowrap group`}>

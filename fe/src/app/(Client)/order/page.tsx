@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react'
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import Loading from './loading';
 import { Input } from '../../_Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
@@ -22,7 +22,6 @@ import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 
 const Page = () => {
-  const socket = io();
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const { toast } = useToast();
   const routing = useRouter();
@@ -71,6 +70,7 @@ const Page = () => {
   }
   // socket 
   useEffect(() => {
+    const socket = io('http://localhost:8888')
     if (typeof window) {
       let data_session = JSON.parse(sessionStorage.getItem('item_order') || '{}');
       socket.on('res_message', (data: any) => {
@@ -93,7 +93,7 @@ const Page = () => {
       })
       setList_item_order(data_session);
     }
-  }, [socket]);
+  }, []);
 
   return (<Suspense fallback={<Loading />}>
     <div className='max-w-[1440px] mx-auto md:w-[90vw] mb:w-[342px] mx-auto mt-2'>

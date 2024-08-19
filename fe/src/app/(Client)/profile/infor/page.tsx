@@ -4,7 +4,6 @@ import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Address_component from '../_components/address';
@@ -18,20 +17,19 @@ const Page = () => {
   useEffect(() => {
     setClient(true)
   }, [])
-  const routing = useRouter();
   const user = useCheck_user() ?? undefined;
 
   // address 
   const { data, isLoading } = List_Address(user?.check_email?._id);
   function handle_Show_Form_Create_Address() {
-    form_create_address?.current?.classList?.remove('-translate-y-[200%]');
-    form_create_address?.current?.classList?.add('translate-y-0');
+    form_create_address?.current?.classList?.remove('left-3/4');
+    form_create_address?.current?.classList?.add('left-1/2', 'scale-100');
     bg_form_create_address?.current?.classList?.remove('hidden');
     bg_form_create_address?.current?.classList?.add('block');
   }
   function handle_Close_Form_Create_Address() {
-    form_create_address?.current?.classList?.add('-translate-y-[200%]');
-    form_create_address?.current?.classList?.remove('translate-y-0');
+    form_create_address?.current?.classList?.add('left-3/4', 'scale-0');
+    form_create_address?.current?.classList?.remove('left-1/2', 'scale-100');
     bg_form_create_address?.current?.classList?.add('hidden');
     bg_form_create_address?.current?.classList?.remove('block');
   }
@@ -75,7 +73,7 @@ const Page = () => {
           <span className='lg:text-xl text-lg'>Địa chỉ</span>
           <Button onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
         </section>
-        <div ref={form_create_address} className='fixed -translate-y-[200%] duration-200 top-1/4 left-1/2 -translate-x-1/2 z-[3]'>
+        <div ref={form_create_address} className='fixed -translate-x-1/2 scale-0 duration-200 top-1/4 left-3/4 z-[3]'>
           <Address_component id_user={user?.check_email?._id} />
         </div>
         <div onClick={handle_Close_Form_Create_Address} ref={bg_form_create_address}

@@ -13,13 +13,13 @@ import { ChevronUp, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
 
 const Page = () => {
+  const socket = io('http://localhost:8888s')
   let id_user;
-  const socket = io();
   const token = useToken();
   const user = useCheck_user();
   const searchParams = useSearchParams();
@@ -122,7 +122,7 @@ const Page = () => {
                     <span className="group-open:block hidden">Đóng</span>
                     <span className="group-open:hidden">Hiện</span>
                     <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                     <ChevronUp className="h-4"/>
+                      <ChevronUp className="h-4" />
                     </span>
                   </summary>
                   {
@@ -169,7 +169,7 @@ const Page = () => {
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Seller>
         <div className=" flex flex-col gap-y-6 py-4 rounded">
-        <strong className='text-2xl'>Danh sách sản phẩm</strong>
+          <strong className='text-2xl'>Danh sách sản phẩm</strong>
           {/* {(Array.isArray(data)) ? (<> */}
           <div className="sticky z-[2] top-20">
             <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" href={'/adminstrations/list_products/create_item'}>Thêm sản phẩm +</Link>

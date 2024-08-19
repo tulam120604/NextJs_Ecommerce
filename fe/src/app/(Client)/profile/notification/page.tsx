@@ -6,7 +6,7 @@ import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog'
 import { CircleCheck } from 'lucide-react'
 import Image from 'next/image'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { useToast } from '@/src/app/_Components/ui/use-toast'
@@ -16,7 +16,6 @@ import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 
 const Page = () => {
-  const socket = io();
   const data_user = useCheck_user();
   const { toast } = useToast()
   const user = data_user ?? '';
@@ -33,6 +32,7 @@ const Page = () => {
   }
 
   useEffect(() => {
+    const socket = io('http://localhost:8888')
     socket.on('notification_granting_premission_account', (data: string) => {
       console.log(data)
       toast({
@@ -44,7 +44,7 @@ const Page = () => {
         ),
       })
     })
-  }, [socket])
+  }, [])
 
 
   return (

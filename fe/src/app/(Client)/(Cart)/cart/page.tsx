@@ -14,17 +14,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/src/app/_Components/ui/alert-dialog";
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { useToast } from '@/src/app/_Components/ui/use-toast';
 import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 
 const Cart = () => {
-  const socket = io();
   const { toast } = useToast();
   // socket
   useEffect(() => {
+    const socket = io('http://localhost:8888')
     socket.on('res_message', (data: any) => {
       toast({
         title: "Thông báo!",
@@ -35,7 +35,7 @@ const Cart = () => {
         ),
       })
     })
-  }, [socket])
+  }, [])
 
   const routing = useRouter();
   const [content_note_order, setContent_note_order] = useState<string>('')

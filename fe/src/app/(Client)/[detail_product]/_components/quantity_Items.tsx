@@ -5,21 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { Mutation_Cart } from "../../../_lib/Tanstack_Query/Cart/mutation_Cart";
 import { Minus, Plus } from "lucide-react";
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { useToast } from "@/src/app/_Components/ui/use-toast";
 
 
-const socket = io();
+
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
   const { toast } = useToast();
   useEffect(() => {
-    socket.on('res_message', (data : any) => {
+    const socket = io('http://localhost:8888')
+    socket.on('res_message', (data: any) => {
       toast({
         title: "Thông báo!",
         description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
-        className : 'border border-gray-800',
-        duration : 3000
+        className: 'border border-gray-800',
+        duration: 3000
       });
       const timeOut = setTimeout(() => {
         routing.push('/')
@@ -28,7 +29,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         clearTimeout(timeOut)
       }
     })
-  }, [socket])
+  }, [])
 
   const { mutate } = Mutation_Cart('Add_Cart');
   const [color, setColor] = useState<any>();
@@ -59,7 +60,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     } else {
       routing.push('/')
     }
-  
+
   }, []);
 
   // up, dow quantity
@@ -154,7 +155,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         color: color,
         quantity: quantity,
         size_attribute: sizePropsCart,
-        item_in_stock : quantity_attributes
+        item_in_stock: quantity_attributes
       };
       if (quantity_attributes) {
         mutate(items);

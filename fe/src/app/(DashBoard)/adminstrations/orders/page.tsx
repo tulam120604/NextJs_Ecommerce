@@ -7,7 +7,7 @@ import { DataTable } from '@/src/app/_Components/ui/Tables/data_table';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import React, { Suspense } from 'react';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import Loading from './loading';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
@@ -15,7 +15,7 @@ import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_ord
 import { CircleCheck } from 'lucide-react';
 
 const Page = () => {
-  const socket = io();
+  const socket = io('http://localhost:8888')
   const token = useToken();
   const role_user = ['admin_global', 'admin_local'];
   const user = useCheck_user();
@@ -27,10 +27,9 @@ const Page = () => {
   }
   const { data, isLoading } = List_Order_Dashboard(token?.accessToken, id_seller);
 
-
   // update status order
   const mutation_status_order = Mutation_Order('UPDATE_STATUS');
-  function change_status(id_item: {_id : string, code_order : string | number}, status: number) {
+  function change_status(id_item: { _id: string, code_order: string | number }, status: number) {
     mutation_status_order.mutate({
       id_user: user?.check_email?._id,
       item: {
@@ -52,13 +51,13 @@ const Page = () => {
       case 1:
         return <span>Chờ xác nhận</span>;
       case 2:
-        return <span className='flex items-center text-green-500'><CircleCheck className='h-4'/>Đã xác nhận</span>;
+        return <span className='flex items-center text-green-500'><CircleCheck className='h-4' />Đã xác nhận</span>;
       case 3:
         return <span>Đang chuẩn bị hàng</span>;
       case 4:
         return <span>Đang vận chuyển</span>;
       case 5:
-        return <span className='flex items-center text-sky-500'><CircleCheck className='h-4'/>Giao thành công</span>;
+        return <span className='flex items-center text-sky-500'><CircleCheck className='h-4' />Giao thành công</span>;
       case 6:
         return <span className='text-red-500'>ĐÃ HỦY</span>;
       default: return;
@@ -96,7 +95,7 @@ const Page = () => {
     {
       cell: ({ row }) => (
         <div className='flex flex-col gap-y-2'>
-          <span>Ngày đặt : {row?.original?.date_time?.slice(0,10)}</span>
+          <span>Ngày đặt : {row?.original?.date_time?.slice(0, 10)}</span>
           <span>Mã đơn : {row?.original?.code_order}</span>
         </div>
       ),

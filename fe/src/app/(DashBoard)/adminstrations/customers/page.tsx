@@ -14,7 +14,6 @@ import { Auth_Wrap_Admins } from "../_Auth_Wrap/Page";
 
 
 const CustomersAdmin = () => {
-    const socket = io('localhost:2000');
     const routing = useRouter();
     const token = useToken();
     const user = useCheck_user();

@@ -3,17 +3,15 @@
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button'
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox'
-import io from 'socket.io-client'
+import { io } from 'socket.io-client'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 export default function Page() {
-    const socket = io();
-    const data_user = useCheck_user()
+    const data_user = useCheck_user();
+    const socket = io('http://localhost:8888')
     const user = data_user ?? '';
-    // console.log(user?.check_email)
     const mutate_notification = Mutation_Notification('ADD');
     function onSendMessage(dataForm: any) {
         const data_body = {
@@ -23,7 +21,7 @@ export default function Page() {
             notes: dataForm?.address_shop
         }
         mutate_notification.mutate(data_body);
-        socket.emit('create_seller_message', `Đại vương có 1 thông báo mới từ ${ user?.check_email?.user_name}`)
+        socket.emit('create_seller_message', `Đại vương có 1 thông báo mới từ ${user?.check_email?.user_name}`)
     }
     return (
         <div className='pl-4'>
