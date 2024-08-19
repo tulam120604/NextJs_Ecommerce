@@ -21,7 +21,7 @@ import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 
 const Cart = () => {
-  const socket = io('http://localhost:3000');
+  const socket = io();
   const { toast } = useToast();
   // socket
   useEffect(() => {

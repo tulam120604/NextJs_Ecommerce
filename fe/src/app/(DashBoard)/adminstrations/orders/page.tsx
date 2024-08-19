@@ -15,7 +15,7 @@ import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_ord
 import { CircleCheck } from 'lucide-react';
 
 const Page = () => {
-  const socket = io('http://localhost:3000');
+  const socket = io();
   const token = useToken();
   const role_user = ['admin_global', 'admin_local'];
   const user = useCheck_user();

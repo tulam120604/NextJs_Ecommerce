@@ -1,8 +1,8 @@
-import Account from '../../Model/Auth/Account.js';
-import Orders from '../../Model/Orders/Order.js';
+import Account from '../../Model/Auth/Account';
+import Orders from '../../Model/Orders/Order';
 import { StatusCodes } from 'http-status-codes';
-import { update_quantity_item } from '../Products/Edit.js';
-import { update_quantity_item_in_cart } from '../Cart/Get.js';
+import { update_quantity_item } from '../Products/Edit';
+import { update_quantity_item_in_cart } from '../Cart/Get';
 
 
 export async function create_Order(req, res) {
@@ -57,6 +57,7 @@ export async function get_Order_User(req, res) {
         }
         const totalItems = await Orders.countDocuments(querry);
         const data_order = await Orders.paginate(querry, options);
+        console.log()
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data_order,

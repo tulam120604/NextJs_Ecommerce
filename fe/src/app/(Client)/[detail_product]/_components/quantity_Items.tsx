@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 import { useToast } from "@/src/app/_Components/ui/use-toast";
 
 
-const socket = io('http://localhost:3000');
+const socket = io();
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
   const { toast } = useToast();

@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import Categories from "../../Model/Products/Categories.js";
-import cloudinary from "../../utils/cloudinary.js";
+import Categories from "../../Model/Products/Categories";
+import cloudinary from "../../utils/cloudinary";
 
 export async function Create_Categories (req, res) {
     const {category_name, category_img} = req.body;

@@ -22,7 +22,7 @@ import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 
 const Page = () => {
-  const socket = io('http://localhost:3000');
+  const socket = io();
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const { toast } = useToast();
   const routing = useRouter();

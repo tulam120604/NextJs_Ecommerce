@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { create_address, edit_address, get_address, remove_address } from '../../Controllers/Auth/address.js';
+import { create_address, edit_address, get_address, remove_address } from '../../Controllers/Auth/address';
 
 const RoutesAddress = express.Router();
 

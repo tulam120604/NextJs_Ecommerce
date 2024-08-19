@@ -2,13 +2,13 @@ import express from 'express';
 import {
     get_Detail_Client, get_Detail_Dashboard, get_item_by_category,
     get_item_by_user, get_Item_Client, get_Item_Dashboard, search_Item
-} from '../../Controllers/Products/Get.js';
-import { Create_Product } from '../../Controllers/Products/Create.js';
-import { middleWare } from '../../middleware/Auth.js';
-import upload from '../../middleware/multer.js';
-import { Soft_remove } from '../../Controllers/Products/Soft_delere.js';
-import { destroy_items, get_recycle_items, restore_item } from '../../Controllers/Recycle/Items.js';
-import { edit_Product } from '../../Controllers/Products/Edit.js';
+} from '../../Controllers/Products/Get';
+import { Create_Product } from '../../Controllers/Products/Create';
+import { middleWare } from '../../middleware/Auth';
+import upload from '../../middleware/multer';
+import { Soft_remove } from '../../Controllers/Products/Soft_delere';
+import { destroy_items, get_recycle_items, restore_item } from '../../Controllers/Recycle/Items';
+import { edit_Product } from '../../Controllers/Products/Edit';
 
 const RoutesProducts = express.Router();
 

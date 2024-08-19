@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import Account from '../../Model/Auth/Account.js';
+import Account from '../../Model/Auth/Account';
 
 export async function list_Account (req, res) {
     const {

@@ -1,4 +1,4 @@
-import Address from "../../Model/Auth/Address.js";
+import Address from "../../Model/Auth/Address";
 import { StatusCodes } from 'http-status-codes';
 
 export async function create_address(req, res) {

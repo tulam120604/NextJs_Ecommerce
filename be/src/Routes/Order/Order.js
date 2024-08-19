@@ -1,10 +1,9 @@
 import express from 'express';
 import {
-    create_Order, get_all_Order, get_detail_item_order,
-    get_Order_User, list_item_order_by_seller, restore_buy_item_order,
-    update_status_order
-} from '../../Controllers/Order/Order.js';
-import { middleWare } from '../../middleware/Auth.js';
+    create_Order, get_all_Order, get_detail_item_order, get_Order_User,
+    list_item_order_by_seller, restore_buy_item_order, update_status_order
+} from '../../Controllers/Order/Order';
+import { middleWare } from '../../middleware/Auth';
 
 const Routes_Order = express.Router();
 

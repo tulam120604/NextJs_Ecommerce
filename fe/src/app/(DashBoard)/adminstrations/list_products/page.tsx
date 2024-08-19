@@ -19,7 +19,7 @@ import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
 const Page = () => {
   let id_user;
-  const socket = io('http://localhost:3000');
+  const socket = io();
   const token = useToken();
   const user = useCheck_user();
   const searchParams = useSearchParams();

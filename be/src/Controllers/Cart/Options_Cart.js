@@ -1,6 +1,7 @@
-import Carts from '../../Model/Cart/Cart.js';
+import Carts from '../../Model/Cart/Cart';
 import { StatusCodes } from 'http-status-codes';
-import Products from "../../Model/Products/Products.js";
+import Products from "../../Model/Products/Products";
+import Attribute from '../../Model/Products/Attribute';
 
 
 export async function Add_To_Cart(req, res) {

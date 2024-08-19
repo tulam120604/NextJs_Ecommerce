@@ -10,7 +10,7 @@ import React from 'react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 export default function Page() {
-    const socket = io('http://localhost:3000');
+    const socket = io();
     const data_user = useCheck_user()
     const user = data_user ?? '';
     // console.log(user?.check_email)

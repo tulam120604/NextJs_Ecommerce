@@ -8,10 +8,10 @@ import { useToast } from '../../_Components/ui/use-toast';
 import { ToastAction } from '../../_Components/ui/toast';
 
 const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
-  const { toast } = useToast();
+    const socket = io();
+    const { toast } = useToast();
 
   useEffect(() => {
-    const socket = io();
     socket.on('res_status_item_order_to_user', (data) => {
       console.log(data)
       toast({

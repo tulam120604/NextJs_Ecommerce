@@ -1,9 +1,9 @@
-import Products from "../../Model/Products/Products.js";
-import Categories from "../../Model/Products/Categories.js";
+import Products from "../../Model/Products/Products";
+import Categories from "../../Model/Products/Categories";
 import { StatusCodes } from "http-status-codes";
-import { validateProducts } from "../../Validates/Products.js";
-import cloudinary from "../../utils/cloudinary.js";
-import Attribute from "../../Model/Products/Attribute.js";
+import { validateProducts } from "../../Validates/Products";
+import cloudinary from "../../utils/cloudinary";
+import Attribute from "../../Model/Products/Attribute";
 
 
 // create 
