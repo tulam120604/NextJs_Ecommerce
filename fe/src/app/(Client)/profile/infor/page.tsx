@@ -42,27 +42,27 @@ const Page = () => {
     client ?
       <div className="w-full px-6 py-4">
         <div className='flex items-center justify-between'>
-          <span className='lg:text-xl text-lg'>Hồ sơ của tôi</span>
+          <span className='lg:text-xl text-sm'>Hồ sơ của tôi</span>
           {
             user?.check_email?.role === 'user' ?
-              <Link className='text-sm underline' href={'/profile/create_saller'}>Kênh phân phối</Link> :
+              <Link className='lg:text-sm text-xs underline' href={'/profile/create_saller'}>Kênh phân phối</Link> :
               user?.check_email?.role === 'seller' ?
-                <Link className='text-sm underline' href={'/adminstrations/list_products'}>Đi đến kho phân phối</Link> :
-                <Link className='text-sm underline' href={'/adminstrations/dashboard/overview'}>Bảng điều khiển</Link>
+                <Link className='lg:text-sm text-xs underline' href={'/adminstrations/list_products'}>Đi đến kho phân phối</Link> :
+                <Link className='lg:text-sm text-xs underline' href={'/adminstrations/dashboard/overview'}>Bảng điều khiển</Link>
           }
         </div>
-        <table className='lg:w-[50%] w-[80%] mx-auto'>
+        <table className='lg:w-[50%] lg:w-[80%] mx-auto'>
           <tbody>
             <tr className='*:my-6'>
-              <td className='flex items-center justify-between'>
+              <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Tên đăng nhập
-                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.user_name}</div>
+                <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.user_name}</div>
               </td>
-              <td className='flex items-center justify-between'>
+              <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Email tài khoản
-                <div className='lg:w-[70%] w-[40%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.email}</div>
+                <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600 overflow-hidden'>{user && user?.check_email?.email}</div>
               </td>
-              <td className='flex items-center justify-between'>
+              <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Số điện thoại
                 <Link href={''} className='lg:w-[70%] w-[40%] underline px-4 rounded text-sky-600'>thêm</Link>
               </td>
@@ -70,8 +70,8 @@ const Page = () => {
           </tbody>
         </table>
         <section className='flex items-center justify-between my-5 py-5 border-t'>
-          <span className='lg:text-xl text-lg'>Địa chỉ</span>
-          <Button onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
+          <span className='lg:text-xl text-sm'>Địa chỉ</span>
+          <Button className='lg:text-sm text-xs px-2 lg:py-2 py-1.5 h-auto' onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
         </section>
         <div ref={form_create_address} className='fixed -translate-x-1/2 scale-0 duration-200 top-1/4 left-3/4 z-[3]'>
           <Address_component id_user={user?.check_email?._id} />
@@ -79,11 +79,11 @@ const Page = () => {
         <div onClick={handle_Close_Form_Create_Address} ref={bg_form_create_address}
           className='fixed hidden w-screen h-screen top-0 left-0 z-[2] bg-[#33333355]'></div>
         {isLoading && <Loading_Dots />}
-        <div className='grid grid-cols-2 lg:gap-x-10 gap-6'>
+        <div className='grid lg:grid-cols-2 lg:gap-x-10 gap-6'>
           {data?.data && data?.data.length > 0 ?
             data?.data?.map((item: any) => (
-              <div key={item?._id} className="rounded py-3 border border-gray-300 flex justify-between px-4 gap-x-6">
-                <div className="text-sm flex flex-col gap-y-2">
+              <div key={item?._id} className="rounded py-3 border border-gray-300 lg:flex justify-between px-4 gap-x-6">
+                <div className="text-sm flex flex-col gap-y-2 mb-2">
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.user_name}</span>
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.phone}</span>
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.address}</span>
@@ -91,7 +91,7 @@ const Page = () => {
                     <span className="text-gray-700 border border-green-600 text-green-600 rounded p-0.5 text-center">Mặc định</span>
                   }
                 </div>
-                <div className='flex flex-col items-end gap-y-1'>
+                <div className='flex flex-col lg:items-end gap-y-1'>
                   <div>
                     <Link href={''} className="hover:underline text-sky-500 text-sm mx-2">Cập nhật</Link>
                     {!item?.status_address &&

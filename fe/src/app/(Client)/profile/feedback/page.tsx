@@ -23,7 +23,7 @@ export default function Page() {
             cell: ({ row }) => (
                 <div className="flex gap-x-4 lg:gap-x-8">
                     <Link href={'/' + row?.original?.product_id?._id}>
-                        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+                        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.gallery[0]} alt="Loading..." />
                     </Link>
                     <div className="w-full flex flex-col gap-y-3 pt-2">
                         <Link href={'/' + row?.original?.product_id?._id} className="line-clamp-2">{row?.original?.product_id?.short_name}</Link>

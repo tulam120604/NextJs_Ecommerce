@@ -9,7 +9,7 @@ export const columns: ColumnDef<any>[] = [
   {
     cell: ({ row }) => (
       <Link href={'/' + row?.original?.product_id?._id}>
-        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+        <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.gallery[0]} alt="Loading..." />
       </Link>),
     header: "Ảnh",
   },

@@ -52,7 +52,7 @@ const Side_bar = () => {
                 </Link>
                 <Link href={'/profile/notification'}
                     className={`${pathName === '/profile/notification' ? 'block after:w-2 !border-[#1F2937] px-4 py-2 lg:py-4 text-sm font-medium text-black flex items-center gap-x-4' : 'block duration-200 hover:border-[#1F2937] hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
-                    <div className="relative *:!text-gray-800 -translate-x-1">
+                    <div className="relative *:!text-gray-800">
                         <Bell_component />
                     </div>
                     <span className="hidden lg:block">Thông báo</span>

@@ -56,18 +56,18 @@ app.use('/v1', RoutesPayment)
 
 
 // web socket
-// const server = createServer(app)
-// const io = new Server(server, {
-//     cors: {
-//         origin: process.env.HOST_SOCKET,
-//     }
-// });
+const server = createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: process.env.HOST_SOCKET,
+    }
+});
 
-// handle_socket_event(io)
+handle_socket_event(io)
 
-// server.listen(process.env.PORT_SOCKET, () => {
-//     console.log('server running!');
-// })
+server.listen(process.env.PORT_SOCKET, () => {
+    console.log('server running!');
+})
 
 
 export const viteNodeApp = app;

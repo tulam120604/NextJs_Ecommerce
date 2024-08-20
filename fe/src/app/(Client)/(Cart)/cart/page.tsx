@@ -155,7 +155,8 @@ const Cart = () => {
                                   <Checkbox checked={item?.status_checked && true} onClick={() => handle_Checkked(item?.product_id, item?.color_item, item?.size_attribute_item)} />
                                 </TableCell>
                                 <TableCell className="h-[120px]">
-                                  <Link href={`/${item?.product_id?._id}`}> <img width={50} height={50} className="relative bg-[#f2f2f2f2] p-2 z-[1] w-full h-full duration-300" src={item?.product_id?.feature_product} alt='loading...' /></Link>
+                                  <Link href={`/${item?.product_id?._id}`}> <img width={50} height={50} className="relative bg-[#f2f2f2f2] p-2 z-[1] w-full h-full duration-300" 
+                                  src={item?.product_id?.gallery[0]} alt='loading...' /></Link>
                                 </TableCell>
                                 <TableCell>
                                   <div className="flex flex-col gap-y-2 md:text-base mb:text-xs max-w-[200px]">

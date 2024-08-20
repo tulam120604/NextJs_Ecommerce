@@ -69,7 +69,7 @@ const Page = () => {
                             <span className='text-sm flex gap-x-2 items-center font-medium'><CircleCheck className='w-4 text-green-500' />Đã xem </span>
                           }
                         </div>
-                        <div>
+                        <div className='flex gap-x-10'>
                           <div>
                             <p className="mt-1 text-sm font-medium">
                               Nội dung: {item?.notification_message}
@@ -80,7 +80,7 @@ const Page = () => {
                               </p>}
                           </div>
 
-                          <p className="mt-1 text-sm font-medium">
+                          <p className="mt-1 text-sm font-medium whitespace-nowrap">
                             {item?.createdAt?.slice(0, 10)}
                           </p>
                         </div>

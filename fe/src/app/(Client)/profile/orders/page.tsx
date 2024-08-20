@@ -24,7 +24,7 @@ const Page = () => {
   }
   const routing = useRouter();
   const data_user = useCheck_user();
-  const user_id= data_user?.check_email?._id ?? '';
+  const user_id = data_user?.check_email?._id ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   function status_order(item: any) {
     switch (+item) {
@@ -33,11 +33,11 @@ const Page = () => {
       case 2:
         return <span>Đã xác nhận</span>;
       case 3:
-        return <span>Đang chuẩn bị hàng</span>;
+        return <span className='text-green-500'>Đang chuẩn bị hàng</span>;
       case 4:
-        return <span>Đang vận chuyển</span>;
+        return <span className='text-sky-500'>Đang vận chuyển</span>;
       case 5:
-        return <span className='text-green-500'>Đơn hàng đã được giao thành công</span>;
+        return <span className='text-green-500 flex items-center gap-x-2'><CircleCheck className='h-5'/>Đơn hàng đã được giao thành công</span>;
       case 6:
         return <span className='text-red-500'>ĐÃ HỦY</span>;
       default: return;
@@ -69,7 +69,7 @@ const Page = () => {
       cell: ({ row }) => (
         <div className="flex gap-x-4 lg:gap-x-8">
           <Link href={'/' + row?.original?.product_id?._id}>
-            <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.feature_product} alt="Loading..." />
+            <Image width={100} height={100} loading="lazy" className="w-[100px] h-[100px] border" src={row?.original?.product_id?.gallery[0]} alt="Loading..." />
           </Link>
           <div className="w-full flex flex-col gap-y-3">
             <Link href={'/' + row?.original?.product_id?._id} className="line-clamp-2">{row?.original?.product_id?.short_name}</Link>
@@ -143,7 +143,9 @@ const Page = () => {
                 <div key={+item?._id + Math.random()} className='flex justify-end'>
                   {
                     (+item?.status_item_order === 6 || +item?.status_item_order === 5) ?
-                      <Button onClick={() => restore_by_order(item)} className="px-3 bg-green-600 hover:!bg-green-700 mt-2 py-2 text-sm rounded text-white">Mua lại</Button> :
+                      <Button onClick={() => restore_by_order(item)}
+                        className="px-3 bg-green-600 hover:!bg-green-700 mt-2 py-2 text-sm rounded text-white">Mua lại</Button> :
+                      (+item?.status_item_order === 1 || +item?.status_item_order === 2) &&
                       <AlertDialog>
                         <AlertDialogTrigger className="px-3 mt-2 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
                           Hủy

@@ -13,6 +13,7 @@ import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 
 
 export default function Page() {
+    const socket = io('http://localhost:8888')
     const token = useToken();
     let user: any;
     if (typeof window !== 'undefined') {
@@ -31,7 +32,6 @@ export default function Page() {
     }
 
     useEffect(() => {
-        const socket = io('http://localhost:8888')
         socket.on('disconnect', () => {
             socket.disconnect()
         })

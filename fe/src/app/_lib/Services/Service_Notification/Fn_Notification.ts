@@ -11,11 +11,11 @@ export async function create_message (data_body : any) {
             body : JSON.stringify(data_body)
         });
         if (!res.ok){
-           toast.error("Gửi thông báo thất bại, vui lòng thử lại!", {autoClose : 500})
+           toast.error("Gửi thất bại, vui lòng thử lại!", {autoClose : 800})
             return res
         }
         else {
-            toast.success("Gửi thông báo thành công!", {autoClose : 500})
+            toast.success("Đã gửi!", {autoClose : 800})
         };
         const data = await res.json();
         return data

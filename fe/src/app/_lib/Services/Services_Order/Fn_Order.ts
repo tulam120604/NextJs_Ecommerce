@@ -88,11 +88,11 @@ export async function update_status_order(dataClient: any) {
         })
         if (!res.ok) {
             if (dataClient?.action === 'admin') {
-                toast.error('Cập nhật không thành công!', { autoClose: 500 });
+                toast.error('Cập nhật không thành công!', { autoClose: 800 });
                 console.log('Lỗi rồi đại vương ơi!')
             }
             else {
-                toast.error('Hủy đơn không thành công!', { autoClose: 500 });
+                toast.error('Hủy đơn không thành công!', { autoClose: 800 });
                 console.log('Lỗi rồi đại vương ơi!')
             }
             return res

@@ -4,10 +4,14 @@ import { StatusCodes } from 'http-status-codes'
 
 export async function add_notification(req, res) {
     try {
+        let receiver = req.body.receiver_id
         const find_account = await Account.findOne({ email: req.body.receiver_id });
+        if (find_account) {
+            receiver = find_account._id
+        }
         const data_body = {
             ...req.body,
-            receiver_id: find_account._id,
+            receiver_id: receiver,
             sender_id: req.params.sender_id
         }
         if (data_body.receiver_id.toString() === req.params.sender_id.toString()) {

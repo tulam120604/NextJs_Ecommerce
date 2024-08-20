@@ -6,10 +6,10 @@ import React from 'react'
 export default function Notification_Component({dataProps} : any) {
   return (
     <div>
-        <BellRing />
+        <BellRing className='lg:w-5 w-4 text-lg '/>
               {
                 dataProps?.data &&
-                <span className="absolute w-5 h-5 rounded-[50%] text-white flex items-center justify-center -top-[20%] -right-1/4 bg-red-500 text-xs">{dataProps?.total_bell?.length}</span>
+                <span className="absolute lg:w-5 lg:h-5 w-4 rounded-[50%] text-white flex items-center justify-center -top-[20%] -right-1/4 bg-red-500 text-xs">{dataProps?.total_bell?.length}</span>
               }
               {
                 dataProps?.data &&
