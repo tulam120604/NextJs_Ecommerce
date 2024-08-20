@@ -51,7 +51,7 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="mb:hidden lg:block ">
-                        <h2 className="text-xl text-white uppercase mb-[23px]">Thanh toán ( sớm áp dụng )</h2>
+                        <h2 className="text-xl text-white uppercase mb-[23px]">Thanh toán</h2>
                         <div className="flex gap-x-4 mt-[25px]">
                             <Image width={56} height={32} src="/Images/mastercard_v1.png" className='w-14 h-8' alt="" />
                             <Image width={56} height={32} src="/Images/mastercard_v2.png" className='w-14 h-8' alt="" />

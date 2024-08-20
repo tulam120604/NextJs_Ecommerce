@@ -30,20 +30,21 @@ const Form_category = () => {
     // category 
     return (<>
         {mutate_category.isLoading &&
-            <div className='fixed w-screen h-screen bg-[#33333377] top-0 right-0 !z-[5] grid place-items-center'>
+            <div className='fixed w-screen h-screen bg-[#33333333] top-0 right-0 !z-[10] grid place-items-center'>
                 <Loading_Dots />
             </div>
         }
-        <form onSubmit={mutate_category.form_category.handleSubmit(onAdd_category)} className='flex flex-col text-gray-200 gap-y-3 fixed bg-[#1F2936] z-[7] top-1/2 left-1/2 -translate-x-1/2 rounded  -translate-y-1/2 px-10 py-5 lg:px-20 lg:py-10'>
+        <form onSubmit={mutate_category.form_category.handleSubmit(onAdd_category)} className='flex bg-white flex-col text-gray-800 gap-y-3 fixed border border-gray-300 shadow
+         z-[7] top-1/2 left-1/2 -translate-x-1/2 rounded  -translate-y-1/2 px-10 py-5 lg:px-20 lg:py-10'>
             <label htmlFor="category_name">Tên danh mục :</label>
             <input type="text" id='category_name' {...mutate_category.form_category.register('category_name')}
-                className='bg-[#1F2936] outline-none py-2 px-4 border border-black rounded' placeholder='Nhập danh mục sản phẩm ...' />
-            <div className='flex flex-col text-gray-200 gap-y-3'>
+                className=' py-2 px-4 border border-gray-300 rounded' placeholder='Nhập danh mục sản phẩm ...' />
+            <div className='flex flex-col text-gray-800 gap-y-3'>
                 <label htmlFor="feature_product">Ảnh sản phẩm :</label>
                 <div className='lg:flex'>
                     <Image className='border' width={100} height={100} src={uri_image_upload} alt="Loading..." />
                     <input type="file" accept='image/*' id='feature_product'  {...mutate_category.form_category.register('category_img')}
-                        className='bg-[#1F2936] outline-none py-2 px-4 rounded cursor-pointer' onChange={show_image_add} />
+                        className=' outline-none py-2 px-4 rounded cursor-pointer' onChange={show_image_add} />
                 </div>
             </div>
             {mutate_category.status_category === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}

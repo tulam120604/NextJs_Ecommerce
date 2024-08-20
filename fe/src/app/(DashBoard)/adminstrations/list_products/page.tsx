@@ -18,7 +18,7 @@ import { Auth_Wrap_Seller } from "../_Auth_Wrap/Page";
 
 
 const Page = () => {
-  const socket = io('http://localhost:8888s')
+  const socket = io('http://localhost:8888')
   let id_user;
   const token = useToken();
   const user = useCheck_user();
@@ -75,7 +75,7 @@ const Page = () => {
             <div key={data?._id} className="flex flex-col w-full text-gray-800 border-t border-gray-300 text-sm">
               <div className="grid grid-cols-[70px_180px_150px_100px_150px_100px_150px_auto] gap-x-4 items-center justify-between p-4">
                 {/* image */}
-                <Image width={100} height={100} className="rounded border" src={data?.feature_product} alt="Loading..." />
+                <Image width={100} height={100} className="rounded border" src={data?.gallery[0]} alt="Loading..." />
                 {/* name */}
                 <span className="line-clamp-3">{data?.short_name}</span>
                 {/* category */}
@@ -83,7 +83,7 @@ const Page = () => {
                 {/* sales */}
                 <span className="line-clamp-2">{0}</span>
                 {/* price */}
-                <span className="line-clamp-2">{data?.price_product}</span>
+                <span className="line-clamp-2 text-red-500">{data?.price_product?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
                 {/* stock */}
                 <span className="line-clamp-2">{data?.stock}</span>
                 {/* made in */}
@@ -131,7 +131,7 @@ const Page = () => {
                       data?.attributes?.varriants?.map((item: any) => (
                         item?.size_item?.map((value: any) => (
                           <div key={item?._id} className="grid border-t duration-200 border-gray-300 gap-x-4 
-                          grid-cols-[100px_180px_150px_100px_150px_100px_150px_40px] items-center text-start justify-between py-4">
+                          grid-cols-[100px_180px_150px_100px_150px_100px_150px_80px] items-center text-start justify-between py-4">
                             <div></div>
                             {/* attributes */}
                             <div className="flex gap-x-2 w-full">
@@ -183,11 +183,14 @@ const Page = () => {
                   </div>
                 }
               </>)
-                : <span className="text-gray-200">Không có dữ liệu</span>
+                : <span className="text-gray-800 text-center text-sm">Không có dữ liệu</span>
           }
-          <div className="text-gray-100">
-            <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
-          </div>
+          {
+            data?.data?.docs &&
+            <div className="text-gray-100">
+              <Pagination_Component totalPages={data?.data?.totalPages} currentPage={data?.data?.page} />
+            </div>
+          }
         </div>
       </Auth_Wrap_Seller>
     </Suspense>

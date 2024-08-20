@@ -20,7 +20,7 @@ export default function Page() {
             <div className='grid lg:grid-cols-4 grid-cols-3 *:p-6 *:rounded-xl *:border *:border-gray-300 gap-4 my-6'>
                 <Box dataProps={{ text: 'Tổng doanh thu', number: '45.231,89 đ', icon: <DollarSign /> }} />
                 <Box dataProps={{ text: 'Tổng mặt hàng', number: data?.data?.totalDocs, icon: <Package /> }} />
-                <Box dataProps={{ text: 'Danh mục', number: category?.data.length, icon: <List /> }} />
+                <Box dataProps={{ text: 'Danh mục', number: category?.data?.length, icon: <List /> }} />
                 <Box dataProps={{ text: 'Tổng người dùng', number: account?.data?.totalDocs, icon: <UsersRound /> }} />
                 <Box dataProps={{
                     text: 'Người bán', number: Array.isArray(account?.account_seller) &&

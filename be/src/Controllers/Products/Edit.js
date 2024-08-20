@@ -22,23 +22,21 @@ export async function edit_Product(req, res) {
                 message
             })
         };
-        // const check_edit = await Products.find({...rest});
-        // if (check_edit) {
-        //     return res.status(StatusCodes.NO_CONTENT).json({
-        //         message : 'Khong co gi thay doi!'
-        //     })
-        // };
-        // console.log(check_edit)
-
         const check_name = await Products.findOne({ short_name });
         if (check_name) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 message: 'Ten san pham da ton tai!'
             })
         };
-        let img_upload;
-        if (!req.body.feature_product) {
-            img_upload = await cloudinary.uploader.upload(req.file.path);
+        let img_upload = Array.isArray(req.body.gallery) ? req.body.gallery : [req.body.gallery];
+        if (req.files) {
+            const upload_file = req.files.map(file => (
+                cloudinary.uploader.upload(file.path)
+            ))
+            const promise_upload = await Promise.allSettled(upload_file);
+            promise_upload.map(uri_secure => {
+                img_upload.push(uri_secure.value.secure_url)
+            });
         }
         let convert_Attributes;
         if (req.body.attributes) {
@@ -69,7 +67,7 @@ export async function edit_Product(req, res) {
             const dataClient = {
                 ...req.body,
                 attributes: null,
-                feature_product: img_upload ? img_upload.secure_url : req.body.feature_product
+                gallery: img_upload
             }
             const data = await Products.findByIdAndUpdate(req.params.id, {
                 $set: {
@@ -86,7 +84,7 @@ export async function edit_Product(req, res) {
             const dataClient = {
                 ...req.body,
                 attributes: convert_Attributes,
-                feature_product: img_upload ? img_upload.secure_url : req.body.feature_product
+                gallery: img_upload
             }
             const data = await Products.findByIdAndUpdate(req.params.id, dataClient, { new: true });
             return res.status(StatusCodes.OK).json({

@@ -30,13 +30,17 @@ export async function Create_Product(req, res) {
             }
         }
 
-        const img_upload = await cloudinary.uploader.upload(req.file.path);
-
+        const images = req.files;
+        const upload_img = images.map(data_img => (
+            cloudinary.uploader.upload(data_img.path)
+        ))
+        const img_upload = await Promise.all(upload_img);
+        const url_image_gallery = img_upload.map(uri_secure => uri_secure.secure_url)
         const allData = {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
             attributes: null,
-            feature_product: img_upload.secure_url
+            gallery: url_image_gallery
         };
         const { error } = validateProducts.validate(req.body, { abortEarly: false });
         if (error) {

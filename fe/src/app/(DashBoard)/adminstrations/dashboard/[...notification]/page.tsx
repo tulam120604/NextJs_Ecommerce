@@ -4,7 +4,7 @@ import { Mutation_Auth } from '@/src/app/_lib/Tanstack_Query/Auth/auth_mutation'
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification';
 import { Query_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Query_Notification';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { AlertDialog } from '@/src/app/_Components/ui/alert-dialog';
 import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { CircleCheck } from 'lucide-react';
@@ -31,11 +31,12 @@ export default function Page() {
     }
 
     useEffect(() => {
+        const socket = io('http://localhost:8888')
         socket.on('disconnect', () => {
             socket.disconnect()
         })
         return () => { socket.disconnect() }
-    }, [socket])
+    }, [])
 
     // granting premissionss
     const granting_premission = Mutation_Auth({

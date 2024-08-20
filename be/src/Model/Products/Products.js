@@ -10,14 +10,11 @@ const schema_Products = new mongoose.Schema({
         minlength: 3,
         maxlength: 255,
     },
-    feature_product: {
-        type: Object,
-    },
+    gallery: [],
     id_user_seller : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Account'
     },
-    gallery: [],
     price_product: Number,
     trending: {
         type: Boolean,
