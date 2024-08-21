@@ -137,7 +137,7 @@ const Page = () => {
             data?.data?.data_order?.docs?.map((item: any) =>
               <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white' key={item?._id}>
                 <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
-                <div className='*:!border-none *:text-gray-900'>
+                <div className='*:!border-none *:text-gray-900 -translate-y-12'>
                   <DataTable data={item?.items_order} columns={columns} />
                 </div>
                 <div key={+item?._id + Math.random()} className='flex justify-end'>

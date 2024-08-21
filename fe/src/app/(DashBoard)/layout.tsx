@@ -36,7 +36,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
   }
   return (
     <div className="w-full min-h-screen bg-[#F9FBFD]">
-      <div className="max-w-[1440px] md:w-[95vw] mx-auto">
+      <div className="max-w-[3840px] md:w-[95vw] mx-auto">
         {/* header */}
         <div className="fixed w-screen top-0 left-0 bg-[#1F2936] z-[10]">
           <header className="max-w-[1440px] md:w-[95vw] z-[1] h-[70px] mx-auto flex items-center justify-between sticky top-0">

@@ -135,6 +135,7 @@ export async function restore_buy_order(dataClient: any) {
     }
 }
 
+// feedback detail item in order
 export async function get_item_order(id_item: string | number) {
     try {
         const res = await fetch(`${apiURi}/order/feedback/${id_item}`);
@@ -142,6 +143,23 @@ export async function get_item_order(id_item: string | number) {
             toast.error('Có lỗi xảy ra, vui lòng kiểm tra lại!', { autoClose: 500 });
             return res
         };
+        const data = await res.json();
+        return data
+    } catch (error) {
+        return error || 'Lỗi rồi đại vương ơi!';
+    }
+}
+
+export async function detail_order(id: string, user_id?: string | number) {
+    try {
+        let uri = `${apiURi}/detail_order?id=${id}`
+        if (user_id) {
+            uri += `$user_id=${user_id}`
+        }
+        const res = await fetch(uri);
+        if (!res.ok) {
+            return res
+        }
         const data = await res.json();
         return data
     } catch (error) {

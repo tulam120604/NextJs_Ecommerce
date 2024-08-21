@@ -43,7 +43,7 @@ export async function create_payment(req, res) {
 
         try {
             const { data } = await axios.post(config.endpoint, null, { params: order });
-            console.log(data)
+            // console.log(data)
             return res.status(StatusCodes.CREATED).json({
                 data
             })

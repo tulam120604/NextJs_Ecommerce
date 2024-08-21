@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { get_all_order, get_item_order, get_order_user } from "../../Services/Services_Order/Fn_Order";
+import { detail_order, get_all_order, get_item_order, get_order_user } from "../../Services/Services_Order/Fn_Order";
 
 export function Query_Order(id_user: any, page: number, limit: number, status_item_order?: any) {
     const { data, ...rest } = useQuery({
@@ -35,5 +35,14 @@ export function Get_Item_Order(id_item_order: string | number) {
         },
         enabled: !!id_item_order
     })
-    return {data, ...rest}
+    return { data, ...rest }
+}
+
+export function Query_Detail_Order(id: string, user_id?: string | number) {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Key_Order', id, user_id],
+        queryFn: () => detail_order(id, user_id),
+        enabled: !!id
+    })
+    return { data, ...rest }
 }

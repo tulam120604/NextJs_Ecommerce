@@ -50,7 +50,7 @@ const Page = () => {
   return (
     <div className='pl-4 lg:pl-10'>
       <strong className='text-lg'>Thông báo của bạn </strong>
-      <div>
+      <div className='pb-10 pt-5'>
         {
           data?.isLoading &&
           <Loading_Dots />
@@ -101,9 +101,11 @@ const Page = () => {
                       <AlertDialogFooter className='flex !justify-between w-full items-end'>
                         <AlertDialogDescription>- {item?.createdAt?.slice(0, 10)} -</AlertDialogDescription>
                         <div className='flex gap-x-3'>
-                          <AlertDialogCancel className='text-gray-100 border-none bg-indigo-600 hover:!bg-indigo-800 hover:!text-gray-200'>
-                            <Link href={'/login'}>Đăng nhập</Link>
-                          </AlertDialogCancel>
+                          {item?.notes &&
+                            <AlertDialogCancel className='text-gray-100 border-none bg-indigo-600 hover:!bg-indigo-800 hover:!text-gray-200'>
+                              <Link href={'/login'}>Đăng nhập</Link>
+                            </AlertDialogCancel>
+                          }
                           <AlertDialogCancel className='text-gray-800'>Đóng</AlertDialogCancel>
                         </div>
                       </AlertDialogFooter>

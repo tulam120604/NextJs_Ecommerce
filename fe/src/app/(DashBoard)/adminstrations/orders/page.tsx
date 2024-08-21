@@ -7,16 +7,11 @@ import { DataTable } from '@/src/app/_Components/ui/Tables/data_table';
 import { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import React, { Suspense } from 'react';
-import { io } from 'socket.io-client';
-import Loading from './loading';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
-import { Button } from '@/src/app/_Components/ui/Shadcn/button';
-import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order';
 import { CircleCheck } from 'lucide-react';
-import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification';
+import Link from 'next/link';
+import Loading from './loading';
 
 const Page = () => {
-  const socket = io('http://localhost:8888')
   const token = useToken();
   const role_user = ['admin_global', 'admin_local'];
   const user = useCheck_user();
@@ -27,35 +22,7 @@ const Page = () => {
     }
   }
   const { data, isLoading } = List_Order_Dashboard(token?.accessToken, id_seller);
-  const mutation_notification = Mutation_Notification('ADD');
-
-  // update status order
-  const mutation_status_order = Mutation_Order('UPDATE_STATUS');
-  function change_status(id_item: { _id: string, code_order: string | number, user_id: string }, status: number) {
-    mutation_status_order.mutate({
-      id_user: user?.check_email?._id,
-      item: {
-        order_id: id_item?._id,
-        status_item_order: status,
-      },
-      action: 'admin'
-    });
-    // gui thong bao ve user
-    const message_notification = (status === 6) ? `Rất tiếc, người bán đã từ chối đơn hàng ${id_item?.code_order}!.` :
-      (status === 2) ? `Đơn hàng ${id_item?.code_order} của bạn đã được xác nhận!.` :
-        (status === 3) ? `Đơn hàng ${id_item?.code_order} của bạn đang chuẩn bị giao đến đơn vị vận chuyển!.` :
-          (status === 4) && `Đơn hàng ${id_item?.code_order} đang trên đường vận chuyển tới bạn!.`
-    const data_body = {
-      sender_id: user?.check_email?._id,
-      receiver_id: id_item?.user_id,
-      notification_message: message_notification,
-    }
-    mutation_notification.mutate(data_body);
-    socket.emit('send_status_item_order_to_user', (status === 2) ? `Đơn hàng ${id_item?.code_order} đã được xác nhận, người bán đang chuẩn bị hàng để giao đến bạn` :
-      (status === 6) && `Người bán đã từ chối đơn hàng ${id_item?.code_order}, vui lòng chọn sản phẩm khác!`)
-  }
-
-  if (isLoading || mutation_status_order?.isLoading) {
+  if (isLoading) {
     return <Loading />
   }
 
@@ -76,37 +43,6 @@ const Page = () => {
       default: return;
     }
   }
-
-  function btn_change_status_item_order(item: any, status: number) {
-    return (
-      <AlertDialog>
-        <AlertDialogTrigger>
-          <Button className={`${status === 2 ? 'bg-green-500 hover:!bg-green-700' : status === 6 ? 'bg-red-500 hover:!bg-red-700' :
-            status === 3 ? 'bg-green-500 hover:!bg-green-700' : status === 4 && 'bg-sky-500 hover:!bg-sky-700'
-            } rounded h-auto py-1 px-1.5 text-xs`}>{status === 2 ? 'Xác nhận' : status === 6 ? 'Từ chối' : status === 3 ? 'Chuẩn bị hàng'
-              : status === 4 && 'Đang vận chuyển'
-            }</Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {
-                status === 2 ? `Xác nhận đơn hàng ${item?.code_order}?` :
-                  status === 6 ? `Từ chối đơn hàng ${item?.code_order}?` :
-                    status === 3 ? `Xác nhận chuẩn bị đơn hàng ${item?.code_order}?` :
-                      status === 4 && `Xác nhận đơn hàng ${item?.code_order} đang trên đường vận chuyển?`
-              }
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Hủy</AlertDialogCancel>
-            <AlertDialogAction className="bg-green-500" onClick={() => change_status(item, status)}>Xác nhận</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    )
-  }
-
   const columns: ColumnDef<any>[] = [
     {
       cell: ({ row }) => (
@@ -151,20 +87,8 @@ const Page = () => {
       'header': "Trạng thái"
     },
     {
-      cell: ({ row }) => (row?.original?.status_item_order === '1') ?
-        <div className='flex flex-col gap-y-2'>
-          {/* Confirm don hang */}
-          {btn_change_status_item_order(row?.original, 2)}
-          {/* Tu choi don hang */}
-          {btn_change_status_item_order(row?.original, 6)}
-        </div>
-        :
-        // chuan bi don hang
-        (row?.original?.status_item_order === '2') ?
-          btn_change_status_item_order(row?.original, 3) :
-          // xac nhan dang van chuyen
-          (row?.original?.status_item_order === '3') &&
-          btn_change_status_item_order(row?.original, 4)
+      cell: ({ row }) =>
+        <Link href={`orders/detail_order?id=${row?.original?._id}`} className='hover:text-sky-600 text-sky-500 underline duration-100'>Chi tiết</Link>
       ,
       'header': "Thao tác"
     }
@@ -172,7 +96,7 @@ const Page = () => {
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <div className="flex flex-col gap-y-6 py-4 rounded">
-        <strong className="text-gray-900 lg:text-2xl">Đơn hàng</strong>
+        <strong className="text-gray-900 lg:text-xl">Đơn hàng</strong>
         <div className="border bg-white rounded px-4">
           {
             data?.data_order ?

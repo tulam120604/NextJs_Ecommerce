@@ -144,7 +144,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 </div>)
             }
             <div className='flex items-center justify-between'>
-                <strong className="text-gray-900 lg:text-2xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
+                <strong className="text-gray-900 lg:text-xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
                 <Link className='text-white hover:text-gray-200 hover:underline' href={'/adminstrations/list_products'}>Quay lại</Link>
             </div>
             <div className='relative'>

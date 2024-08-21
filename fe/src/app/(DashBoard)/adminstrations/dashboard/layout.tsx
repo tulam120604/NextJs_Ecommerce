@@ -12,7 +12,7 @@ const Page = ({children} : Readonly<{children : React.ReactNode}>) => {
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Admins>
         <div className='py-4'>
-          <strong className='text-2xl'>Bảng điều khiển</strong>
+          <strong className='text-xl'>Bảng điều khiển</strong>
           <Tabs defaultValue='overview' className='mt-6'>
             <TabsList className="w-auto bg-gray-200">
               <TabsTrigger value="overview">

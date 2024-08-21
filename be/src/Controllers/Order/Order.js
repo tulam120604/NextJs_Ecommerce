@@ -109,7 +109,7 @@ export async function update_status_order(req, res) {
                 message: "Không tìm thấy đơn hàng!"
             })
         };
-        if (status_item_order === 2){
+        if (status_item_order === 2) {
             await update_quantity_item(item_order.items_order);
         }
         item_order.status_item_order = status_item_order;
@@ -152,6 +152,7 @@ export async function restore_buy_item_order(req, res) {
     }
 }
 
+// chi tiet san pham trong don hang de feedback
 export async function get_detail_item_order(req, res) {
     try {
         const id_item_order = req.params.id_item;
@@ -194,6 +195,30 @@ export async function list_item_order_by_seller(req, res) {
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data_order
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Loi server !'
+        })
+    }
+}
+
+// get one order
+export async function detail_order(req, res) {
+    try {
+        const { id, user_id } = req.query;
+        let data_order_by_user;
+        const data_order_by_id = await Orders.findOne({ _id: id.toString() });
+        if (user_id) {
+            data_order_by_user = await Orders.findOne({
+                _id: id.toString(),
+                user_id: user_id
+            })
+        }
+        return res.status(StatusCodes.OK).json({
+            message: 'OK',
+            data_order_by_user,
+            data_order_by_id
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
