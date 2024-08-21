@@ -1,18 +1,23 @@
 'use client';
 
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
-import { List_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
+import { List_Address, Mutation_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Address_component from '../_components/address';
 import { eventEmit } from '@/src/app/_Components/ui/Header/Event_emit';
+import { Badge } from '@/src/app/_Components/ui/badge';
+import { AlertDialog } from '@/src/app/_Components/ui/alert-dialog';
+import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
+import Alert_dialog from '../_components/alert_dialog';
 
 const Page = () => {
   const form_create_address = useRef<HTMLDivElement>(null);
   const bg_form_create_address = useRef<HTMLDivElement>(null);
 
+  const mutate_address = Mutation_Address('REMOVE_OR_UPDATE_DEFAULT_ADDRESS');
   const [client, setClient] = useState<boolean>(false);
   useEffect(() => {
     setClient(true)
@@ -87,25 +92,36 @@ const Page = () => {
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.user_name}</span>
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.phone}</span>
                   <span className="text-gray-700 sm:col-span-2">{item?.about_address?.address}</span>
-                  {item?.status_address &&
-                    <span className="text-gray-700 border border-green-600 text-green-600 rounded p-0.5 text-center">Mặc định</span>
-                  }
                 </div>
                 <div className='flex flex-col lg:items-end gap-y-1'>
                   <div>
                     <Link href={''} className="hover:underline text-sky-500 text-sm mx-2">Cập nhật</Link>
                     {!item?.status_address &&
-                      <Link href={''} className="hover:underline text-red-500 text-sm">Xóa</Link>
+                      <Alert_dialog dataProps={{
+                        id_user: user?.check_email?._id,
+                        id_address: item?._id,
+                        remove_address: mutate_address?.mutate,
+                        action: 'remove'
+                      }} />
                     }
                   </div>
-                  <Button className="!py-1 !h-auto rounded bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-400">Đặt làm mặc định</Button>
+                  {(item?.status_address) ?
+                    <div>
+                      <Badge className='bg-green-500 hover:!bg-green-600'>Mặc định</Badge>
+                    </div> :
+                    <Alert_dialog dataProps={{
+                      id_user: user?.check_email?._id,
+                      id_address: item?._id,
+                      change_default_address: mutate_address?.mutate
+                    }} />
+                  }
                 </div>
               </div>
             )) :
             <div className='text-center'>Trống</div>
           }
         </div>
-      </div>
+      </div >
       : <span>Loading..</span>
   )
 }

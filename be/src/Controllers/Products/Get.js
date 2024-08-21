@@ -85,7 +85,7 @@ export async function get_Item_Client(req, res) {
         await Products.populate(data.docs, { path: 'attributes' });
         for (const id_data of data.docs) {
             if (id_data.attributes) {
-                let current = 1;
+                let current = 0;
                 id_data.attributes.varriants.map((b) => {
                     b.size_item.map(l => {
                         current += l.stock_item
@@ -198,6 +198,7 @@ export async function get_item_by_category(req, res) {
                 id_data.count_stock = id_data.stock
             }
         }
+        data.docs = data.docs.filter((item) => item.count_stock > 0);
         return res.status(StatusCodes.OK).json({
             message: 'Done!',
             data

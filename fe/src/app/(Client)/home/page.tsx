@@ -16,7 +16,7 @@ const Layout_Home = async () => {
     <Suspense fallback={<LoadingLandingPage />}>
       <Banner />
       <Service />
-      <Products_Home dataProps={data}/>
+      <Products_Home dataProps={data} />
     </Suspense>
   </>)
 }

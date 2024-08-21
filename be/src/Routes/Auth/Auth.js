@@ -6,6 +6,7 @@ import { create_Account, granting_premissions, Login, logout, refesh_token } fro
 const RoutesAuth = express.Router();
 RoutesAuth.get('/account' , middleWare ,list_Account)
 RoutesAuth.get('/infor/:id',middleWare, get_detail_user)
+RoutesAuth.get('/inforshop/:id', get_detail_user)
 RoutesAuth.post('/register', create_Account);
 RoutesAuth.post('/login', Login);
 RoutesAuth.post('/granting_premissions',middleWare, granting_premissions);

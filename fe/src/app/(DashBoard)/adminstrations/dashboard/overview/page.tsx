@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { DollarSign, List, Package, UsersRound } from "lucide-react"
-import { Query_Category, Query_List_All_Items_Dashboard } from '@/src/app/_lib/Tanstack_Query/Items/query';
+import { Query_Category, Query_List_Items_Dashboard } from '@/src/app/_lib/Tanstack_Query/Items/query';
 import { List_Account } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Auth';
 import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import Box from "../_component/box"
@@ -12,7 +12,7 @@ import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 export default function Page() {
     const token = useToken();
-    const { data } = Query_List_All_Items_Dashboard(token.accessToken);
+    const { data } = Query_List_Items_Dashboard(token.accessToken, 1, 1);
     const { data: account } = List_Account(token.accessToken);
     const { data: category } = Query_Category();
     return (

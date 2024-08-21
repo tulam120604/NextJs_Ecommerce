@@ -1,6 +1,6 @@
 'use client';
 
-import { getDetailDashboard, getLimit, getLimit_and_paginate, list_All_Item_Dashboard, list_ITems_Dashboard, list_Recycle_ITems_Admin } from "../../Services/Services_Items/products";
+import { getDetailDashboard, getLimit, getLimit_and_paginate, list_Items_Dashboard, list_Recycle_Items_Admin } from "../../Services/Services_Items/products";
 import { detail_Categories, list_Categories } from "../../Services/Services_Items/categories";
 import { useQuery } from "@tanstack/react-query";
 
@@ -32,7 +32,7 @@ export function Query_List_Items_Dashboard(accessToken: any, page: number, limit
         queryKey: ['Product_Key', page],
         queryFn: async () => {
             if (accessToken) {
-                return await list_ITems_Dashboard(accessToken, page, limit_item, id_user);
+                return await list_Items_Dashboard(accessToken, page, limit_item, id_user);
             }
             return "Không thể xác minh tài khoản"
         },
@@ -42,27 +42,12 @@ export function Query_List_Items_Dashboard(accessToken: any, page: number, limit
 }
 
 // detail
-export function Detail_Item_Dashboard (id : string | number)  {
-    const {data, ...rest}  = useQuery({
-        queryKey : ['Product_Key', id],
-        queryFn : () => getDetailDashboard(id)
-    })
-    return {data, ...rest}
-}
-
-// get all item admin
-export function Query_List_All_Items_Dashboard(accessToken: any) {
+export function Detail_Item_Dashboard(id: string | number) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Product_Key', accessToken],
-        queryFn: async () => {
-            if (accessToken) {
-                return await list_All_Item_Dashboard(accessToken);
-            }
-            return "Không thể xác minh tài khoản"
-        },
-        enabled: !!accessToken
-    });
-    return { data, ...rest };
+        queryKey: ['Product_Key', id],
+        queryFn: () => getDetailDashboard(id)
+    })
+    return { data, ...rest }
 }
 
 
@@ -72,7 +57,7 @@ export function Query_Recycle_Items_Admin(accessToken: any, page?: number) {
         queryKey: ['Product_Key'],
         queryFn: async () => {
             if (accessToken) {
-                return await list_Recycle_ITems_Admin(accessToken, page);
+                return await list_Recycle_Items_Admin(accessToken, page);
             }
             return "Không thể xác minh tài khoản"
         },
@@ -88,7 +73,7 @@ export function Query_Edit_Items_Admin(accessToken: any, page?: Number) {
         queryKey: ['Product_Key'],
         queryFn: async () => {
             if (accessToken) {
-                return await list_Recycle_ITems_Admin(accessToken, page);
+                return await list_Recycle_Items_Admin(accessToken, page);
             }
             return "Không thể xác minh tài khoản"
         },
@@ -100,11 +85,11 @@ export function Query_Edit_Items_Admin(accessToken: any, page?: Number) {
 
 // paginate and limit client 
 // get list item admin
-export function Query_Paginate_Item_Client( page: number, limit_item: number) {
+export function Query_Paginate_Item_Client(page: number, limit_item: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key', page, limit_item],
         queryFn: async () => {
-                return await getLimit_and_paginate(page, limit_item);
+            return await getLimit_and_paginate(page, limit_item);
         },
     });
     return { data, ...rest };

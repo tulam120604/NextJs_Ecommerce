@@ -9,9 +9,9 @@ export async function create_address(req, res) {
                 message: 'No user'
             })
         };
-        const total_address = await Address.countDocuments();
+        const total_address = await Address.countDocuments({ user_id });
         let default_address;
-        if (total_address < 1){
+        if (total_address < 1) {
             default_address = true
         } else {
             default_address = false
@@ -32,14 +32,14 @@ export async function create_address(req, res) {
     }
 }
 
-export async function get_address (req, res){
+export async function get_address(req, res) {
     try {
-        const data = await Address.find({user_id: req.params.user_id});
+        const data = await Address.find({ user_id: req.params.user_id });
         return res.status(StatusCodes.OK).json({
-            message : 'OK',
+            message: 'OK',
             data
         })
-    }catch (error){
+    } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message: error.message || 'Lỗi rồi đại vương ơi!'
         })
@@ -72,7 +72,7 @@ export async function edit_address(req, res) {
 
 export async function remove_address(req, res) {
     try {
-        if (req.params.id) {
+        if (!req.params.id) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No data'
             })
@@ -80,6 +80,34 @@ export async function remove_address(req, res) {
         await Address.findByIdAndDelete(req.params.id);
         return res.status(StatusCodes.OK).json({
             message: 'OK',
+        })
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message || 'Lỗi rồi đại vương ơi!'
+        })
+    }
+}
+
+export async function update_default_address(req, res) {
+    try {
+        const id_user = req.params.id_user;
+        const id_address = req.body.id_address;
+        const data_address = await Address.find({ user_id: id_user });
+        if (!data_address) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message: 'No Data!'
+            })
+        }
+        for (let i of data_address) {
+            if (i._id.toString() === id_address.toString()) {
+                i.status_address = true;
+            } else {
+                i.status_address = false;
+            }
+            await i.save();
+        };
+        return res.status(StatusCodes.OK).json({
+            message: 'OK'
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

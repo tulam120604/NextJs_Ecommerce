@@ -58,9 +58,9 @@ export async function edit_address(item: { id_user: string | number, address: st
 }
 
 
-export async function remove_address(id_address: string | number) {
+export async function remove_address(dataClient: { id_address: string | number }) {
     try {
-        const res = await fetch(`${apiURi}/address/${id_address}`, {
+        const res = await fetch(`${apiURi}/address/remove/${dataClient?.id_address}`, {
             method: 'delete',
         });
         if (!res.ok) {
@@ -68,6 +68,25 @@ export async function remove_address(id_address: string | number) {
         }
         const data = await res.json();
         return data
+    } catch (error) {
+        return error || 'Lỗi rồi đại vương ơi!'
+    }
+}
+
+export async function update_default_address(dataClient: { id_user?: string | number, id_address?: string | number }) {
+    try {
+        const res = await fetch(`${apiURi}/address/update_default_address/${dataClient?.id_user}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataClient)
+        });
+        if (!res.ok) {
+            toast.success('Lỗi, không thể cập nhật địa chỉ, vui lòng thử lại.', { autoClose: 500 })
+            return res
+        };
+        return res;
     } catch (error) {
         return error || 'Lỗi rồi đại vương ơi!'
     }

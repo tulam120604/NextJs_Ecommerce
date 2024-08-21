@@ -65,12 +65,12 @@ export async function getDetailDashboard(id: number | string) {
 }
 
 // list items dashboard 
-export async function list_ITems_Dashboard(accessToken: any, page: number, limit_item: number, id_user?: string | number) {
+export async function list_Items_Dashboard(accessToken: any, page: number, limit_item: number, id_user?: string | number) {
     try {
         if (accessToken) {
             let uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
-            if (id_user){
-                uri =  `${apiURi}/products/sellers/${id_user}?_page=${page}&_limit=${limit_item}`
+            if (id_user) {
+                uri = `${apiURi}/products/sellers/${id_user}?_page=${page}&_limit=${limit_item}`
             }
             const res = await fetch(uri, {
                 method: 'get',
@@ -83,7 +83,7 @@ export async function list_ITems_Dashboard(accessToken: any, page: number, limit
                 console.warn('Call data failer');
                 return res
             };
-            const data_All  = await res.json();
+            const data_All = await res.json();
             return data_All
         }
         console.error('Không có quyền truy cập!');
@@ -92,31 +92,6 @@ export async function list_ITems_Dashboard(accessToken: any, page: number, limit
         return (error || "Lỗi rồi đại vương ơi!");
     }
 }
-
-export async function list_All_Item_Dashboard(accessToken: string) {
-    try {
-        if (accessToken) {
-            const uri = `${apiURi}/products/admin`;
-            const res = await fetch(uri, {
-                method: 'get',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!res.ok) {
-                return res
-            };
-            const data = await res.json();
-            return data
-        }
-        console.error('Không có quyền truy cập!');
-        return 'Không có quyền truy cập !';
-    } catch (error) {
-        return (error || "Lỗi rồi đại vương ơi!");
-    }
-}
-
 
 // add
 export async function addItem(item: any) {
@@ -168,7 +143,7 @@ export async function removeItem(item: any) {
 }
 
 // recycle items adminstration 
-export async function list_Recycle_ITems_Admin(token: any, page?: Number) {
+export async function list_Recycle_Items_Admin(token: any, page?: Number) {
     try {
         if (token) {
             let uri = `${apiURi}/products/admin/trash`;
@@ -302,6 +277,21 @@ export async function search_item(item?: any) {
             return res
         };
         const { data } = await res.json();
+        return data
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+
+// get item by seller
+export async function list_item_by_seller(id_seller?: string | number) {
+    try {
+        const res = await fetch(`${apiURi}/products/sellers/${id_seller}`);
+        if (!res.ok) {
+            console.warn(res);
+            return res
+        }
+        const data = await res.json();
         return data
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");

@@ -16,7 +16,6 @@ const page = async ({ params }: any) => {
   // console.log(isClient);
   const data = await getDetail(params?.detail_product);
   const data_category = await detail_Categories(data?.category_id)
-  // const {data} = await res.json();
   revalidatePath('/products/[detail_product]', 'page');
   
   // fake data
@@ -45,7 +44,7 @@ const page = async ({ params }: any) => {
             <Infor_Detail_Product dataProps={data} />
             </div>
           </div>
-          <Infor_seller />
+          <Infor_seller dataProps={data?.id_user_seller}/>
           {/* related products */}
           <Description dataProps={data} />
           <div className="pt-4">

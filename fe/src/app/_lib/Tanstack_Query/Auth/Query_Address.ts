@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { create_address, get_address, remove_address } from "../../Services/Services_Auth/Address";
+import { create_address, get_address, remove_address, update_default_address } from "../../Services/Services_Auth/Address";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { schemaValidateAddress } from "@/src/app/(Auth)/validate";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +9,7 @@ export function List_Address(id_user: string | number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Address_Key', id_user],
         queryFn: async () => {
-                return await get_address(id_user);
+            return await get_address(id_user);
             return 'Không thể xác minh danh tính!!'
         },
         enabled: !!id_user
@@ -17,7 +17,7 @@ export function List_Address(id_user: string | number) {
     return { data, ...rest };
 }
 
-type Actions = 'CREATE' | 'EDIT' | 'REMOVE'
+type Actions = 'CREATE' | 'EDIT' | 'REMOVE_OR_UPDATE_DEFAULT_ADDRESS';
 
 export function Mutation_Address(action: Actions) {
     const [status_api, setStatus_api] = useState<string>('no_call')
@@ -30,8 +30,11 @@ export function Mutation_Address(action: Actions) {
             switch (action) {
                 case "CREATE":
                     return await create_address(dataClient);
-                case 'REMOVE':
-                    return await remove_address(dataClient);
+                case "REMOVE_OR_UPDATE_DEFAULT_ADDRESS":
+                    if (dataClient?.action === 'remove') {
+                        return await remove_address(dataClient);
+                    }
+                    return await update_default_address(dataClient)
                 default: return
             }
         },
