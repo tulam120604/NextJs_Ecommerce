@@ -1,5 +1,5 @@
-import Account from '../../Model/Auth/Account';
-import Carts from '../../Model/Cart/Cart';
+import Account from '../../Model/Auth/Account.js';
+import Carts from '../../Model/Cart/Cart.js';
 import { StatusCodes } from 'http-status-codes';
 
 export async function list_carts(req, res) {

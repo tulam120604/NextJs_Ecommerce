@@ -1,4 +1,4 @@
-import Attribute from "../../Model/Products/Attribute";
+import Attribute from "../../Model/Products/Attribute.js";
 import { StatusCodes } from "http-status-codes";
 
 export async function get_attribute (req, res) {

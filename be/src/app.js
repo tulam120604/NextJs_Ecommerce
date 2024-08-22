@@ -1,21 +1,21 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import ConnectDB from './Connect/database';
-import RoutesProducts from './Routes/Items/Products';
-import RoutesCategories from './Routes/Items/Categories';
-import RoutesAuth from './Routes/Auth/Auth';
-import RoutesCart from './Routes/Cart/Cart';
-import Routes_upload from './Routes/upload';
-import Routes_Order from './Routes/Order/Order';
-import Routes_Attribute from './Routes/Attribute/Attribute';
-import RoutesFeedback from './Routes/Feedback/Feedback';
-import RoutesNotification from './Routes/Notification/Notification';
-import { handle_socket_event } from './socket/handle_socket';
-import { createServer } from 'node:http'
-import { Server } from 'socket.io';
-import RoutesAddress from './Routes/Auth/Address';
-import RoutesPayment from './Routes/Payment/Payment';
+import ConnectDB from './Connect/database.js';
+import RoutesProducts from './Routes/Items/Products.js';
+import RoutesCategories from './Routes/Items/Categories.js';
+import RoutesAuth from './Routes/Auth/Auth.js';
+import RoutesCart from './Routes/Cart/Cart.js';
+import Routes_upload from './Routes/upload.js';
+import Routes_Order from './Routes/Order/Order.js';
+import Routes_Attribute from './Routes/Attribute/Attribute.js';
+import RoutesFeedback from './Routes/Feedback/Feedback.js';
+import RoutesNotification from './Routes/Notification/Notification.js';
+// import { handle_socket_event } from './socket/handle_socket';
+// import { createServer } from 'node:http'
+// import { Server } from 'socket.io';
+import RoutesAddress from './Routes/Auth/Address.js';
+import RoutesPayment from './Routes/Payment/Payment.js';
 
 dotenv.config();
 const app = express();
@@ -69,5 +69,8 @@ app.use('/v1', RoutesPayment)
 //     console.log('server running!');
 // })
 
+// run server without vite
+app.listen(process.env.PORT_SERVER)
 
-export const viteNodeApp = app;
+
+// export const viteNodeApp = app;

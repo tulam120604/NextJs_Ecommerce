@@ -1,5 +1,5 @@
 import express from 'express';
-import { get_attribute } from '../../Controllers/Attribute/get';
+import { get_attribute } from '../../Controllers/Attribute/get.js';
 
 const Routes_Attribute = express.Router();
 

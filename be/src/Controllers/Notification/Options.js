@@ -1,5 +1,5 @@
-import Account from "../../Model/Auth/Account";
-import Notifications from "../../Model/Notifications/Notifications";
+import Account from "../../Model/Auth/Account.js";
+import Notifications from "../../Model/Notifications/Notifications.js";
 import { StatusCodes } from 'http-status-codes'
 
 export async function add_notification(req, res) {

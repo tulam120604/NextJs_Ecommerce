@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import Account from '../Model/Auth/Account';
-import blacklist_token from '../Model/Blacklist_Token/blacklist_token';
+import Account from '../Model/Auth/Account.js';
+import blacklist_token from '../Model/Blacklist_Token/blacklist_token.js';
 
 
 export async function black_list_token(tokenClient) {

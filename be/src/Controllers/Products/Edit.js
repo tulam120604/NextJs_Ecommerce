@@ -1,8 +1,8 @@
-import Products from "../../Model/Products/Products";
-import Attribute from "../../Model/Products/Attribute";
+import Products from "../../Model/Products/Products.js";
+import Attribute from "../../Model/Products/Attribute.js";
 import { StatusCodes } from 'http-status-codes';
-import { validateProducts } from "../../Validates/Products";
-import cloudinary from "../../utils/cloudinary";
+import { validateProducts } from "../../Validates/Products.js";
+import cloudinary from "../../utils/cloudinary.js";
 
 
 // edit all field
