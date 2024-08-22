@@ -60,7 +60,7 @@ const Page = () => {
           <tbody>
             <tr className='*:my-6'>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
-                Tên đăng nhập
+                Tên hiển thị
                 <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.user_name}</div>
               </td>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
@@ -69,7 +69,12 @@ const Page = () => {
               </td>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Số điện thoại
-                <Link href={''} className='lg:w-[70%] w-[40%] underline px-4 rounded text-sky-600'>thêm</Link>
+                {
+                  user && user?.check_email?.phone ?
+                    <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600 overflow-hidden'>{user && user?.check_email?.phone}</div>
+                    :
+                    <Link href={''} className='lg:w-[70%] w-[40%] underline px-4 rounded text-sky-600'>thêm</Link>
+                }
               </td>
             </tr>
           </tbody>

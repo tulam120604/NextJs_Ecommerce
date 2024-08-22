@@ -36,7 +36,7 @@ export default function Page() {
             socket.disconnect()
         })
         return () => { socket.disconnect() }
-    }, [])
+    }, [socket])
 
     // granting premissionss
     const granting_premission = Mutation_Auth({
@@ -49,6 +49,7 @@ export default function Page() {
             accessToken: token?.accessToken
         }
         granting_premission?.onSubmit(item);
+        sendMessage(item);
         socket.emit('confirm_granting_premission_account', 'Đại vương có 1 thông báo mới!')
     }
 
@@ -67,7 +68,7 @@ export default function Page() {
                             (
                                 data?.data?.data_notification?.map((item: any) => (
                                     <AlertDialog key={item?._id}>
-                                        <AlertDialogTrigger asChild onClick={() => sendMessage(item)}>
+                                        <AlertDialogTrigger asChild onClick={() => (!item?.notes) && sendMessage(item)}>
                                             <li className='block h-full rounded-lg border border-gray-300 p-4 hover:border-gray-400 cursor-pointer *:flex *:justify-between'>
                                                 <div>
                                                     <strong className="font-medium text-gray-800">Từ {item?.sender_id?.user_name}</strong>
@@ -108,13 +109,12 @@ export default function Page() {
                                                 <AlertDialogDescription className='!text-gray-200'>- {item?.createdAt?.slice(0, 10)} -</AlertDialogDescription>
                                                 <div className='flex gap-x-3'>
                                                     {
-                                                        !item.status_message &&
                                                         item?.notes &&
                                                         <AlertDialogCancel onClick={() => onSubmitGranting(item)} className='text-gray-100 border-none bg-green-600 hover:!bg-green-800 hover:!text-gray-200'>
                                                             Chấp nhận
                                                         </AlertDialogCancel>
                                                     }
-                                                    <AlertDialogCancel className='text-gray-800'>Đóng</AlertDialogCancel>
+                                                    <AlertDialogCancel className='text-gray-800' onClick={() => sendMessage(item)}>Đóng</AlertDialogCancel>
                                                 </div>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>

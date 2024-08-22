@@ -18,32 +18,32 @@ const SideBarDashboard = () => {
     const usePathName = usePathname();
     let arr = [
         {
-            icon: <House />,
+            icon: <House strokeWidth={1.8} className="h-5"/>,
             name: 'Bảng điều khiển',
             pathName: '/adminstrations/dashboard/overview',
         },
         {
-            icon: <Package />,
+            icon: <Package strokeWidth={1.8} className="h-5"/>,
             name: 'Sản phẩm',
             pathName: '/adminstrations/list_products',
         },
         {
-            icon: <Contact />,
+            icon: <Contact strokeWidth={1.8} className="h-5"/>,
             name: 'Khách hàng',
             pathName: '/adminstrations/customers',
         },
         {
-            icon: <ShoppingBag />,
-            name: 'Đặt hàng',
+            icon: <ShoppingBag strokeWidth={1.8} className="h-5"/>,
+            name: 'Đơn hàng',
             pathName: '/adminstrations/orders'
         },
         {
-            icon: <Trash2 />,
+            icon: <Trash2 strokeWidth={1.8} className="h-5"/>,
             name: 'Thùng rác',
             pathName: '/adminstrations/list_products/recycle',
         },
         {
-            icon: <Settings/>,
+            icon: <Settings strokeWidth={1.8} className="h-5"/>,
             name: 'Settings',
             pathName: '/adminstrations/settings'
         }

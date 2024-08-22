@@ -103,7 +103,7 @@ const Page = () => {
                         <div className='flex gap-x-3'>
                           {item?.notes &&
                             <AlertDialogCancel className='text-gray-100 border-none bg-indigo-600 hover:!bg-indigo-800 hover:!text-gray-200'>
-                              <Link href={'/login'}>Đăng nhập</Link>
+                              <Link href={'/login'}>Đăng nhập lại</Link>
                             </AlertDialogCancel>
                           }
                           <AlertDialogCancel className='text-gray-800'>Đóng</AlertDialogCancel>

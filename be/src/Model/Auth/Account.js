@@ -2,32 +2,33 @@ import mongoose from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2'
 
 const schema_Auth = new mongoose.Schema({
-    user_name : {
-        type : String,
-        minglength :3,
-        trim : true,
-        required : true,
-    },
-    email : {
-        type : String,
-        trim : true,
-        required : true,
-    },
-    password : {
+    user_name: {
         type: String,
-        min : 6,
-        trim : true,
-        required : true,
+        minglength: 3,
+        trim: true,
+        required: true,
+    },
+    email: {
+        type: String,
+        trim: true,
+        required: true,
+    },
+    phone: String,
+    password: {
+        type: String,
+        min: 6,
+        trim: true,
+        required: true,
     },
     role: {
-        type : String,
-        enum : ['admin_global', 'admin_local', 'seller', 'user'],
-        default : 'user',
+        type: String,
+        enum: ['admin_global', 'admin_local', 'seller', 'user'],
+        default: 'user',
     }
-},  
-{
-    timestamp : true, versionKey : false
-});
+},
+    {
+        timestamp: true, versionKey: false
+    });
 
 schema_Auth.plugin(mongoosePaginate)
 

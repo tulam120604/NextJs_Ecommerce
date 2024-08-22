@@ -106,8 +106,12 @@ export async function granting_premissions(req, res) {
             })
         };
         data.role = 'seller';
+        data.user_name = req.body.user_name;
+        data.email = req.body.email;
+        data.phone = req.body.phone;
         await data.save();
         await Notifications.create({
+            notes: 'Confirm',
             notification_message: 'Quản trị viên đã chấp nhận yêu cầu trở thành nhà phân phối trên Store88, bạn vui lòng đăng nhập lại để bắt đầu kinh doanh mặt hàng của mình.Chúc may mắn!',
             receiver_id: id_user,
             sender_id: req.body.receiver_id

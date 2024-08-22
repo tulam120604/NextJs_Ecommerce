@@ -6,6 +6,9 @@ import React from 'react'
 import { Custome_Hooks_Auth } from '../../_lib/Custome_Hooks/Auth_Form';
 import Swal from 'sweetalert2';
 import Loading_Spin from '../Loadings/Loading_Spin';
+import Image from 'next/image';
+import { Input } from '../ui/Shadcn/input';
+import { Button } from '../ui/Shadcn/button';
 
 const Form_auth = ({ mode }: any) => {
     // console.log(mode);
@@ -32,24 +35,19 @@ const Form_auth = ({ mode }: any) => {
         }
     }
     return (
-        <>
-            <div className="lg:grid max-w-[1400px] mx-auto lg:min-h-screen lg:grid-cols-[60%_35%] justify-between">
-                <section className="relative">
-                    <img
-                        alt=""
-                        src="https://images.unsplash.com/photo-1617195737496-bc30194e3a19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                        className="absolute inset-0 h-full w-full object-cover opacity-80"
+        <div className='h-screen grid place-items-center bg-[#F3F4F6]'>
+            <div className="lg:grid max-w-[1000px] lg:grid-cols-2 gap-x-20 justify-between bg-white p-6 rounded-lg">
+                <section className="relative w-[500px]">
+                    <Image
+                        alt="login..."
+                        width={700}
+                        height={700}
+                        src="/Images/login.jpg"
+                        className="absolute h-3/4 w-3/4 object-cover opacity-80 bottom-0 left-1/2 -translate-x-1/2"
                     />
-
-                    <div className="hidden lg:relative lg:block lg:p-12">
-                        <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
-                            Xin chào đại vương!
-                        </h2>
-
-                        <p className="mt-4 leading-relaxed text-white/90">
-                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-                            quibusdam aperiam voluptatum.
-                        </p>
+                    <div className="hidden lg:relative lg:block lg:p-12 text-lg lg:text-xl">
+                        <strong>Store88</strong>
+                        <h2 className='mt-1'>Xin chào đại vương!</h2>
                     </div>
                 </section>
                 <main className="flex item-center">
@@ -58,59 +56,44 @@ const Form_auth = ({ mode }: any) => {
                             {mode === 'Register' ? 'Tạo tài khoản ' : "Đăng nhập"}
                         </h3>
                         {mode === 'Register' && <div className="mb-3">
-                            <label
-                                htmlFor="user_name"
-                                className="mb-2 text-sm font-semibold text-gray-900 flex"
-                            >
-                                Tên đăng nhập*
+                            <label htmlFor="user_name" className="mb-2 text-sm font-semibold text-gray-900 flex" >
+                                Tên tài khoản *
                             </label>
-                            <input
-                                {...my_form.register('user_name')}
+                            <Input {...my_form.register('user_name')}
                                 id="user_name"
                                 type="text"
-                                placeholder="Enter a user name"
-                                className="flex items-center w-full px-5 py-4  text-sm font-medium text-gray-900 placeholder-gray-500 border border-gray-300 outline-none focus:bg-gray-50 rounded-lg focus:ring-2 focus:ring-gray-200"
-                            />
-                            {mode === 'Register' && errors.user_name && <p className="text-red-500 md:text-sm text-xs">{errors.user_name.message}</p>}
+                                placeholder="Enter a user name" className='focus:ring-1 focus:ring-gray-400' />
+                            {mode === 'Register' && errors.user_name && <p className="text-red-500 md:text-sm text-xs mt-1">{errors.user_name.message}</p>}
                         </div>}
                         <div className="mb-3">
-                            <label htmlFor="email" className="mb-2 text-sm font-semibold text-gray-900 flex"> Email*</label>
-                            <input
-                                {...my_form.register('email')}
+                            <label htmlFor="email" className="mb-2 text-sm font-semibold text-gray-900 flex">Email *</label>
+                            <Input {...my_form.register('email')}
                                 id="email"
                                 type="email"
-                                placeholder="email@ahihi.com"
-                                className="flex items-center w-full px-5 py-4 text-sm font-medium text-gray-900 placeholder-gray-500 border border-gray-300 outline-none focus:bg-gray-50 rounded-lg focus:ring-2 focus:ring-gray-200"
-                            />
-                            {mode === 'Register' && errors.email && <p className="text-red-500 md:text-sm text-xs">{errors.email.message}</p>}
+                                placeholder="email@ahihi.com" className='rounded focus:ring-1 focus:ring-gray-400' />
+                            {errors.email && <p className="text-red-500 md:text-sm text-xs mt-1">{errors.email.message}</p>}
                         </div>
                         <div className="mb-3">
                             <label
                                 htmlFor="password"
-                                className="mb-2 text-sm font-semibold text-gray-900 flex"
-                            >
-                                Mật khẩu*
+                                className="mb-2 text-sm font-semibold text-gray-900 flex">
+                                Mật khẩu *
                             </label>
-                            <input
-                                {...my_form.register('password')}
+                            <Input {...my_form.register('password')}
                                 id="password"
                                 type="password"
-                                placeholder="Enter a password"
-                                className="flex items-center w-full px-5 py-4  text-sm font-medium text-gray-900 placeholder-gray-500 border border-gray-300 outline-none focus:bg-gray-50 rounded-lg focus:ring-2 focus:ring-gray-200"
-                            />
-                            {mode === 'Register' && errors.password && <p className="text-red-500 md:text-sm text-xs">{errors.password.message}</p>}
+                                placeholder="Enter a password" className='focus:ring-1 focus:ring-gray-400' />
+                            {errors.password && <p className="text-red-500 md:text-sm text-xs mt-1">{errors.password.message}</p>}
                         </div>
-                        {mode === 'Register' ? <div>
-                            {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm text-red-500'>* Tài khoản đã đã tồn tại! *</span>}
-                            <button className="w-full grid place-items-center h-14 mb-5 text-sm font-bold leading-none text-white transition duration-300 bg-gray-900 hover:bg-gray-700 rounded-lg">
-                                {isLoading ? <Loading_Spin /> : 'Tạo tài khoản'}
-                            </button>
+                        {mode === 'Register' ? <div className='flex flex-col'>
+                            {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm my-1 text-red-500'>* Tài khoản đã đã tồn tại! *</span>}
+                            <Button>{isLoading ? <Loading_Spin /> : 'Tạo tài khoản'}</Button>
                             <div className="flex items-center mb-3">
                                 <hr className="flex-grow border-gray-300" />
                                 <p className="mx-4 text-gray-600">or</p>
                                 <hr className="flex-grow border-gray-300" />
                             </div>
-                            <Link href={''} className="flex duration-300 items-center justify-center w-full h-14 mb-6 text-sm font-medium text-gray-900 transition duration-300 border border-gray-200 bg-gray-50 rounded-lg hover:bg-gray-200">
+                            <Link href={''} className="flex duration-300 items-center justify-center w-full py-2 mb-6 text-sm font-medium text-gray-900 transition duration-300 border border-gray-200 bg-gray-50 rounded-lg hover:bg-gray-200">
                                 <img width={20} height={50}
                                     className="h-5 mr-2"
                                     src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
@@ -128,25 +111,20 @@ const Form_auth = ({ mode }: any) => {
                                 </Link>
                             </p>
                         </div> :
-                            <div>
+                            <div className='flex flex-col'>
                                 <div className="flex flex-row justify-between my-2">
-                                    <a
-                                        href="#"
-                                        className="text-sm font-medium text-blue-600 hover:underline"
-                                    >
+                                    <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
                                         Quên mật khẩu?
                                     </a>
                                 </div>
-                                {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm text-red-500 my-4'>* Thông tin tài khoản không chính xác! *</span>}
-                                <button className="w-full grid place-items-center h-14 mb-5 text-sm font-bold leading-none text-white transition duration-300 bg-gray-900 hover:bg-gray-700 rounded-lg">
-                                    {isLoading ? <Loading_Spin /> : 'Đăng nhập'}
-                                </button>
+                                {status_Loading === 'call_error' && <span className='text-center text-xs lg:text-sm text-red-500 my-1'>* Thông tin tài khoản không chính xác! *</span>}
+                                <Button>{isLoading ? <Loading_Spin /> : 'Đăng nhập'}</Button>
                                 <div className="flex items-center mb-3">
                                     <hr className="flex-grow border-gray-300" />
                                     <p className="mx-4 text-gray-600">or</p>
                                     <hr className="flex-grow border-gray-300" />
                                 </div>
-                                <Link href={''} className="flex duration-300 items-center justify-center w-full py-4 mb-6 text-sm font-medium text-gray-900 transition duration-300 border border-gray-200 bg-gray-50 rounded-lg hover:bg-gray-200">
+                                <Link href={''} className="flex duration-300 items-center justify-center w-full py-2 mb-6 text-sm font-medium text-gray-900 transition duration-300 border border-gray-200 bg-gray-50 rounded-lg hover:bg-gray-200">
                                     <img width={20} height={50}
                                         className="h-5 mr-2"
                                         src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-google.png"
@@ -167,7 +145,7 @@ const Form_auth = ({ mode }: any) => {
                     </form>
                 </main>
             </div>
-        </>
+        </div>
     )
 }
 

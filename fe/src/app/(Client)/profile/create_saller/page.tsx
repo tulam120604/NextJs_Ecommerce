@@ -18,7 +18,10 @@ export default function Page() {
             sender_id: user?.check_email?._id,
             receiver_id: 'admin@admin.com',
             notification_message: dataForm?.note_shop,
-            notes: dataForm?.address_shop
+            notes: dataForm?.address_shop,
+            user_name: dataForm?.name_shop,
+            email: dataForm?.email_shop,
+            phone: dataForm?.phone_shop,
         }
         mutate_notification.mutate(data_body);
         socket.emit('create_seller_message', `Đại vương có 1 thông báo mới từ ${user?.check_email?.user_name}`)
@@ -26,7 +29,7 @@ export default function Page() {
     return (
         <div className='pl-4'>
             <div className='text-center'>
-                <strong className='text-lg'>Đăng kí kênh người bán</strong>
+                <strong className='text-lg'>Đăng kí kênh phân phối</strong>
             </div>
             <form onSubmit={mutate_notification.form_notification.handleSubmit(onSendMessage)} className='max-w-[600px] mx-auto mt-6'>
                 <div className='flex flex-col gap-y-2 my-4'>
@@ -49,14 +52,14 @@ export default function Page() {
                 </div>
                 <div className='flex flex-col gap-y-2 my-4'>
                     <label htmlFor="address_shop">Địa chỉ lấy hàng</label>
-                    <textarea className='px-3 py-2 rounded outline-1 text-sm' id='address_shop' placeholder='Enter' cols={6}
-                        {...mutate_notification.form_notification.register('address_shop', { required: 'Tên shop  không được để trống!' })} />
+                    <textarea className='px-3 py-2 rounded outline-1 text-sm' id='address_shop' placeholder='Nhập' cols={6}
+                        {...mutate_notification.form_notification.register('address_shop', { required: 'Địa chỉ lấy hàng không được để trống!' })} />
                     {mutate_notification.errors.address_shop && <span className='text-red-500 text-sm'>{mutate_notification.errors.address_shop?.message}</span>}
                 </div>
                 <div className='flex flex-col gap-y-2 my-4'>
                     <label htmlFor="note_shop">Ghi chú</label>
-                    <textarea className='px-3 py-2 rounded outline-1 text-sm' id='note_shop' placeholder='Enter' cols={6}
-                        {...mutate_notification.form_notification.register('note_shop')} defaultValue={' '} />
+                    <textarea className='px-3 py-2 rounded outline-1 text-sm' id='note_shop' placeholder='Nhập' cols={6}
+                        {...mutate_notification.form_notification.register('note_shop')}/>
                 </div>
                 <div className="flex items-center space-x-2 my-4">
                     <Checkbox id="terms" />

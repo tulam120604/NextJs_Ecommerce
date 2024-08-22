@@ -14,7 +14,10 @@ const Notification_Schema = new mongoose.Schema({
     status_message: {
         type: Boolean,
         default: false
-    }
+    },
+    user_name : String,
+    email : String,
+    phone : String,
 },
     { timestamps: true, versionKey: false }
 );
