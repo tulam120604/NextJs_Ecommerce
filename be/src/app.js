@@ -11,11 +11,12 @@ import Routes_Order from './Routes/Order/Order.js';
 import Routes_Attribute from './Routes/Attribute/Attribute.js';
 import RoutesFeedback from './Routes/Feedback/Feedback.js';
 import RoutesNotification from './Routes/Notification/Notification.js';
-// import { handle_socket_event } from './socket/handle_socket';
-// import { createServer } from 'node:http'
-// import { Server } from 'socket.io';
+import { handle_socket_event } from './socket/handle_socket';
+import { createServer } from 'node:http'
+import { Server } from 'socket.io';
 import RoutesAddress from './Routes/Auth/Address.js';
 import RoutesPayment from './Routes/Payment/Payment.js';
+import Routes_Favorites from './Routes/Items/Favorites.js';
 
 dotenv.config();
 const app = express();
@@ -54,6 +55,9 @@ app.use('/v1', RoutesAddress)
 // payment
 app.use('/v1', RoutesPayment)
 
+// favorite
+app.use('/v1', Routes_Favorites)
+
 
 // web socket
 // const server = createServer(app)
@@ -70,7 +74,7 @@ app.use('/v1', RoutesPayment)
 // })
 
 // run server without vite
-app.listen(process.env.PORT_SERVER)
+// app.listen(process.env.PORT_SERVER)
 
 
-// export const viteNodeApp = app;
+export const viteNodeApp = app;
