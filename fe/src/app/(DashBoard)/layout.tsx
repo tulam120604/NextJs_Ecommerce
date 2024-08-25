@@ -18,12 +18,13 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
 
   useEffect(() => {
     if (!data?.isLoading && !data?.isError) {
-      let data_old = data?.data?.data_notification?.length ?? 0;
+      const message_not_send = data?.data?.data_notification?.filter((item: any) => !item?.status_message);
+      let data_old = message_not_send ?? 0;
       if (count_bell < data_old) {
         toast({
           title: "Bạn có thông báo mới!",
-          className: 'w-[250px] bg-gray-900 fixed right-0 bottom-0 border-none text-white',
-          duration: 800
+          className: 'w-[250px] bg-gray-100 fixed right-0 bottom-0 border-none',
+          duration: 1000
         })
         setCount_bell(data_old)
       }
@@ -52,7 +53,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
               </Link>
               {/* logo account */}
               <div>
-                <Image className="rounded-[50%] cursor-pointer hover:scale-110 duration-200" width={30} height={30} src={'/Images/avatar.jpg'} alt='avatar'></Image>
+                <Image className="rounded-[50%] cursor-pointer hover:scale-110 duration-200" width={30} height={30} src={'/Images/avatar.jpg'} alt='avatar' />
               </div>
             </div>
           </header>

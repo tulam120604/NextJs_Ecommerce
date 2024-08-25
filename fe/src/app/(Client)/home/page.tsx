@@ -12,7 +12,7 @@ const Layout_Home = async () => {
     <Suspense fallback={<LoadingLandingPage />}>
       <Banner />
       <Service />
-      <Products_Home/>
+      <Products_Home />
     </Suspense>
   </>)
 }

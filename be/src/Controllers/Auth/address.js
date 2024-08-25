@@ -35,9 +35,15 @@ export async function create_address(req, res) {
 export async function get_address(req, res) {
     try {
         const data = await Address.find({ user_id: req.params.user_id });
+        // default address
+        const default_address = await Address.findOne({
+            user_id: req.params.user_id,
+            status_address: true
+        })
         return res.status(StatusCodes.OK).json({
             message: 'OK',
-            data
+            data,
+            default_address
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -45,6 +51,7 @@ export async function get_address(req, res) {
         })
     }
 }
+
 
 export async function edit_address(req, res) {
     try {
