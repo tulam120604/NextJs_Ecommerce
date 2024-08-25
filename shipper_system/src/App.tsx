@@ -1,9 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetch_data_order } from './redux/Hooks/Thunk'
 
 function App() {
   const [count, setCount] = useState(0)
+  const { data, status, error } = useSelector(state => state);
+  const disPatch = useDispatch();
+
+
+  useEffect(() => {
+    disPatch(fetch_data_order)
+  }, [disPatch])
+
+  console.log(data)
 
   return (
     <>
