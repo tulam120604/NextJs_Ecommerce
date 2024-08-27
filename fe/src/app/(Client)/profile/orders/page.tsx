@@ -14,6 +14,7 @@ import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { CircleCheck, CircleEllipsis, PackageOpen, Truck } from 'lucide-react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
+import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
 
 const Page = () => {
   const [status_item_order, setStatus_item_order] = useState<number>(0);
@@ -26,6 +27,8 @@ const Page = () => {
   const data_user = useCheck_user();
   const user_id = data_user?.check_email?._id ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
+  // send message
+  const mutate_notification = Mutation_Notification('SEND');
   function status_order(item: any) {
     switch (+item) {
       case 1:
@@ -43,7 +46,7 @@ const Page = () => {
       default: return;
     }
   }
-  function cancle_order(id_order: string | number, status: number) {
+  function cancle_order(id_order: string | number, status: number, number_order?: string | number, seller_id?: string | number) {
     const dataClient = {
       id_user: user_id,
       item: {
@@ -51,7 +54,16 @@ const Page = () => {
         status_item_order: status
       }
     }
-    mutation_order.mutate(dataClient);
+    if (status === 7 && number_order && seller_id) {
+      const data_body = {
+        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng 
+        ${<Link href={`/adminstrations/orders/detail_order?id=${id_order}`}>{number_order}</Link>}`,
+        sender_id: user_id,
+        receiver_id: seller_id
+      }
+      mutate_notification?.mutate(data_body)
+    }
+    mutation_order?.mutate(dataClient);
   }
   function restore_by_order(item: any) {
     sessionStorage.removeItem('item_order')
@@ -110,6 +122,7 @@ const Page = () => {
     setStatus_item_order(status);
   }
   const data = Query_Order(user_id, page, 10, status_item_order);
+  console.log( data?.data?.data_order?.docs)
   return (
     <div className='w-full relative pb-4'>
       <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-white *:border-b-2 *:border-white *:whitespace-nowrap'>
@@ -160,10 +173,12 @@ const Page = () => {
                           <AlertDialogFooter>
                             <AlertDialogCancel>Hủy</AlertDialogCancel>
                             {
-                              +item?.status_item_order === 1 ?
-                                <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id, 6)}>Xác nhận</AlertDialogAction>
-                                :
-                                <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id, 7)}>Xác nhận</AlertDialogAction>
+                              (+item?.status_item_order === 1) ?
+                                <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancle_order(item?._id, 6)}>Xác nhận</AlertDialogAction> :
+                                (+item?.status_item_order === 2) ?
+                                  <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancle_order(item?._id, 7, +item?.status_item_order,)}>Xác nhận</AlertDialogAction> :
+                                  (+item?.status_item_order === 7) &&
+                                  <AlertDialogAction className="bg-gray-200 cursor-not-allowed">Xác nhận</AlertDialogAction>
                             }
                           </AlertDialogFooter>
                         </AlertDialogContent>

@@ -62,7 +62,7 @@ export default function Page() {
                         <Loading_Dots />
                     </div>
                 }
-                <ul className="mt-4 space-y-2">
+                <ul className="space-y-2">
                     {
                         data?.data?.data_notification ?
                             (
