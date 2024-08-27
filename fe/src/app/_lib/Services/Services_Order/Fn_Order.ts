@@ -77,7 +77,7 @@ export async function get_all_order(accessToken: string, id_seller?: string | nu
 }
 
 
-export async function update_status_order(dataClient: any) {
+export async function update_status_order(dataClient: { id_user: string, item: any, action?: string }) {
     try {
         const res = await fetch(`${apiURi}/order/update_status/${dataClient.id_user}`, {
             method: 'PATCH',

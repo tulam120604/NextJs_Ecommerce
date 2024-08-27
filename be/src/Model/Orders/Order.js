@@ -23,9 +23,9 @@ const Order_Schema = new mongoose.Schema({
             size_attribute_item: String,
             price_item: Number,
             total_price_item: Number,
-            status_feedback : {
-                type : Boolean,
-                default : false
+            status_feedback: {
+                type: Boolean,
+                default: false
             }
         }
 
@@ -55,7 +55,7 @@ const Order_Schema = new mongoose.Schema({
     notes_order: String,
     status_item_order: {
         type: String,
-        enum: ['1', '2', '3', '4', '5', '6'],
+        enum: ['1', '2', '3', '4', '5', '6', '7'],
         default: '1'
     },
     date_time: {
@@ -76,3 +76,6 @@ Order_Schema.plugin(mongoosePaginate);
 
 
 export default mongoose.model('Orders', Order_Schema);
+
+
+// 7 is status pending

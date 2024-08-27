@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
-import { CircleCheck } from 'lucide-react'
+import { CircleCheck, CircleEllipsis, PackageOpen, Truck } from 'lucide-react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 
 const Page = () => {
@@ -29,26 +29,26 @@ const Page = () => {
   function status_order(item: any) {
     switch (+item) {
       case 1:
-        return <span>Chờ xác nhận</span>;
+        return <span className='flex items-center gap-x-2'><CircleEllipsis className='h-5' />Chờ xác nhận</span>;
       case 2:
-        return <span>Đã xác nhận</span>;
+        return <span className='text-green-500 flex items-center gap-x-2'><CircleCheck className='h-5' />Đã xác nhận</span>;
       case 3:
-        return <span className='text-green-500'>Đang chuẩn bị hàng</span>;
+        return <span className='text-sky-500 flex items-center gap-x-2'><PackageOpen className='h-5' />Đang chuẩn bị</span>;
       case 4:
-        return <span className='text-sky-500'>Đang vận chuyển</span>;
+        return <span className='text-sky-500 flex items-center gap-x-2'><Truck className='h-5' />Đang vận chuyển</span>;
       case 5:
-        return <span className='text-green-500 flex items-center gap-x-2'><CircleCheck className='h-5'/>Đơn hàng đã được giao thành công</span>;
+        return <span className='text-green-500 flex items-center gap-x-2'><CircleCheck className='h-5' />Đơn hàng đã được giao thành công</span>;
       case 6:
         return <span className='text-red-500'>ĐÃ HỦY</span>;
       default: return;
     }
   }
-  function cancle_order(id_order: any) {
+  function cancle_order(id_order: string | number, status: number) {
     const dataClient = {
       id_user: user_id,
       item: {
         order_id: id_order,
-        status_item_order: 6
+        status_item_order: status
       }
     }
     mutation_order.mutate(dataClient);
@@ -148,15 +148,23 @@ const Page = () => {
                       (+item?.status_item_order === 1 || +item?.status_item_order === 2) &&
                       <AlertDialog>
                         <AlertDialogTrigger className="px-3 mt-2 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
-                          Hủy
+                          {
+                            +item?.status_item_order === 1 ? 'Hủy' : 'Yêu cầu hủy'
+                          }
+
                         </AlertDialogTrigger>
-                        <AlertDialogContent>z
+                        <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Hủy</AlertDialogCancel>
-                            <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id)}>Xác nhận</AlertDialogAction>
+                            {
+                              +item?.status_item_order === 1 ?
+                                <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id, 6)}>Xác nhận</AlertDialogAction>
+                                :
+                                <AlertDialogAction className="bg-red-500" onClick={() => cancle_order(item?._id, 7)}>Xác nhận</AlertDialogAction>
+                            }
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>
