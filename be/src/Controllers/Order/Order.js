@@ -14,13 +14,34 @@ export async function create_Order(req, res) {
                 message: 'No user!'
             })
         };
-        const data_order = await Orders.create({ user_id, items_order, infor_user, notes_order });
+        // nếu có 2 sản phẩm từ 2 shop khác nhau thì tạo riêng 2 đơn
+        const group_items_order_by_seller = [];
+        for (let i of items_order) {
+            const id_seller = i.product_id.id_user_seller;
+            let check_group_item_order_by_seller = group_items_order_by_seller.find(a => a.id_shop === id_seller);
+            // tìm id_seller trong mảng group_item kia bằng find, nếu chưa có thì tạo 1 obj
+            // check_group_item_order_by_seller mới để push vào mảng, nếu đã có rồi thì push i vào items
+            if (!check_group_item_order_by_seller) {
+                check_group_item_order_by_seller = { id_shop: id_seller, items: [] };
+                group_items_order_by_seller.push(check_group_item_order_by_seller)
+            }
+            check_group_item_order_by_seller.items.push(i)
+        }
+        // dùng promise allSettled vì await không thể return trong loop được
+        const promise_order = group_items_order_by_seller.map(data => {
+            return Orders.create({
+                user_id,
+                items_order: data.items,
+                infor_user,
+                notes_order,
+            })
+        })
+        await Promise.allSettled(promise_order)
         if (action_order === 'cart_item') {
             await update_quantity_item_in_cart(user_id, items_order)
         }
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
-            data_order,
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

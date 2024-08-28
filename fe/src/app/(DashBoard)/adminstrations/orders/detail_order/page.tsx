@@ -51,9 +51,9 @@ export default function Page() {
     }
     mutation_notification.mutate(data_body);
     socket.emit('send_status_item_order_to_user', (status === 2) ? `Đơn hàng ${id_item?.code_order} đã được xác nhận, người bán đang chuẩn bị hàng để giao đến bạn` :
-    (status === 3) ? `Người bán đang chuẩn bị đơn hàng ${id_item?.code_order} để giao đến bạn!` : 
-    (status === 4) ? `Đơn hàng ${id_item?.code_order} đang trên đường giao đến bạn!` :
-      (status === 6) && `Người bán đã từ chối đơn hàng ${id_item?.code_order}, vui lòng chọn sản phẩm khác!`)
+      (status === 3) ? `Người bán đang chuẩn bị đơn hàng ${id_item?.code_order} để giao đến bạn!` :
+        (status === 4) ? `Đơn hàng ${id_item?.code_order} đang trên đường giao đến bạn!` :
+          (status === 6) && `Người bán đã từ chối đơn hàng ${id_item?.code_order}, vui lòng chọn sản phẩm khác!`)
   }
 
   function status_order(item: any) {

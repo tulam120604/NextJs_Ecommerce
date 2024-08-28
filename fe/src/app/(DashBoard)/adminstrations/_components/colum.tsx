@@ -24,25 +24,16 @@ function status_order(item: any) {
 export const columns: ColumnDef<any>[] = [
     {
         cell: ({ row }) => (
-            <div className='flex flex-col gap-y-2 text-sm'>
-                <span>Tên : {row?.original?.infor_user?.name_user}</span>
-                <span>Địa chỉ : {row?.original?.infor_user?.address}</span>
-                <span>SĐT : {row?.original?.infor_user?.phone}</span>
-                <span>Email : {row?.original?.infor_user?.email_user}</span>
-            </div>
-        ),
-        'header': "Khách hàng"
-    },
-    {
-        cell: ({ row }) => (
             row?.original?.items_order?.map((item: any) => {
-                return (<div key={item?.product_id?._id} className='flex items-center gap-x-4'>
-                    <Image width={70} height={100} className='h-[90px] rounded border' src={item?.product_id?.gallery[0]} alt='Loading...' />
+                return (<div key={item?.product_id?._id} className='flex items-center gap-x-4 mt-2'>
+                    <Image width={70} height={70} className='h-[70px] rounded border' src={item?.product_id?.gallery[0]} alt='Loading...' />
                     <div className='flex flex-col gap-y-1 *:text-sm'>
-                        <span className='max-w-[200px] line-clamp-1'>{item?.product_id?.short_name}</span>
-                        <span className='text-red-500'>{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-                        <span>X {item?.quantity}</span>
-                        <span className='text-red-500'>{item?.total_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                        <span className='max-w-[300px] line-clamp-1'>{item?.product_id?.short_name}</span>
+                        <div className="flex gap-x-3">
+                            <span className='text-red-500'>{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                            <span>x{item?.quantity}</span>
+                            <span className='text-red-500'>{item?.total_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                        </div>
                     </div>
                 </div>)
             })
@@ -52,8 +43,9 @@ export const columns: ColumnDef<any>[] = [
     {
         cell: ({ row }) => (
             <div className='flex flex-col gap-y-2'>
-                <span>Ngày đặt : {row?.original?.date_time?.slice(0, 10)}</span>
                 <span>Mã đơn : {row?.original?.code_order}</span>
+                <span>Người đặt : {row?.original?.infor_user?.name_user}</span>
+                <span>Ngày đặt : {row?.original?.date_time?.slice(0, 10)}</span>
             </div>
         ),
         'header': "Thông tin"

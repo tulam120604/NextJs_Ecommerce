@@ -49,7 +49,7 @@ const SideBarDashboard = () => {
         }
     ]
     if (data?.data?.role === 'seller') {
-        arr = arr.filter((_: any, index: number) => [1, 3].includes(index))
+        arr = arr.filter((_: any, index: number) => ![2, 5].includes(index))
     }
     return (
         <div className="*:relative flex flex-col text-gray-900 gap-y-4 *:flex *:items-center *:gap-x-2 *:rounded *:duration-300 px-2 *:whitespace-nowrap">

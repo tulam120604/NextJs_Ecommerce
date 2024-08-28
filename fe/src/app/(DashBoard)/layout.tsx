@@ -48,7 +48,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
             {/* options */}
             <div className="flex items-center gap-x-8">
               {/* notification */}
-              <Link href={'notification'} className="cursor-pointer relative text-gray-100 group">
+              <Link href={'adminstrations/dashboard/notification'} className="cursor-pointer relative text-gray-100 group">
                 <Notification_Component dataProps={{ data: data?.data, total_bell: total_bell }} />
               </Link>
               {/* logo account */}

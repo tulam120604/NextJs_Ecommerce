@@ -28,7 +28,7 @@ const Page = () => {
   const user_id = data_user?.check_email?._id ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   // send message
-  const mutate_notification = Mutation_Notification('SEND');
+  const mutate_notification = Mutation_Notification('ADD');
   function status_order(item: any) {
     switch (+item) {
       case 1:
@@ -46,7 +46,7 @@ const Page = () => {
       default: return;
     }
   }
-  function cancle_order(id_order: string | number, status: number, number_order?: string | number, seller_id?: string | number) {
+  function cancel_order(id_order: string | number, status: number, number_order?: string | number, seller_id?: string | number) {
     const dataClient = {
       id_user: user_id,
       item: {
@@ -55,13 +55,12 @@ const Page = () => {
       }
     }
     if (status === 7 && number_order && seller_id) {
-      const data_body = {
-        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng 
-        ${<Link href={`/adminstrations/orders/detail_order?id=${id_order}`}>{number_order}</Link>}`,
+      const data_message = {
+        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng <Link href={/adminstrations/orders/detail_order?id=${id_order} className='underline'>{number_order}</Link>}`,
         sender_id: user_id,
         receiver_id: seller_id
       }
-      mutate_notification?.mutate(data_body)
+      mutate_notification?.mutate(data_message);
     }
     mutation_order?.mutate(dataClient);
   }
@@ -122,7 +121,6 @@ const Page = () => {
     setStatus_item_order(status);
   }
   const data = Query_Order(user_id, page, 10, status_item_order);
-  console.log( data?.data?.data_order?.docs)
   return (
     <div className='w-full relative pb-4'>
       <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-white *:border-b-2 *:border-white *:whitespace-nowrap'>
@@ -148,24 +146,28 @@ const Page = () => {
           data?.data?.data_order &&
             data?.data?.data_order?.docs.length > 0 ?
             data?.data?.data_order?.docs?.map((item: any) =>
-              <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white' key={item?._id}>
+              <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white rounded' key={item?._id}>
                 <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
                 <div className='*:!border-none *:text-gray-900 -translate-y-12'>
                   <DataTable data={item?.items_order} columns={columns} />
                 </div>
-                <div key={+item?._id + Math.random()} className='flex justify-end'>
+                <div key={+item?._id + Math.random()} className='flex justify-end -mt-4'>
                   {
                     (+item?.status_item_order === 6 || +item?.status_item_order === 5) ?
                       <Button onClick={() => restore_by_order(item)}
                         className="px-3 bg-green-600 hover:!bg-green-700 mt-2 py-2 text-sm rounded text-white">Mua lại</Button> :
-                      (+item?.status_item_order === 1 || +item?.status_item_order === 2) &&
                       <AlertDialog>
-                        <AlertDialogTrigger className="px-3 mt-2 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
-                          {
-                            +item?.status_item_order === 1 ? 'Hủy' : 'Yêu cầu hủy'
-                          }
+                        {
+                          (+item?.status_item_order === 1) || (+item?.status_item_order === 2) ? <AlertDialogTrigger className="px-3 mt-2 py-2 text-sm bg-red-500 hover:bg-red-700 duration-200 rounded text-white">
+                            {
+                              (+item?.status_item_order === 1) ? 'Hủy' : (+item?.status_item_order === 2) && 'Yêu cầu hủy'
+                            }
+                          </AlertDialogTrigger> :
+                            <Button className="bg-[#11182755] text-gray-900 hover:!bg-[#11182755] cursor-not-allowed">
+                              Hủy
+                            </Button>
+                        }
 
-                        </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle className='text-sm'>Xác nhận hủy đơn hàng {item?.code_order}</AlertDialogTitle>
@@ -174,12 +176,9 @@ const Page = () => {
                             <AlertDialogCancel>Hủy</AlertDialogCancel>
                             {
                               (+item?.status_item_order === 1) ?
-                                <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancle_order(item?._id, 6)}>Xác nhận</AlertDialogAction> :
-                                (+item?.status_item_order === 2) ?
-                                  <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancle_order(item?._id, 7, +item?.status_item_order,)}>Xác nhận</AlertDialogAction> :
-                                  (+item?.status_item_order === 7) &&
-                                  <AlertDialogAction className="bg-gray-200 cursor-not-allowed">Xác nhận</AlertDialogAction>
-                            }
+                                <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancel_order(item?._id, 6)}>Xác nhận</AlertDialogAction> :
+                                (+item?.status_item_order === 2) &&
+                                <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancel_order(item?._id, 7, item?.code_order, item?.items_order[0]?.product_id?.id_user_seller)}>Xác nhận</AlertDialogAction>}
                           </AlertDialogFooter>
                         </AlertDialogContent>
                       </AlertDialog>

@@ -9,7 +9,7 @@ interface IFeedback {
 interface INotification {
     sender_id?: string | number,
     receiver_id?: string | number,
-    notification_message?: string,
+    notification_message?: any,
     notes?: string,
     user_name?: string,
     email?: string,

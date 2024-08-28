@@ -87,7 +87,7 @@ export default function Page() {
                                                             </p>}
                                                     </div>
 
-                                                    <p className="mt-1 text-sm font-medium text-gray-800">
+                                                    <p className="mt-1 text-sm font-medium text-gray-800 whitespace-nowrap">
                                                         {item?.createdAt?.slice(0, 10)}
                                                     </p>
                                                 </div>
