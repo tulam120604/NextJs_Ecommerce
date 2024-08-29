@@ -16,12 +16,13 @@ const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         <div className='py-4'>
           <strong className='text-xl'>Bảng điều khiển</strong>
           <div className="w-[220px] bg-gray-200 p-1 flex justify-between rounded-lg *:py-1 *:h-auto *:bg-gray-200 
-            *:text-gray-900 *:hover:!bg-white my-4">
-            <Button value="" className={`${pathname === '/adminstrations/dashboard/overview' && '!bg-white'}`}>
+            *:text-gray-900 *:hover:!bg-white my-4 relative">
+            <Button type='button' className={`${pathname === '/adminstrations/dashboard/overview' && '!bg-white'}`}>
               <Link href={'/adminstrations/dashboard/overview'}>Tổng quan</Link>
             </Button>
-            <Button value="" className={`${pathname === '/adminstrations/dashboard/notification' && '!bg-white'}`}>
+            <Button type='button' className={`${pathname === '/adminstrations/dashboard/notification' && '!bg-white'}`}>
               <Link href={'/adminstrations/dashboard/notification'}>Thông báo</Link>
+              <div className='absolute w-2 h-2 top-0 right-0 -translate-x-1/2 translate-y-1/2 !bg-red-500 rounded-full'></div>
             </Button>
           </div>
           {children}

@@ -101,7 +101,9 @@ export async function update_status_order(dataClient: { id_user: string, item: a
                 toast.success('Cập nhật trạng thái đơn hàng thành công!', { autoClose: 500 });
             }
             else {
-                toast.success('Hủy đơn hàng thành công!', { autoClose: 500 });
+                if (+dataClient?.item?.status_item_order !== 7) {
+                    toast.success('Hủy đơn hàng thành công!', { autoClose: 500 });
+                }
             }
         }
         await res.json();

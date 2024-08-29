@@ -56,7 +56,8 @@ const Page = () => {
     }
     if (status === 7 && number_order && seller_id) {
       const data_message = {
-        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng <Link href={/adminstrations/orders/detail_order?id=${id_order} className='underline'>{number_order}</Link>}`,
+        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng ${number_order}`,
+        link: id_order,
         sender_id: user_id,
         receiver_id: seller_id
       }

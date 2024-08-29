@@ -70,7 +70,7 @@ const Page = () => {
                         </div>
                         <div className='flex gap-x-10'>
                           <div>
-                            <p className="mt-1 text-sm font-medium">
+                            <p className="mt-1 text-sm font-medium line-clamp-1">
                               Nội dung: {item?.notification_message}
                             </p>
                             {item?.notes &&
@@ -89,7 +89,7 @@ const Page = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Từ {item?.sender_id?.user_name}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          {item?.notification_message}
+                          Nội dung: {item?.notification_message}
                         </AlertDialogDescription>
                         {item?.notes &&
                           <AlertDialogDescription>
