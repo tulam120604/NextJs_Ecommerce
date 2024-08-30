@@ -24,10 +24,6 @@ const Carts = new mongoose.Schema({
             total_price_item : {
                 type : Number,
             },
-            quantity_by_item : {
-                type : Number,
-                // required: true,
-            },
             color_item : {
                 type : String,
             },

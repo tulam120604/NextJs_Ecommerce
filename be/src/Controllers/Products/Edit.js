@@ -112,9 +112,11 @@ export async function update_quantity_item(data_items_order) {
                             if (x.name_size) {
                                 if (x.name_size == i.size_attribute_item) {
                                     x.stock_item = x.stock_item - i.quantity;
+                                    x.sale_quantity_attr += i.quantity
                                 }
                             } else {
                                 x.stock_item = x.stock_item - i.quantity;
+                                x.sale_quantity_attr += i.quantity
                             }
                         }
                     }
@@ -126,6 +128,7 @@ export async function update_quantity_item(data_items_order) {
             const data_item = await Products.find({ _id: i.product_id._id });
             for (let a of data_item) {
                 a.stock = a.stock - i.quantity;
+                a.sale_quantity += i.quantity;
                 await a.save();
             }
         }

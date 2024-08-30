@@ -8,27 +8,22 @@ export async function Add_To_Cart(req, res) {
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
         let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
-        let quantity_by_item = 0;
         let color_item;
         let size_attribute_item;
+
         if (data_item.attributes) {
             const varr = data_item.attributes.varriants.find(color_attr => color_attr.color_item === color);
             if (varr) {
                 for (let i of varr.size_item) {
                     if (i.name_size === size_attribute) {
                         color_item = varr.color_item;
-                        quantity_by_item = i.stock_item;
                         size_attribute_item = i.name_size
                     }
                     else {
-                        color_item = varr.color_item,
-                            quantity_by_item = i.stock_item;
+                        color_item = varr.color_item
                     }
                 }
             }
-        }
-        else {
-            quantity_by_item = quantity;
         }
         let data_cart = await Carts.findOne({ user_id });
         if (!data_cart) {
@@ -42,7 +37,6 @@ export async function Add_To_Cart(req, res) {
                 product_id,
                 quantity,
                 price_item,
-                quantity_by_item,
                 color_item,
                 size_attribute_item,
                 total_price_item: price_item * quantity
@@ -69,7 +63,6 @@ export async function Add_To_Cart(req, res) {
                     product_id,
                     quantity,
                     price_item,
-                    quantity_by_item,
                     color_item,
                     size_attribute_item,
                     total_price_item: price_item * quantity
@@ -94,6 +87,7 @@ export async function Add_To_Cart(req, res) {
 export async function up_quantity(req, res) {
     const { user_id, product_id, color, size_attribute } = req.body;
     try {
+        console.log(req.body)
         const data_user_Cart = await Carts.findOne({ user_id });
         if (!data_user_Cart || data_user_Cart.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({
@@ -157,7 +151,7 @@ export async function dow_quantity(req, res) {
 }
 
 export async function remove_item_cart(req, res) {
-    const { user_id, item_id} = req.body;
+    const { user_id, item_id } = req.body;
     try {
         const data_cart = await Carts.findOne({ user_id });
         if (!data_cart) {

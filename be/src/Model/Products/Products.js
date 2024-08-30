@@ -11,9 +11,9 @@ const schema_Products = new mongoose.Schema({
         maxlength: 255,
     },
     gallery: [],
-    id_user_seller : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Account'
+    id_user_seller: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
     },
     price_product: Number,
     trending: {
@@ -33,6 +33,10 @@ const schema_Products = new mongoose.Schema({
     count_stock: {
         type: Number,
         default: 1,
+    },
+    sale_quantity: {
+        type : Number,
+        default : 0
     },
     attributes:
     {
