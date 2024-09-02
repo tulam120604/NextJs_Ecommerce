@@ -1,37 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetch_data_order } from './Thunk';
+import { fetchData, updateData } from './Thunk';
 
-interface I_initial_state {
-    data?: [],
-    status?: string,
-    error?: string
-}
-
-const initial_state: I_initial_state = {
+const initialState: { data: [], status?: string, error?: string } = {
     data: [],
     status: '',
     error: ''
 }
 
-
-export const useSliceRedux = createSlice({
-    name: 'shipper_system_order',
-    initialState: initial_state,
+const sliceRedux = createSlice({
+    name: "order_slice",
+    initialState: initialState,
     reducers: {},
-    extraReducers: (builder: any) => {
+    extraReducers: (builder) => {
         builder
-            .addCase(fetch_data_order.pending, (state: { status: string }) => {
-                state.status = 'pending'
+            .addCase(fetchData.pending, (state) => {
+                state.status = 'loading'
             })
-            .addCase(fetch_data_order.fulfilled, (state: I_initial_state, action: { payload: any }) => {
-                state.status = 'success',
-                    state.data = action.payload
+            .addCase(fetchData.fulfilled, (state, action) => {
+                state.status = 'resolve';
+                state.data = action.payload
             })
-            .addCase(fetch_data_order.rejected, (state: { status: string }) => {
-                state.status = 'error'
+            .addCase(fetchData.rejected, (state) => {
+                state.status = 'reject'
+            })
+            .addCase(updateData.fulfilled, (state, action) => {
+                state.status = 'resolve';
+                console.log(action)
             })
     }
-});
+})
 
-
-export default useSliceRedux.reducer
+export default sliceRedux.reducer

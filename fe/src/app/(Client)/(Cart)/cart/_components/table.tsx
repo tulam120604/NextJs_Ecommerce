@@ -9,6 +9,7 @@ import Btn_dow from './btn_dow';
 import Btn_up from './btn_up';
 import Remove_Item_Cart from './remove';
 import Het_hang from './het_hang';
+import { convert_Slug } from '@/src/app/util/Slug';
 
 export default function Table_Cart({ dataProps }: any) {
     return (
@@ -61,13 +62,13 @@ export default function Table_Cart({ dataProps }: any) {
                                         {/* 88 */}
                                         <Checkbox checked={item?.status_checked && true} onClick={() => dataProps?.handle_Checkked(item?.product_id, item?.color_item, item?.size_attribute_item)} />
                                         {/* 88 */}
-                                        <Link href={`/${item?.product_id?._id}`}>
+                                        <Link href={`/${convert_Slug(item?.product_id?.short_name)}.html?p=${item?.product_id?._id}`}>
                                             <Image width={50} height={50} className="relative bg-[#f2f2f2f2] p-2 z-[1] w-full h-full duration-300"
                                                 src={item?.product_id?.gallery[0]} alt='loading...' />
                                         </Link>
                                         {/* 88 */}
                                         <div className="flex flex-col gap-y-2 md:text-base mb:text-xs w-[200px]">
-                                            <Link href={`/${item?.product_id?._id}`}>
+                                            <Link href={`/${convert_Slug(item?.product_id?.short_name)}.html?p=${item?.product_id?._id}`}>
                                                 <span className='line-clamp-2'>{item?.product_id?.short_name}</span>
                                             </Link>
                                             <div className='flex flex-col'>
