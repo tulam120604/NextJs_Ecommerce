@@ -13,6 +13,7 @@ import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import Table_Cart from './_components/table';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
+import useStoreZustand from '@/src/app/Zustand/Store';
 
 
 const Cart = () => {
@@ -33,9 +34,9 @@ const Cart = () => {
   }, [])
 
   const routing = useRouter();
-  const [content_note_order, setContent_note_order] = useState<string>('')
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
   const user = useCheck_user() ?? undefined;
+  const { setData, data: dataZustand } = useStoreZustand();
   useEffect(() => {
     if (!user) {
       routing.push('/')
@@ -50,12 +51,20 @@ const Cart = () => {
       setarr_item_checkbox(new_arr);
     }
   }, [data, isLoading]);
+  useEffect(() => {
+    if (data) {
+      const data_item_payment = data?.items?.filter((item: any) => (item?.status_checked && item));
+      console.log(data_item_payment)
+      if (data_item_payment.length > 0) {
+        setData(data_item_payment)
+      }
+    }
+  }, [data])
   if (isLoading) {
     return (
       <LoadingCart />
     )
   };
-
   // console.count('re-render cart :');
   const data_checked_true = arr_item_checkbox.filter((item: any) => item?.status_checked && item);
   function remove_all_item_cart() {
@@ -76,19 +85,46 @@ const Cart = () => {
     mutate(item);
   }
 
-  // notes_order
-  function handle_notes_order(e: any) {
-    setContent_note_order(e.target.value)
-  }
-
-  const data_item_next_order = data?.items?.filter((item: any) => (item?.status_checked && item));
+  const data_item_payment = data?.items?.filter((item: any) => (item?.status_checked && item));
   // next order
-  function handle_next_order() {
+  function next_page_payment() {
+    // check so luong
+    for (let i of data_item_payment) {
+      if (i?.product_id?.attributes) {
+        for (let j of i?.product_id?.attributes?.varriants) {
+          for (let k of j?.size_item) {
+            if (i?.quantity > k?.stock_item) {
+              toast({
+                title: "Thông báo!",
+                description: `Rất tiếc, sản phẩm ${i?.product_id?.short_name} chỉ còn ${k?.stock_item} chiếc. Vui lòng giảm số lượng thanh toán!`,
+                className: 'border border-gray-800',
+                action: (
+                  <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+                ),
+              });
+              return null;
+            }
+          }
+        }
+      }
+      else {
+        if (i?.quantity > i?.product_id?.stock) {
+          toast({
+            title: "Thông báo!",
+            description: `Rất tiếc, sản phẩm ${i?.product_id?.short_name} chỉ còn ${i?.product_id?.stock} chiếc. Vui lòng giảm số lượng thanh toán!`,
+            className: 'border border-gray-800',
+            action: (
+              <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+            ),
+          });
+          return null;
+        }
+      }
+    }
     sessionStorage.removeItem('item_order');
     const item_cart_order = {
       ...data,
-      items: data_item_next_order,
-      notes_order: dataProps?.content_note_order,
+      items: data_item_payment,
       action: 'cart_item',
     }
     sessionStorage.setItem('item_order', JSON.stringify(item_cart_order));
@@ -99,8 +135,7 @@ const Cart = () => {
 
   const dataProps = {
     data: data,
-    content_note_order: content_note_order,
-    data_item_next_order: data_item_next_order,
+    data_item_next_order: data_item_payment,
     user: user?.check_email,
     data_checked_true: data_checked_true,
     handle_Checkked: handle_Checkked,
@@ -108,97 +143,19 @@ const Cart = () => {
   }
   return (
     <Suspense fallback={<LoadingCart />}>
-      <div className="max-w-[1440px] md:w-[90vw] mb:w-[342px] lg:pt-20 mb:pt-16 mx-auto grid lg:grid-cols-[67%_30%] mb:grid-cols-[100%] justify-between pb-10">
+      <div className="max-w-[1440px] w-[95vw] pt-10 mx-auto pb-8">
         {/* left */}
-        <div>
-          <span className="text-xl flex mb-[1px] items-center justify-between pb-6">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base mb:text-sm">(3)</p></span>
-          {/* list items */}
-          <Table_Cart dataProps={dataProps} />
-        </div>
+        <span className="text-xl flex mb-[1px] items-center justify-between">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base mb:text-sm">(3)</p></span>
+        {/* list items */}
+        <Table_Cart dataProps={dataProps} />
 
-        {/* right */}
-        <div className="hidden lg:block">
-          <div className="w-full lg:p-6 mb:p-5 rounded-lg border flex flex-col gap-y-[3px]">
-            <div className="flex flex-col gap-y-4">
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Tạm tính </span>
-                <p className='text-red-600'>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
-              </section>
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Giảm giá </span>
-                <p>0 đ</p>
-              </section>
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Chi phí vận chuyển </span>
-                {/* <p>$50.00</p> */}
-                <p>Free</p>
-              </section>
-            </div>
-            {/* voucher */}
-            <div className="flex items-center justify-between gap-x-3 *:h-12 *:border py-[19px]">
-              <input type="text " placeholder="Enter Code (Chưa áp dụng)" className="px-3 text-sm py-2 rounded-lg outline-none font-light" />
-              <button type='button' className="font-medium border border-black hover:bg-black hover:text-white duration-200 whitespace-nowrap text-sm rounded-[100px] px-5 py-2">Mã Voucher</button>
-            </div>
-            {/* *** */}
-            <textarea onBlur={(e) => handle_notes_order(e)} name="" id="" className='border rounded p-2 outline-none text-light text-sm' placeholder='ghi chú của bạn (nếu có)'></textarea>
-            <Button onClick={handle_next_order} type='button' className="flex gap-x-4 my-4">
-              <span>Thanh toán</span>
-              |
-              <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-            </Button>
-            {/* payment */}
-            <div className="flex flex-col gap-y-4 border-t mt-[3px] pt-[22px]">
-              <span className="text-[#717378] text-sm">Thanh toán qua thẻ tín dụng</span>
-              <div className="flex items-center gap-x-3 *:cursor-pointer *:w-[40px] *:h-[40px] *:border-none">
-                <Image width={50} height={50} src="/Images/mastercard_v1.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v2.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v3.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v4.png" alt='' />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* mobile */}
-        <div className="block lg:hidden mt-[35px]">
-          <div className="w-full lg:p-6 mb:p-5 border rounded-2xl flex flex-col gap-y-[3px]">
-            <div className="flex flex-col gap-y-4">
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Tạm tính </span>
-                <p className='text-red-600'>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</p>
-              </section>
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Giảm giá </span>
-                <p>$0.0</p>
-              </section>
-              <section className="flex justify-between text-sm">
-                <span className="text-[#9D9EA2]">Chi phí vận chuyển </span>
-                <p>Free</p>
-              </section>
-            </div>
-            {/* voucher */}
-            <div className="flex items-center justify-between gap-x-3 *:h-12 *:border py-[19px]">
-              <input type="text" placeholder="Enter code" className="lg:px-3 mb:pl-[22px] mb:w-[150px] md:w-full rounded-lg text-sm lg:text-base" />
-              <button type='button' className="font-medium border border-black hover:bg-black hover:text-white duration-200 whitespace-nowrap text-sm rounded-[100px] px-5 py-2">Mã Voucher</button>
-            </div>
-            {/* *** */}
-            <textarea name="" id="" className='border rounded p-2 outline-none text-light text-sm' placeholder='ghi chú của bạn (nếu có)'></textarea>
-            <Button onClick={handle_next_order} type='button' className='flex gap-x-4 my-4'>
-              <span>Thanh toán</span>
-              |
-              <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-            </Button>
-            {/* check out */}
-            <div className="flex flex-col gap-y-4 border-t mt-[3px] pt-[22px]">
-              <span className="text-[#717378] text-sm">Thanh toán qua thẻ tín dụng</span>
-              <div className="flex items-center gap-x-3 *:cursor-pointer *:w-[30px] *:h-[30px] *:border-none">
-                <Image width={50} height={50} src="/Images/mastercard_v1.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v2.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v3.png" alt='' />
-                <Image width={50} height={50} src="/Images/mastercard_v4.png" alt='' />
-              </div>
-            </div>
-          </div>
+        <div className="w-full rounded-lg lg:flex items-center justify-between bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
+          <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_payment?.length} sản phẩm)</span>
+          <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
+            <span>Tiến hành thanh toán</span>
+            |
+            <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+          </Button>
         </div>
       </div>
     </Suspense >

@@ -17,8 +17,13 @@ const Schema_Attribute = new mongoose.Schema({
                         type: Number,
                         required: true,
                         min: 0,
+                        default: 0
                     },
-                    price_attribute: Number,
+                    price_attribute: {
+                        type: Number,
+                        default: 0,
+                        min: 0
+                    },
                     sale_quantity_attr: {
                         type: Number,
                         default: 0

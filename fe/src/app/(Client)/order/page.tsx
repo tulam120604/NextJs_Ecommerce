@@ -20,13 +20,14 @@ import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 import { List_Address } from '../../_lib/Tanstack_Query/Auth/Query_Address';
 import Table_item from './_components/colum';
+import useStoreZustand from '../../Zustand/Store';
 
 const Page = () => {
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
-  const user = useCheck_user() ?? undefined;
+  const user = useCheck_user();
   useEffect(() => {
     if (!user) {
       routing.push('/')
@@ -34,7 +35,6 @@ const Page = () => {
   }, [routing, user]);
   // address
   const { data, isLoading } = List_Address(user?.check_email?._id);
-  console.log(data?.default_address?.about_address)
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -65,6 +65,12 @@ const Page = () => {
   if (mutate_order.status_api === 'call_ok') {
     routing.push('/')
   }
+
+  const { data: dataZustand } = useStoreZustand();
+
+  useEffect(() => {
+    console.log(dataZustand)
+  }, [dataZustand])
 
   // mutation payment
   const mutation_payment = Mutation_Payment('CREATE');
@@ -119,7 +125,7 @@ const Page = () => {
           <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
           {
             list_item_order?.items ? (<div className='*:text-gray-800'>
-              <Table_item dataProps={list_item_order?.items}/>
+              <Table_item dataProps={list_item_order?.items} />
               <div className='flex justify-between whitespace-nowrap text-lg my-4'>
               </div>
               {
@@ -139,26 +145,31 @@ const Page = () => {
         <div>
           <span className="flex mb-[1px] items-center justify-between pb-6">Thông tin nhận hàng</span>
           <div className='flex flex-col gap-y-5'>
-            <div>
-              <label htmlFor="name">Tên của bạn :</label>
-              <Input className='mt-2' {...register('name_user')} id='name' placeholder="Name" defaultValue={data?.default_address?.about_address?.user_name} />
-              {errors.name_user && <p className="text-red-500 md:text-sm text-xs">{errors.name_user.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="name">Số điện thoại :</label>
-              <Input className='mt-2' {...register('phone')} id='phone' placeholder="Phone" defaultValue={data?.default_address?.about_address?.phone} />
-              {errors.phone && <p className="text-red-500 md:text-sm text-xs">{errors.phone.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="name">Email :</label>
-              <Input className='mt-2' {...register('email_user')} id='email' placeholder="Email" defaultValue={data?.default_address?.about_address?.email} />
-              {errors.email_user && <p className="text-red-500 md:text-sm text-xs">{errors.email_user.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="name">Địa chỉ của bạn :</label>
-              <Input className='mt-2' {...register('address')} id='address' placeholder="Address" defaultValue={data?.default_address?.about_address?.address} />
-              {errors.address && <p className="text-red-500 md:text-sm text-xs">{errors.address.message}</p>}
-            </div>
+            {
+              isLoading ? <span>Loading...</span> :
+                <>
+                  <div>
+                    <label htmlFor="name">Tên của bạn :</label>
+                    <Input className='mt-2' {...register('name_user')} id='name' placeholder="Name" defaultValue={data?.default_address?.about_address?.user_name} />
+                    {errors.name_user && <p className="text-red-500 md:text-sm text-xs">{errors.name_user.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="name">Số điện thoại :</label>
+                    <Input className='mt-2' {...register('phone')} id='phone' placeholder="Phone" defaultValue={data?.default_address?.about_address?.phone} />
+                    {errors.phone && <p className="text-red-500 md:text-sm text-xs">{errors.phone.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="name">Email :</label>
+                    <Input className='mt-2' {...register('email_user')} id='email' placeholder="Email" defaultValue={data?.default_address?.about_address?.email} />
+                    {errors.email_user && <p className="text-red-500 md:text-sm text-xs">{errors.email_user.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="name">Địa chỉ của bạn :</label>
+                    <Input className='mt-2' {...register('address')} id='address' placeholder="Address" defaultValue={data?.default_address?.about_address?.address} />
+                    {errors.address && <p className="text-red-500 md:text-sm text-xs">{errors.address.message}</p>}
+                  </div>
+                </>
+            }
           </div>
         </div>
         <div>

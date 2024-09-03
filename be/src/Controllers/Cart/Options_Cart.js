@@ -4,13 +4,22 @@ import Products from "../../Model/Products/Products.js";
 
 
 export async function Add_To_Cart(req, res) {
-    const { user_id, product_id, quantity, color, size_attribute, price_item_attr, item_in_stock } = req.body;
+    const { user_id, product_id, quantity, color, size_attribute, price_item_attr } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
+        let stock_product = 0;
+        if (data_item.attributes) {
+            const check_color = data_item.attributes.varriants.find(value => value.color_item === color);
+            const check_name_size = check_color.size_item.find(item => (item?.name_size?.trim() ? item?.name_size : undefined) === size_attribute);
+            stock_product = check_name_size.stock_item
+        }
+        else {
+            stock_product = data_item.stock
+        }
+        console.log(stock_product)
         let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
         let color_item;
         let size_attribute_item;
-
         if (data_item.attributes) {
             const varr = data_item.attributes.varriants.find(color_attr => color_attr.color_item === color);
             if (varr) {
@@ -51,8 +60,8 @@ export async function Add_To_Cart(req, res) {
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
                             check_item = true
                         }
-                        if (data_cart.items[i].quantity >= item_in_stock) {
-                            data_cart.items[i].quantity = item_in_stock;
+                        if (data_cart.items[i].quantity >= stock_product) {
+                            data_cart.items[i].quantity = stock_product;
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
                         }
                     }

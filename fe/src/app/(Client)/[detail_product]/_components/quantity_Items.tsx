@@ -155,7 +155,6 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         color: color,
         quantity: quantity,
         size_attribute: sizePropsCart,
-        item_in_stock: quantity_attributes
       };
       if (quantity_attributes && quantity > 0) {
         mutate(items);

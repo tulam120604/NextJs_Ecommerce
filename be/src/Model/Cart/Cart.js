@@ -32,7 +32,7 @@ const Carts = new mongoose.Schema({
             },
             status_checked : {
                 type : Boolean,
-                default : true,
+                default : false,
             },
         }
     ],

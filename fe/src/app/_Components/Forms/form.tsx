@@ -205,7 +205,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 <div className='flex flex-col gap-4'>
                     <label htmlFor="des_product">Mô tả sản phẩm :</label>
                     <textarea id='des_product' {...my_Form.register('des_product')}
-                        className='outline-none py-2 px-4 border border-gray-300 rounded min-h-[200px]' placeholder='Mô tả sản phẩm ...' />
+                        className='outline-none py-2 px-4 border border-gray-300 rounded min-h-[300px]' placeholder='Mô tả sản phẩm ...' />
                 </div>
                 {
                     (attributes?.length < 1) && <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
