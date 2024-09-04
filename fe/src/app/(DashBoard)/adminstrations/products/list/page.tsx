@@ -51,7 +51,7 @@ const Page = () => {
       id_item: idItem?.id_item
     }
     on_Submit(item);
-    socket.emit('send_message', idItem);
+    socket.emit('send_message_delete_item', idItem);
   }
 
   // render items and attributes

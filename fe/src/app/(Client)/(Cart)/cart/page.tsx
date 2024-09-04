@@ -13,15 +13,14 @@ import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import Table_Cart from './_components/table';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
-import useStoreZustand from '@/src/app/Zustand/Store';
-
+import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
 
 const Cart = () => {
   const { toast } = useToast();
   // socket
   useEffect(() => {
     const socket = io('http://localhost:8888')
-    socket.on('res_message', (data: any) => {
+    socket.on('res_message_delete_item', (data: any) => {
       toast({
         title: "Thông báo!",
         description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
@@ -36,7 +35,6 @@ const Cart = () => {
   const routing = useRouter();
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
   const user = useCheck_user() ?? undefined;
-  const { setData, data: dataZustand } = useStoreZustand();
   useEffect(() => {
     if (!user) {
       routing.push('/')
@@ -51,15 +49,6 @@ const Cart = () => {
       setarr_item_checkbox(new_arr);
     }
   }, [data, isLoading]);
-  useEffect(() => {
-    if (data) {
-      const data_item_payment = data?.items?.filter((item: any) => (item?.status_checked && item));
-      console.log(data_item_payment)
-      if (data_item_payment.length > 0) {
-        setData(data_item_payment)
-      }
-    }
-  }, [data])
   if (isLoading) {
     return (
       <LoadingCart />
@@ -85,23 +74,32 @@ const Cart = () => {
     mutate(item);
   }
 
-  const data_item_payment = data?.items?.filter((item: any) => (item?.status_checked && item));
+  const data_item_checkked = data?.items?.filter((item: any) => (item?.status_checked && item));
+  function showToast(productName: string | number, stock: string | number) {
+    toast({
+      title: "Thông báo!",
+      description: `Rất tiếc, sản phẩm ${productName} chỉ còn ${stock} chiếc. Vui lòng giảm số lượng thanh toán!`,
+      className: 'border border-gray-800',
+      action: (
+        <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
+      ),
+    });
+  }
   // next order
   function next_page_payment() {
     // check so luong
-    for (let i of data_item_payment) {
+    for (let i of data_item_checkked) {
       if (i?.product_id?.attributes) {
         for (let j of i?.product_id?.attributes?.varriants) {
           for (let k of j?.size_item) {
-            if (i?.quantity > k?.stock_item) {
-              toast({
-                title: "Thông báo!",
-                description: `Rất tiếc, sản phẩm ${i?.product_id?.short_name} chỉ còn ${k?.stock_item} chiếc. Vui lòng giảm số lượng thanh toán!`,
-                className: 'border border-gray-800',
-                action: (
-                  <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
-                ),
-              });
+            if (i?.size_attribute_item) {
+              if (i?.color_item === j?.color_item && i?.quantity > k?.stock_item && i?.size_attribute_item === k?.name_size) {
+                showToast(i?.product_id?.short_name, k?.stock_item)
+                return null;
+              }
+            }
+            if (i?.color_item === j?.color_item && i?.quantity > k?.stock_item) {
+              showToast(i?.product_id?.short_name, k?.stock_item)
               return null;
             }
           }
@@ -109,33 +107,17 @@ const Cart = () => {
       }
       else {
         if (i?.quantity > i?.product_id?.stock) {
-          toast({
-            title: "Thông báo!",
-            description: `Rất tiếc, sản phẩm ${i?.product_id?.short_name} chỉ còn ${i?.product_id?.stock} chiếc. Vui lòng giảm số lượng thanh toán!`,
-            className: 'border border-gray-800',
-            action: (
-              <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
-            ),
-          });
+          showToast(i?.product_id?.short_name, i?.product_id?.stock)
           return null;
         }
       }
     }
-    sessionStorage.removeItem('item_order');
-    const item_cart_order = {
-      ...data,
-      items: data_item_payment,
-      action: 'cart_item',
-    }
-    sessionStorage.setItem('item_order', JSON.stringify(item_cart_order));
-    routing.push('/order');
+    routing.push('/checkout');
   }
-
   // console.count('re-render : ')
-
   const dataProps = {
     data: data,
-    data_item_next_order: data_item_payment,
+    data_item_checkked: data_item_checkked,
     user: user?.check_email,
     data_checked_true: data_checked_true,
     handle_Checkked: handle_Checkked,
@@ -143,14 +125,15 @@ const Cart = () => {
   }
   return (
     <Suspense fallback={<LoadingCart />}>
-      <div className="max-w-[1440px] w-[95vw] pt-10 mx-auto pb-8">
-        {/* left */}
-        <span className="text-xl flex mb-[1px] items-center justify-between">Giỏ hàng của bạn <p className="text-[#9D9EA2] lg:text-base mb:text-sm">(3)</p></span>
+      <div className="max-w-[1440px] w-[95vw] mx-auto pb-8">
+        <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mb-4 mt-2'>
+          <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
+        </div>
         {/* list items */}
         <Table_Cart dataProps={dataProps} />
 
         <div className="w-full rounded-lg lg:flex items-center justify-between bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
-          <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_payment?.length} sản phẩm)</span>
+          <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
           <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
             <span>Tiến hành thanh toán</span>
             |

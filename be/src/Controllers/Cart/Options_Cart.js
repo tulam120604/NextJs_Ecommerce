@@ -4,7 +4,7 @@ import Products from "../../Model/Products/Products.js";
 
 
 export async function Add_To_Cart(req, res) {
-    const { user_id, product_id, quantity, color, size_attribute, price_item_attr } = req.body;
+    const { user_id, product_id, quantity, color, size_attribute, price_item_attr, status_checked } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
         let stock_product = 0;
@@ -48,7 +48,8 @@ export async function Add_To_Cart(req, res) {
                 price_item,
                 color_item,
                 size_attribute_item,
-                total_price_item: price_item * quantity
+                total_price_item: price_item * quantity,
+                status_checked
             });
         } else {
             let check_item = false
@@ -58,23 +59,26 @@ export async function Add_To_Cart(req, res) {
                         if (data_cart.items[i].size_attribute_item == size_attribute) {
                             data_cart.items[i].quantity = data_cart.items[i].quantity + quantity;
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
+                            data_cart.items[i].status_checked = status_checked
                             check_item = true
                         }
                         if (data_cart.items[i].quantity >= stock_product) {
                             data_cart.items[i].quantity = stock_product;
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
+                            data_cart.items[i].status_checked = status_checked
                         }
                     }
                 }
             }
             if (!check_item) {
-                data_cart.items.push({
+                data_cart.items.unshift({
                     product_id,
                     quantity,
                     price_item,
                     color_item,
                     size_attribute_item,
-                    total_price_item: price_item * quantity
+                    total_price_item: price_item * quantity,
+                    status_checked
                 });
             }
         }

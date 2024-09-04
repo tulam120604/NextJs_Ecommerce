@@ -9,6 +9,7 @@ const Address_Schema = new mongoose.Schema({
         user_name: String,
         phone: String,
         address: String,
+        provinces : String
     },
     status_address: {
         type: Boolean,

@@ -18,7 +18,7 @@ export default function Table_Cart({ dataProps }: any) {
             <div className='hidden lg:block '>
                 <div className='grid lg:grid-cols-[20px_100px_300px_150px_150px_160px_200px_50px] justify-between bg-white p-4 rounded-lg'>
                     {/* 88 */}
-                    <Checkbox checked={(dataProps?.data_item_next_order?.length == dataProps?.data?.items?.length && dataProps?.data?.items?.length > 0) ? true : false} />
+                    <Checkbox checked={(dataProps?.data_item_checkked?.length == dataProps?.data?.items?.length && dataProps?.data?.items?.length > 0) ? true : false} />
                     {/* 88 */}
                     <span>Sản phẩm</span>
                     {/* 88 */}
@@ -67,7 +67,7 @@ export default function Table_Cart({ dataProps }: any) {
                                         <Checkbox checked={item?.status_checked && true} onClick={() => dataProps?.handle_Checkked(item?.product_id, item?.color_item, item?.size_attribute_item)} />
                                         {/* 88 */}
                                         <Link href={`/${convert_Slug(item?.product_id?.short_name)}.html?p=${item?.product_id?._id}`}>
-                                            <Image width={50} height={50} className="relative bg-[#f2f2f2f2] z-[1] rounded w-full h-full duration-300"
+                                            <Image width={150} height={150} className="relative bg-[#f2f2f2f2] z-[1] rounded w-full h-full duration-300"
                                                 src={item?.product_id?.gallery[0]} alt='loading...' />
                                         </Link>
                                         {/* 88 */}
@@ -80,7 +80,7 @@ export default function Table_Cart({ dataProps }: any) {
                                         <div className="flex flex-col gap-y-2 md:text-base mb:text-xs lg:w-[150px] w-[70px]">
                                             {
                                                 item?.color_item &&
-                                                <div className='flex flex-col'>
+                                                <div className='flex flex-col text-gray-600'>
                                                     <span className='mb-1 lg:mb-3'>Phân loại :</span>
                                                     <span className='text-xs'>{item?.color_item}</span>
                                                     <span className='text-xs'>{item?.size_attribute_item}</span>

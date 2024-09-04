@@ -14,8 +14,8 @@ export async function list_carts(req, res) {
         const cart = await Carts.findOne({ user_id }).populate('items.product_id');
         await Carts.populate(cart.items, { path: 'product_id.attributes' })
         if (!cart) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'No data'
+            return res.status(StatusCodes.OK).json({
+                message: 'No data!'
             })
         }
         const count_total_price = cart.items.reduce((past_value, present_value) => {

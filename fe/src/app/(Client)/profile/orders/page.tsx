@@ -12,7 +12,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './_component/paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
-import { CircleCheck, CircleEllipsis, PackageOpen, Truck } from 'lucide-react'
+import { CircleCheck, CircleEllipsis, PackageOpen, Truck, X } from 'lucide-react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
 import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
 import { convert_Slug } from '@/src/app/util/Slug'
@@ -43,7 +43,7 @@ const Page = () => {
       case 5:
         return <span className='text-green-500 flex items-center gap-x-2'><CircleCheck className='h-5' />Đơn hàng đã được giao thành công</span>;
       case 6:
-        return <span className='text-red-500'>ĐÃ HỦY</span>;
+        return <span className='text-red-500 flex items-center gap-x-1'><X className='h-5' />ĐÃ HỦY</span>;
       default: return;
     }
   }

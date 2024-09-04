@@ -1,7 +1,6 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react'
-import { io } from 'socket.io-client';
 import Loading from './loading';
 import { Input } from '../../_Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
@@ -11,8 +10,6 @@ import { Mutation_Order } from '../../_lib/Tanstack_Query/Order/Mutation_order';
 import { schemaValidateOrder } from '../../(Auth)/validate';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Loading_Dots from '../../_Components/Loadings/Loading_Dots';
-import { useToast } from '../../_Components/ui/use-toast';
-import { ToastAction } from '../../_Components/ui/toast';
 import { useCheck_user } from '../../_lib/Custome_Hooks/User';
 import { Label } from '@/src/app/_Components/ui/Shadcn/label'
 import { RadioGroup, RadioGroupItem } from '../../_Components/ui/radio-group';
@@ -20,11 +17,12 @@ import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import { Mutation_Payment } from '../../_lib/Tanstack_Query/Payment/Query_Payment';
 import { List_Address } from '../../_lib/Tanstack_Query/Auth/Query_Address';
 import Table_item from './_components/colum';
-import useStoreZustand from '../../Zustand/Store';
+import { Textarea } from '../../_Components/ui/textarea';
+import { Get_Items_Cart } from '../../_lib/Tanstack_Query/Cart/query';
+import LoadingCart from '../(Cart)/cart/loading';
 
 const Page = () => {
   const [check_payment, setCheck_payment] = useState<boolean>(true)
-  const { toast } = useToast();
   const routing = useRouter();
   const [list_item_order, setList_item_order] = useState<any>();
   const user = useCheck_user();
@@ -35,6 +33,9 @@ const Page = () => {
   }, [routing, user]);
   // address
   const { data, isLoading } = List_Address(user?.check_email?._id);
+  const { data: datCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
+  const data_checked_true = datCart?.items?.filter((item: any) => item?.status_checked && item);
+  const total_price = data_checked_true?.reduce((acc: number, cur: any) => acc + cur?.total_price_item, 0);
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -66,45 +67,17 @@ const Page = () => {
     routing.push('/')
   }
 
-  const { data: dataZustand } = useStoreZustand();
-
-  useEffect(() => {
-    console.log(dataZustand)
-  }, [dataZustand])
-
   // mutation payment
   const mutation_payment = Mutation_Payment('CREATE');
   function next_payment() {
-    const total_price = list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item
     mutation_payment?.mutate(total_price);
   }
-  // socket 
-  useEffect(() => {
-    const socket = io('http://localhost:8888')
-    if (typeof window) {
-      let data_session = JSON.parse(sessionStorage.getItem('item_order') || '{}');
-      socket.on('res_message', (data: any) => {
-        if (data_session) {
-          sessionStorage.removeItem('item_order');
-          data_session.items = data_session?.items?.filter((item: any) => (
-            item?.product_id?._id !== data?.id_item && item
-          ));
-          sessionStorage.setItem('item_order', JSON.stringify(data_session));
-          setList_item_order(data_session);
-        }
-        toast({
-          title: "Thông báo!",
-          description: `Rất tiếc, sản phẩm ${data?.name_item} không còn tồn tại!`,
-          className: 'border border-gray-800',
-          action: (
-            <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
-          ),
-        })
-      })
-      setList_item_order(data_session);
-    }
-  }, []);
 
+  if (loadingCart) {
+    return (
+      <LoadingCart />
+    )
+  };
   return (<Suspense fallback={<Loading />}>
     <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mt-2'>
       <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
@@ -119,13 +92,12 @@ const Page = () => {
         </div>
       }
       {/* item */}
-      <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto bg-white p-4 rounded'>
+      <div className='max-w-[1440px] mx-auto w-[95vw] rounded'>
         {/* list items */}
-        {list_item_order ? (<>
-          <span className="flex mb-[1px] items-center justify-between pb-6">Đơn hàng của bạn</span>
+        {data_checked_true ? (<>
           {
-            list_item_order?.items ? (<div className='*:text-gray-800'>
-              <Table_item dataProps={list_item_order?.items} />
+            data_checked_true ? (<div className='*:text-gray-800'>
+              <Table_item dataProps={data_checked_true} />
               <div className='flex justify-between whitespace-nowrap text-lg my-4'>
               </div>
               {
@@ -135,13 +107,12 @@ const Page = () => {
                   <p>{list_item_order?.notes_order}</p>
                 </div>
               }
-
             </div>) : routing.push('/')
           }
         </>) : <span>Không có đơn hàng nào!</span>}
       </div>
       {/* infor */}
-      <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-2 gap-x-20 gap-y-6 mx-auto mt-6 bg-white p-4 rounded">
+      <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[auto_450px] gap-x-10 gap-y-6 mx-auto *:bg-white *:p-4 *:rounded">
         <div>
           <span className="flex mb-[1px] items-center justify-between pb-6">Thông tin nhận hàng</span>
           <div className='flex flex-col gap-y-5'>
@@ -165,7 +136,8 @@ const Page = () => {
                   </div>
                   <div>
                     <label htmlFor="name">Địa chỉ của bạn :</label>
-                    <Input className='mt-2' {...register('address')} id='address' placeholder="Address" defaultValue={data?.default_address?.about_address?.address} />
+                    <Textarea className='mt-2' {...register('address')} id='address' placeholder="Address"
+                      defaultValue={data?.default_address?.about_address?.address + ', ' + data?.default_address?.about_address?.provinces} />
                     {errors.address && <p className="text-red-500 md:text-sm text-xs">{errors.address.message}</p>}
                   </div>
                 </>
@@ -176,7 +148,7 @@ const Page = () => {
           <div>
             <span className='text-gray-700'>Tổng tiền :</span>
             <span className='w-full ml-1 whitespace-nowrap text-red-600'>
-              {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+              {total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
             </span>
           </div>
           <div className='my-2'>
@@ -194,7 +166,7 @@ const Page = () => {
           <div className='my-2'>
             <span className='text-gray-700'>Tổng thanh toán :</span>
             <span className='w-full ml-1 whitespace-nowrap text-red-600 text-2xl'>
-              {(list_item_order?.total_price ? list_item_order?.total_price : list_item_order?.items[0]?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
+              {total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}
             </span>
           </div>
           <RadioGroup defaultValue="comfortable">

@@ -1,8 +1,8 @@
 export function handle_socket_event (io) {
     io.on("connect", (socket) => {
         console.log(`Client ID ${socket.id} connect to socket!`);
-        socket.on("send_message" , (data) => {
-            io.emit('res_message' ,  data)
+        socket.on("send_message_delete_item" , (data) => {
+            io.emit('res_message_delete_item' ,  data)
         })
 
         socket.on('confirm_granting_premission_account', (data) => {
