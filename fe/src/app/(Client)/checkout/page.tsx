@@ -20,6 +20,7 @@ import Table_item from './_components/colum';
 import { Textarea } from '../../_Components/ui/textarea';
 import { Get_Items_Cart } from '../../_lib/Tanstack_Query/Cart/query';
 import LoadingCart from '../(Cart)/cart/loading';
+import { filter_positive_Stock_Item } from '../../_lib/Config/Filter_Cart_And_Order';
 
 const Page = () => {
   const [check_payment, setCheck_payment] = useState<boolean>(true)
@@ -33,25 +34,11 @@ const Page = () => {
   }, [routing, user]);
   // address
   const { data, isLoading } = List_Address(user?.check_email?._id);
-  const { data: datCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
-  const data_checked_true = datCart?.items?.filter((item: any) => item?.status_checked && item);
-  const total_price = data_checked_true?.reduce((acc: number, cur: any) => {
-    if (cur?.product_id?.attributes?.varriants) {
-      const color = cur?.product_id?.attributes?.varriants?.find((data: any) => data?.color_item === cur?.color_item);
-      console.log()
-      const size = color?.size_item?.find((size: any) => (size?.name_size?.trim() ? size?.name_size : undefined) === cur?.size_attribute_item);
-      if (cur?.size_attribute_item && cur?.size_attribute_item !== size?.name_size) {
-        return 0;
-      }
-      else {
-        if (size?.stock_item > 0) {
-          return acc + cur?.total_price_item
-        } else {
-          return 0;
-        }
-      }
-    }
-  }, 0);
+  const { data: dataCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
+  const data_checked_true = dataCart?.items?.filter((item: any) => item?.status_checked && item);
+  // lọc item só lượng lớn hơn 0
+  const positive_Stock_Item = filter_positive_Stock_Item(data_checked_true);
+  const total_price = positive_Stock_Item?.reduce((acc: number, cur: any) => acc + cur?.total_price_item, 0);
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -110,10 +97,10 @@ const Page = () => {
       {/* item */}
       <div className='max-w-[1440px] mx-auto w-[95vw] rounded'>
         {/* list items */}
-        {data_checked_true ? (<>
+        {positive_Stock_Item ? (<>
           {
-            data_checked_true ? (<div className='*:text-gray-800'>
-              <Table_item dataProps={data_checked_true} />
+            positive_Stock_Item ? (<div className='*:text-gray-800'>
+              <Table_item dataProps={positive_Stock_Item} />
               <div className='flex justify-between whitespace-nowrap text-lg my-4'>
               </div>
               {

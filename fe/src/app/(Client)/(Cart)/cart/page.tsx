@@ -13,6 +13,7 @@ import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import Table_Cart from './_components/table';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
+import { filter_positive_Stock_Item } from '@/src/app/_lib/Config/Filter_Cart_And_Order';
 
 const Cart = () => {
   const { toast } = useToast();
@@ -74,26 +75,8 @@ const Cart = () => {
   }
 
   const data_item_checkked = data?.items?.filter((item: any) => (item?.status_checked && item));
-  const positive_Stock_Item: any = [];
-  data_checked_true?.map((value: any) => {
-    if (value?.product_id?.attributes?.varriants) {
-      const color = value?.product_id?.attributes?.varriants?.find((data: any) => data?.color_item === value?.color_item);
-      const size = color?.size_item?.find((size: any) => (size?.name_size?.trim() ? size?.name_size : undefined) === value?.size_attribute_item);
-      if (value?.size_attribute_item && value?.size_attribute_item === size?.name_size && size?.stock_item > 0) {
-        positive_Stock_Item.push(value)
-      }
-      else {
-        if (size?.stock_item > 0) {
-          positive_Stock_Item.push(value)
-        }
-      }
-    }
-    else {
-      if (value?.product_id?.stock > 0) {
-        positive_Stock_Item.push(value)
-      }
-    }
-  });
+  // lọc item só lượng lớn hơn 0
+  const positive_Stock_Item = filter_positive_Stock_Item(data_checked_true);
   const tota_price_item = positive_Stock_Item?.reduce((acc: any, curr: any) => (acc + curr?.total_price_item), 0);
   function showToast(productName: string | number, stock: string | number) {
     toast({
@@ -108,28 +91,24 @@ const Cart = () => {
   // next order
   function next_page_payment() {
     // check so luong
-    for (let i of data_item_checkked) {
+    for (let i of positive_Stock_Item) {
       if (i?.product_id?.attributes) {
-        for (let j of i?.product_id?.attributes?.varriants) {
-          for (let k of j?.size_item) {
-            if (i?.size_attribute_item) {
-              if (i?.color_item === j?.color_item && i?.quantity > k?.stock_item && i?.size_attribute_item === k?.name_size) {
-                showToast(i?.product_id?.short_name, k?.stock_item)
-                return null;
-              }
-            }
-            if (i?.color_item === j?.color_item && i?.quantity > k?.stock_item) {
-              showToast(i?.product_id?.short_name, k?.stock_item)
-              return null;
-            }
-          }
+        const check_color = i?.product_id?.attributes?.varriants?.find((value: any) => value?.color_item === i?.color_item);
+        const check_size = check_color?.size_item?.find((value: any) =>
+          i?.size_attribute_item === (value?.name_size?.trim() ? value?.name_size : undefined));
+        if (check_color?.color_item === i?.color_item && check_size?.name_size === i?.size_attribute_item
+          && i?.quantity > check_size?.stock_item) {
+          showToast(i?.product_id?.short_name, check_size?.stock_item);
+          return null
+        }
+        if (check_color?.color_item === i?.color_item && i?.quantity > check_size?.stock_item) {
+          showToast(i?.product_id?.short_name, check_size?.stock_item);
+          return null
         }
       }
-      else {
-        if (i?.quantity > i?.product_id?.stock) {
-          showToast(i?.product_id?.short_name, i?.product_id?.stock)
-          return null;
-        }
+      else if (i?.quantity > i?.product_id?.stock) {
+        showToast(i?.product_id?.short_name, i?.product_id?.stock)
+        return null;
       }
     }
     if (data_item_checkked?.length > 0) {
@@ -160,7 +139,7 @@ const Cart = () => {
         </div>
         {/* list items */}
         <Table_Cart dataProps={dataProps} />
-        <div className="w-full rounded-lg lg:flex items-center justify-between bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
+        <div className="w-full rounded-lg flex flex-col lg:flex-row items-center lg:justify-between justify-center bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
           <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
           <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
             <span>Tiến hành thanh toán</span>
