@@ -29,7 +29,6 @@ export async function list_carts(req, res) {
                 return past_value + present_value.total_price_item;
             }
         }, 0);
-        //  console.log(count_total_price);
         cart.total_price = count_total_price;
         if (!cart || cart.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({

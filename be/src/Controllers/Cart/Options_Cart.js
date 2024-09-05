@@ -16,7 +16,6 @@ export async function Add_To_Cart(req, res) {
         else {
             stock_product = data_item.stock
         }
-        console.log(stock_product)
         let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
         let color_item;
         let size_attribute_item;
@@ -82,7 +81,6 @@ export async function Add_To_Cart(req, res) {
                 });
             }
         }
-
         const data = await data_cart.save();
         return res.status(StatusCodes.CREATED).json({
             message: "Done!",

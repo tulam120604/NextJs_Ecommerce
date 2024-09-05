@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Image from 'next/image'
 import React, { Suspense, useEffect, useState } from 'react'
 import LoadingCart from './loading';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
@@ -75,10 +74,31 @@ const Cart = () => {
   }
 
   const data_item_checkked = data?.items?.filter((item: any) => (item?.status_checked && item));
+  const positive_Stock_Item: any = [];
+  data_checked_true?.map((value: any) => {
+    if (value?.product_id?.attributes?.varriants) {
+      const color = value?.product_id?.attributes?.varriants?.find((data: any) => data?.color_item === value?.color_item);
+      const size = color?.size_item?.find((size: any) => (size?.name_size?.trim() ? size?.name_size : undefined) === value?.size_attribute_item);
+      if (value?.size_attribute_item && value?.size_attribute_item === size?.name_size && size?.stock_item > 0) {
+        positive_Stock_Item.push(value)
+      }
+      else {
+        if (size?.stock_item > 0) {
+          positive_Stock_Item.push(value)
+        }
+      }
+    }
+    else {
+      if (value?.product_id?.stock > 0) {
+        positive_Stock_Item.push(value)
+      }
+    }
+  });
+  const tota_price_item = positive_Stock_Item?.reduce((acc: any, curr: any) => (acc + curr?.total_price_item), 0);
   function showToast(productName: string | number, stock: string | number) {
     toast({
       title: "Thông báo!",
-      description: `Rất tiếc, sản phẩm ${productName} chỉ còn ${stock} chiếc. Vui lòng giảm số lượng thanh toán!`,
+      description: ` ${(+stock > 0) ? `Rất tiếc, sản phẩm ${productName} chỉ còn ${stock} chiếc. Vui lòng giảm số lượng thanh toán!` : `Rất tiếc, sản phẩm ${productName} đã hết hàng!`}`,
       className: 'border border-gray-800',
       action: (
         <ToastAction altText="Goto schedule to undo">Ok</ToastAction>
@@ -112,7 +132,16 @@ const Cart = () => {
         }
       }
     }
-    routing.push('/checkout');
+    if (data_item_checkked?.length > 0) {
+      routing.push('/checkout');
+    }
+    else {
+      toast({
+        description: `Vui lòng chọn sản phẩm để tiến hành thanh toán!`,
+        className: 'border border-gray-800',
+        duration: 1000,
+      });
+    }
   }
   // console.count('re-render : ')
   const dataProps = {
@@ -131,18 +160,16 @@ const Cart = () => {
         </div>
         {/* list items */}
         <Table_Cart dataProps={dataProps} />
-
         <div className="w-full rounded-lg lg:flex items-center justify-between bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
           <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
           <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
             <span>Tiến hành thanh toán</span>
             |
-            <span>{data?.total_price?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+            <span>{tota_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
           </Button>
         </div>
       </div>
     </Suspense >
   )
 }
-
 export default Cart

@@ -35,7 +35,23 @@ const Page = () => {
   const { data, isLoading } = List_Address(user?.check_email?._id);
   const { data: datCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
   const data_checked_true = datCart?.items?.filter((item: any) => item?.status_checked && item);
-  const total_price = data_checked_true?.reduce((acc: number, cur: any) => acc + cur?.total_price_item, 0);
+  const total_price = data_checked_true?.reduce((acc: number, cur: any) => {
+    if (cur?.product_id?.attributes?.varriants) {
+      const color = cur?.product_id?.attributes?.varriants?.find((data: any) => data?.color_item === cur?.color_item);
+      console.log()
+      const size = color?.size_item?.find((size: any) => (size?.name_size?.trim() ? size?.name_size : undefined) === cur?.size_attribute_item);
+      if (cur?.size_attribute_item && cur?.size_attribute_item !== size?.name_size) {
+        return 0;
+      }
+      else {
+        if (size?.stock_item > 0) {
+          return acc + cur?.total_price_item
+        } else {
+          return 0;
+        }
+      }
+    }
+  }, 0);
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -179,11 +195,21 @@ const Page = () => {
               <Label htmlFor="r2">Thanh toán bằng ZaloPay</Label>
             </div>
             {
-              check_payment ?
-                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>Thanh toán</Button> :
-                <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='button' onClick={next_payment}>
-                  {mutate_order.isLoading ? <Loading_Dots /> : 'Đến cổng thanh toán'}
-                </Button>
+              total_price > 0 ?
+                (
+                  check_payment ?
+                    <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>Thanh toán</Button> :
+                    <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='button' onClick={next_payment}>
+                      {mutate_order.isLoading ? <Loading_Dots /> : 'Đến cổng thanh toán'}
+                    </Button>
+                ) :
+                (
+                  check_payment ?
+                    <Button className='bg-gray-500 hover:cursor-not-allowed hover:bg-gray-500 mt-4' type='button'>Thanh toán</Button> :
+                    <Button className='bg-gray-500 hover:cursor-not-allowed hover:bg-gray-500 mt-4' type='button'>
+                      Đến cổng thanh toán
+                    </Button>
+                )
             }
           </RadioGroup>
         </div>

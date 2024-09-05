@@ -22,12 +22,12 @@ export async function edit_Product(req, res) {
                 message
             })
         };
-        const check_name = await Products.findOne({ short_name });
-        if (check_name) {
-            return res.status(StatusCodes.BAD_REQUEST).json({
-                message: 'Ten san pham da ton tai!'
-            })
-        };
+        // const check_name = await Products.findOne({ short_name });
+        // if (check_name) {
+        //     return res.status(StatusCodes.BAD_REQUEST).json({
+        //         message: 'Ten san pham da ton tai!'
+        //     })
+        // };
         let img_upload = Array.isArray(req.body.gallery) ? req.body.gallery : [req.body.gallery];
         if (req.files) {
             const upload_file = req.files.map(file => (
