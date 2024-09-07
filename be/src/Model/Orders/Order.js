@@ -52,6 +52,10 @@ const Order_Schema = new mongoose.Schema({
             trim: true
         },
     },
+    payment_method: {
+        type: String,
+        required: true,
+    },
     notes_order: String,
     status_item_order: {
         type: String,

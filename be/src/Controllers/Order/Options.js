@@ -5,7 +5,7 @@ import { update_quantity_item } from '../Products/Edit.js';
 import { update_quantity_item_in_cart } from '../Cart/Get.js';
 
 export async function create_Order(req, res) {
-    const { user_id, items_order, infor_user, notes_order, action_order } = req.body;
+    const { user_id, items_order, infor_user, notes_order, payment_method } = req.body;
     try {
         const check_user = await Account.findById(user_id);
         if (!check_user) {
@@ -16,15 +16,15 @@ export async function create_Order(req, res) {
         // nếu có 2 sản phẩm từ 2 shop khác nhau thì tạo riêng 2 đơn
         const group_items_order_by_seller = [];
         for (let i of items_order) {
-            const id_seller = i.product_id.id_user_seller;
+            const id_seller = i.product_id.id_user_seller._id;
             let check_group_item_order_by_seller = group_items_order_by_seller.find(a => a.id_shop === id_seller);
             // tìm id_seller trong mảng group_item kia bằng find, nếu chưa có thì tạo 1 obj
             // check_group_item_order_by_seller mới để push vào mảng, nếu đã có rồi thì push i vào items
             if (!check_group_item_order_by_seller) {
                 check_group_item_order_by_seller = { id_shop: id_seller, items: [] };
-                group_items_order_by_seller.push(check_group_item_order_by_seller)
+                group_items_order_by_seller.push(check_group_item_order_by_seller);
             }
-            check_group_item_order_by_seller.items.push(i)
+            check_group_item_order_by_seller.items.push(i);
         }
         // dùng promise allSettled vì await không thể return trong loop được
         const promise_order = group_items_order_by_seller.map(data => {
@@ -33,13 +33,12 @@ export async function create_Order(req, res) {
                 items_order: data.items,
                 infor_user,
                 notes_order,
+                payment_method,
             })
         })
         await Promise.allSettled(promise_order)
         await update_quantity_item(items_order);
-        if (action_order === 'cart_item') {
-            await update_quantity_item_in_cart(user_id, items_order)
-        }
+        await update_quantity_item_in_cart(user_id, items_order)
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
         })

@@ -13,7 +13,6 @@ import { convert_Slug } from '@/src/app/util/Slug';
 import { Store } from 'lucide-react';
 
 export default function Table_Cart({ dataProps }: any) {
-    console.log(dataProps?.data?.items)
     return (
         <div>
             {/* header table*/}

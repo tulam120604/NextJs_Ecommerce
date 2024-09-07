@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react';
 import Loading from './loading';
 import { Input } from '../../_Components/ui/Shadcn/input';
 import { useRouter } from 'next/navigation';
@@ -21,11 +21,13 @@ import { Textarea } from '../../_Components/ui/textarea';
 import { Get_Items_Cart } from '../../_lib/Tanstack_Query/Cart/query';
 import LoadingCart from '../(Cart)/cart/loading';
 import { filter_positive_Stock_Item } from '../../_lib/Config/Filter_Cart_And_Order';
+import { useToast } from '../../_Components/ui/use-toast';
+import { ToastAction } from '../../_Components/ui/toast';
 
 const Page = () => {
+  const { toast } = useToast();
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const routing = useRouter();
-  const [list_item_order, setList_item_order] = useState<any>();
   const user = useCheck_user();
   useEffect(() => {
     if (!user) {
@@ -44,48 +46,88 @@ const Page = () => {
     resolver: yupResolver(schemaValidateOrder)
   });
   let action_mutation = ''
-  if (list_item_order?.action === 'restore_buy_item') {
-    action_mutation = list_item_order?.action
+  function showToast(productName: string | number, stock: string | number) {
+    toast({
+      title: "Thông báo!",
+      description: ` ${(+stock > 0) ? `Rất tiếc, sản phẩm ${productName} chỉ còn ${stock} chiếc. Vui lòng quay lại giỏ hàng giảm số lượng thanh toán!` :
+        `Rất tiếc, sản phẩm ${productName} đã hết hàng. Vui lòng thanh toán sản phẩm khác!`}`,
+      className: 'border border-gray-800',
+      duration: 1500,
+      action: (
+        <ToastAction altText="Goto schedule to undo" onClick={() => routing.back()}>Ok</ToastAction>
+      ),
+    });
   }
+
+  // check so luong trong kho
+  let check_stock: boolean = true;
+  function validate_stock_item() {
+    // check so luong
+    for (let i of positive_Stock_Item) {
+      if (i?.product_id?.attributes) {
+        const check_color = i?.product_id?.attributes?.varriants?.find((value: any) => value?.color_item === i?.color_item);
+        const check_size = check_color?.size_item?.find((value: any) =>
+          i?.size_attribute_item === (value?.name_size?.trim() ? value?.name_size : undefined));
+        if (check_color?.color_item === i?.color_item && check_size?.name_size === i?.size_attribute_item
+          && i?.quantity > check_size?.stock_item) {
+          showToast(i?.product_id?.short_name, check_size?.stock_item);
+          check_stock = false;
+          return false
+        }
+        if (check_color?.color_item === i?.color_item && i?.quantity > check_size?.stock_item) {
+          showToast(i?.product_id?.short_name, check_size?.stock_item);
+          check_stock = false;
+          console.log('ok')
+          return false
+        }
+      }
+      else if (i?.quantity > i?.product_id?.stock) {
+        showToast(i?.product_id?.short_name, i?.product_id?.stock);
+        check_stock = false;
+        console.log('ok')
+        return false;
+      }
+    }
+  }
+
   // notes_order
   const mutate_order = Mutation_Order('ADD_and_RESTORE_BUY_ITEM');
   function on_Order(infor_user_form: any) {
+    validate_stock_item()
     const data_order = {
       user_id: user?.check_email?._id,
       action_mutate: action_mutation,
-      action_order: list_item_order?.action,
-      items_order: list_item_order?.items,
-      notes_order: list_item_order?.notes_order,
+      items_order: positive_Stock_Item,
+      // notes_order: list_item_order?.notes_order,
       infor_user: {
         name_user: infor_user_form?.name_user,
         phone: infor_user_form?.phone,
         email_user: infor_user_form?.email_user,
         address: infor_user_form?.address,
       },
-      id_order: list_item_order?.id_order
+      payment_method: check_payment ? 'COD' : 'PON'
     }
-    mutate_order.mutate(data_order);
+    if (check_stock) {
+      mutate_order.mutate(data_order);
+    }
   };
-  if (mutate_order.status_api === 'call_ok') {
-    routing.push('/')
+  if (mutate_order.status_api === '201') {
+    routing.push('/profile/orders');
   }
-
   // mutation payment
   const mutation_payment = Mutation_Payment('CREATE');
   function next_payment() {
     mutation_payment?.mutate(total_price);
   }
-
   if (loadingCart) {
     return (
       <LoadingCart />
     )
   };
   return (<Suspense fallback={<Loading />}>
-    <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mt-2'>
+    <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto pt-2'>
       <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
     </div>
-
     <form onSubmit={handleSubmit(on_Order)} className={`relative py-6 ${mutate_order.isLoading &&
       'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
       {
@@ -103,13 +145,13 @@ const Page = () => {
               <Table_item dataProps={positive_Stock_Item} />
               <div className='flex justify-between whitespace-nowrap text-lg my-4'>
               </div>
-              {
+              {/* {
                 list_item_order?.notes_order &&
                 <div className='whitespace-normal text-base'>
                   <span>Ghi chú đơn hàng : </span>
                   <p>{list_item_order?.notes_order}</p>
                 </div>
-              }
+              } */}
             </div>) : routing.push('/')
           }
         </>) : <span>Không có đơn hàng nào!</span>}

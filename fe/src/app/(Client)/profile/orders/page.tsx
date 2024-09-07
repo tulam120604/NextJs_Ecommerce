@@ -112,7 +112,7 @@ const Page = () => {
       cell: ({ row }) => (
         <div className="flex flex-col gap-y-2 text-end">
           <span className="text-red-600">{row?.original?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-          <div>X {row?.original?.quantity}</div>
+          <div>x {row?.original?.quantity}</div>
           <span className="text-red-600">{row?.original?.total_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
         </div>
       ),
@@ -153,7 +153,8 @@ const Page = () => {
                 <div className='*:!border-none *:text-gray-900 -translate-y-12'>
                   <DataTable data={item?.items_order} columns={columns} />
                 </div>
-                <div key={+item?._id + Math.random()} className='flex justify-end -mt-4'>
+                <div key={+item?._id + Math.random()} className='flex justify-between items-center -mt-4'>
+                  <span className='text-sm'>Hình thức: {(item?.payment_method === 'COD' ? 'Thanh toán khi nhận hàng' : 'Thanh toán trực tuyến')}</span>
                   {
                     (+item?.status_item_order === 6 || +item?.status_item_order === 5) ?
                       <Button onClick={() => restore_by_order(item)}
