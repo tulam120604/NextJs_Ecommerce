@@ -92,7 +92,8 @@ const Page = () => {
 
   // notes_order
   const mutate_order = Mutation_Order('ADD_and_RESTORE_BUY_ITEM');
-  function on_Order(infor_user_form: any) {
+  const mutation_payment = Mutation_Payment('CREATE');
+  function on_Checkout(infor_user_form: any) {
     validate_stock_item()
     const data_order = {
       user_id: user?.check_email?._id,
@@ -108,17 +109,19 @@ const Page = () => {
       payment_method: check_payment ? 'COD' : 'PON'
     }
     if (check_stock) {
-      mutate_order.mutate(data_order);
+      if (check_payment) {
+        mutate_order.mutate(data_order);
+      }
+      else {
+        // mutation payment
+        mutation_payment?.mutate(data_order);
+      }
     }
   };
   if (mutate_order.status_api === '201') {
     routing.push('/profile/orders');
   }
-  // mutation payment
-  const mutation_payment = Mutation_Payment('CREATE');
-  function next_payment() {
-    mutation_payment?.mutate(total_price);
-  }
+
   if (loadingCart) {
     return (
       <LoadingCart />
@@ -128,7 +131,7 @@ const Page = () => {
     <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto pt-2'>
       <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
     </div>
-    <form onSubmit={handleSubmit(on_Order)} className={`relative py-6 ${mutate_order.isLoading &&
+    <form onSubmit={handleSubmit(on_Checkout)} className={`relative py-6 ${mutate_order.isLoading &&
       'after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]'}`}>
       {
         mutate_order.isLoading &&
@@ -228,7 +231,7 @@ const Page = () => {
                 (
                   check_payment ?
                     <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='submit'>Thanh toán</Button> :
-                    <Button className='bg-[#04BE04] hover:bg-green-600 mt-4' type='button' onClick={next_payment}>
+                    <Button className='bg-[#04BE04] hover:bg-green-600 mt-4'>
                       {mutate_order.isLoading ? <Loading_Dots /> : 'Đến cổng thanh toán'}
                     </Button>
                 ) :
