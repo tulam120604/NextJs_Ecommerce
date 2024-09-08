@@ -2,7 +2,7 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import moment from 'moment';
 import { StatusCodes } from 'http-status-codes';
-import qs from 'qs'
+import qs from 'qs';
 
 // APP INFO
 const config = {
@@ -30,7 +30,7 @@ export async function create_payment(req, res) {
             id: value._id,
             quantity: value.quantity,
             price: value.total_price_item,
-        }))
+        }));
         const order = {
             app_id: config.app_id,
             app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
@@ -41,7 +41,7 @@ export async function create_payment(req, res) {
             amount: total_price,
             description: `Store88 - Mời đại vương thanh toán đơn hàng.`,
             bank_code: "",
-            callback_url: "https://3670-222-252-195-159.ngrok-free.app/v1/callback"
+            callback_url: "https://dc42-2405-4802-471-c0-2055-db6f-e2b1-a578.ngrok-free.app/v1/callback"
         };
 
         // appid|apptransid|appuser|amount|apptime|embeddata|item
@@ -66,17 +66,15 @@ export async function create_payment(req, res) {
     }
 }
 
-// call back
+// callback
 export async function callBack_payment(req, res) {
     let result = {};
-
+    console.log(req.body)
     try {
         let dataStr = req.body.data;
         let reqMac = req.body.mac;
-
         let mac = CryptoJS.HmacSHA256(dataStr, config.key2).toString();
         console.log("mac =", mac);
-
 
         // kiểm tra callback hợp lệ (đến từ ZaloPay server)
         if (reqMac !== mac) {
@@ -85,14 +83,14 @@ export async function callBack_payment(req, res) {
             result.returnmessage = "mac not equal";
         }
         else {
-            const apptransid = req.params.apptransid
+            const parse_dataStr = JSON.parse(dataStr)
+            const apptransid = parse_dataStr.app_trans_id
             let postData = {
                 app_id: config.app_id,
                 app_trans_id: apptransid, // Input your apptransid
             }
             let data = postData.app_id + "|" + postData.app_trans_id + "|" + config.key1; // appid|app_trans_id|key1
             postData.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
-
             let postConfig = {
                 method: 'post',
                 url: process.env.END_POINT_QUERY,
@@ -122,7 +120,6 @@ export async function callBack_payment(req, res) {
         result.returncode = 0; // ZaloPay server sẽ callback lại (tối đa 3 lần)
         result.returnmessage = ex.message;
     }
-
     // thông báo kết quả cho ZaloPay server
     res.json(result);
 };

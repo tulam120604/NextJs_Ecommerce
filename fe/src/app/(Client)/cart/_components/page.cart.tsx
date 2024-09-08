@@ -2,7 +2,7 @@
 'use client';
 
 import React, { Suspense, useEffect, useState } from 'react'
-import LoadingCart from './loading';
+import LoadingCart from '../loading';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
 import { useRouter } from 'next/navigation';
 import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
@@ -10,7 +10,7 @@ import { io } from 'socket.io-client';
 import { useToast } from '@/src/app/_Components/ui/use-toast';
 import { ToastAction } from '@/src/app/_Components/ui/toast';
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
-import Table_Cart from './_components/table';
+import Table_Cart from './table';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
 import { filter_positive_Stock_Item } from '@/src/app/_lib/Config/Filter_Cart_And_Order';
@@ -30,7 +30,7 @@ const Cart = () => {
         ),
       })
     })
-  }, [])
+  }, []);
 
   const routing = useRouter();
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
@@ -134,7 +134,7 @@ const Cart = () => {
   return (
     <Suspense fallback={<LoadingCart />}>
       <div className="max-w-[1440px] w-[95vw] mx-auto pb-8">
-        <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mb-4 mt-2'>
+        <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mb-4 pt-2'>
           <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
         </div>
         {/* list items */}

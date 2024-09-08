@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import React from 'react'
-import Het_hang from "../../(Cart)/cart/_components/het_hang"
+import Het_hang from "../../cart/_components/het_hang"
 import { convert_Slug } from "@/src/app/util/Slug"
 import { Store } from "lucide-react"
 
