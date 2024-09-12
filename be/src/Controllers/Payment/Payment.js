@@ -4,9 +4,7 @@ import moment from 'moment';
 import { StatusCodes } from 'http-status-codes';
 import qs from 'qs';
 import Orders from '../../Model/Orders/Order.js';
-import Account from '../../Model/Auth/Account.js';
-import { update_quantity_item } from '../Products/Edit.js';
-import { update_quantity_item_in_cart } from '../Cart/Get.js';
+import { create_item_order } from '../Order/Options.js';
 
 // APP INFO
 const config = {
@@ -20,63 +18,27 @@ const config = {
 //     key1: "8NdU5pG5R2spGHGhyO99HN1OhD8IQJBn",
 //     key2: "uUfsWgfLkRLzq6W2uNXTCxrfxs51auny",
 //     endpoint: "https://sandbox.zalopay.com.vn/v001/tpe/createorder"
-//   };
+//  };
 
 export async function create_payment(req, res) {
     // tao don hang
     const { user_id, items_order, infor_user, notes_order, payment_method } = req.body;
     // ****
-    const total_price = req.body.items_order.reduce((acc, curr) => (acc + curr.total_price_item), 0);
+    const total_price = items_order.reduce((acc, curr) => (acc + curr.total_price_item), 0);
     const embed_data = {
         redirecturl: "http://localhost:5000/"
     };
     try {
-        // lưu data đơn hàng vào db
-        const check_user = await Account.findById(user_id);
-        if (!check_user) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'No user!'
-            })
-        };
-        // nếu có 2 sản phẩm từ 2 shop khác nhau thì tạo riêng 2 đơn
-        const group_items_order_by_seller = [];
-        for (let i of items_order) {
-            const id_seller = i.product_id.id_user_seller._id;
-            let check_group_item_order_by_seller = group_items_order_by_seller.find(a => a.id_shop === id_seller);
-            // tìm id_seller trong mảng group_item kia bằng find, nếu chưa có thì tạo 1 obj
-            // check_group_item_order_by_seller mới để push vào mảng, nếu đã có rồi thì push i vào items
-            if (!check_group_item_order_by_seller) {
-                check_group_item_order_by_seller = { id_shop: id_seller, items: [] };
-                group_items_order_by_seller.push(check_group_item_order_by_seller);
-            }
-            check_group_item_order_by_seller.items.push(i);
-        }
-        // dùng promise allSettled vì await không thể return trong loop được
-        const promise_order = group_items_order_by_seller.map(data => {
-            return Orders.create({
-                user_id,
-                items_order: data.items,
-                infor_user,
-                notes_order,
-                payment_method,
-            })
-        })
-        const item_order = await Promise.allSettled(promise_order);
-        // await update_quantity_item(items_order);
-        // await update_quantity_item_in_cart(user_id, items_order);
-        // đổ thông tin từ trang thanh toán
-        const transID = Math.floor(Math.random() * 10000000);
         const items = items_order.map(value => ({
             id: value._id,
             quantity: value.quantity,
             price: value.total_price_item,
-        }));
-
-        // app_trans_id từ id order
-        const app_trans_id = item_order.map(data => data.value._id.toString());
+        }))
+        const transID = Math.floor(Math.random() * 10000000);
         const order = {
             app_id: config.app_id,
-            app_trans_id: app_trans_id.join(','), // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+            // app_trans_id: app_trans_id.join(','), // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+            app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
             app_user: "user123",
             app_time: Date.now(), // miliseconds
             item: JSON.stringify(items),
@@ -84,15 +46,19 @@ export async function create_payment(req, res) {
             amount: total_price,
             description: `Store88 - Mời đại vương thanh toán đơn hàng.`,
             bank_code: "",
-            callback_url: "https://dc42-2405-4802-471-c0-2055-db6f-e2b1-a578.ngrok-free.app/v1/callback"
+            callback_url: "https://9b24-14-224-166-200.ngrok-free.app/v1/callback"
         };
-
         // appid|apptransid|appuser|amount|apptime|embeddata|item
         const data = config.app_id + "|" + order.app_trans_id + "|" + order.app_user + "|" + order.amount + "|" + order.app_time + "|" + order.embed_data + "|" + order.item;
         order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
         try {
             const { data } = await axios.post(config.endpoint, null, { params: order });
-            console.log(data)
+            if (data.return_code === 1) {
+                await create_item_order(user_id, items_order, infor_user, notes_order, payment_method, 2)
+            }
+            else {
+                await create_item_order(user_id, items_order, infor_user, notes_order, payment_method, 6)
+            }
             return res.status(StatusCodes.CREATED).json({
                 data
             })
@@ -144,7 +110,6 @@ export async function callBack_payment(req, res) {
                     data: qs.stringify(postData)
                 };
                 const result = axios(postConfig);
-                console.log(result.data);
                 return result
             })
 

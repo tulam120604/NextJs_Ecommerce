@@ -29,11 +29,6 @@ const Page_checkout = () => {
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const routing = useRouter();
   const user = useCheck_user();
-  useEffect(() => {
-    if (!user) {
-      routing.push('/')
-    }
-  }, [routing, user]);
   // address
   const { data, isLoading } = List_Address(user?.check_email?._id);
   const { data: dataCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
@@ -41,6 +36,12 @@ const Page_checkout = () => {
   // lọc item só lượng lớn hơn 0
   const positive_Stock_Item = filter_positive_Stock_Item(data_checked_true);
   const total_price = positive_Stock_Item?.reduce((acc: number, cur: any) => acc + cur?.total_price_item, 0);
+  //
+  useEffect(() => {
+    if (!user || positive_Stock_Item || positive_Stock_Item.length < 1) {
+      routing.push('/')
+    }
+  }, [routing, user, positive_Stock_Item]);
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
