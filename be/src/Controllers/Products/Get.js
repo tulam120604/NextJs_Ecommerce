@@ -64,13 +64,15 @@ export async function get_Item_Client(req, res) {
         _page = 1,
         _limit = 100,
         _search = '',
+        _bestseller = '',
     } = req.query;
+
+    const sort = _bestseller ? { sale_quantity: -1 } : { createdAt: -1 }
     const options = {
         page: _page,
         limit: _limit,
-        sort: { createdAt: -1 }
+        sort: sort
     };
-
     try {
         const querry = {};
         if (_search) {
@@ -83,23 +85,26 @@ export async function get_Item_Client(req, res) {
         const data = await Products.paginate(querry, options);
         await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
         await Products.populate(data.docs, { path: 'attributes' });
-        for (const id_data of data.docs) {
-            if (id_data.attributes) {
+        for (const item of data.docs) {
+            if (item.attributes) {
                 let current = 0;
-                id_data.attributes.varriants.map((b) => {
+                let quantity_sale = 0;
+                item.attributes.varriants.map((b) => {
                     b.size_item.map(l => {
                         current += l.stock_item
+                        quantity_sale += l.sale_quantity_attr
                     })
                 })
-                id_data.count_stock = current;
+                item.count_stock = current;
+                item.sale_quantity = quantity_sale
             }
             else {
-                id_data.count_stock = id_data.stock
+                item.count_stock = item.stock
             }
         };
         data.docs = data.docs.filter((item) => item.count_stock > 0);
         if (!data) {
-            return res.status(StatusCodes.NOT_FOUND).json({
+            return res.status(StatusCodes.OK).json({
                 message: "Khong co data!"
             })
         }
@@ -121,13 +126,19 @@ export async function get_Detail_Client(req, res) {
     try {
         const data = await Products.findById(req.params.id).populate('attributes');
         if (data.attributes) {
+            let quantity_sales = 0
             data.attributes.varriants = data.attributes.varriants.map(item => {
+                for (let i of item.size_item) {
+                    quantity_sales += i.sale_quantity_attr
+                }
                 const dataAttr = item.size_item.filter(attr => attr.stock_item > 0)
                 return {
                     ...item,
                     size_item: dataAttr
                 }
             })
+            data.sale_quantity = quantity_sales;
+            // console.log(data.sale_quantity)
             await data.save()
         }
         return res.status(StatusCodes.OK).json({

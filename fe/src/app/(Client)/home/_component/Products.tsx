@@ -2,12 +2,12 @@ import Link from 'next/link';
 import React from 'react'
 import List_Products from '../../../_Components/Products/List_Products';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import { getLimit } from '@/src/app/_lib/Services/Services_Items/products';
 import { unstable_noStore as noStore } from 'next/cache';
+import { GET_limit_item } from '@/src/app/_lib/Services/Services_Items/products';
 
 const Products_Home = async () => {
     noStore();
-    const data = await getLimit(42);
+    const data = await GET_limit_item(42);
     //   const isClient = typeof window !== 'undefined';
     // console.log(isClient);
     return (
@@ -25,7 +25,7 @@ const Products_Home = async () => {
                     </div>
                     {
                         data?.data?.docs ?
-                            <List_Products data={data?.item_best_seller} /> :
+                            <List_Products data={data?.data?.docs} /> :
                             <Loading_Dots />
 
                     }

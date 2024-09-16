@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 const Schema_Attribute = new mongoose.Schema({
-    id_item: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Products',
-    },
     varriants: [
         {
             color_item: {

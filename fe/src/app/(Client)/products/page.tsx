@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
-import { getLimit_and_paginate } from '../../_lib/Services/Services_Items/products';
 import LoadingShops from './_component/loading';
 import List_Products from '../../_Components/Products/List_Products';
 import Loading_Dots from '../../_Components/Loadings/Loading_Dots';
@@ -8,6 +7,7 @@ import Paginate_item from './_component/Paginate';
 import type { Metadata } from 'next';
 import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import Menu_bar from './_component/Menubar';
+import { GET_items_client } from '../../_lib/Services/Services_Items/products';
 
 export const metadata: Metadata = {
   title: 'Sản phẩm'
@@ -15,11 +15,9 @@ export const metadata: Metadata = {
 
 const Products = async ({ searchParams }: any) => {
   let page = searchParams._page ?? 1;
-  const bestSeller = searchParams._bestseller ?? undefined;
+  const bestSeller = searchParams._bestseller ?? '';
   noStore();
-  const data = await getLimit_and_paginate(page, 30);
-  const dataItem = (bestSeller === 'true') ? data?.item_best_seller : data?.data?.docs
-  console.log(bestSeller === 'true')
+  const data = await GET_items_client(page, 30, bestSeller);
   //  const isClient = typeof window !== 'undefined';
   //   console.log(isClient);
   return (
@@ -43,7 +41,7 @@ const Products = async ({ searchParams }: any) => {
         {
           data?.data?.docs ?
             Array.isArray(data?.data?.docs) &&
-            <List_Products data={dataItem} /> :
+            <List_Products data={data?.data?.docs} /> :
             <Loading_Dots />
         }
         <div className="mx-auto py-6">

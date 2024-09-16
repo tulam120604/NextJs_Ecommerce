@@ -8,7 +8,7 @@ import Attribute from "../../Model/Products/Attribute.js";
 
 // create 
 export async function Create_Product(req, res) {
-    const { short_name, category_id } = req.body;
+    const { category_id } = req.body;
     const dataClient = req.body;
     try {
         if (category_id) {
@@ -51,7 +51,6 @@ export async function Create_Product(req, res) {
         }
         if (dataClient.attributes) {
             const convert_Attributes = JSON.parse(dataClient.attributes);
-            const data = await Products.create(allData);
             const varriant = convert_Attributes.map(item => (
                 {
                     color_item: convert_Attributes ? item.color_item : '',
@@ -67,13 +66,14 @@ export async function Create_Product(req, res) {
                 }
             ));
             const attribute_data = {
-                id_item: data?._id,
                 varriants: varriant,
             }
             const new_attributes = await Attribute.create(attribute_data);
-            await Products.findByIdAndUpdate(data._id, {
-                $set: { attributes: new_attributes._id }
-            })
+            const dataRequest = {
+                ...allData,
+                attributes: new_attributes._id
+            }
+            const data = await Products.create(dataRequest);
             return res.status(StatusCodes.CREATED).json({
                 message: "Create Done",
                 data
