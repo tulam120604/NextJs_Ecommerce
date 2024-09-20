@@ -7,11 +7,22 @@ export async function get_attribute_by_item(id_item?: string | number) {
         if (!res.ok) {
             console.warn('Call data failer')
         }
-        const  {data_attribute}  = await res.json();
+        const { data_attribute } = await res.json();
         return data_attribute
-        } catch (error) {
-        return(error || "Lỗi rồi đại vương ơi!");
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
     }
 }
 
+
+export async function create_attributes(value: any) {
+    try {
+        const res = await fetch (`${apiURi}/attributes/create`, {
+            method : 'POST',
+            
+        })
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
 

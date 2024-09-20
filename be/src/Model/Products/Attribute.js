@@ -1,17 +1,24 @@
 import mongoose from 'mongoose';
 
 const Schema_Attribute = new mongoose.Schema({
+    id_account: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account'
+    },
     varriants: [
         {
-            color_item: {
+            _id_varriant: {
+                type: mongoose.Schema.Types.ObjectId,
+                auto: true
+            },
+            name_varriant: {
                 type: String,
             },
-            size_item: [
+            value_varriant: [
                 {
-                    name_size: String,
+                    name_value: String,
                     stock_item: {
                         type: Number,
-                        required: true,
                         min: 0,
                         default: 0
                     },

@@ -51,13 +51,13 @@ export async function edit_Product(req, res) {
             }
             const varriant = convert_Attributes.map(item => (
                 {
-                    color_item: convert_Attributes ? item.color_item : '',
-                    size_item: item.size_item.map(size =>
+                    name_varriant: convert_Attributes ? item.name_varriant : '',
+                    value_varriant: item.value_varriant.map(value =>
                     (
                         {
-                            name_size: size.name_size ? size.name_size.toString() : '',
-                            stock_item: size.stock_item ? size.stock_item : 0,
-                            price_attribute: size.price_attribute > 0 && size.price_attribute
+                            name_value: value.name_value ? value.name_value.toString() : '',
+                            stock_item: value.stock_item ? value.stock_item : 0,
+                            price_attribute: value.price_attribute > 0 && value.price_attribute
                         }
                     )
                     )
