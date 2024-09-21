@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
 import { unstable_noStore as noStore } from 'next/cache';
 import LoadingShops from './_component/loading';
-import List_Products from '../../_Components/Products/List_Products';
 import Loading_Dots from '../../_Components/Loadings/Loading_Dots';
 import Paginate_item from './_component/Paginate';
 import type { Metadata } from 'next';
 import Breadcrum from '../../_Components/breadcrum/breadcrum';
 import Menu_bar from './_component/Menubar';
 import { GET_items_client } from '../../_lib/Services/Services_Items/products';
+import List_Products from '../../_Components/Products/List_Products';
 
 export const metadata: Metadata = {
   title: 'Sản phẩm'

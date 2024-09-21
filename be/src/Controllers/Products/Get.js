@@ -30,7 +30,7 @@ export async function get_Item_Dashboard(req, res) {
             if (id_data.attributes) {
                 let current = 0;
                 id_data.attributes.varriants.map((b) => {
-                    b.size_item.map(l => {
+                    b.value_varriant.map(l => {
                         current += l.stock_item
                     })
                 })
@@ -90,7 +90,7 @@ export async function get_Item_Client(req, res) {
                 let current = 0;
                 let quantity_sale = 0;
                 item.attributes.varriants.map((b) => {
-                    b.size_item.map(l => {
+                    b.value_varriant.map(l => {
                         current += l.stock_item
                         quantity_sale += l.sale_quantity_attr
                     })
@@ -128,10 +128,10 @@ export async function get_Detail_Client(req, res) {
         if (data.attributes) {
             let quantity_sales = 0
             data.attributes.varriants = data.attributes.varriants.map(item => {
-                for (let i of item.size_item) {
+                for (let i of item.value_varriant) {
                     quantity_sales += i.sale_quantity_attr
                 }
-                const dataAttr = item.size_item.filter(attr => attr.stock_item > 0)
+                const dataAttr = item.value_varriant.filter(attr => attr.stock_item > 0)
                 return {
                     ...item,
                     size_item: dataAttr
@@ -199,7 +199,7 @@ export async function get_item_by_category(req, res) {
             if (id_data.attributes) {
                 let current = 0;
                 id_data.attributes.varriants.map((b) => {
-                    b.size_item.map(l => {
+                    b.value_varriant.map(l => {
                         current += l.stock_item
                     })
                 })

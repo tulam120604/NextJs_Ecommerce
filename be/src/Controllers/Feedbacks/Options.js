@@ -5,7 +5,7 @@ import Products from '../../Model/Products/Products.js';
 import Feedback from '../../Model/Feedback/Feedback.js';
 
 export async function add_feedback(req, res) {
-    const { user_id, item_id, content_feedback } = req.body;
+    const { user_id, item_id } = req.body;
     try {
         const check_user = await Account.findOne({ _id: user_id });
         if (!check_user) {
@@ -97,13 +97,5 @@ export async function get_feedback_detail_item(req, res) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             message: error.message || 'Loi server!'
         })
-    }
-}
-
-export async function check_feedback_by_item(req, res) {
-    try {
-
-    } catch (error) {
-
     }
 }

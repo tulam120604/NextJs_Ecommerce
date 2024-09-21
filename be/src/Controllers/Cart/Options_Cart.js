@@ -4,31 +4,31 @@ import Products from "../../Model/Products/Products.js";
 
 
 export async function Add_To_Cart(req, res) {
-    const { user_id, product_id, quantity, color, size_attribute, price_item_attr, status_checked } = req.body;
+    const { user_id, product_id, quantity, varriant_1, varriant_2, price_item_attr, status_checked } = req.body;
     try {
         const data_item = await Products.findById(product_id).populate('attributes');
         let stock_product = 0;
         if (data_item.attributes) {
-            const check_color = data_item.attributes.varriants.find(value => value.color_item === color);
-            const check_name_size = check_color.size_item.find(item => (item?.name_size?.trim() ? item?.name_size : undefined) === size_attribute);
-            stock_product = check_name_size.stock_item
+            const check_name_varriant = data_item.attributes.varriants.find(value => value.name_varriant === varriant_1);
+            const check_value_varriant = check_name_varriant.value_varriant.find(item => (item?.name_value?.trim() ? item?.name_value : undefined) === varriant_2);
+            stock_product = check_value_varriant.stock_item
         }
         else {
             stock_product = data_item.stock
         }
         let price_item = (price_item_attr > 0) ? price_item_attr : data_item?.price_product;
-        let color_item;
-        let size_attribute_item;
+        let name_varriant;
+        let value_varriant;
         if (data_item.attributes) {
-            const varr = data_item.attributes.varriants.find(color_attr => color_attr.color_item === color);
+            const varr = data_item.attributes.varriants.find(color_attr => color_attr.name_varriant === varriant_1);
             if (varr) {
                 for (let i of varr.size_item) {
-                    if (i.name_size === size_attribute) {
-                        color_item = varr.color_item;
-                        size_attribute_item = i.name_size
+                    if (i.name_value === varriant_2) {
+                        name_varriant = varr.name_varriant;
+                        value_varriant = i.name_value
                     }
                     else {
-                        color_item = varr.color_item
+                        name_varriant = varr.name_varriant
                     }
                 }
             }
@@ -45,8 +45,8 @@ export async function Add_To_Cart(req, res) {
                 product_id,
                 quantity,
                 price_item,
-                color_item,
-                size_attribute_item,
+                name_varriant,
+                value_varriant,
                 total_price_item: price_item * quantity,
                 status_checked
             });
@@ -54,8 +54,8 @@ export async function Add_To_Cart(req, res) {
             let check_item = false
             for (let i = 0; i < data_cart.items.length; i++) {
                 if (data_cart.items[i].product_id == product_id) {
-                    if (data_cart.items[i].color_item == color) {
-                        if (data_cart.items[i].size_attribute_item == size_attribute) {
+                    if (data_cart.items[i].name_varriant == varriant_1) {
+                        if (data_cart.items[i].value_varriant == varriant_2) {
                             data_cart.items[i].quantity = data_cart.items[i].quantity + quantity;
                             data_cart.items[i].total_price_item = price_item * data_cart.items[i].quantity;
                             data_cart.items[i].status_checked = status_checked
@@ -74,8 +74,8 @@ export async function Add_To_Cart(req, res) {
                     product_id,
                     quantity,
                     price_item,
-                    color_item,
-                    size_attribute_item,
+                    name_varriant,
+                    value_varriant,
                     total_price_item: price_item * quantity,
                     status_checked
                 });
@@ -96,18 +96,17 @@ export async function Add_To_Cart(req, res) {
 
 // up quantity 
 export async function up_quantity(req, res) {
-    const { user_id, product_id, color, size_attribute } = req.body;
+    const { user_id, product_id, varriant_1, varriant_2 } = req.body;
     try {
-        console.log(req.body)
         const data_user_Cart = await Carts.findOne({ user_id });
         if (!data_user_Cart || data_user_Cart.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message: "Khong tim thay user"
+                message: "Khong tim thay user!"
             })
         };
         for (let i = 0; i < data_user_Cart.items.length; i++) {
             if (data_user_Cart.items[i].product_id == product_id) {
-                if (data_user_Cart.items[i].color_item == color && data_user_Cart.items[i].size_attribute_item == size_attribute) {
+                if (data_user_Cart.items[i].name_varriant == varriant_1 && data_user_Cart.items[i].value_varriant == varriant_2) {
                     data_user_Cart.items[i].quantity++;
                     data_user_Cart.items[i].total_price_item = data_user_Cart.items[i].price_item * data_user_Cart.items[i].quantity;
                 }
@@ -128,7 +127,7 @@ export async function up_quantity(req, res) {
 
 // dow quantity
 export async function dow_quantity(req, res) {
-    const { user_id, product_id, color, size_attribute } = req.body;
+    const { user_id, product_id, varriant_1, varriant_2 } = req.body;
     try {
         const data_user_cart = await Carts.findOne({ user_id });
         if (!data_user_cart || data_user_cart.length === 0) {
@@ -139,7 +138,7 @@ export async function dow_quantity(req, res) {
         for (let i = 0; i < data_user_cart.items.length; i++) {
             if (data_user_cart.items[i].product_id == product_id) {
                 // console.log(data_user_cart.items[i].product_id);
-                if (data_user_cart.items[i].color_item == color && data_user_cart.items[i].size_attribute_item == size_attribute) {
+                if (data_user_cart.items[i].name_varriant == varriant_1 && data_user_cart.items[i].value_varriant == varriant_2) {
                     data_user_cart.items[i].quantity--;
                     data_user_cart.items[i].total_price_item = data_user_cart.items[i].total_price_item - data_user_cart.items[i].price_item;
                     if (data_user_cart.items[i].quantity === 0) {

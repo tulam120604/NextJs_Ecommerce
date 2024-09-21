@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/Tables/button';
 import Link from 'next/link';
 import Form_category from './form_category';
-import { CircleMinus } from 'lucide-react';
+import { CircleMinus, SquarePlus } from 'lucide-react';
 import { useCustome_Hooks_Form } from '../../_lib/Custome_Hooks/MyForm';
 import Loading_Dots from '../Loadings/Loading_Dots';
 
@@ -17,10 +17,10 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     const [images, setImages] = useState<any[]>([]);
     const [category_form, setCategory_form] = useState<boolean>(false)
     const [attributes, setAttribute] = useState<any>([{
-        color_item: '',
-        size_item: [{
-            name_size: '',
-            stock_item: '',
+        name_varriant: '',
+        value_varriant: [{
+            name_value: '',
+            stock_item: 0,
             price_attribute: 0
         }],
     }]);
@@ -48,10 +48,10 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
 
     function add_Attribute() {
         setAttribute([...attributes, {
-            color_item: '',
-            size_item: [{
-                name_size: '',
-                stock_item: '',
+            name_varriant: '',
+            value_varriant: [{
+                name_value: '',
+                stock_item: 0,
                 price_attribute: 0
             }],
         }])
@@ -64,18 +64,19 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
 
     }
     // child option
-    function add_Size_Attribute(i: any) {
+    function add_value_varriant(i: any) {
         const add_size_attribute = [...attributes];
-        add_size_attribute[i].size_item.push({
-            name_size: '',
-            stock_item: '',
+        add_size_attribute[i].value_varriant.push({
+            name_value: '',
+            price_attribute: 0,
+            stock_item: 0,
         })
         setAttribute(add_size_attribute)
     }
 
     function remove_size_Attribute(index: number) {
         const remove_size_Attributes = [...attributes];
-        remove_size_Attributes[index].size_item.splice(index, 1);
+        remove_size_Attributes[index].value_varriant.splice(index, 1);
         setAttribute(remove_size_Attributes);
     }
 
@@ -126,10 +127,10 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
             my_Form.reset();
             setChange_img([]);
             setAttribute([{
-                color_item: '',
-                size_item: [{
-                    name_size: '',
-                    stock_item: '',
+                name_varriant: '',
+                value_varriant: [{
+                    name_value: '',
+                    stock_item: 0,
                     price_attribute: 0
                 }],
             }])
@@ -218,24 +219,26 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 }
                 {
                     <div className='flex flex-col text-gray-800 gap-y-3'>
-                        <label>Options sản phẩm (nếu có):</label>
+                        <label>Thuộc tính sản phẩm (nếu có):</label>
                         {attributes?.map((item: any, i: any) => (<>
                             <div key={i} className='flex item-center gap-4 w-full text-sm flex-wrap'>
                                 <input
                                     type="text"
-                                    {...my_Form.register(`attributes[${i}].color_item`, { required: true })}
+                                    {...my_Form.register(`attributes[${i}].name_varriant`, { required: true })}
                                     defaultValue={item?.color_item}
                                     className='outline-none py-2 px-4 border border-gray-300 rounded'
                                     placeholder={`Thông số ${i + 1} (nếu có)...`} key={i}
                                 />
-                                <Button type='button' onClick={() => add_Size_Attribute(i)} className='w-20 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm</Button>
+                                <Button type='button' onClick={() => add_value_varriant(i)} className='bg-indigo-500 hover:bg-indigo-600 duration-200'>
+                                    <SquarePlus />
+                                </Button>
                             </div>
-                            {item?.size_item?.map((e: any, j: any) => (
+                            {item?.value_varriant?.map((e: any, j: any) => (
                                 <div key={i} className='flex item-center gap-x-4 text-sm'>
                                     <input
                                         type="text"
                                         defaultValue={e?.name_size}
-                                        {...my_Form.register(`attributes[${i}].size_item[${j}].name_size`)}
+                                        {...my_Form.register(`attributes[${i}].value_varriant[${j}].name_value`)}
                                         className='outline-none py-2 px-4 border border-gray-300 rounded'
                                         placeholder={`Thông số ${i + 2} (nếu có)...`}
                                     />
@@ -254,16 +257,17 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                                         placeholder='Giá (bắt buộc)...'
                                     />
                                     {
-                                        item?.size_item?.length > 1 &&
+                                        item?.value_varriant?.length > 1 &&
                                         <Button type='button' onClick={() => remove_size_Attribute(i)} className='w-20 bg-red-500 hover:bg-red-600 duration-200'>Xóa</Button>
                                     }
                                 </div>
                             ))}
-
-                            <Button type='button' onClick={() => remove_Attribute(i)} className='w-24 bg-red-500 hover:bg-red-600 duration-200'>Xóa options</Button>
+                            <div>
+                                <Button type='button' onClick={() => remove_Attribute(i)} className='w-auto bg-red-500 hover:bg-red-600 duration-200'>Xóa</Button>
+                            </div>
                         </>))}
                         <div>
-                            <Button type='button' onClick={add_Attribute} className='px-4 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm options</Button>
+                            <Button type='button' onClick={add_Attribute} className='px-4 bg-indigo-600 hover:bg-indigo-800 duration-200'>Thêm</Button>
                         </div>
                     </div>
                 }

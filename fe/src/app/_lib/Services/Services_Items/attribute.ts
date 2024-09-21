@@ -5,7 +5,7 @@ export async function get_attribute_by_item(id_item?: string | number) {
     try {
         const res = await fetch(`${apiURi}/attribute/${id_item}`);
         if (!res.ok) {
-            console.warn('Call data failer')
+            return res
         }
         const { data_attribute } = await res.json();
         return data_attribute
@@ -17,12 +17,36 @@ export async function get_attribute_by_item(id_item?: string | number) {
 
 export async function create_attributes(value: any) {
     try {
-        const res = await fetch (`${apiURi}/attributes/create`, {
-            method : 'POST',
-            
-        })
+        const res = await fetch(`${apiURi}/attributes/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(value)
+        });
+        if (!res.ok) {
+            return res
+        };
+        return res
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
 }
 
+export async function create_value_attribute(value: any) {
+    try {
+        const res = await fetch(`/attribute/create_value`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(value)
+        });
+        if (!res.ok) {
+            return res
+        };
+        return res
+    } catch (error) {
+        return error
+    }
+}

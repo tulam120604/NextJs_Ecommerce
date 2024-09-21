@@ -58,7 +58,7 @@ export async function list_carts(req, res) {
 
 
 export async function checked_item_cart(req, res) {
-    const { user_id, id_item, color, size } = req.body;
+    const { user_id, id_item, varriant_1, varriant_2 } = req.body;
     try {
         const user = await Account.findById(user_id);
         if (!user) {
@@ -69,18 +69,18 @@ export async function checked_item_cart(req, res) {
         const data_cart = await Carts.findOne({ user_id }).populate('items.product_id');
         for (let i = 0; i < data_cart.items.length; i++) {
             if (data_cart.items[i].product_id._id.toString() == id_item._id) {
-                if (color && size) {
-                    if (data_cart.items[i].color_item == color && data_cart.items[i].size_attribute_item == size) {
+                if (varriant_1 && varriant_2) {
+                    if (data_cart.items[i].name_varriant == varriant_1 && data_cart.items[i].value_varriant == varriant_2) {
                         data_cart.items[i].status_checked = !data_cart.items[i].status_checked
                     }
                 }
-                else if (color) {
-                    if (data_cart.items[i].color_item == color) {
+                else if (varriant_1) {
+                    if (data_cart.items[i].name_varriant == varriant_1) {
                         data_cart.items[i].status_checked = !data_cart.items[i].status_checked
                     }
                 }
-                else if (size) {
-                    if (data_cart.items[i].size_attribute_item == size) {
+                else if (varriant_2) {
+                    if (data_cart.items[i].value_varriant == varriant_2) {
                         data_cart.items[i].status_checked = !data_cart.items[i].status_checked
                     }
                 }
@@ -108,9 +108,9 @@ export async function update_quantity_item_in_cart(user_id, items_order) {
     data_cart.items = data_cart.items.filter((i) => {
         return !items_order.some((j) => {
             const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
-            const check_Color = i.color_item ? i.color_item === j.color_item : true;
-            const check_Size = i.size_attribute_item ? i.size_attribute_item === j.size_attribute_item : true;
-            return check_Product_Id && check_Color && check_Size
+            const check_name_varriant = i.name_varriant ? i.name_varriant === j.name_varriant : true;
+            const check_value_varriant = i.value_varriant ? i.value_varriant === j.value_varriant : true;
+            return check_Product_Id && check_name_varriant && check_value_varriant
         });
     });
     await data_cart.save();

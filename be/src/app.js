@@ -8,7 +8,6 @@ import RoutesAuth from './Routes/Auth/Auth.js';
 import RoutesCart from './Routes/Cart/Cart.js';
 import Routes_upload from './Routes/upload.js';
 import Routes_Order from './Routes/Order/Order.js';
-import Routes_Attribute from './Routes/Attribute/Attribute.js';
 import RoutesFeedback from './Routes/Feedback/Feedback.js';
 import RoutesNotification from './Routes/Notification/Notification.js';
 import { handle_socket_event } from './socket/handle_socket';
@@ -17,6 +16,7 @@ import { Server } from 'socket.io';
 import RoutesAddress from './Routes/Auth/Address.js';
 import RoutesPayment from './Routes/Payment/Payment.js';
 import Routes_Favorites from './Routes/Items/Favorites.js';
+import Routes_Attribute from './Routes/Attribute_Catalog/Attribute_catalog.js';
 
 dotenv.config();
 const app = express();

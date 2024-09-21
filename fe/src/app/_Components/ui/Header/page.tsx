@@ -114,7 +114,7 @@ const Header = () => {
                     {/* cart */}
                     <div className="h-[24px] relative group cursor-pointer">
                         <button onClick={handleCart} className='z-[1] relative' >
-                            <ShoppingBag />
+                            <ShoppingBag className='w-5' />
                             <Count_Cart />
                             {/* animation add cart */}
                             {
@@ -123,9 +123,7 @@ const Header = () => {
                                     <Image width={40} height={40} className='rounded-full' src={isVisible} alt='.' />
                                 </div>
                             }
-
                         </button>
-
                     </div>
                     <Link href={'/login'} className={`${checkLocal ? 'hidden' : 'block'} text-xs lg:text-sm hover:text-gray-300 cursor-pointer duration-300 whitespace-nowrap`}>Đăng nhập</Link>
                     <Link href={'/profile/infor'} className={`${checkLocal ? 'block' : 'hidden'} relative border-none p-0.5 cursor-pointer whitespace-nowrap group`}>

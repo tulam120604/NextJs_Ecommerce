@@ -7,7 +7,7 @@ import cloudinary from "../../utils/cloudinary.js";
 
 // edit all field
 export async function edit_Product(req, res) {
-    const { short_name, ...rest } = req.body;
+    const { short_name } = req.body;
     try {
         const check_id = await Products.findById(req.params.id);
         if (!check_id) {
@@ -63,7 +63,7 @@ export async function edit_Product(req, res) {
                     )
                 }
             ))
-            const new_attribute = await Attribute.create({ id_item: req.params.id, varriants: varriant, })
+            const new_attribute = await Attribute.create({ varriants: varriant, })
             const dataClient = {
                 ...req.body,
                 attributes: null,
@@ -107,10 +107,10 @@ export async function update_quantity_item(data_items_order) {
             const data_attr = await Attribute.find({ id_item: i.product_id._id });
             for (let j of data_attr) {
                 for (let k of j.varriants) {
-                    if (k.color_item == i.color_item) {
-                        for (let x of k.size_item) {
-                            if (x.name_size) {
-                                if (x.name_size == i.size_attribute_item) {
+                    if (k.name_varriant == i.varriant_1) {
+                        for (let x of k.value_varriant) {
+                            if (x.name_value) {
+                                if (x.name_value == i.varriant_2) {
                                     x.stock_item = x.stock_item - i.quantity;
                                     x.sale_quantity_attr += i.quantity
                                 }

@@ -19,7 +19,7 @@ export async function get_recycle_items(req, res) {
             if (id_data.attributes) {
                 let current = 0;
                 id_data.attributes.varriants.map((b) => {
-                    b.size_item.map(l => {
+                    b.value_varriant.map(l => {
                         current += l.stock_item
                     })
                 })

@@ -1,12 +1,16 @@
 import mongoose from 'mongoose';
 
-const Schema_Attribute = new mongoose.Schema({
+const Schema_Attribute_Catalog = new mongoose.Schema({
     id_account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
     },
     varriants: [
         {
+            _id_varriant: {
+                type: mongoose.Schema.Types.ObjectId,
+                auto: true
+            },
             name_varriant: {
                 type: String,
             },
@@ -33,4 +37,4 @@ const Schema_Attribute = new mongoose.Schema({
     ]
 }, { timestamps: true, versionKey: false });
 
-export default mongoose.model('Attribute', Schema_Attribute);
+export default mongoose.model('Attribute_Catalog', Schema_Attribute_Catalog);

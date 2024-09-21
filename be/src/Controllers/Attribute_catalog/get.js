@@ -1,22 +1,22 @@
-import Attribute from "../../Model/Products/Attribute.js";
+import Attribute_Catalog from '../../Model/Products/Atrribute_catalog.js'
 import { StatusCodes } from "http-status-codes";
 
-export async function get_attribute (req, res) {
-    const {id_item} = req.params;
+export async function get_attribute_catalog(req, res) {
+    const { id_item } = req.params;
     try {
-        const data_attribute = await Attribute.find({id_item : id_item});
+        const data_attribute = await Attribute_Catalog.find({ id_item: id_item });
         if (!data_attribute || data_attribute.length < 1) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message : 'No data!'
+                message: 'No data!'
             })
         };
         return res.status(StatusCodes.OK).json({
-            message : 'Done',
+            message: 'Done',
             data_attribute
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message : error.message || 'Lỗi rồi đại vương ơi!!'
+            message: error.message || 'Lỗi rồi đại vương ơi!!'
         })
     }
 }

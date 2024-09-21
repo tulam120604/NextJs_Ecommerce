@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
+import { convert_Slug } from "@/src/app/util/Slug";
 import Image from "next/image";
 import Link from "next/link";
-import { convert_Slug } from "../../util/Slug";
 
 const Product_Item = ({ dataProps }: any) => {
     let min;

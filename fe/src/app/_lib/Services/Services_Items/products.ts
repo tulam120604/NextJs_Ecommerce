@@ -30,7 +30,11 @@ export async function GET_limit_item(countItem: number) {
         const data = await res.json();
         return data
     } catch (error) {
-        return (error || "Lỗi rồi đại vương ơi!");
+        const message = {
+            error,
+            status: 500
+        }
+        return message;
     }
 }
 

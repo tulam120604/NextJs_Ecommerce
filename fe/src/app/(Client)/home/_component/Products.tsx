@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import React from 'react'
-import List_Products from '../../../_Components/Products/List_Products';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { unstable_noStore as noStore } from 'next/cache';
 import { GET_limit_item } from '@/src/app/_lib/Services/Services_Items/products';
+import ReloadPage from '@/src/app/_Components/Pages/ReloadPage';
+import List_Products from '@/src/app/_Components/Products/List_Products';
 
 const Products_Home = async () => {
     noStore();
@@ -12,12 +13,8 @@ const Products_Home = async () => {
     // console.log(isClient);
     return (
         <div className='max-w-[1440px] mx-auto w-[95vw] flex flex-col mb:py-7 border-b'>
-            {data?.status === 404 ? (<><div className='min-h-[70vh] grid place-items-center'>
-                <div className='flex flex-col gap-y-2'>
-                    Ôi hỏng!
-                    <span>Có vẻ như đã có lỗi xảy ra :(( </span>
-                    <Link className='underline text-sky-500' href={'/'}>Trở về trang chủ!</Link>
-                </div>
+            {(data?.status === 404 || data?.status === 500) ? (<><div className='min-h-[70vh] grid place-items-center'>
+                <ReloadPage />
             </div></>) :
                 (<>
                     <div className="mx-auto max-w-[1440px] md:w-[90vw] w-[342px] relative text-center mb-4 lg:mb-8 bg-white py-4 border-b-4 border-gray-700">
@@ -25,12 +22,13 @@ const Products_Home = async () => {
                     </div>
                     {
                         data?.data?.docs ?
-                            <List_Products data={data?.data?.docs} /> :
+                            ((data?.data?.docs?.length < 1) ? <span className='text-center'>Không có dữ liệu!</span> :
+                                <List_Products data={data?.data?.docs} />) :
                             <Loading_Dots />
-
                     }
                     {
                         Array.isArray(data?.data?.docs) &&
+                        (data?.data?.docs > 42) &&
                         <div className='flex justify-center mt-4'>
                             <Link href={'/products'} className='border px-4 py-1 rounded bg-gray-900 hover:bg-gray-700 duration-300 text-white'>Xem Thêm</Link>
                         </div>

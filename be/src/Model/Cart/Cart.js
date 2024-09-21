@@ -1,46 +1,46 @@
 import mongoose from 'mongoose';
 
 const Carts = new mongoose.Schema({
-    user_id : {
-        type : mongoose.Types.ObjectId,
-        ref : 'Account',
-        required : true,
+    user_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Account',
+        required: true,
     },
-    items : [
+    items: [
         {
-            product_id : {
-                type : mongoose.Types.ObjectId,
-                ref : 'Products'
+            product_id: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Products'
             },
-            quantity : {
-                type : Number,
-                required : true,
-                default : 1
+            quantity: {
+                type: Number,
+                required: true,
+                default: 1
             },
-            price_item : {
-                type : Number,
-                required : true,
+            price_item: {
+                type: Number,
+                required: true,
             },
-            total_price_item : {
-                type : Number,
+            total_price_item: {
+                type: Number,
             },
-            color_item : {
-                type : String,
+            name_varriant: {
+                type: String,
             },
-            size_attribute_item : {
-                type : String
+            value_varriant: {
+                type: String
             },
-            status_checked : {
-                type : Boolean,
-                default : false,
+            status_checked: {
+                type: Boolean,
+                default: false,
             },
         }
     ],
-    total_price : {
-        type : Number,
-        default : 0
+    total_price: {
+        type: Number,
+        default: 0
     },
 }, {
-    timestamps : true, versionKey : false
+    timestamps: true, versionKey: false
 });
 export default mongoose.model('Carts', Carts);
