@@ -4,8 +4,8 @@ import { create_attributes_catalog, create_value_attributes_catalog } from '../.
 
 const Routes_Attribute = express.Router();
 
-Routes_Attribute.get('/attribute/:id_item', get_attribute_catalog);
-Routes_Attribute.post('/attributes/create', create_attributes_catalog);
-Routes_Attribute.put('/attributes/create_value', create_value_attributes_catalog);
+Routes_Attribute.get('/attribute_catalog/:id_item', get_attribute_catalog);
+Routes_Attribute.post('/attributes_catalog/create', create_attributes_catalog);
+Routes_Attribute.put('/attributes_catalog/create_value', create_value_attributes_catalog);
 
 export default Routes_Attribute

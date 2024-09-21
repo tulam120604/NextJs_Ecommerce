@@ -1,7 +1,7 @@
 const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 // get attribute by item
-export async function get_attribute_by_item(id_item?: string | number) {
+export async function get_attributeCatalog_by_item(id_item?: string | number) {
     try {
         const res = await fetch(`${apiURi}/attribute/${id_item}`);
         if (!res.ok) {
@@ -15,7 +15,7 @@ export async function get_attribute_by_item(id_item?: string | number) {
 }
 
 
-export async function create_attributes(value: any) {
+export async function create_attributesCatalog(value: any) {
     try {
         const res = await fetch(`${apiURi}/attributes/create`, {
             method: 'POST',
@@ -33,7 +33,7 @@ export async function create_attributes(value: any) {
     }
 }
 
-export async function create_value_attribute(value: any) {
+export async function create_value_attributeCatalog(value: any) {
     try {
         const res = await fetch(`/attribute/create_value`, {
             method: 'PUT',

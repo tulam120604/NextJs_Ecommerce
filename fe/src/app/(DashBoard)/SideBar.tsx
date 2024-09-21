@@ -36,7 +36,7 @@ const SideBarDashboard = () => {
                 {
                     icon: <Shapes strokeWidth={1.8} className="h-5" />,
                     name: 'Thuộc tính',
-                    path: '/adminstrations/products/attributes',
+                    path: '/adminstrations/products/attributes-catalog',
                 },
                 {
                     icon: <Trash2 strokeWidth={1.8} className="h-5" />,
