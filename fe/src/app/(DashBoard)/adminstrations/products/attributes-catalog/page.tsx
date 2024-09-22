@@ -1,16 +1,20 @@
 'use client';
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Auth_Wrap_Seller } from '../../_Auth_Wrap/Page';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/app/_Components/ui/select';
 import useFormAttributeCatalog from '@/src/app/_lib/Custome_Hooks/AttributeCatalog_Form';
+import { SketchPicker } from 'react-color';
+
 
 export default function Page() {
   const { isLoading, isError, onSubmit, form_attributeCatalog } = useFormAttributeCatalog('CREATE');
-  const [statusChecked, setStatusChecked] = useState(false)
+  const [statusChecked, setStatusChecked] = useState<any>(false);
+  const [color, setColor] = useState<any>('#fff');
+  const [dataAttributeCatalog, setDataAttributeCatalog] = useState<any>([])
 
   function handleSubmitForm(dataForm: any) {
     if (statusChecked) {
@@ -18,12 +22,28 @@ export default function Page() {
     }
     // save localStorage 
     else {
-      localStorage.setItem('attribute_catalog', JSON.stringify(dataForm));
+      const data_attributeCatalog = [
+        dataForm
+      ];
+      localStorage.setItem('attribute_catalog', JSON.stringify(data_attributeCatalog));
     }
   }
 
+  const handleSetColor = (color: any) => {
+    setColor(color.hex)
+  }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('attribute_catalog')) {
+        setDataAttributeCatalog(JSON.parse(localStorage.getItem('attribute_catalog') || '{}'));
+      }
+    }
+  }, [dataAttributeCatalog]);
+  console.log(dataAttributeCatalog);
   return (
-    <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
+    <Suspense fallback={<div className="w-screen h-
+    screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Seller>
         <div className='flex flex-col gap-y-6 py-6 h-full'>
           <strong className='text-xl'>Thuộc tính</strong>
@@ -65,8 +85,22 @@ export default function Page() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                <div className='flex flex-col gap-y-2'>
+                  <span>Chọn màu sắc:</span>
+                  <div className='flex gap-4'>
+                    <SketchPicker
+                      color={color}
+                      onChangeComplete={handleSetColor}
+                    />
+                    <div style={{
+                      backgroundColor: color
+                    }} className={`w-16 h-16 rounded border`}></div>
+                  </div>
+                </div>
                 <Button className='py-1.5 h-auto my-4 bg-indigo-600 hover:bg-indigo-800'>Thêm</Button>
               </form>
+
               {
                 isError &&
                 <p className='text-red-500 text-sm'>Lỗi, vui lòng kiểm tra lại!</p>

@@ -22,14 +22,13 @@ const Products = async ({ searchParams }: any) => {
   //   console.log(isClient);
   return (
     <Suspense fallback={<LoadingShops />}>
-      <div className="pt-6 pb-10 mx-auto max-w-[1440px] md:w-[90vw] w-[342px]">
+      <div className="pt-6 pb-10 max-w-[1440px] mx-auto w-[95vw]">
         <section className='flex items-center text-sm gap-x-2 font-medium capitalize text-gray-700 mb-4'>
           <Breadcrum textProps={{
             name_item: 'Sản phẩm',
           }} />
         </section>
-        <div className="mx-auto max-w-[1440px] md:w-[90vw] w-[342px] relative text-center mb-4 lg:mb-8 bg-white py-4 
-        border-b-4 border-gray-700">
+        <div className="relative text-center mb-4 lg:mb-8 bg-white py-4 border-b-4 border-gray-700">
           <strong className="relative z-[2] text-[gray-800 font-medium lg:text-lg px-4">Danh sách sản phẩm</strong>
         </div>
         {/* menu */}

@@ -8,8 +8,7 @@ export default function useFormAttributeCatalog(mode: 'CREATE' | 'CREATE_VALUE')
     const { mutate, ...rest } = Mutation_AttributeCatalog(mode);
 
     const onSubmit = (dataForm: any) => {
-        console.log(dataForm)
-        // mutate(dataForm);
+        mutate(dataForm);
     }
     return { form_attributeCatalog, onSubmit, ...rest }
 }

@@ -17,7 +17,7 @@ const Products_Home = async () => {
                 <ReloadPage />
             </div></>) :
                 (<>
-                    <div className="mx-auto max-w-[1440px] md:w-[90vw] w-[342px] relative text-center mb-4 lg:mb-8 bg-white py-4 border-b-4 border-gray-700">
+                    <div className="relative text-center mb-4 lg:mb-8 bg-white py-4 border-b-4 border-gray-700">
                         <strong className="relative z-[2] text-[gray-800 font-medium lg:text-lg px-4">GỢI Ý HÔM NAY</strong>
                     </div>
                     {
