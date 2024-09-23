@@ -36,11 +36,11 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
     total_bell = data?.data?.data_notification?.filter((item: any) => item?.status_message !== true) ?? ''
   }
   return (
-    <div className="w-full bg-[#F9FBFD]">
-      <div className="max-w-[3840px] md:w-[95vw] mx-auto">
+    <div className="w-full bg-[#EDEDED]">
+      <div className="w-screen">
         {/* header */}
         <div className="fixed w-screen top-0 left-0 bg-[#1F2936] z-[10]">
-          <header className="max-w-[1440px] md:w-[95vw] z-[1] h-[70px] mx-auto flex items-center justify-between sticky top-0">
+          <header className="w-[95vw] z-[1] h-[70px] mx-auto flex items-center justify-between sticky top-0">
             <Link className='text-sm lg:text-xl font-extrabold font-sans text-gray-100' href={'/'}>
               Store88
             </Link>
@@ -60,16 +60,16 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
         </div>
 
         {/* side bar */}
-        <main className="items-start gap-x-2 w-full mt-20 grid lg:grid-cols-[200px_auto] grid-cols-[50px_auto]">
-          <div className="sticky top-20 -translate-y-20 pt-[80px] bg-white after:bg-white relative after:absolute after:w-full after:h-screen after:top-0 after:left-0 
+        <main className="items-start gap-x-2 w-full pt-20 grid lg:grid-cols-[200px_auto] grid-cols-[50px_auto]">
+          <div className="sticky top-20 -translate-y-20 pt-[80px] bg-[#F6F6F6] after:bg-[#F6F6F6] after:absolute after:w-full after:h-screen after:top-0 after:left-0 
           after:border-r after:border-gray-300 after:z-[-1] after:rounded">
             <SideBarDashboard />
           </div>
-          <div className="min-h-[80vh] !text-gray-900 rounded *:w-full *:px-4">
+          <div className="min-h-[80vh] !text-gray-900 rounded">
             {children}
           </div>
         </main>
-        <footer className="text-white text-center py-4 relative mt-auto">@Copyright by Tu Lam</footer>
+        <footer className="text-gray-700 text-center py-4 relative mt-auto">@Copyright by Tu Lam</footer>
       </div>
     </div>
   )

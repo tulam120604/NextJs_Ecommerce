@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useCheck_user, useToken } from "../_lib/Custome_Hooks/User";
 import { service_check_token } from "./adminstrations/_Auth_Wrap/Page";
 import Loading_Dots from "../_Components/Loadings/Loading_Dots";
-import { Button } from "../_Components/ui/Shadcn/button";
 
 const SideBarDashboard = () => {
     const token = useToken();
@@ -71,7 +70,7 @@ const SideBarDashboard = () => {
                     return (
                         <details key={item?.pathName} className="group [&_summary::-webkit-details-marker]:hidden">
                             <summary
-                                className="flex cursor-pointer *:rounded *:duration-300 *:flex *:items-center *:gap-x-2 justify-between *:w-full rounded-lg text-gray-500 pr-2">
+                                className="flex cursor-pointer *:rounded *:duration-300 *:flex *:items-center *:gap-x-2 justify-between *:w-full rounded text-gray-500 pr-2">
                                 {
                                     item?.child_uri ?
                                         <div className='lg:px-4 lg:py-2 p-1.5 hover:bg-[#2563EB] hover:text-gray-100 flex items-center gap-x-2 '>
@@ -88,7 +87,7 @@ const SideBarDashboard = () => {
                                         </Link>
                                 }
                             </summary>
-                            <ul className="mt-2 *:rounded *:duration-300 *:flex *:items-center *:gap-x-2 justify-between *:w-5/6 rounded-lg text-gray-500 pr-2  
+                            <ul className="mt-2 *:rounded-sm *:duration-300 *:flex *:items-center *:gap-x-2 justify-between *:w-5/6 rounded-lg text-gray-500 pr-2  
                             flex flex-col gap-y-2 items-end">
                                 {
                                     item?.child_uri?.map((uri: any) => (

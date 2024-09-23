@@ -15,6 +15,7 @@ const Schema_Attribute_Catalog = new mongoose.Schema({
                 type: String,
             },
             hex_color: String,
+            type_varriant : String,
             value_varriant: [
                 {
                     name_value: String,

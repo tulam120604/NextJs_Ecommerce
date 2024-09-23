@@ -14,6 +14,20 @@ export async function get_attributeCatalog_by_item(id_item?: string | number) {
     }
 }
 
+// get attribute by seller
+export async function get_attributeCatalog_by_seller(id_seller?: string | number) {
+    try {
+        const res = await fetch(`${apiURi}/attribute_catalog/seller/${id_seller}`);
+        if (!res.ok) {
+            return res;
+        }
+        const { data } = await res.json();
+        return data
+    } catch (error) {
+        return (error || "Lỗi rồi đại vương ơi!");
+    }
+}
+
 
 export async function create_attributesCatalog(value: any) {
     try {

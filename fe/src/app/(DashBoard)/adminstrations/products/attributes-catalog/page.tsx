@@ -1,68 +1,82 @@
 'use client';
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import React, { Suspense, useState, useEffect } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Auth_Wrap_Seller } from '../../_Auth_Wrap/Page';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/app/_Components/ui/select';
 import useFormAttributeCatalog from '@/src/app/_lib/Custome_Hooks/AttributeCatalog_Form';
 import { SketchPicker } from 'react-color';
+import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
+import Link from 'next/link';
+import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
 
 
 export default function Page() {
   const { isLoading, isError, onSubmit, form_attributeCatalog } = useFormAttributeCatalog('CREATE');
   const [statusChecked, setStatusChecked] = useState<any>(false);
-  const [color, setColor] = useState<any>('#fff');
-  const [dataAttributeCatalog, setDataAttributeCatalog] = useState<any>([])
-
+  const [statusOptions, setStatusOptions] = useState<any>('');
+  const [color, setColor] = useState<string>('#fff');
+  const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
+  const [user] = useLocalStorage('account', '');
+  const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
   function handleSubmitForm(dataForm: any) {
+    dataForm = {
+      ...dataForm,
+      type_varriant: color
+    }
     if (statusChecked) {
       onSubmit(dataForm)
     }
-    // save localStorage 
+    // save sessionStorage 
     else {
-      const data_attributeCatalog = [
+      dataForm = {
+        ...dataForm,
+        hex_color: color,
+        type_varriant: color
+      }
+      let data_attributeCatalog = [
         dataForm
       ];
-      localStorage.setItem('attribute_catalog', JSON.stringify(data_attributeCatalog));
+      if (attributeCatalog) {
+        data_attributeCatalog = [
+          ...attributeCatalog,
+          dataForm
+        ]
+      }
+      setAttributeCatalog(data_attributeCatalog);
     }
   }
 
   const handleSetColor = (color: any) => {
-    setColor(color.hex)
+    console.log(color);
+    setColor(color.hex);
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (localStorage.getItem('attribute_catalog')) {
-        setDataAttributeCatalog(JSON.parse(localStorage.getItem('attribute_catalog') || '{}'));
-      }
-    }
-  }, [dataAttributeCatalog]);
-  console.log(dataAttributeCatalog);
+  let arr_attributeCatalog: any = data?.concat(attributeCatalog);
   return (
-    <Suspense fallback={<div className="w-screen h-
-    screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
+    <Suspense fallback={<div className="w-screen h-screen fixed 
+    top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Seller>
         <div className='flex flex-col gap-y-6 py-6 h-full'>
           <strong className='text-xl'>Thuộc tính</strong>
-          <section className='grid lg:grid-cols-[38%_auto] lg:gap-x-16'>
+          <section className='grid lg:grid-cols-[38%_auto] lg:gap-x-16 gap-x-8'>
             {
-              isLoading && <div className='w-screen h-screen grid place-items-center'>
+              isLoading &&
+              <div className='w-screen h-screen grid place-items-center'>
                 <Loading_Dots />
               </div>
             }
             {/* left */}
             <div>
-              <span>Thêm mới thuộc tính</span>
-              <p className='text-gray-500 text-sm my-4'>Các thuộc tính bổ sung cho phép bạn xác định dữ liệu sản phẩm bổ sung. Bạn có thể sử dụng các thuộc tính đó
+              <strong className='text-gray-800'>Thêm mới thuộc tính</strong>
+              <p className='text-gray-700 text-sm my-4'>Các thuộc tính bổ sung cho phép bạn xác định dữ liệu sản phẩm bổ sung. Bạn có thể sử dụng các thuộc tính đó
                 trong thanh bên của cửa hàng bằng cách sử dụng các tiện ích điều hướng theo lớp.</p>
               <form onSubmit={form_attributeCatalog?.handleSubmit(handleSubmitForm)}>
                 <label htmlFor="short_name">Tên:</label>
                 <input type="text" id='short_name' {...form_attributeCatalog?.register('name_varriant')}
                   className='outline-none py-1.5 px-4 border border-gray-300 rounded w-full text-sm my-1' placeholder='Enter ...' />
-                <p className='text-gray-800 opacity-60 text-sm'>Tên cho thuộc tính</p>
+                <p className='text-gray-800 text-sm'>Tên cho thuộc tính</p>
                 <div className="flex items-center space-x-2 my-4">
                   <Checkbox id="terms" onClick={() => setStatusChecked(!statusChecked)} />
                   <label htmlFor="terms"
@@ -70,9 +84,9 @@ export default function Page() {
                     Cho phép lưu trữ
                   </label>
                 </div>
-                <p className='text-sm text-gray-500'>Kích hoạt tính năng này nếu bạn muốn thuộc tính này có lưu trữ sản phẩm trong cửa hàng của bạn.</p>
+                <p className='text-sm text-gray-800'>Kích hoạt tính năng này nếu bạn muốn thuộc tính này có lưu trữ sản phẩm trong cửa hàng của bạn.</p>
                 <div className='my-4'>
-                  <Select>
+                  <Select onValueChange={(value) => setStatusOptions(value)}>
                     <span>Loại: </span>
                     <SelectTrigger className="w-[180px] !h-auto py-1 mt-1">
                       <SelectValue placeholder="Lựa chọn" />
@@ -86,29 +100,56 @@ export default function Page() {
                   </Select>
                 </div>
 
-                <div className='flex flex-col gap-y-2'>
-                  <span>Chọn màu sắc:</span>
-                  <div className='flex gap-4'>
-                    <SketchPicker
-                      color={color}
-                      onChangeComplete={handleSetColor}
-                    />
-                    <div style={{
-                      backgroundColor: color
-                    }} className={`w-16 h-16 rounded border`}></div>
+                {
+                  (statusOptions === 'ux_color') &&
+                  <div className='flex flex-col gap-y-2'>
+                    <span>Chọn màu sắc:</span>
+                    <div className='flex gap-4'>
+                      <SketchPicker
+                        color={color}
+                        onChangeComplete={handleSetColor}
+                      />
+                      <div style={{
+                        backgroundColor: color
+                      }} className={`w-16 h-16 rounded border`}></div>
+                    </div>
                   </div>
-                </div>
+                }
                 <Button className='py-1.5 h-auto my-4 bg-indigo-600 hover:bg-indigo-800'>Thêm</Button>
               </form>
-
               {
                 isError &&
                 <p className='text-red-500 text-sm'>Lỗi, vui lòng kiểm tra lại!</p>
               }
             </div>
             {/* right */}
-            <div className='border rounded bg-white p-4'>
-              <span>hello world</span>
+            <div>
+              <div className='border rounded bg-[#F6F6F6]'>
+                <div className='grid grid-cols-[50px_auto_auto_150px] gap-4 p-2 border-b *:text-sm'>
+                  <div></div>
+                  <span>Tên</span>
+                  <span>Loại</span>
+                  <span>Thao tác</span>
+                </div>
+                {
+                  loadingAttributeCatalog && <div className='w-screen h-screen grid place-items-center'>
+                    <Loading_Dots />
+                  </div>
+                }
+                {
+                  arr_attributeCatalog?.map((item: any) => (
+                    <div key={String(Math.random())} className='grid grid-cols-[50px_auto_auto_150px] gap-4 my-4 p-2 *:text-sm'>
+                      <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 border'></div>
+                      <Link href={'/'}>{item?.name_varriant}</Link>
+                      <Link href={'/'}>{item?.type_varriant}</Link>
+                      <div className='flex gap-2'>
+                        <button className='text-rose-500'>Xóa</button>
+                        <Link href={'/'} className='text-sky-500 underline'>Sửa</Link>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
             </div>
           </section>
         </div>
