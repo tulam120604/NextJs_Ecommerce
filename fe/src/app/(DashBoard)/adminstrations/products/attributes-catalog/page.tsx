@@ -18,13 +18,26 @@ export default function Page() {
   const [statusChecked, setStatusChecked] = useState<any>(false);
   const [statusOptions, setStatusOptions] = useState<any>('');
   const [color, setColor] = useState<string>('#fff');
-  const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
+  const [attributeCatalog, setAttributeCatalog, removeAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
+
+  function generateRandomString(length: any) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+    return result;
+  }
+
+
   function handleSubmitForm(dataForm: any) {
     dataForm = {
       ...dataForm,
-      type_varriant: color
+      type_varriant: color,
+      key: generateRandomString(10),
     }
     if (statusChecked) {
       onSubmit(dataForm)
@@ -34,7 +47,8 @@ export default function Page() {
       dataForm = {
         ...dataForm,
         hex_color: color,
-        type_varriant: color
+        type_varriant: color,
+        key: generateRandomString(10),
       }
       let data_attributeCatalog = [
         dataForm
@@ -53,7 +67,11 @@ export default function Page() {
     console.log(color);
     setColor(color.hex);
   }
-  let arr_attributeCatalog: any = data?.concat(attributeCatalog);
+  const arr_attributeCatalog: any = data?.concat(attributeCatalog);
+  function clearAttributeCatalog(item: any) {
+    removeAttributeCatalog(item);
+  }
+
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed 
     top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
@@ -125,7 +143,7 @@ export default function Page() {
             {/* right */}
             <div>
               <div className='border rounded bg-[#F6F6F6]'>
-                <div className='grid grid-cols-[50px_auto_auto_150px] gap-4 p-2 border-b *:text-sm'>
+                <div className='grid grid-cols-[50px_260px_auto_150px] gap-4 p-2 border-b *:text-sm'>
                   <div></div>
                   <span>Tên</span>
                   <span>Loại</span>
@@ -138,12 +156,12 @@ export default function Page() {
                 }
                 {
                   arr_attributeCatalog?.map((item: any) => (
-                    <div key={String(Math.random())} className='grid grid-cols-[50px_auto_auto_150px] gap-4 my-4 p-2 *:text-sm'>
-                      <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 border'></div>
+                    <div key={item?.key} className='grid grid-cols-[50px_260px_auto_150px] items-center gap-4 my-4 p-2 *:text-sm'>
+                      <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 border rounded'></div>
                       <Link href={'/'}>{item?.name_varriant}</Link>
                       <Link href={'/'}>{item?.type_varriant}</Link>
-                      <div className='flex gap-2'>
-                        <button className='text-rose-500'>Xóa</button>
+                      <div className='flex gap-3 items-center'>
+                        <button onClick={() => clearAttributeCatalog(item?.key)} className='text-rose-500'>Xóa</button>
                         <Link href={'/'} className='text-sky-500 underline'>Sửa</Link>
                       </div>
                     </div>

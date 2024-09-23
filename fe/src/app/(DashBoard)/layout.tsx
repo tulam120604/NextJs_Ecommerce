@@ -65,7 +65,7 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
           after:border-r after:border-gray-300 after:z-[-1] after:rounded">
             <SideBarDashboard />
           </div>
-          <div className="min-h-[80vh] !text-gray-900 rounded">
+          <div className="min-h-[80vh] !text-gray-900 rounded px-3">
             {children}
           </div>
         </main>
