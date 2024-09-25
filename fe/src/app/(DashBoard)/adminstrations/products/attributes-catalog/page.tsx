@@ -11,17 +11,18 @@ import { SketchPicker } from 'react-color';
 import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
 import Link from 'next/link';
 import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
+import { SquarePen } from 'lucide-react';
 
 
 export default function Page() {
-  const { isLoading, isError, onSubmit, form_attributeCatalog } = useFormAttributeCatalog('CREATE');
+  const { isLoading, isError, onSubmit, form_attributeCatalog } = useFormAttributeCatalog('CREATE_or_REMOVE_NAME_VARRIANT');
+  const [openFormEdit, setOpenFormEdit] = useState(false);
   const [statusChecked, setStatusChecked] = useState<any>(false);
   const [statusOptions, setStatusOptions] = useState<any>('');
   const [color, setColor] = useState<string>('#fff');
-  const [attributeCatalog, setAttributeCatalog, removeAttributeCatalog] = useSessionStorage('attribute_catalog', []);
+  const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
-
   function generateRandomString(length: any) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -32,22 +33,26 @@ export default function Page() {
     return result;
   }
 
-
   function handleSubmitForm(dataForm: any) {
     dataForm = {
       ...dataForm,
-      type_varriant: color,
+      type_varriant: statusOptions,
+      hex_color: color,
       key: generateRandomString(10),
     }
     if (statusChecked) {
-      onSubmit(dataForm)
+      onSubmit({
+        action: 'create_varriant',
+        values: dataForm,
+        id_account: user?.check_email?._id
+      })
     }
-    // save sessionStorage 
+    // save sessionStorage
     else {
       dataForm = {
         ...dataForm,
         hex_color: color,
-        type_varriant: color,
+        type_varriant: statusOptions,
         key: generateRandomString(10),
       }
       let data_attributeCatalog = [
@@ -64,13 +69,26 @@ export default function Page() {
   }
 
   const handleSetColor = (color: any) => {
-    console.log(color);
     setColor(color.hex);
+    setStatusOptions('ux_color')
   }
-  const arr_attributeCatalog: any = data?.concat(attributeCatalog);
+  const arr_attributeCatalog: any = data?.varriants?.concat(attributeCatalog) ?? [];
   function clearAttributeCatalog(item: any) {
-    removeAttributeCatalog(item);
+    const check_location_value = attributeCatalog?.find((value: any) => value?.key === item);
+    if (check_location_value) {
+      const new_attributeCatalog = attributeCatalog?.filter((value: any) => value?.key !== item);
+      setAttributeCatalog(new_attributeCatalog);
+    }
+    else {
+      onSubmit({
+        action: 'remove_name_varriant',
+        id_account: user?.check_email?._id,
+        id_item: item
+      })
+    }
   }
+
+  console.log(openFormEdit)
 
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed 
@@ -158,11 +176,17 @@ export default function Page() {
                   arr_attributeCatalog?.map((item: any) => (
                     <div key={item?.key} className='grid grid-cols-[50px_260px_auto_150px] items-center gap-4 my-4 p-2 *:text-sm'>
                       <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 border rounded'></div>
-                      <Link href={'/'}>{item?.name_varriant}</Link>
-                      <Link href={'/'}>{item?.type_varriant}</Link>
+                      <form className='flex items-center gap-2'>
+                        <input type="text" placeholder='Enter' defaultValue={item?.name_varriant}
+                          className='outline-none border rounded text-sm px-2 py-1 my-2 w-[180px]'/>
+                        <button>
+                          <SquarePen className='h-5 hover:scale-105 duration-200' />
+                        </button>
+                      </form>
+                      <span>{item?.type_varriant}</span>
                       <div className='flex gap-3 items-center'>
                         <button onClick={() => clearAttributeCatalog(item?.key)} className='text-rose-500'>Xóa</button>
-                        <Link href={'/'} className='text-sky-500 underline'>Sửa</Link>
+                        <button className='text-sky-500 underline'>Sửa</button>
                       </div>
                     </div>
                   ))

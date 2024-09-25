@@ -1,7 +1,10 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { create_attributesCatalog, create_value_attributeCatalog, get_attributeCatalog_by_item, get_attributeCatalog_by_seller } from "../../Services/Services_Items/attribute_catalog";
+import {
+    create_attributesCatalog, create_value_attributeCatalog, get_attributeCatalog_by_item,
+    get_attributeCatalog_by_seller, remove_value_varriant_attributeCatalog
+} from "../../Services/Services_Items/attribute_catalog";
 
 
 export function Get_AttributeCatalog_Items(id_item: any) {
@@ -22,13 +25,16 @@ export function Get_AttributeCatalog_Seller(id_seller: any) {
 }
 
 
-export function Mutation_AttributeCatalog(actions: 'CREATE' | 'CREATE_VALUE' | 'UPDATE') {
+export function Mutation_AttributeCatalog(actions: 'CREATE_or_REMOVE_NAME_VARRIANT' | 'CREATE_VALUE' | 'UPDATE') {
     const queryClient = useQueryClient();
     const { mutate, ...rest } = useMutation({
         mutationFn: async (value: any) => {
             switch (actions) {
-                case 'CREATE':
-                    return await create_attributesCatalog(value);
+                case 'CREATE_or_REMOVE_NAME_VARRIANT':
+                    if (value?.action === 'create_varriant'){
+                        return await create_attributesCatalog(value);
+                    }
+                    return await remove_value_varriant_attributeCatalog(value);
                 case "CREATE_VALUE":
                     return await create_value_attributeCatalog(value);
                 default: return
@@ -36,7 +42,7 @@ export function Mutation_AttributeCatalog(actions: 'CREATE' | 'CREATE_VALUE' | '
         },
         onSuccess: (res) => {
             queryClient.invalidateQueries({
-                queryKey: ['Attribute_Key']
+                queryKey: ['Attribute_Catalog_Key']
             })
         },
         onError: (error) => error

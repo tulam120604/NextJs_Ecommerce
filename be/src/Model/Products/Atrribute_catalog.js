@@ -7,15 +7,15 @@ const Schema_Attribute_Catalog = new mongoose.Schema({
     },
     varriants: [
         {
-            _id_varriant: {
-                type: mongoose.Schema.Types.ObjectId,
-                auto: true
-            },
             name_varriant: {
                 type: String,
             },
             hex_color: String,
-            type_varriant : String,
+            type_varriant: String,
+            key: {
+                type : String,
+                required : true,
+            },
             value_varriant: [
                 {
                     name_value: String,

@@ -137,7 +137,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
         }
     }, [mode, my_Form, loading])
     return (<>
-        <section className="bg-white border border-gray-300 rounded-lg flex flex-col gap-y-6 py-6 rounded">
+        <section className="flex flex-col gap-y-6 py-6 rounded">
             {
                 (loading === 'dang_call') &&
                 (<div className='grid place-items-center fixed z-[3] *:z-[4] w-screen h-screen top-0 left-0 bg-[#10182488]'>
@@ -146,7 +146,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
             }
             <div className='flex items-center justify-between'>
                 <strong className="text-gray-900 lg:text-xl">{mode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}</strong>
-                <Link className='text-white hover:text-gray-200 hover:underline' href={'/adminstrations/products/list'}>Quay lại</Link>
+                <Link className='text-gray-700 hover:text-gray-900 hover:underline' href={'/adminstrations/products/list'}>Quay lại</Link>
             </div>
             <div className='relative'>
                 <button onClick={handle_category} type='button' className="border-none text-sm text-gray-100 h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-indigo-800 duration-300">Thêm danh mục+</button>
@@ -156,7 +156,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 </>)
                 }
             </div>
-            <form onSubmit={my_Form.handleSubmit(formSubmit)} className="w-full px-4 flex flex-col gap-y-10 py-4 rounded *:w-full">
+            <form onSubmit={my_Form.handleSubmit(formSubmit)} className="px-4 flex flex-col gap-y-10 py-4 rounded *:w-full">
                 <div className='grid grid-cols-[auto_80%] text-gray-800 items-center justify-between'>
                     <label htmlFor="short_name">Tên sản phẩm :</label>
                     <input type="text" id='short_name' {...my_Form.register('short_name')}

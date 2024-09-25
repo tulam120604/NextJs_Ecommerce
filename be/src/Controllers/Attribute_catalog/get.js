@@ -28,7 +28,7 @@ export async function get_attribute_catalog_by_user(req, res) {
                 message: 'No user!'
             })
         }
-        const data = await Attribute_Catalog.find({ id_account: req.params.id_account });
+        const data = await Attribute_Catalog.findOne({ id_account: req.params.id_account });
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data

@@ -49,13 +49,32 @@ export async function create_attributesCatalog(value: any) {
 
 export async function create_value_attributeCatalog(value: any) {
     try {
-        const res = await fetch(`/attribute_catalog/create_value`, {
+        const res = await fetch(`${apiURi}/attribute_catalog/create_value`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(value)
         });
+        if (!res.ok) {
+            return res
+        };
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export async function remove_value_varriant_attributeCatalog(value: any) {
+    try {
+        const res = await fetch(`${apiURi}/attribute_catalog/remove/${value?.id_account}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(value)
+        });
+        console.log(res)
         if (!res.ok) {
             return res
         };

@@ -9,20 +9,23 @@ export async function create_attributes_catalog(req, res) {
                 message: 'Not account!'
             })
         };
-        if (values || values.length < 1) {
+        if (!values) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No value attribute!'
             })
         }
-        const varriant = values.map(item => ({
-            color_item: item.color_item,
-            size_item: []
-        }))
-        await Attribute_Catalog.create({
-            id_account,
-            varriants: varriant
-        });
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        const check_seller_attribute_catalog = await Attribute_Catalog.findOne({ id_account });
+        if (!check_seller_attribute_catalog) {
+            await Attribute_Catalog.create({
+                id_account,
+                varriants: [values]
+            });
+        }
+        else {
+            check_seller_attribute_catalog.varriants.push(values);
+            await check_seller_attribute_catalog.save();
+        }
+        return res.status(StatusCodes.OK).json({
             message: 'OK'
         })
     } catch (error) {
@@ -35,19 +38,19 @@ export async function create_attributes_catalog(req, res) {
 
 export async function create_value_attributes_catalog(req, res) {
     try {
-        const { _id, id_account, value_varriant } = req.body;
-        if (_id || id_account) {
+        const { key, id_account, value_varriant } = req.body;
+        if (key || id_account) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 message: 'Can not find account or attributes!'
             })
         }
-        const data_attribute = await Attribute_Catalog.findOne({ 'varrriants._id_varriant': _id });
+        const data_attribute = await Attribute_Catalog.findOne({ 'varriants.key': key });
         if (!data_attribute) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'No attribute'
+                message: 'No attribute!'
             })
         }
-        const varriant = data_attribute.varriants.find(data => data._id_varriant.toString() === _id.toString());
+        const varriant = data_attribute.varriants.find(data => data.key.toString() === key.toString());
         if (!varriant) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No varriant!'
