@@ -1,7 +1,7 @@
 'use client';
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Auth_Wrap_Seller } from '../../_Auth_Wrap/Page';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
@@ -9,20 +9,19 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import useFormAttributeCatalog from '@/src/app/_lib/Custome_Hooks/AttributeCatalog_Form';
 import { SketchPicker } from 'react-color';
 import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
-import Link from 'next/link';
 import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
 import { SquarePen } from 'lucide-react';
 
 
 export default function Page() {
-  const { isLoading, isError, onSubmit, form_attributeCatalog } = useFormAttributeCatalog('CREATE_or_REMOVE_NAME_VARRIANT');
-  const [openFormEdit, setOpenFormEdit] = useState(false);
+  const { isLoading, isError, onSubmit, errorsForm, form_attributeCatalog } = useFormAttributeCatalog('CREATE_or_REMOVE_NAME_VARRIANT');
   const [statusChecked, setStatusChecked] = useState<any>(false);
   const [statusOptions, setStatusOptions] = useState<any>('');
-  const [color, setColor] = useState<string>('#fff');
+  const [color, setColor] = useState<string>('');
   const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
+  const btnEditNameVarriant = useRef<HTMLButtonElement>(null)
   function generateRandomString(length: any) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -88,7 +87,11 @@ export default function Page() {
     }
   }
 
-  console.log(openFormEdit)
+  // edit value varriant 
+  function handleEdit() {
+    btnEditNameVarriant?.current?.classList?.add('block');
+    btnEditNameVarriant?.current?.classList?.remove('hidden');
+  }
 
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed 
@@ -110,8 +113,9 @@ export default function Page() {
                 trong thanh bên của cửa hàng bằng cách sử dụng các tiện ích điều hướng theo lớp.</p>
               <form onSubmit={form_attributeCatalog?.handleSubmit(handleSubmitForm)}>
                 <label htmlFor="short_name">Tên:</label>
-                <input type="text" id='short_name' {...form_attributeCatalog?.register('name_varriant')}
+                <input type="text" id='short_name' {...form_attributeCatalog?.register('name_varriant', { required: true })}
                   className='outline-none py-1.5 px-4 border border-gray-300 rounded w-full text-sm my-1' placeholder='Enter ...' />
+                {errorsForm && <p className='text-sm my-2 text-red-500'>{errorsForm?.name_varriant?.message}</p>}
                 <p className='text-gray-800 text-sm'>Tên cho thuộc tính</p>
                 <div className="flex items-center space-x-2 my-4">
                   <Checkbox id="terms" onClick={() => setStatusChecked(!statusChecked)} />
@@ -161,7 +165,7 @@ export default function Page() {
             {/* right */}
             <div>
               <div className='border rounded bg-[#F6F6F6]'>
-                <div className='grid grid-cols-[50px_260px_auto_150px] gap-4 p-2 border-b *:text-sm'>
+                <div className='grid grid-cols-[50px_260px_auto_150px] gap-2 py-2 px-4 border-b *:text-sm'>
                   <div></div>
                   <span>Tên</span>
                   <span>Loại</span>
@@ -174,19 +178,19 @@ export default function Page() {
                 }
                 {
                   arr_attributeCatalog?.map((item: any) => (
-                    <div key={item?.key} className='grid grid-cols-[50px_260px_auto_150px] items-center gap-4 my-4 p-2 *:text-sm'>
-                      <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 border rounded'></div>
+                    <div key={item?.key} className='grid grid-cols-[50px_260px_auto_150px] items-center gap-2 my-4 py-2 px-4 *:text-sm'>
+                      <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 rounded'></div>
                       <form className='flex items-center gap-2'>
                         <input type="text" placeholder='Enter' defaultValue={item?.name_varriant}
-                          className='outline-none border rounded text-sm px-2 py-1 my-2 w-[180px]'/>
-                        <button>
+                          className='outline-none border rounded text-sm px-2 py-1 my-2 w-[180px]'
+                          onChange={handleEdit} />
+                        <button className='hidden' ref={btnEditNameVarriant}>
                           <SquarePen className='h-5 hover:scale-105 duration-200' />
                         </button>
                       </form>
                       <span>{item?.type_varriant}</span>
-                      <div className='flex gap-3 items-center'>
-                        <button onClick={() => clearAttributeCatalog(item?.key)} className='text-rose-500'>Xóa</button>
-                        <button className='text-sky-500 underline'>Sửa</button>
+                      <div>
+                        <button onClick={() => clearAttributeCatalog(item?.key)} className='text-rose-500 text-start'>Xóa</button>
                       </div>
                     </div>
                   ))

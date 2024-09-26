@@ -31,3 +31,7 @@ export const schemaValidateAddress = yup.object().shape({
     district: yup.string().required('Bắt buộc!'),
     wards: yup.string().required('Bắt buộc!'),
 })
+
+export const schemaValidateAttributeCatalog =  yup.object().shape({
+    name_varriant: yup.string().required('Trường này là bắt buộc!')
+})
