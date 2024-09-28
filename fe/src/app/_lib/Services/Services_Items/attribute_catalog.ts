@@ -38,9 +38,6 @@ export async function create_attributesCatalog(value: any) {
             },
             body: JSON.stringify(value)
         });
-        if (!res.ok) {
-            return res
-        };
         return res
     } catch (error) {
         return (error || "Lỗi rồi đại vương ơi!");
@@ -56,9 +53,6 @@ export async function create_value_attributeCatalog(value: any) {
             },
             body: JSON.stringify(value)
         });
-        if (!res.ok) {
-            return res
-        };
         return res
     } catch (error) {
         return error
@@ -75,9 +69,21 @@ export async function remove_value_varriant_attributeCatalog(value: any) {
             body: JSON.stringify(value)
         });
         console.log(res)
-        if (!res.ok) {
-            return res
-        };
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export async function update_attribute_catalog(value: { key: string | number, name_varriant: string | number }) {
+    try {
+        const res = await fetch(`${apiURi}/addtribute_catalog/update/${value?.key}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(value)
+        });
         return res
     } catch (error) {
         return error

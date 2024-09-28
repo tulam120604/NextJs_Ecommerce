@@ -3,7 +3,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     create_attributesCatalog, create_value_attributeCatalog, get_attributeCatalog_by_item,
-    get_attributeCatalog_by_seller, remove_value_varriant_attributeCatalog
+    get_attributeCatalog_by_seller, remove_value_varriant_attributeCatalog,
+    update_attribute_catalog
 } from "../../Services/Services_Items/attribute_catalog";
 
 
@@ -31,12 +32,14 @@ export function Mutation_AttributeCatalog(actions: 'CREATE_or_REMOVE_NAME_VARRIA
         mutationFn: async (value: any) => {
             switch (actions) {
                 case 'CREATE_or_REMOVE_NAME_VARRIANT':
-                    if (value?.action === 'create_varriant'){
+                    if (value?.action === 'create_varriant') {
                         return await create_attributesCatalog(value);
                     }
                     return await remove_value_varriant_attributeCatalog(value);
                 case "CREATE_VALUE":
                     return await create_value_attributeCatalog(value);
+                case "UPDATE":
+                    return await update_attribute_catalog(value)
                 default: return
             }
         },
