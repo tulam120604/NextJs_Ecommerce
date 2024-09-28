@@ -5,7 +5,7 @@ import { Mutation_AttributeCatalog } from "../Tanstack_Query/Attribute_catalog/Q
 import { useForm } from 'react-hook-form';
 import { schemaValidateAttributeCatalog } from "../../(Auth)/validate";
 
-export default function useFormAttributeCatalog(mode: 'CREATE_or_REMOVE_NAME_VARRIANT' | 'CREATE_VALUE') {
+export default function useFormAttributeCatalog(mode: any) {
     const form_attributeCatalog = useForm({
         resolver: yupResolver(schemaValidateAttributeCatalog)
     });
