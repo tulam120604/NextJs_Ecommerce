@@ -77,7 +77,7 @@ export async function remove_value_varriant_attributeCatalog(value: any) {
 
 export async function update_attribute_catalog(value: { key: string | number, name_varriant: string | number }) {
     try {
-        const res = await fetch(`${apiURi}/addtribute_catalog/update/${value?.key}`, {
+        const res = await fetch(`${apiURi}/attribute_catalog/update/${value?.key}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

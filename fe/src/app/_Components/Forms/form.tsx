@@ -9,13 +9,23 @@ import Form_category from './form_category';
 import { CircleMinus, SquarePlus } from 'lucide-react';
 import { useCustome_Hooks_Form } from '../../_lib/Custome_Hooks/MyForm';
 import Loading_Dots from '../Loadings/Loading_Dots';
+import { Checkbox } from '../ui/checkbox';
+import { Get_AttributeCatalog_Seller } from '../../_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
+import { useLocalStorage, useSessionStorage } from '../../_lib/Custome_Hooks/UseStorage';
 
 
 const MyForm: React.FC<any> = ({ mode }: any) => {
     const { my_Form, submitForm, isLoading, loading, data_Category, data_one_item } = useCustome_Hooks_Form({ mode });
     const [change_img, setChange_img] = useState([]);
     const [images, setImages] = useState<any[]>([]);
-    const [category_form, setCategory_form] = useState<boolean>(false)
+    const [statusChecked, setStatusChecked] = useState<boolean>(false);
+    const [category_form, setCategory_form] = useState<boolean>(false);
+    const [state_show_attributeCatalog, setState_show_attributeCatalog] = useState<boolean>(false);
+    const [user] = useLocalStorage('account', '');
+    const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
+    const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
+    const arr_attributeCatalog: any = data?.varriants?.concat(attributeCatalog) ?? [];
+    const [name_varriant, setName_varriant] = useState<string>('');
     const [attributes, setAttribute] = useState<any>([{
         name_varriant: '',
         value_varriant: [{
@@ -135,7 +145,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 }],
             }])
         }
-    }, [mode, my_Form, loading])
+    }, [mode, my_Form, loading]);
     return (<>
         <section className="flex flex-col gap-y-6 py-6 rounded">
             {
@@ -202,14 +212,20 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                             className='outline-none py-2 px-4 rounded cursor-pointer' onChange={pushImage} multiple />
                     </div>
                 </div>
-
                 <div className='flex flex-col gap-4'>
                     <label htmlFor="des_product">Mô tả sản phẩm :</label>
                     <textarea id='des_product' {...my_Form.register('des_product')}
                         className='outline-none py-2 px-4 border border-gray-300 rounded min-h-[300px]' placeholder='Mô tả sản phẩm ...' />
                 </div>
+                <div className="flex items-center space-x-2">
+                    <Checkbox id="terms" onClick={() => setStatusChecked(!statusChecked)} />
+                    <label htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        Thuộc tính sản phẩm
+                    </label>
+                </div>
                 {
-                    (attributes?.length < 1) && <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
+                    (!statusChecked || attributes?.length < 1) && <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
                         <label htmlFor="price_product">Giá sản phẩm :</label>
                         <div>
                             <input type="text" id='price_product' {...my_Form.register('price_product')}
@@ -217,21 +233,56 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                         </div>
                     </div>
                 }
+                {(!statusChecked || attributes?.length < 1) && <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
+                    <label>Số lượng :</label>
+                    <div>
+                        <input
+                            type="text"
+                            {...my_Form.register(`stock`)}
+                            className='outline-none py-2 px-4 border border-gray-300 rounded'
+                            placeholder='Số lượng ...'
+                        />
+                    </div>
+                </div>}
                 {
+                    statusChecked &&
                     <div className='flex flex-col text-gray-800 gap-y-3'>
-                        <label>Thuộc tính sản phẩm (nếu có):</label>
                         {attributes?.map((item: any, i: any) => (<>
                             <div key={i} className='flex item-center gap-4 w-full text-sm flex-wrap'>
                                 <input
                                     type="text"
                                     {...my_Form.register(`attributes[${i}].name_varriant`, { required: true })}
-                                    defaultValue={item?.color_item}
+                                    defaultValue={mode ? item?.color_item : name_varriant}
                                     className='outline-none py-2 px-4 border border-gray-300 rounded'
                                     placeholder={`Thông số ${i + 1} (nếu có)...`} key={i}
+                                    onClick={() => setState_show_attributeCatalog(true)}
+                                    onBlur={() => {
+                                        setTimeout(() => {
+                                            setState_show_attributeCatalog(false)
+                                        }, 200)
+                                    }}
                                 />
                                 <Button type='button' onClick={() => add_value_varriant(i)} className='bg-indigo-500 hover:bg-indigo-600 duration-200'>
                                     <SquarePlus />
                                 </Button>
+                                {
+                                    state_show_attributeCatalog &&
+                                    <div className='absolute translate-y-10'>
+                                        {
+                                            loadingAttributeCatalog ? <span>Loading...</span> :
+                                                <div className='bg-white px-1 *:px-4 py-2 w-full rounded shadow-xl *:my-0.5 *:py-2 *:rounded *:cursor-pointer *:text-start'>
+                                                    {arr_attributeCatalog && arr_attributeCatalog?.map((value: any) =>
+                                                    (
+                                                        <button onClick={() => {
+                                                            setName_varriant(value?.name_varriant),
+                                                                setState_show_attributeCatalog(false)
+                                                        }} key={value?.key} className='hover:bg-gray-200 w-full'>{value?.name_varriant}</button>
+                                                    )
+                                                    )}
+                                                </div>
+                                        }
+                                    </div>
+                                }
                             </div>
                             {item?.value_varriant?.map((e: any, j: any) => (
                                 <div key={i} className='flex item-center gap-x-4 text-sm'>
@@ -271,26 +322,12 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                         </div>
                     </div>
                 }
-
-                {attributes?.length < 1 && <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
-                    <label>Số lượng :</label>
-                    <div>
-                        <input
-                            type="text"
-                            {...my_Form.register(`stock`)}
-                            className='outline-none py-2 px-4 border border-gray-300 rounded'
-                            placeholder='Số lượng ...'
-                        />
-                    </div>
-
-                </div>}
                 <div className='grid grid-cols-[auto_80%] text-gray-800 items-center'>
-                    <label htmlFor="made_in">Xuất xứ sản phẩm :</label>
+                    <label htmlFor="made_in">Xuất xứ sản phẩm:</label>
                     <div>
                         <input id='made_in' {...my_Form.register('made_in')}
                             className='outline-none py-2 px-4 border border-gray-300 rounded' placeholder='Xuất xứ sản phẩm ...' />
                     </div>
-
                 </div>
                 {loading === 'call_error' && <span className='text-red-500'>Vui lòng kiểm tra lại!!</span>}
                 <div className='w-full'>

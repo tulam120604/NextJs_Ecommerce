@@ -1,7 +1,7 @@
 'use client';
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import React, { Suspense, useRef, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Auth_Wrap_Seller } from '../../_Auth_Wrap/Page';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox';
@@ -21,7 +21,6 @@ export default function Page() {
   const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
-  const btnEditNameVarriant = useRef<HTMLButtonElement>(null)
   function generateRandomString(length: any) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -87,11 +86,6 @@ export default function Page() {
     }
   }
 
-  // edit value varriant 
-  function handleEdit() {
-    btnEditNameVarriant?.current?.classList?.add('block');
-    btnEditNameVarriant?.current?.classList?.remove('hidden');
-  }
 
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed 
@@ -167,8 +161,7 @@ export default function Page() {
               <List_data_attribute_catalog
                 dataProps={{
                   arr_attributeCatalog,
-                  handleEdit,
-                  btnEditNameVarriant,
+                  loadingAttributeCatalog,
                   clearAttributeCatalog
                 }}
               />
