@@ -14,7 +14,7 @@ export const Search_Component_Dashboard = () => {
         type="text"
         id="Search"
         placeholder="Search for..."
-        className="w-full rounded-md text-white border-gray-200 bg-gray-900 p-3 outline-none pe-10 shadow-sm sm:text-sm"
+        className="w-full rounded-md text-white bg-[#0f1112] border border-gray-600 px-3 py-2 outline-none pe-10 shadow-sm sm:text-sm"
       />
       <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
         <button type="button" className="text-gray-100 hover:text-gray-300">

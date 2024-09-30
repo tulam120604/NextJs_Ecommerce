@@ -65,13 +65,16 @@ export default function Address_component({ id_user }: { id_user?: string | numb
                         {mutate_address?.errorForm?.phone?.message}</span>}
                 </div>
                 <div className="grid gap-2 grid-cols-2 lg:grid-cols-3">
+                    {
+                        isError && <span>Lỗi!</span>
+                    }
                     <div>
                         <Label htmlFor="provinces">Tỉnh/thành :</Label>
                         <select id="provinces" className="border w-full rounded border-gray-300 text-gray-700 sm:text-sm py-1.5 px-2"
                             {...mutate_address?.form_address?.register('provinces', { required: true })} onChange={get_District}>
                             <option value="">-- Chọn --</option>
                             {
-                                data && data?.map((value: any) => (<>
+                                Array.isArray(data) && data?.map((value: any) => (<>
                                     <option value={value?.name}>{value?.name}</option>
                                 </>))
                             }

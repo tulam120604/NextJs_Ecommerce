@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import React, { Suspense, useState } from 'react';
@@ -11,6 +11,7 @@ import { SketchPicker } from 'react-color';
 import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
 import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
 import List_data_attribute_catalog from './_component/page';
+import { generateRandomString } from '@/src/app/_lib/Custome_Hooks/useRandomString';
 
 
 export default function Page() {
@@ -21,15 +22,6 @@ export default function Page() {
   const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
-  function generateRandomString(length: any) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      result += characters[randomIndex];
-    }
-    return result;
-  }
 
   function handleSubmitForm(dataForm: any) {
     dataForm = {
@@ -73,7 +65,7 @@ export default function Page() {
   const arr_attributeCatalog: any = data?.varriants?.concat(attributeCatalog) ?? [];
   function clearAttributeCatalog(item: any) {
     const check_location_value = attributeCatalog?.find((value: any) => value?.key === item);
-    if (check_location_value) {
+    if (check_location_value) { 
       const new_attributeCatalog = attributeCatalog?.filter((value: any) => value?.key !== item);
       setAttributeCatalog(new_attributeCatalog);
     }
@@ -133,7 +125,6 @@ export default function Page() {
                     </SelectContent>
                   </Select>
                 </div>
-
                 {
                   (statusOptions === 'ux_color') &&
                   <div className='flex flex-col gap-y-2'>

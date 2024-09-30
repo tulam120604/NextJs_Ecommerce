@@ -22,6 +22,12 @@ export async function create_attributes_catalog(req, res) {
             });
         }
         else {
+            const check_name_varriant = check_seller_attribute_catalog.varriants.find(value => value.name_varriant.toString().trim() === values.name_varriant.toString().trim());
+            if (check_name_varriant){
+                return res.status(StatusCodes.CONFLICT).json({
+                    message: 'Tên thuộc tính đã tồn tại!'
+                })
+            }
             check_seller_attribute_catalog.varriants.push(values);
             await check_seller_attribute_catalog.save();
         }
