@@ -22,8 +22,8 @@ const Header = () => {
             (window.addEventListener('scroll', () => {
                 if (toggleFixedHeader.current) {
                     (window.scrollY > 100) ?
-                        (toggleFixedHeader.current.classList.add('animate-[animationScrollYHeader_1s]', '-translate-y-9', 'sticky')) :
-                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '-translate-y-9', 'sticky'));
+                        (toggleFixedHeader.current.classList.add('animate-[animationScrollYHeader_1s]', '!py-4', 'sticky')) :
+                        (toggleFixedHeader.current.classList.remove('animate-[animationScrollYHeader_1s]', '!py-4', 'sticky'));
                 }
             }))
         }
@@ -36,7 +36,7 @@ const Header = () => {
             if (!localStorage.getItem('account')) {
                 setCheckLocal(false)
                 routing.push('/');
-            }
+            } 
             else {
                 setCheckLocal(true)
             }
@@ -45,7 +45,7 @@ const Header = () => {
         status_Storage();
         window.addEventListener('storage', status_Storage);
         return () => window.removeEventListener('storage', status_Storage);
-    }, [checkLocal, routing])
+    }, [checkLocal, routing]);
 
     // cart :
     function handleCart() {
@@ -78,13 +78,9 @@ const Header = () => {
     }
 
     return (
-        <header ref={toggleFixedHeader} className="w-full bg-none z-[20] duration-300 top-0 lg:h-[103px] bg-gray-900 text-white">
-            {/* top header */}
-            <div className="w-full lg:h-[37px] mb:h-[34px] *:text-white flex justify-center items-center *:lg:text-sm *:mb:text-xs gap-x-4">
-                <span className="opacity-80 lg:w-auto mb:w-[266px] mb:truncate">Xin chào đại vương, chúc đại vương có một trải nghiệm thoải mái.</span>
-            </div>
+        <header ref={toggleFixedHeader} className="w-full z-[20] duration-300 py-6 top-0 bg-gray-900 text-white">
             {/* logo, search and cart */}
-            <div className="relative mx-auto max-w-[1440px] w-[95vw] lg:h-[66px] mb:h-[56px] flex justify-between *:flex *:items-center gap-x-20 items-center">
+            <div className="relative mx-auto max-w-[1440px] w-[95vw] flex justify-between *:flex *:items-center gap-x-20 items-center">
                 <div className=''>
                     <Link className='lg:text-2xl text-lg font-extrabold' href={'/'}>
                         Store88

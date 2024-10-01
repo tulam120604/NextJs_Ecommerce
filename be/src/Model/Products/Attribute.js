@@ -1,10 +1,6 @@
 import mongoose from 'mongoose';
 
 const Schema_Attribute = new mongoose.Schema({
-    id_account: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account'
-    },
     varriants: [
         {
             name_varriant: {
