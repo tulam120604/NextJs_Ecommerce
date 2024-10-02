@@ -73,8 +73,7 @@ const Header = () => {
         }
         return (<>
             {data?.items && (<span className="z-[1] absolute bg-red-500 -top-[20%] -right-1/4 grid place-items-center rounded-[50%] w-5 h-5 text-xs text-white">{new_arr?.length}</span>)}
-        </>
-        )
+        </>)
     }
 
     return (
