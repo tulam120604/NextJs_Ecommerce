@@ -18,7 +18,7 @@ RoutesProducts.delete('/products/destroy_item/:id', middleWare, Products.destroy
 RoutesProducts.put('/products/admin/:id', upload.array('gallery'), middleWare, Products.edit_Product);
 RoutesProducts.get('/products/admin/trash', middleWare, Products.get_recycle_items);
 RoutesProducts.patch('/products/admin/trash/:id', middleWare, Products.restore_item);
-RoutesProducts.get('/products/sellers/:id_user', Products.get_item_by_user)
+RoutesProducts.get('/products/sellers/:id_user', Products.get_item_by_user);
 
 
 export default RoutesProducts;

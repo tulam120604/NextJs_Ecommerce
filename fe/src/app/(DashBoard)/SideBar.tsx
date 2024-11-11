@@ -32,6 +32,10 @@ const SideBarDashboard = () => {
                     path: '/adminstrations/products/list',
                 },
                 {
+                    name: 'Tạo sản phẩm',
+                    path: '/adminstrations/products/create_item',
+                },
+                {
                     name: 'Thuộc tính',
                     path: '/adminstrations/products/attributes-catalog',
                 },
@@ -61,7 +65,7 @@ const SideBarDashboard = () => {
         arr = arr.filter((_: any, index: number) => ![2, 5].includes(index))
     }
     return (
-        <div className="*:relative flex flex-col text-gray-900 gap-y-4 *:flex *:items-center *:whitespace-nowrap">
+        <div className="*:relative flex flex-col text-gray-900 gap-y-4 *:flex *:items-center *:whitespace-nowrap border-r border-gray-300">
             {
                 arr?.map((item) => {
                     const isActive = usePathName.startsWith(item?.pathName);
@@ -93,7 +97,7 @@ const SideBarDashboard = () => {
                                         const isChildActive = usePathName === uri.path;
                                         return (
                                             <Link key={uri?.path} href={uri?.path} className={`${(isChildActive) ? 'group lg:px-10 lg:py-2 p-1.5 text-gray-900' :
-                                                'lg:px-10 lg:py-2 p-1.5 hover:text-gray-900'}`}>
+                                                'lg:px-10 lg:py-2 p-1.5 hover:text-gray-900 opacity-70 hover:opacity-100'}`}>
                                                 <span className="hidden lg:block text-sm">{uri?.name}</span>
                                             </Link>
                                         )

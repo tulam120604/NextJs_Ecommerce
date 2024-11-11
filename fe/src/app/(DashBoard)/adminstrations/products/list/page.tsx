@@ -60,11 +60,6 @@ const Page = () => {
       <Auth_Wrap_Seller>
         <div className="flex flex-col gap-y-6 py-4 rounded">
           <strong className='text-xl'>Danh sách sản phẩm</strong>
-          {/* {(Array.isArray(data)) ? (<> */}
-          <div className="sticky z-[2] top-20">
-            <Link className="border-none text-gray-100 text-sm h-full px-5 py-2.5 rounded bg-[#2563EB] hover:bg-[#2563EB88] duration-300" 
-            href={'/adminstrations/products/create_item'}>Thêm sản phẩm +</Link>
-          </div>
           {
             data?.status === 401 ? <span className="text-gray-900 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
               data?.data ? (<>

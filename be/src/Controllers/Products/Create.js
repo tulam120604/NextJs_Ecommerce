@@ -39,7 +39,7 @@ export async function Create_Product(req, res) {
         const allData = {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
-            varriants: null,
+            variant: null,
             gallery: url_image_gallery
         };
         const { error } = validateProducts.validate(req.body, { abortEarly: false });
@@ -51,10 +51,10 @@ export async function Create_Product(req, res) {
         }
         if (dataClient.variant) {
             const convert_variant = JSON.parse(dataClient.variant);
-            const variant = await create_variant(convert_variant)
+            const variant = await create_variant(convert_variant);
             const dataRequest = {
                 ...allData,
-                varriants: variant._id
+                variant: variant._id
             }
             const data = await Products.create(dataRequest);
             return res.status(StatusCodes.CREATED).json({

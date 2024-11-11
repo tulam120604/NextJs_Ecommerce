@@ -45,11 +45,11 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const ref_validate_attribute = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     if (data_Item_Detail) {
-      if (data_Item_Detail?.attributes?.varriants.length > 0) {
+      if (data_Item_Detail?.variant?.variants.length > 0) {
         const a: any = [];
-        data_Item_Detail?.attributes?.varriants?.map((item: any) => {
-          item?.size_item.filter((data_attr: any) => {
-            if (data_attr?.stock_item > 0) {
+        data_Item_Detail?.variant?.variants?.map((item: any) => {
+          item?.value_variants.filter((data_attr: any) => {
+            if (data_attr?.stock_variant > 0) {
               a.push(item);
             }
           })
@@ -62,7 +62,6 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
     } else {
       routing.push('/')
     }
-
   }, []);
 
   // up, dow quantity
@@ -118,10 +117,10 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         varriants_attribute.filter((attr: any) => {
           ref_validate_attribute.current?.classList.remove('block');
           ref_validate_attribute.current?.classList.add('hidden');
-          (attr.color_item == item) && (
-            attr?.size_item.filter((s: any) => {
-              (s.name_size) ? setsize_attribute(attr.size_item) :
-                (setQuantity_attributes(s.stock_item), set_price_attr(s.price_attribute), setsize_attribute(''));
+          (attr.attribute == item) && (
+            attr?.value_variants.filter((s: any) => {
+              (s.name_variant && (s.name_variant.trim() !== '')) ? setsize_attribute(attr.name_variant) :
+                (setQuantity_attributes(s.stock_variant), set_price_attr(s.price_variant), setsize_attribute(''));
             })
           )
         });
@@ -131,11 +130,11 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
         set_quantity(1);
         ref_validate_attribute.current?.classList.remove('block');
         ref_validate_attribute.current?.classList.add('hidden');
-        const check_color = varriants_attribute?.find((value: any) => value?.color_item == color);
-        const check_size = check_color?.size_item?.find((value: any) => value?.name_size == item);
-        setQuantity_attributes(check_size?.stock_item);
-        setSizePropsCart(check_size?.name_size);
-        set_price_attr(check_size?.price_attribute)
+        const check_attribute = varriants_attribute?.find((value: any) => value?.attribute == color);
+        const check_values = check_attribute?.size_item?.find((value: any) => value?.value_variants == item);
+        setQuantity_attributes(check_values?.stock_variant);
+        setSizePropsCart(check_values?.name_variant);
+        set_price_attr(check_values?.price_variant)
         return setName_size(item);
       default: return
     }
@@ -177,34 +176,33 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   let min;
   let max;
   if (varriants_attribute) {
-    const check_Color = new Set();
-    min = varriants_attribute[0]?.size_item[0]?.price_attribute;
-    max = varriants_attribute[0]?.size_item[0]?.price_attribute;
+    const check_attribute = new Set();
+    min = varriants_attribute[0]?.value_variants[0]?.price_variant;
+    max = varriants_attribute[0]?.value_variants[0]?.price_variant;
     varriants_attribute = varriants_attribute?.filter((item: any) => {
-      if (check_Color.has(item?.color_item)) {
+      if (check_attribute.has(item?.attribute)) {
         return false
       } else {
-        check_Color.add(item.color_item);
+        check_attribute.add(item.attribute);
         return true
       }
     })
     for (let i of varriants_attribute) {
-      for (let j of i.size_item) {
-        if (j.price_attribute < min) {
-          min = j.price_attribute;
+      for (let j of i.value_variants) {
+        if (j.price_variant < min) {
+          min = j.price_variant;
         }
-        if (j.price_attribute > max) {
-          max = j.price_attribute;
+        if (j.price_variant > max) {
+          max = j.price_variant;
         }
       }
     }
   }
-
   return (<div>
-    <div className="flex items-center gap-x-2 items-end font-medium text-[#EB2606] lg:text-2xl lg:font-normal mb:text-base mb-4">
+    <div className="flex gap-x-2 items-end font-medium text-[#EB2606] lg:text-2xl lg:font-normal mb:text-base mb-4">
       {
-        data_Item_Detail?.price_product ?
-          <span className="text-[#EB2606]">{(data_Item_Detail?.price_product)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
+        data_Item_Detail?.price_variant ?
+          <span className="text-[#EB2606]">{(data_Item_Detail?.price_variant)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
           <div className="flex items-center gap-x-1 line-clamp-2">
             {
               price_attr ? (<>
@@ -221,30 +219,30 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
           </div>
       }
     </div>
-    {data_Item_Detail?.attributes?.varriants && (
+    {data_Item_Detail?.variant?.variants && (
       <div className="flex flex-col gap-y-4 mb-1">
         <>
           <div className="flex items-center gap-x-4 *:relative *:border *:border-black *:px-2 *:py-1 *:text-sm *:rounded">
             {varriants_attribute?.map((item: any) => (
-              (item?.color_item !== '' || item?.color_item) && (<>
-                <button className={`after:border-black hover:bg-black hover:text-white duration-200'}
-                ${color == item?.color_item && 'text-white bg-black'}`}
-                  key={Math.random()} onClick={() => handle_attributes('Color', item?.color_item)}>{item?.color_item}</button>
+              (item?.attribute !== '' || item?.attribute) && (<>
+                <button className={`after:border-black hover:bg-black hover:text-white duration-200 border'}
+                ${color == item?.attribute && 'text-white bg-black'}`}
+                  key={Math.random()} onClick={() => handle_attributes('Color', item?.attribute)}>{item?.attribute}
+                </button>
               </>)))}
           </div>
           {Array.isArray(size_attribute) && <div className="flex items-center gap-x-4 *:relative *:border *:px-4 *:py-1 *:text-sm *:rounded *:border-black">
             {size_attribute?.map((item: any) => (
-              <button className={`${(name_size == item?.name_size) && 'text-white bg-black'}`} key={Math.random()}
-                onClick={() => handle_attributes('size_attribute', item?.name_size)}>{item?.name_size}</button>
+              <button className={`${(name_size == item?.name_variant) && 'text-white bg-black'}`} key={Math.random()}
+                onClick={() => handle_attributes('size_attribute', item?.name_variant)}>{item?.name_variant}</button>
             ))}
           </div>}
         </>
       </div>
     )}
     <span ref={ref_validate_attribute} className="hidden text-xs md:text-sm text-red-500">Vui lòng chọn!</span>
-
     {/* *** */}
-    <div className={data_Item_Detail?.attribute?.varriants && "relative top-3"}>
+    <div className={data_Item_Detail?.variant?.variants && "relative top-3"}>
       <div className="my-5 flex lg:flex-row mb:flex-col lg:gap-y-0 gap-y-[17px] gap-x-8 lg:items-center mb:items-start">
         {/* up , dow quantity */}
         <div className="border lg:py-2.5 mb:py-1 mb:px-2 *:text-xs flex items-center gap-x-3 rounded">
@@ -264,7 +262,7 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
           }
         </div>
       </div>
-      <div className="flex items-center font-medium lg:text-2xl lg:font-normal mb:text-base flex items-center lg:gap-x-3 my-4 mb:gap-x-2">
+      <div className="flex items-center font-medium lg:text-2xl lg:font-normal mb:text-base lg:gap-x-3 my-4 mb:gap-x-2">
         <span className="lg:text-xl">Tạm tính :</span>
         <span className="text-[#EB2606]">{(price ? price : price_item_attr)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
       </div>

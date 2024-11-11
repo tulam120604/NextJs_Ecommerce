@@ -38,7 +38,7 @@ const schema_Products = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    varriants:
+    variant:
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Variant'

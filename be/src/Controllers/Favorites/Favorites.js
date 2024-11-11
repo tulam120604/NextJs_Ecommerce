@@ -17,13 +17,13 @@ export async function list_favorites(req, res) {
         const data = await Products.paginate({
             _id: { $in: data_favorites_by_user.items }
         }, options);
-        await Products.populate(data.docs, { path: 'attributes' });
+        await Products.populate(data.docs, { path: 'variant' });
         for (const id_data of data.docs) {
-            if (id_data.attributes) {
+            if (id_data.variant) {
                 let current = 0;
-                id_data.attributes.varriants.map((b) => {
-                    b.value_varriant.map(l => {
-                        current += l.stock_item
+                id_data.variant.variants.map((b) => {
+                    b.value_variants.map(l => {
+                        current += l.stock_variant
                     })
                 })
                 id_data.count_stock = current;

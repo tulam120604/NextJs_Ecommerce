@@ -1,18 +1,15 @@
 import mongoose from 'mongoose';
 
 const schema_varriant = new mongoose.Schema({
-    varriants: [
+    variants: [
         {
             attribute: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Attribute'
+                type: String,
+                required: true
             },
             value_variants: [
                 {
-                    name_variant: {
-                        type: String,
-                        required: true
-                    },
+                    name_variant: String,
                     stock_variant: {
                         type: Number,
                         min: 0,

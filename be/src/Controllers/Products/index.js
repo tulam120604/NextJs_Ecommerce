@@ -4,7 +4,7 @@ import {
 } from './Get.js';
 import { Create_Product } from './Create.js';
 import { Soft_remove } from './Soft_delere.js';
-import { destroy_items, get_recycle_items, restore_item } from './Items.js';
+import { destroy_items, get_recycle_items, restore_item } from '../Recycle/Items.js';
 import { edit_Product } from './Edit.js';
 
 const Products = {

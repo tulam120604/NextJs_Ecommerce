@@ -1,4 +1,4 @@
-import Attribute_Catalog from '../../Model/Products/Atrribute_catalog.js'
+import Attribute from "../../Model/Products/Attribute.js";
 import { StatusCodes } from "http-status-codes";
 
 export async function remove_attribute_catalog(req, res) {
@@ -9,7 +9,7 @@ export async function remove_attribute_catalog(req, res) {
                 message: 'No user!'
             })
         }
-        await Attribute_Catalog.updateOne(
+        await Attribute.updateOne(
             { $pull: { varriants: { key: id_item } } }
         );
         return res.status(StatusCodes.OK).json({

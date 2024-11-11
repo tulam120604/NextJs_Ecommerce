@@ -11,7 +11,6 @@ import { SketchPicker } from 'react-color';
 import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
 import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
 import List_data_attribute_catalog from './_component/page';
-import { generateRandomString } from '@/src/app/_lib/Custome_Hooks/useRandomString';
 
 
 export default function Page() {
@@ -22,28 +21,23 @@ export default function Page() {
   const [attributeCatalog, setAttributeCatalog] = useSessionStorage('attribute_catalog', []);
   const [user] = useLocalStorage('account', '');
   const { data, isLoading: loadingAttributeCatalog } = Get_AttributeCatalog_Seller(user?.check_email?._id);
-
   function handleSubmitForm(dataForm: any) {
     dataForm = {
       ...dataForm,
-      type_varriant: statusOptions,
-      hex_color: color,
-      key: generateRandomString(10),
+      attribute_category: statusOptions,
+      symbol_attribute: color,
+      id_account: user?.check_email?._id,
+      action: 'create_varriant',
     }
     if (statusChecked) {
-      onSubmit({
-        action: 'create_varriant',
-        values: dataForm,
-        id_account: user?.check_email?._id
-      })
+      onSubmit(dataForm)
     }
     // save sessionStorage
     else {
       dataForm = {
         ...dataForm,
-        hex_color: color,
-        type_varriant: statusOptions,
-        key: generateRandomString(10),
+        symbol_attribute: color,
+        attribute_category: statusOptions,
       }
       let data_attributeCatalog = [
         dataForm
@@ -62,10 +56,10 @@ export default function Page() {
     setColor(color.hex);
     setStatusOptions('ux_color')
   }
-  const arr_attributeCatalog: any = data?.varriants?.concat(attributeCatalog) ?? [];
+  const arr_attributeCatalog: any = data?.concat(attributeCatalog) ?? [];
   function clearAttributeCatalog(item: any) {
     const check_location_value = attributeCatalog?.find((value: any) => value?.key === item);
-    if (check_location_value) { 
+    if (check_location_value) {
       const new_attributeCatalog = attributeCatalog?.filter((value: any) => value?.key !== item);
       setAttributeCatalog(new_attributeCatalog);
     }
@@ -99,9 +93,9 @@ export default function Page() {
                 trong thanh bên của cửa hàng bằng cách sử dụng các tiện ích điều hướng theo lớp.</p>
               <form onSubmit={form_attributeCatalog?.handleSubmit(handleSubmitForm)}>
                 <label htmlFor="short_name">Tên:</label>
-                <input type="text" id='short_name' {...form_attributeCatalog?.register('name_varriant', { required: true })}
+                <input type="text" id='short_name' {...form_attributeCatalog?.register('attribute', { required: true })}
                   className='outline-none py-1.5 px-4 border border-gray-300 rounded w-full text-sm my-1' placeholder='Enter ...' />
-                {errorsForm && <p className='text-sm my-2 text-red-500'>{errorsForm?.name_varriant?.message}</p>}
+                {errorsForm && <p className='text-sm my-2 text-red-500'>{errorsForm?.attribute?.message}</p>}
                 <p className='text-gray-800 text-sm'>Tên cho thuộc tính</p>
                 <div className="flex items-center space-x-2 my-4">
                   <Checkbox id="terms" onClick={() => setStatusChecked(!statusChecked)} />

@@ -16,7 +16,7 @@ export const validateProducts = Joi.object({
     }),
     id_user_seller : Joi.string(),
     gallery : Joi.optional(),
-    attributes : Joi.optional(),
+    variant : Joi.optional(),
     stock : Joi.optional(),
     category_id : Joi.string().optional(),
     made_in : Joi.string().optional(),

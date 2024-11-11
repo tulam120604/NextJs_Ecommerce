@@ -134,7 +134,7 @@ const Cart = () => {
   return (
     <Suspense fallback={<LoadingCart />}>
       <div className="max-w-[1440px] w-[95vw] mx-auto pb-8">
-        <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto mb-4 pt-2'>
+        <div className='max-w-[1440px] mx-auto w-[95vw] mb-4 pt-2'>
           <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
         </div>
         {/* list items */}

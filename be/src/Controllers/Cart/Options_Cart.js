@@ -6,7 +6,7 @@ import Products from "../../Model/Products/Products.js";
 export async function Add_To_Cart(req, res) {
     const { user_id, product_id, quantity, varriant_1, varriant_2, price_item_attr, status_checked } = req.body;
     try {
-        const data_item = await Products.findById(product_id).populate('attributes');
+        const data_item = await Products.findById(product_id).populate('variant');
         let stock_product = 0;
         if (data_item.attributes) {
             const check_name_varriant = data_item.attributes.varriants.find(value => value.name_varriant === varriant_1);

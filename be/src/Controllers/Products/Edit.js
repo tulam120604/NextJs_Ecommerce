@@ -1,8 +1,9 @@
 import Products from "../../Model/Products/Products.js";
-import Attribute from "../../Model/Products/Attribute.js";
 import { StatusCodes } from 'http-status-codes';
 import { validateProducts } from "../../Validates/Products.js";
 import cloudinary from "../../utils/cloudinary.js";
+import Variant from "../../Model/Products/Variant.js";
+import { create_variant } from "../Attribute/create.js";
 
 
 // edit all field
@@ -39,40 +40,26 @@ export async function edit_Product(req, res) {
             });
         }
         let convert_Attributes;
-        if (req.body.attributes) {
+        if (req.body.variant) {
             convert_Attributes = JSON.parse(req.body.attributes);
         }
         if (convert_Attributes) {
-            await Attribute.findOneAndDelete({ id_item: req.params.id });
+            await Variant.findOneAndDelete({ id_item: req.params.id });
             if (!Array.isArray(convert_Attributes)) {
                 convert_Attributes = Object.keys(convert_Attributes)
                     .filter(key => !['_id', 'id_item', 'varriants', 'createdAt', 'updatedAt'].includes(key))
                     .map(key => convert_Attributes[key]);
             }
-            const varriant = convert_Attributes.map(item => (
-                {
-                    name_varriant: convert_Attributes ? item.name_varriant : '',
-                    value_varriant: item.value_varriant.map(value =>
-                    (
-                        {
-                            name_value: value.name_value ? value.name_value.toString() : '',
-                            stock_item: value.stock_item ? value.stock_item : 0,
-                            price_attribute: value.price_attribute > 0 && value.price_attribute
-                        }
-                    )
-                    )
-                }
-            ))
-            const new_attribute = await Attribute.create({ varriants: varriant, })
+            const variant = await create_variant(convert_Attributes);
             const dataClient = {
                 ...req.body,
-                attributes: null,
+                variant: null,
                 gallery: img_upload
             }
             const data = await Products.findByIdAndUpdate(req.params.id, {
                 $set: {
                     ...dataClient,
-                    attributes: new_attribute._id
+                    variant: variant._id
                 }
             }, { new: true });
             return res.status(StatusCodes.OK).json({
@@ -83,7 +70,7 @@ export async function edit_Product(req, res) {
         else {
             const dataClient = {
                 ...req.body,
-                attributes: convert_Attributes,
+                variant: convert_Attributes,
                 gallery: img_upload
             }
             const data = await Products.findByIdAndUpdate(req.params.id, dataClient, { new: true });

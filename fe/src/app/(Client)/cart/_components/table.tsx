@@ -69,7 +69,7 @@ export default function Table_Cart({ dataProps }: any) {
                                         {/* 88 */}
                                         <Link href={`/${convert_Slug(item?.product_id?.short_name)}.html?p=${item?.product_id?._id}`}>
                                             <Image width={150} height={150} className="relative bg-[#f2f2f2f2] z-[1] rounded w-20 h-20 lg:w-full lg:h-full duration-300"
-                                                src={item?.product_id?.gallery[0]} alt='loading...' />
+                                                src={item?.product_id?.gallery[0]} alt='store88' />
                                         </Link>
                                         {/* 88 */}
                                         <div className="flex flex-col gap-y-2 md:text-base mb:text-xs lg:w-[300px] w-[170px] h-full">
