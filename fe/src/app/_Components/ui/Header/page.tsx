@@ -36,7 +36,7 @@ const Header = () => {
             if (!localStorage.getItem('account')) {
                 setCheckLocal(false)
                 routing.push('/');
-            } 
+            }
             else {
                 setCheckLocal(true)
             }
@@ -72,7 +72,8 @@ const Header = () => {
             new_arr = data?.items.filter((item: any) => (item?.product_id !== null) && item);
         }
         return (<>
-            {data?.items && (<span className="z-[1] absolute bg-red-500 -top-[20%] -right-1/4 grid place-items-center rounded-[50%] w-5 h-5 text-xs text-white">{new_arr?.length}</span>)}
+            {data?.items && (<span className="z-[1] absolute bg-red-500 -top-[20%] -right-1/4 grid place-items-center rounded-[50%] w-5 h-5 text-xs text-white">
+                {new_arr?.length < 20 ? new_arr?.length : '20+'}</span>)}
         </>)
     }
 

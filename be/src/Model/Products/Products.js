@@ -35,13 +35,13 @@ const schema_Products = new mongoose.Schema({
         default: 1,
     },
     sale_quantity: {
-        type : Number,
-        default : 0
+        type: Number,
+        default: 0
     },
-    attributes:
+    variant:
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Attribute'
+        ref: 'Variant'
     },
     stock: Number,
     made_in: {

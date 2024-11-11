@@ -16,7 +16,7 @@ import { Server } from 'socket.io';
 import RoutesAddress from './Routes/Auth/Address.js';
 import RoutesPayment from './Routes/Payment/Payment.js';
 import Routes_Favorites from './Routes/Items/Favorites.js';
-import Routes_Attribute from './Routes/Attribute_Catalog/Attribute_catalog.js';
+import Routes_Attribute from './Routes/Attribute/Attribute.js';
 
 dotenv.config();
 const app = express();

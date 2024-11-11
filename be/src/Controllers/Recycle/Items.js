@@ -14,13 +14,13 @@ export async function get_recycle_items(req, res) {
     try {
         const respon = await Products.findWithDeleted({ deleted: true });
         const data = await Products.populate(respon, { path: 'category_id', select: 'category_name' })
-        await Products.populate(data, { path: 'attributes' });
+        await Products.populate(data, { path: 'variant' });
         for (const id_data of data) {
-            if (id_data.attributes) {
+            if (id_data.variant) {
                 let current = 0;
-                id_data.attributes.varriants.map((b) => {
-                    b.value_varriant.map(l => {
-                        current += l.stock_item
+                id_data.variant.varriants.map((b) => {
+                    b.value_variants.map(l => {
+                        current += l.stock_variant
                     })
                 })
                 id_data.count_stock = current;

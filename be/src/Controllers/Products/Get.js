@@ -84,15 +84,15 @@ export async function get_Item_Client(req, res) {
         };
         const data = await Products.paginate(querry, options);
         await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
-        await Products.populate(data.docs, { path: 'attributes' });
+        await Products.populate(data.docs, { path: 'variant' });
         for (const item of data.docs) {
-            if (item.attributes) {
+            if (item.variant) {
                 let current = 0;
                 let quantity_sale = 0;
-                item.attributes.varriants.map((b) => {
-                    b.value_varriant.map(l => {
-                        current += l.stock_item
-                        quantity_sale += l.sale_quantity_attr
+                item.variant.variants.map((b) => {
+                    b.value_variants.map(l => {
+                        current += l.stock_variant
+                        quantity_sale += l.sales_item
                     })
                 })
                 item.count_stock = current;
@@ -124,14 +124,14 @@ export async function get_Item_Client(req, res) {
 
 export async function get_Detail_Client(req, res) {
     try {
-        const data = await Products.findById(req.params.id).populate('attributes');
-        if (data.attributes) {
+        const data = await Products.findById(req.params.id).populate('variant');
+        if (data.variant) {
             let quantity_sales = 0
-            data.attributes.varriants = data.attributes.varriants.map(item => {
-                for (let i of item.value_varriant) {
-                    quantity_sales += i.sale_quantity_attr
+            data.variant.variants = data.variant.variants.map(item => {
+                for (let i of item.value_variants) {
+                    quantity_sales += i.sales_item
                 }
-                const dataAttr = item.value_varriant.filter(attr => attr.stock_item > 0)
+                const dataAttr = item.value_variants.filter(attr => attr.stock_variant > 0)
                 return {
                     ...item,
                     size_item: dataAttr
@@ -156,7 +156,7 @@ export async function get_Detail_Client(req, res) {
 
 export async function get_Detail_Dashboard(req, res) {
     try {
-        const data = await Products.findById(req.params.id).populate('attributes');
+        const data = await Products.findById(req.params.id).populate('variant');
         return res.status(StatusCodes.OK).json({
             message: "Done",
             data
@@ -194,13 +194,13 @@ export async function get_item_by_category(req, res) {
         }
         const data = await Products.paginate(querry, options);
         await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
-        await Products.populate(data.docs, { path: 'attributes' });
+        await Products.populate(data.docs, { path: 'variant' });
         for (const id_data of data.docs) {
-            if (id_data.attributes) {
+            if (id_data.variant) {
                 let current = 0;
-                id_data.attributes.varriants.map((b) => {
-                    b.value_varriant.map(l => {
-                        current += l.stock_item
+                id_data.variant.varriants.map((b) => {
+                    b.value_variants.map(l => {
+                        current += l.stock_variant
                     })
                 })
                 id_data.count_stock = current;
@@ -269,7 +269,7 @@ export async function get_item_by_user(req, res) {
             ]
         }
         const data = await Products.paginate(querry, options);
-        await Products.populate(data.docs, { path: 'attributes' });
+        await Products.populate(data.docs, { path: 'variant' });
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data

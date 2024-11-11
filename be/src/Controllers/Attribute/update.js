@@ -1,4 +1,4 @@
-import Attribute_Catalog from '../../Model/Products/Atrribute_catalog.js';
+import Attribute from "../../Model/Products/Attribute.js";
 import { StatusCodes } from "http-status-codes";
 
 export async function update_attribute_catalog(req, res) {
@@ -9,7 +9,7 @@ export async function update_attribute_catalog(req, res) {
                 message: 'Not key'
             })
         }
-        await Attribute_Catalog.findOneAndUpdate(
+        await Attribute.findOneAndUpdate(
             { 'varriants.key': key },
             { $set: { 'varriants.$.name_varriant': req.body.name_varriant } },
             { new: true }

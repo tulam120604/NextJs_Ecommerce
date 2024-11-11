@@ -14,7 +14,7 @@ export async function list_carts(req, res) {
         const cart = await Carts.findOne({ user_id }).populate({
             path: 'items.product_id',
             populate: [
-                { path: 'attributes' },
+                { path: 'variant' },
                 { path: 'id_user_seller' }
             ]
         },

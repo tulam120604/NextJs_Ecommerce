@@ -53,17 +53,17 @@ export default function List_data_attribute_catalog({ dataProps }: any) {
             {
                 dataProps?.arr_attributeCatalog?.map((item: any) => (
                     <div key={item?.key} className='grid grid-cols-[50px_260px_auto_150px] items-center gap-2 my-4 py-2 px-4 *:text-sm'>
-                        <div style={{ backgroundColor: item?.hex_color }} className='w-6 h-6 rounded'></div>
+                        <div style={{ backgroundColor: item?.symbol_attribute }} className='w-6 h-6 rounded'></div>
                         <form className='flex items-center gap-2' onSubmit={form_attributeCatalog?.handleSubmit(update_name_varriant)}>
-                            <input type="text" placeholder='Enter' defaultValue={item?.name_varriant}
-                                {...form_attributeCatalog?.register('name_varriant')}
+                            <input type="text" placeholder='Enter' defaultValue={item?.attribute}
+                                {...form_attributeCatalog?.register('attribute')}
                                 className='outline-none border rounded text-sm px-2 py-1 my-2 w-[180px]'
                                 onChange={() => handleEdit(item?.key)} />
                             <button className='hidden' ref={btnEditNameVarriant}>
                                 <SquarePen className='h-5 hover:scale-105 duration-200' />
                             </button>
                         </form>
-                        <span>{item?.type_varriant}</span>
+                        <span>{item?.attribute_category}</span>
                         <div>
                             <button onClick={() => dataProps?.clearAttributeCatalog(item?.key)} className='text-rose-500 text-start'>Xóa</button>
                         </div>
