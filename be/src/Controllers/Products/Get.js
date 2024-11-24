@@ -25,19 +25,19 @@ export async function get_Item_Dashboard(req, res) {
         };
         const data = await Products.paginate(querry, options);
         await Products.populate(data.docs, { path: 'category_id', select: 'category_name' });
-        await Products.populate(data.docs, { path: 'attributes' });
-        for (const id_data of data.docs) {
-            if (id_data.attributes) {
+        await Products.populate(data.docs, { path: 'variant' });
+        for (const item of data.docs) {
+            if (item.variant) {
                 let current = 0;
-                id_data.attributes.varriants.map((b) => {
-                    b.value_varriant.map(l => {
-                        current += l.stock_item
+                item.variant.variants.forEach((b) => {
+                    b.value_variants.forEach(l => {
+                        current += l.stock_variant
                     })
                 })
-                id_data.count_stock = current;
+                item.count_stock = current;
             }
             else {
-                id_data.count_stock = id_data.stock
+                item.count_stock = item.stock
             }
         }
         if (!data.docs || data.docs.length === 0) {
@@ -198,7 +198,7 @@ export async function get_item_by_category(req, res) {
         for (const id_data of data.docs) {
             if (id_data.variant) {
                 let current = 0;
-                id_data.variant.varriants.map((b) => {
+                id_data.variant.variants.map((b) => {
                     b.value_variants.map(l => {
                         current += l.stock_variant
                     })

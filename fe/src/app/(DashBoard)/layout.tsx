@@ -38,9 +38,9 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
   return (
     <div className="bg-[#EDEDED]">
       {/* header */}
-      <div className="fixed w-screen top-0 left-0 bg-[#1B1F22] z-[10]">
+      <div className="fixed w-screen top-0 left-0 bg-[#F6F6F6] z-[10] border-b">
         <header className="w-[95vw] z-[1] h-[60px] mx-auto flex items-center justify-between sticky top-0">
-          <Link className='text-sm lg:text-xl font-extrabold font-sans text-gray-100' href={'/'}>
+          <Link className='text-sm lg:text-xl font-extrabold text-gray-900' href={'/'}>
             Store88
           </Link>
           <Search_Component_Dashboard />

@@ -18,7 +18,7 @@ export async function get_recycle_items(req, res) {
         for (const id_data of data) {
             if (id_data.variant) {
                 let current = 0;
-                id_data.variant.varriants.map((b) => {
+                id_data.variant.variants.map((b) => {
                     b.value_variants.map(l => {
                         current += l.stock_variant
                     })

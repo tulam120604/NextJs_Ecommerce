@@ -47,7 +47,7 @@ export async function edit_Product(req, res) {
             await Variant.findOneAndDelete({ id_item: req.params.id });
             if (!Array.isArray(convert_Attributes)) {
                 convert_Attributes = Object.keys(convert_Attributes)
-                    .filter(key => !['_id', 'id_item', 'varriants', 'createdAt', 'updatedAt'].includes(key))
+                    .filter(key => !['_id', 'id_item', 'variants', 'createdAt', 'updatedAt'].includes(key))
                     .map(key => convert_Attributes[key]);
             }
             const variant = await create_variant(convert_Attributes);
@@ -93,7 +93,7 @@ export async function update_quantity_item(data_items_order) {
         if (i.product_id.attributes) {
             const data_attr = await Attribute.find({ id_item: i.product_id._id });
             for (let j of data_attr) {
-                for (let k of j.varriants) {
+                for (let k of j.variants) {
                     if (k.name_varriant == i.varriant_1) {
                         for (let x of k.value_varriant) {
                             if (x.name_value) {
