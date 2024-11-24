@@ -5,7 +5,7 @@ const schema_attribute = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
     },
-    attribute: {
+    name_attribute: {
         type: String,
         required: true
     },
