@@ -18,9 +18,9 @@ const Order_Schema = new mongoose.Schema({
                 auto: true
             },
             product_id: Object,
-            color_item: String,
             quantity: Number,
-            size_attribute_item: String,
+            name_varriant: String,
+            value_varriant: String,
             price_item: Number,
             total_price_item: Number,
             status_feedback: {

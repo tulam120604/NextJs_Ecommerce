@@ -8,7 +8,7 @@ const Category = async () => {
     noStore();
     const { data } = await list_Categories();
     return (
-        <aside className='p-4 overflow-y-scroll hidden_scroll_y !sticky top-10 bg-white rounded-lg max-h-screen'>
+        <aside className='py-4 px-2 overflow-y-scroll hidden_scroll_y !sticky top-10 bg-white rounded-lg max-h-screen'>
             <span className="relative font-medium px-4 text-black">Danh mục</span>
             {data?.status === 404 ? (<><div className='min-h-[70vh] grid place-items-center'>
                 <div className='flex flex-col gap-y-2'>

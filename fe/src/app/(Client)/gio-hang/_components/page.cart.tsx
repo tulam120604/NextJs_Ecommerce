@@ -75,7 +75,7 @@ const Cart = () => {
   }
 
   const data_item_checkked = data?.items?.filter((item: any) => (item?.status_checked && item));
-  // lọc item só lượng lớn hơn 0
+  // lọc item số lượng lớn hơn 0
   const positive_Stock_Item = filter_positive_Stock_Item(data_checked_true);
   const tota_price_item = positive_Stock_Item?.reduce((acc: any, curr: any) => (acc + curr?.total_price_item), 0);
   function showToast(productName: string | number, stock: string | number) {
@@ -92,17 +92,17 @@ const Cart = () => {
   function next_page_payment() {
     // check so luong
     for (let i of positive_Stock_Item) {
-      if (i?.product_id?.attributes) {
-        const check_color = i?.product_id?.attributes?.varriants?.find((value: any) => value?.color_item === i?.color_item);
-        const check_size = check_color?.size_item?.find((value: any) =>
-          i?.size_attribute_item === (value?.name_size?.trim() ? value?.name_size : undefined));
-        if (check_color?.color_item === i?.color_item && check_size?.name_size === i?.size_attribute_item
-          && i?.quantity > check_size?.stock_item) {
-          showToast(i?.product_id?.short_name, check_size?.stock_item);
+      if (i?.product_id?.variant) {
+        const check_attribute = i?.product_id?.variant?.variants?.find((value: any) => value?.attribute === i?.name_varriant);
+        const check_name_variant = check_attribute?.value_variants?.find((value: any) =>
+          i?.value_varriant === (value?.name_variant?.trim() ? value?.name_variant : undefined));
+        if (check_attribute?.attribute === i?.name_varriant && check_name_variant?.name_variant === i?.value_varriant
+          && i?.quantity > check_name_variant?.stock_variant) {
+          showToast(i?.product_id?.short_name, check_name_variant?.stock_variant);
           return null
         }
-        if (check_color?.color_item === i?.color_item && i?.quantity > check_size?.stock_item) {
-          showToast(i?.product_id?.short_name, check_size?.stock_item);
+        if (check_attribute?.attribute === i?.name_varriant && i?.quantity > check_name_variant?.stock_variant) {
+          showToast(i?.product_id?.short_name, check_name_variant?.stock_variant);
           return null
         }
       }
@@ -112,7 +112,7 @@ const Cart = () => {
       }
     }
     if (data_item_checkked?.length > 0) {
-      routing.push('/checkout');
+      routing.push('/thanh-toan');
     }
     else {
       toast({

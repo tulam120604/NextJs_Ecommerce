@@ -10,7 +10,7 @@ const Img_Detail_Product = ({ dataProps }: any) => {
 
   return (
     <div className="w-full h-full p-2 flex flex-col lg:items-center lg:gap-y-6 gap-y-3.5">
-      <div className="relative bg-white cursor-pointer w-full lg:h-[450px] mb:h-[342px] overflow-hidden rounded border-4 grid place-items-center">
+      <div className="relative bg-white cursor-pointer w-full lg:h-[450px] mb:h-[342px] overflow-hidden rounded grid place-items-center">
         <img width={400} height={400} className="bg-white max-w-full max-h-full" src={dataProps?.gallery[image_item]} alt='' />
       </div>
       <Carousel

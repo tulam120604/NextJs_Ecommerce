@@ -105,7 +105,7 @@ export default function Data_Table({ dataProps }: any) {
                                                     {/* div giả */}
                                                     <div></div>
                                                     {/* sales */}
-                                                    <span>{value?.sale_quantity_attr}</span>
+                                                    <span>{value?.sales_item}</span>
                                                     {/* price */}
                                                     <span className="line-clamp-1 text-red-600">{value?.price_attribute?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
                                                     {/* quantity */}

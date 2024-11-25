@@ -10,7 +10,7 @@ const Layout_Home = () => {
   // console.log(isClient);
   return (
     <Suspense fallback={<LoadingLandingPage />}>
-      <div className="grid grid-cols-[17%_81%] justify-between max-w-[1440px] mx-auto w-[95vw] py-4">
+      <div className="grid grid-cols-[16%_82%] justify-between max-w-[1440px] mx-auto w-[95vw] py-4">
         <Category />
         <div>
           <Banner />

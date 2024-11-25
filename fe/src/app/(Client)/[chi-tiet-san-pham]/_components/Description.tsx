@@ -7,17 +7,17 @@ const Description = ({ dataProps }: any) => {
     return (
         <>
             {/* description */}
-            <div className="flex flex-col rounded max-w-[1440px]">
+            <div className="flex flex-col max-w-[1440px] *:rounded-lg">
                 {/* menu description */}
-                <div className='p-4 rounded bg-white'>
-                    <span className="text-xl">Mô tả</span>
+                <div className='p-4 bg-white'>
+                    <span className="text-lg">Mô tả :</span>
                     {/* text description */}
-                    <div dangerouslySetInnerHTML={{ __html: formattedDescription }} className="show_description my-4">
+                    <div dangerouslySetInnerHTML={{ __html: formattedDescription }} className="show_description my-4 text-sm">
                     </div>
                 </div>
                 {/* detail comment */}
                 <section className="show_review mt-8 rounded p-4 bg-white">
-                    <span className="text-xl flex gap-x-2">Đánh giá
+                    <span className="text-lg flex gap-x-2">Đánh giá
                         <p>({dataProps?.data_feedback?.data_feedback ? dataProps?.data_feedback?.data_feedback?.totalDocs : 0})</p>
                     </span>
                     <div className="flex flex-col text-sm text-[#46494F] leading-[21px] gap-y-4 py-4">
@@ -43,7 +43,7 @@ const Description = ({ dataProps }: any) => {
 
                                     </div>
                                     {/* text comment */}
-                                    <p className="text-[#1A1E26] text-base">{item?.content_feedback}</p>
+                                    <p className="text-[#1A1E26] text-sm">{item?.content_feedback}</p>
                                 </div>
 
                             ))

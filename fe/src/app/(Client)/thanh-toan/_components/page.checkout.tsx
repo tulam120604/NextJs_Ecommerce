@@ -29,6 +29,7 @@ const Page_checkout = () => {
   const [check_payment, setCheck_payment] = useState<boolean>(true)
   const routing = useRouter();
   const user = useCheck_user();
+  const [loading, setLoading] = useState<boolean>(true);
   // address
   const { data, isLoading } = List_Address(user?.check_email?._id);
   const { data: dataCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
@@ -36,12 +37,19 @@ const Page_checkout = () => {
   // lọc item só lượng lớn hơn 0
   const positive_Stock_Item = filter_positive_Stock_Item(data_checked_true);
   const total_price = positive_Stock_Item?.reduce((acc: number, cur: any) => acc + cur?.total_price_item, 0);
+  // 
+  useEffect(() => {
+    if (!loadingCart && user && Array.isArray(positive_Stock_Item)) {
+      setLoading(false); 
+    }
+  }, [loadingCart, user, positive_Stock_Item]);
   //
   useEffect(() => {
-    if (!user || positive_Stock_Item || positive_Stock_Item.length < 1) {
+    if (loading) return;
+    if (!user || !Array.isArray(positive_Stock_Item) || positive_Stock_Item?.length < 1) {
       routing.push('/')
     }
-  }, [routing, user, positive_Stock_Item]);
+  }, [loading, routing, user, positive_Stock_Item]);
   // **
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schemaValidateOrder)
@@ -65,27 +73,25 @@ const Page_checkout = () => {
   function validate_stock_item() {
     // check so luong
     for (let i of positive_Stock_Item) {
-      if (i?.product_id?.attributes) {
-        const check_color = i?.product_id?.attributes?.varriants?.find((value: any) => value?.color_item === i?.color_item);
-        const check_size = check_color?.size_item?.find((value: any) =>
-          i?.size_attribute_item === (value?.name_size?.trim() ? value?.name_size : undefined));
-        if (check_color?.color_item === i?.color_item && check_size?.name_size === i?.size_attribute_item
-          && i?.quantity > check_size?.stock_item) {
-          showToast(i?.product_id?.short_name, check_size?.stock_item);
+      if (i?.product_id?.variant) {
+        const check_attribute = i?.product_id?.variant?.variants?.find((value: any) => value?.attribute === i?.name_varriant);
+        const check_name_variant = check_attribute?.value_variants?.find((value: any) =>
+          i?.value_varriant === (value?.name_variant?.trim() ? value?.name_variant : undefined));
+        if (check_attribute?.attribute === i?.name_varriant && check_name_variant?.name_variant === i?.value_varriant
+          && i?.quantity > check_name_variant?.stock_variant) {
+          showToast(i?.product_id?.short_name, check_name_variant?.stock_variant);
           check_stock = false;
           return false
         }
-        if (check_color?.color_item === i?.color_item && i?.quantity > check_size?.stock_item) {
-          showToast(i?.product_id?.short_name, check_size?.stock_item);
+        if (check_attribute?.attribute === i?.name_varriant && i?.quantity > check_name_variant?.stock_variant) {
+          showToast(i?.product_id?.short_name, check_name_variant?.stock_variant);
           check_stock = false;
-          console.log('ok')
           return false
         }
       }
       else if (i?.quantity > i?.product_id?.stock) {
-        showToast(i?.product_id?.short_name, i?.product_id?.stock);
+        showToast(i?.product_id?.short_name, i?.product_id?.stock)
         check_stock = false;
-        console.log('ok')
         return false;
       }
     }
@@ -121,7 +127,7 @@ const Page_checkout = () => {
     }
   };
   if (mutate_order.status_api === '201') {
-    routing.push('/profile/orders');
+    routing.push('/thong-tin-tai-khoan/don-hang');
   }
 
   if (loadingCart) {
@@ -130,7 +136,7 @@ const Page_checkout = () => {
     )
   };
   return (<Suspense fallback={<Loading />}>
-    <div className='max-w-[1440px] mx-auto w-[95vw] mx-auto pt-2'>
+    <div className='max-w-[1440px] mx-auto w-[95vw] pt-2'>
       <Breadcrum textProps={{ name_item: 'Thanh toán' }} />
     </div>
     <form onSubmit={handleSubmit(on_Checkout)} className={`relative py-6 ${mutate_order.isLoading &&
@@ -162,7 +168,7 @@ const Page_checkout = () => {
         </>) : <span>Không có đơn hàng nào!</span>}
       </div>
       {/* infor */}
-      <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[auto_450px] gap-x-10 gap-y-6 mx-auto *:bg-white *:p-4 *:rounded">
+      <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[auto_450px] gap-x-10 gap-y-6 *:bg-white *:p-4 *:rounded">
         <div>
           <span className="flex mb-[1px] items-center justify-between pb-6">Thông tin nhận hàng</span>
           <div className='flex flex-col gap-y-5'>
