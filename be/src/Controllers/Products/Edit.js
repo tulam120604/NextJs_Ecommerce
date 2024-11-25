@@ -90,20 +90,21 @@ export async function edit_Product(req, res) {
 // update quantity item when order 
 export async function update_quantity_item(data_items_order) {
     for (let i of data_items_order) {
-        if (i.product_id.attributes) {
-            const data_attr = await Attribute.find({ id_item: i.product_id._id });
+        if (i.product_id.variant) {
+            const data_attr = await Variant.find({ _id: i.product_id.variant._id });
             for (let j of data_attr) {
                 for (let k of j.variants) {
-                    if (k.name_varriant == i.varriant_1) {
-                        for (let x of k.value_varriant) {
-                            if (x.name_value) {
-                                if (x.name_value == i.varriant_2) {
-                                    x.stock_item = x.stock_item - i.quantity;
-                                    x.sale_quantity_attr += i.quantity
+                    if (k.attribute == i.name_varriant) {
+                        for (let x of k.value_variants) {
+                            if (x.name_variant) {
+                                if (x.name_variant == i.value_varriant) {
+                                    x.stock_variant = x.stock_variant - i.quantity;
+                                    x.sales_item += i.quantity
                                 }
                             } else {
-                                x.stock_item = x.stock_item - i.quantity;
-                                x.sale_quantity_attr += i.quantity
+                                x.stock_variant = x.stock_variant - i.quantity;
+                                x.sales_item += i.quantity
+                                
                             }
                         }
                     }

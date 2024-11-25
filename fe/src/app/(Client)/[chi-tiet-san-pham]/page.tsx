@@ -48,7 +48,7 @@ const page = async ({ searchParams }: any) => {
               name_category: data_category
             }} />
           </section>
-          <section className="lg:grid lg:grid-cols-[573px_auto] gap-x-10 bg-white pb-4">
+          <section className="lg:grid lg:grid-cols-[573px_auto] gap-x-10 bg-white pb-4 rounded-lg">
             {/*  desktop : left  , mobile : row 1 */}
             <Img_Detail_Product dataProps={data} />
             {/*desktop: right, mobile : row 2 */}
@@ -65,8 +65,8 @@ const page = async ({ searchParams }: any) => {
             data,
             data_feedback
           }} />
-          <div className="pt-4">
-            <span className="lg:text-2xl text-xl mb-2">Sản phẩm liên quan</span>
+          <div className="mt-6 p-4 bg-white rounded-lg">
+            <span className="font-medium !text-lg mb-2">Sản phẩm liên quan</span>
             <Related_Product dataProps={data?.category_id} />
           </div>
         </>)}

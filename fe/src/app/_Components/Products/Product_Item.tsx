@@ -30,7 +30,7 @@ const Product_Item = ({ dataProps }: any) => {
                 </section> */}
             </div>
             {/* about */}
-            <div className="w-full p-4 flex flex-col gap-y-1.5 items-start h-[120px] justify-between">
+            <div className="w-full py-4 px-2 flex flex-col gap-y-1.5 items-start h-[120px] justify-between">
                 <strong className="text-start w-full text-sm line-clamp-2 font-normal text-[#1A1E26]">{dataProps.short_name}</strong>
                 <div className="flex items-center gap-x-2 w-full">
                     {
@@ -40,10 +40,7 @@ const Product_Item = ({ dataProps }: any) => {
                                 {
                                     (min === max) ?
                                         <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> :
-                                        <>
-                                            <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span> -
-                                            <span className="text-[#EB2606]">{(max)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-                                        </>
+                                        <span className="text-[#EB2606]">{(min)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
                                 }
                             </div>
                     }

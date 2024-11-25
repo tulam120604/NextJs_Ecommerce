@@ -41,7 +41,7 @@ export async function create_item_order(user_id, items_order, infor_user, notes_
     await update_quantity_item_in_cart(user_id, items_order)
 }
 
-
+// tao don hang
 export async function create_Order(req, res) {
     const { user_id, items_order, infor_user, notes_order, payment_method } = req.body;
     try {
