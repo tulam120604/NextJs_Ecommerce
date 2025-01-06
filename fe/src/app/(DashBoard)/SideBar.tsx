@@ -65,7 +65,7 @@ const SideBarDashboard = () => {
         arr = arr.filter((_: any, index: number) => ![2, 5].includes(index))
     }
     return (
-        <div className="*:relative flex flex-col text-gray-900 gap-y-4 *:items-center *:whitespace-nowrap border-r border-gray-300">
+        <div className="*:relative flex flex-col text-gray-900 gap-y-4 *:items-center *:whitespace-nowrap">
             {
                 arr?.map((item) => {
                     const isActive = usePathName.startsWith(item?.pathName);

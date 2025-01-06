@@ -14,7 +14,6 @@ import Alert_dialog from '../_components/alert_dialog';
 const Page_infor = () => {
   const form_create_address = useRef<HTMLDivElement>(null);
   const bg_form_create_address = useRef<HTMLDivElement>(null);
-
   const mutate_address = Mutation_Address('REMOVE_OR_UPDATE_DEFAULT_ADDRESS');
   const [client, setClient] = useState<boolean>(false);
   useEffect(() => {
@@ -51,7 +50,7 @@ const Page_infor = () => {
               <Link className='lg:text-sm text-xs underline' href={'/thong-tin-tai-khoan/dang-ki-ban-hang'}>Kênh phân phối</Link> :
               user?.check_email?.role === 'seller' ?
                 <Link className='lg:text-sm text-xs underline' href={'/trung-tam-dieu-khien/bang-dieu-khien/tong-quan'}>Đi đến kho phân phối</Link> :
-                <Link className='lg:text-sm text-xs underline' href={'/trung-tam-dieu-khien/bang-dieu-khien/tong-quan'}>Bảng điều khiển</Link>
+                <Link className='lg:text-sm text-xs underline' href={'/trung-tam-dieu-khien/bang-dieu-khien/tong-quan'}>Trung tâm điều khiển</Link>
           }
         </div>
         <table className='lg:w-[80%] mx-auto'>
@@ -63,7 +62,9 @@ const Page_infor = () => {
               </td>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Email tài khoản
-                <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600 overflow-hidden'>{user && user?.check_email?.email}</div>
+                <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600 overflow-hidden flex justify-between items-center tracking-[1px]'>
+                  <span>{user?.check_email?.email?.slice(0, 2) + '*****' + user?.check_email?.email?.slice(7)}</span>
+                </div>
               </td>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
                 Số điện thoại
@@ -79,7 +80,7 @@ const Page_infor = () => {
         </table>
         <section className='flex items-center justify-between my-5 py-5 border-t'>
           <span className='lg:text-xl text-sm'>Địa chỉ</span>
-          <Button className='lg:text-sm text-xs px-2 lg:py-2 py-1.5 h-auto' onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
+          <Button className='lg:text-sm text-xs px-2 lg:py-2 py-1.5 h-auto bg-[#597BFE] hover:bg-[#6f8bfc]' onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
         </section>
         <div ref={form_create_address} className='fixed -translate-x-1/2 -translate-y-1/2 scale-0 duration-200 top-1/2 left-3/4 z-[3]'>
           <Address_component id_user={user?.check_email?._id} />

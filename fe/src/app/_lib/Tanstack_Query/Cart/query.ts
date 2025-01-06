@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { get_list_Cart } from "../../Services/Services_Cart/Cart";
-import useStoreZustand from "@/src/app/Zustand/Store";
+import { useStoreZustand } from "@/src/app/Zustand/Store";
 
 
 export function Get_Items_Cart(id_user: any) {

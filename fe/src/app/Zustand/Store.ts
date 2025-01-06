@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { IDataPayment } from '../Types/Interface';
 
+// store add to cart
 interface IStoreZustand {
     isVisible: any
     data: any[],
@@ -12,7 +13,7 @@ interface IStoreZustand {
     setError: (error: any) => void,
 }
 
-const useStoreZustand = create<IStoreZustand>((set) => ({
+export const useStoreZustand = create<IStoreZustand>((set) => ({
     isVisible: undefined,
     data: [],
     isLoading: false,
@@ -25,5 +26,3 @@ const useStoreZustand = create<IStoreZustand>((set) => ({
     setLoading: ((loading: boolean) => set({ isLoading: loading })),
     setError: ((error: boolean) => set({ isError: error }))
 }))
-
-export default useStoreZustand

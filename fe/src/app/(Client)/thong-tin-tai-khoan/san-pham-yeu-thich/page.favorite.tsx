@@ -35,7 +35,7 @@ const Page_favorite = () => {
               (data?.data?.docs < 1 || !data?.data?.docs) ?
                 (<div className='grid place-items-center translate-y-full'>
                   <div className='flex flex-col items-center gap-y-6 my-auto'>
-                    <Image width={100} height={100} src='/Images/document_icon.png' alt=''></Image>
+                    <Image width={100} height={100} src='/Images/document_icon.png' alt='store88'/>
                     <span className='flex items-center'>Chưa có sản phẩm yêu thích! <Link className='underline' href={'/products'}>Tìm ngay</Link></span>
                   </div>
                 </div>)

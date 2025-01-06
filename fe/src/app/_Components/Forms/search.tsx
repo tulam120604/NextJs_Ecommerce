@@ -41,11 +41,11 @@ export function Search_Component_Client() {
   }, [key_search]);
 
   return (<div className="relative">
-    <form className={`relative w-full *:h-[36px] gap-x-2 shadow-2xl duration-300`}>
-      <input type="text" className="border border-gray-500 rounded w-full px-3 text-sm font-normal outline-none text-gray-700" placeholder="Tìm kiếm sản phẩm..."
+    <form className={`relative w-full *:h-10 gap-x-2 duration-300`}>
+      <input type="text" className="border border-gray-300 rounded w-full px-3 text-sm font-normal outline-none text-gray-700" placeholder="Tìm kiếm sản phẩm..."
         onChange={(e) => setKey_search(e.target.value)} />
-      <button type='submit' className="absolute top-[12%] right-0 !h-3/4 duration-300 cursor-pointer text-gray-800 border-l border-gray-500 px-4">
-        <Search color="#0A68FF" />
+      <button type='submit' className="absolute top-[12%] right-0 !h-3/4 duration-300 cursor-pointer text-gray-800 border-l border-gray-300 px-4">
+        <Search color="#0A68FF"/>
       </button>
     </form>
     {

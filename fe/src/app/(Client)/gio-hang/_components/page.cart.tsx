@@ -139,14 +139,17 @@ const Cart = () => {
         </div>
         {/* list items */}
         <Table_Cart dataProps={dataProps} />
-        <div className="w-full rounded-lg flex flex-col lg:flex-row items-center lg:justify-between justify-center bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
-          <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
-          <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
-            <span>Tiến hành thanh toán</span>
-            |
-            <span>{tota_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-          </Button>
-        </div>
+        {
+          dataProps?.data?.items?.length > 0 &&
+          <div className="w-full rounded-lg flex flex-col lg:flex-row items-center lg:justify-between justify-center bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
+            <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
+            <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
+              <span>Tiến hành thanh toán</span>
+              |
+              <span>{tota_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+            </Button>
+          </div>
+        }
       </div>
     </Suspense >
   )

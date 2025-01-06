@@ -1,33 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
 import { Search_Component_Client } from '../../Forms/search';
-import Bell_component from '../../Notification/Bell_component';
-import { BadgeCheck, BadgeDollarSign, RefreshCcwDot, Search, ShoppingCart, Tag, Truck } from 'lucide-react';
+import { BadgeCheck, BadgeDollarSign, CircleUser, RefreshCcwDot, Search, ShoppingBag, Tag, Truck } from 'lucide-react';
 import { eventEmit } from './Event_emit';
-import useStoreZustand from '@/src/app/Zustand/Store';
+import { useStoreZustand } from '@/src/app/Zustand/Store';
 
 const Header = () => {
     const { isVisible } = useStoreZustand();
     const routing = useRouter();
     const [check_local_user, setCheckLocal_user] = useState<boolean>(false)
-    const toggleFixedHeader = useRef<HTMLHeadElement>(null);
-    // useEffect(() => {
-    //     function handle_scroll_header() {
-    //         if (toggleFixedHeader.current) {
-    //             (window.scrollY > 100) ?
-    //                 (toggleFixedHeader.current.classList.add('!py-3', '!shadow-xl', 'animationScrollYHeader')) :
-    //                 (toggleFixedHeader.current.classList.remove('!py-3', '!shadow-xl', 'animationScrollYHeader'));
-    //         }
-    //     }
-    //     window.addEventListener('scroll', handle_scroll_header);
-    //     return () => window.removeEventListener('scroll', handle_scroll_header);
-    // }, []);
-    // login
+    const pathName = usePathname();
+    const isActivePathUser = pathName?.startsWith('/thong-tin-tai-khoan');
+    const isActivePathCart = pathName?.startsWith('/gio-hang');
     useEffect(() => {
         const status_Storage = () => {
             if (!localStorage.getItem('account')) {
@@ -63,53 +52,50 @@ const Header = () => {
                 set_data_storage(storage_acc?.check_email?._id);
             }
         }, [data_storage])
-        const { data } = Get_Items_Cart(data_storage);
+        const { data, isLoading } = Get_Items_Cart(data_storage);
         let new_arr;
         if (data?.items) {
             new_arr = data?.items.filter((item: any) => (item?.product_id !== null) && item);
         }
         return (<>
-            {data?.items && (<span className="z-[1] absolute bg-red-500 -top-[40%] -right-1/2 grid place-items-center rounded-[50%] lg:w-5 lg:h-5 w-4 h-4 text-xs text-white">
+            {isLoading && data?.items && (<span className="z-[1] absolute bg-red-500 -top-[40%] -right-1/2 grid place-items-center rounded-[50%] lg:w-5 lg:h-5 w-4 h-4 text-xs text-white">
                 {new_arr?.length < 99 ? new_arr?.length : '99+'}</span>)}
         </>)
     }
 
     return (<>
-        <header ref={toggleFixedHeader} className="w-full z-[20] duration-300 py-5 bg-white">
+        <header className="w-full z-[20] duration-300 py-5 bg-white">
             {/* logo, search and cart */}
             <div className="relative mx-auto max-w-[1440px] w-[95vw] flex justify-between *:flex *:items-center gap-x-20 items-center">
-                <div className=''>
-                    <Link className='lg:text-2xl text-lg font-extrabold' href={'/'}>
-                        Store88
-                    </Link>
-                </div>
-                {/* form search */}
-                <div className='md:!block !hidden absolute md:w-[50%] w-[30%] left-1/2 -translate-x-1/2 z-[7]'>
+                <Link href={'/'}>
+                    <Image width={200} height={100} className='w-[150px] max-h-10'
+                        src={'https://res.cloudinary.com/tulam120604/image/upload/v1736088077/k3jhx9ywkmepcp9tz1b1.png'} alt='Store88' />
+                </Link>
+                {/* search form */}
+                <div className='md:!block !hidden absolute md:w-[60%] w-[30%] left-1/2 -translate-x-1/2 z-[7]'>
                     <Search_Component_Client />
                 </div>
 
-                <div className="lg:gap-x-6 mb:gap-x-4 flex items-center">
+                <div className="gap-x-2 flex items-center *:h-full">
                     <div className='md:hidden block'>
                         <div className='group relative'>
-                            <Search className='w-4 h-5' color='#0A68FF'/>
+                            <Search className='w-4 h-5' color='#0A68FF' />
                             <form className={`group-hover:block hidden absolute w-[250px] top-10 right-1/2 translate-x-1/4 *:h-[36px] gap-x-2 shadow-[0_35px_60px_100vh_rgba(0,0,0,0.3)] rounded-lg duration-300`}>
                                 <input type="text" className="border rounded w-full pl-5 pr-14 text-xs outline-none font-normal text-gray-700" placeholder="Tìm kiếm sản phẩm" />
                             </form>
                         </div>
                     </div>
-                    {/* bell */}
-                    {
-                        check_local_user &&
-                        <Link href={'/thong-tin-tai-khoan/thong-bao'} className='relative cursor-pointer'>
-                            <Bell_component />
-                        </Link>
-                    }
+                    <Link href={check_local_user ? '/thong-tin-tai-khoan/thong-tin' : '/dang-nhap'} className={`${isActivePathUser && 'bg-[#E2EDFF]'} ' 
+                    flex items-center gap-x-2 hover:bg-[#E2EDFF] rounded duration-200 py-2 px-3 cursor-pointer whitespace-nowrap'`}>
+                        <CircleUser color='#0A68FF' />
+                        <span className='text-[#0A68FF] text-sm mt-0.5'>Tài khoản</span>
+                    </Link>
                     {/* cart */}
-                    <div className="h-[24px] relative group cursor-pointer">
+                    <div className={`${isActivePathCart && 'bg-[#E2EDFF]'} relative group cursor-pointer hover:bg-[#E2EDFF] rounded duration-200 py-1.5 px-2`}>
                         <button onClick={handleCart} className='z-[1] relative' >
-                            <ShoppingCart className='lg:w-6 lg:h-6 w-4 h-5 translate-y-0.5 lg:translate-y-0' color='#0A68FF' />
+                            <ShoppingBag className='w-5 h-5 translate-y-1' color='#0A68FF' />
                             <Count_Cart />
-                            {/* animation add cart */}
+                            {/* animation add to cart */}
                             {
                                 isVisible &&
                                 <div className='animation_add_cart absolute w-4 h-4 lg:w-8 lg:h-8 rounded-full'>
@@ -118,16 +104,11 @@ const Header = () => {
                             }
                         </button>
                     </div>
-                    <Link href={'/dang-nhap'} className={`${check_local_user ? 'hidden' : 'block'} text-xs lg:text-sm hover:text-gray-300 cursor-pointer duration-300 whitespace-nowrap`}>Đăng nhập</Link>
-                    <Link href={'/thong-tin-tai-khoan/thong-tin'} className={`${check_local_user ? 'block' : 'hidden'} relative border-none p-0.5 cursor-pointer whitespace-nowrap group`}>
-                        <Image className='hover:scale-[1.2] duration-200 rounded-[50%] w-7 h-7' width={40} height={40} src={'/Images/default-user.png'} alt=''></Image>
-                        <span className='hidden group-hover:block duration-200 text-xs absolute right-0 translate-x-0 top-full'>Hồ sơ của bạn</span>
-                    </Link>
                 </div>
             </div>
         </header>
 
-        {/* title */}
+        {/* about us */}
         <div className='border-y w-full'>
             <section className='mx-auto max-w-[1440px] w-[95vw] overflow-x-auto *:whitespace-nowrap bg-white flex *:flex items-center *:items-center *:gap-x-1 *:text-xs py-3 *:cursor-default'>
                 {/* 1 */}

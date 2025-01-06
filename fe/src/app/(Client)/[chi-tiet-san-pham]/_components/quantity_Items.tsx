@@ -7,7 +7,7 @@ import { Mutation_Cart } from "../../../_lib/Tanstack_Query/Cart/mutation_Cart";
 import { CircleCheck, Minus, Plus } from "lucide-react";
 import { io } from 'socket.io-client';
 import { useToast } from "@/src/app/_Components/ui/use-toast";
-import useStoreZustand from "@/src/app/Zustand/Store";
+import {useStoreZustand} from "@/src/app/Zustand/Store";
 
 
 
