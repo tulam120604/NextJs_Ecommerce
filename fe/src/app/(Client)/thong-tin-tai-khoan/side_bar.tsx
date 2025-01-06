@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { useToast } from "@/src/app/_Components/ui/use-toast";
 import Bell_component from "../../_Components/Notification/Bell_component";
 import { Box, Heart, User } from "lucide-react";
-import { Mutation_Auth } from "../../_lib/Tanstack_Query/Auth/auth_mutation";
+import { Mutation_Auth } from "../../_lib/Query_APIs/Auth/auth_mutation";
 import { useToken } from "../../_lib/Custome_Hooks/User";
 import { eventEmit } from "../../_Components/ui/Header/Event_emit";
 import Loading_Skeleton from "../../_Components/Loadings/Loading_Skeleton";

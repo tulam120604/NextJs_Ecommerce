@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/Shadcn/button'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '../ui/select'
 import { ChevronDown, Plus, X } from 'lucide-react';
-import { Get_AttributeCatalog_Seller } from '../../_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
+import { Get_AttributeCatalog_Seller } from '../../_lib/Query_APIs/Attribute_catalog/Query_attribute_catalog';
 import { useLocalStorage, useSessionStorage } from '../../_lib/Custome_Hooks/UseStorage';
 
     export default function Form_variant({ propsData }: any) {

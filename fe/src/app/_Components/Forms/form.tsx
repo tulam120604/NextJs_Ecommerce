@@ -9,7 +9,7 @@ import Form_category from './form_category';
 import { CircleMinus, SquarePlus } from 'lucide-react';
 import { useCustome_Hooks_Form } from '../../_lib/Custome_Hooks/MyForm';
 import Loading_Dots from '../Loadings/Loading_Dots';
-import { Get_AttributeCatalog_Seller } from '../../_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
+import { Get_AttributeCatalog_Seller } from '../../_lib/Query_APIs/Attribute_catalog/Query_attribute_catalog';
 import { useLocalStorage, useSessionStorage } from '../../_lib/Custome_Hooks/UseStorage';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import Form_variant from './form_variant';

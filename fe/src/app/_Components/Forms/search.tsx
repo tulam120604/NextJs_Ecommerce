@@ -9,12 +9,12 @@ import { SEARCH_item } from "../../_lib/Services/Services_Items/products";
 
 export const Search_Component_Dashboard = () => {
   return (
-    <div className="relative w-[400px]">
+    <div className="relative w-1/2">
       <input
         type="text"
         id="Search"
         placeholder="Tìm kiếm..."
-        className="w-full rounded-md text-white bg-transparent border border-gray-400 px-3 py-2 outline-none pe-10 shadow-sm sm:text-sm"
+        className="w-full rounded-md text-gray-900 bg-transparent border border-gray-400 px-3 py-2 outline-none pe-10 shadow-sm sm:text-sm"
       />
       <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
         <button type="button" className="text-gray-700 hover:text-gray-300">

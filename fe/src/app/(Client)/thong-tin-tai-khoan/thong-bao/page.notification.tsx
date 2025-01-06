@@ -1,7 +1,7 @@
 'use client'
 
-import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
-import { Query_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Query_Notification'
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
+import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query_Notification'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog'
 import { CircleCheck } from 'lucide-react'

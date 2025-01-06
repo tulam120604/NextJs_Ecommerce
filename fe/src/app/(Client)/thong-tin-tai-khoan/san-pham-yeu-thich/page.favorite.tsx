@@ -3,7 +3,7 @@
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import List_Products from '@/src/app/_Components/Products/List_Products'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
-import { List_favorites } from '@/src/app/_lib/Tanstack_Query/Favorites/Query_Feedback'
+import { List_favorites } from '@/src/app/_lib/Query_APIs/Favorites/Query_Feedback'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

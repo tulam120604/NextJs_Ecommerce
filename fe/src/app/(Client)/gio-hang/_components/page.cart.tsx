@@ -3,9 +3,9 @@
 
 import React, { Suspense, useEffect, useState } from 'react'
 import LoadingCart from '../loading';
-import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
+import { Get_Items_Cart } from '@/src/app/_lib/Query_APIs/Cart/query';
 import { useRouter } from 'next/navigation';
-import { Mutation_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart';
+import { Mutation_Cart } from '@/src/app/_lib/Query_APIs/Cart/mutation_Cart';
 import { io } from 'socket.io-client';
 import { useToast } from '@/src/app/_Components/ui/use-toast';
 import { ToastAction } from '@/src/app/_Components/ui/toast';

@@ -15,19 +15,6 @@ const Form_auth = ({ mode }: any) => {
     const { my_form, isLoading, status_Loading, onSubmit, errors, isValidating, routing } = Custome_Hooks_Auth({ mode });
     if (status_Loading === 'call_ok') {
         if (mode !== "Register") {
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Đăng nhập thành công!",
-                showConfirmButton: false,
-                timer: 1000,
-                heightAuto: false,
-                backdrop: '#20212466',
-                customClass: {
-                    popup: 'bg-[#F3F4F6]', // màu nền
-                    title: 'text-black' // màu chữ
-                },
-            });
             routing.push('/');
         }
         else {

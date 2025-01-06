@@ -76,22 +76,22 @@ const SideBarDashboard = () => {
                                 rounded text-gray-500">
                                 {
                                     item?.child_uri ?
-                                        <div className={`${(isActive) ? 'group lg:px-4 lg:py-2 p-1.5 bg-gray-300 text-gray-900' :
-                                            'lg:px-4 lg:py-2 p-1.5 hover:bg-gray-300 hover:text-gray-900'}`}>
+                                        <div className={`${(isActive) ? 'group lg:px-4 lg:py-2 p-1.5 bg-[#6a96f6] text-gray-100 rounded' :
+                                            'lg:px-4 lg:py-2 p-1.5 hover:bg-[#6a96f6] hover:text-gray-900 rounded'}`}>
                                             <section className="flex items-center gap-x-2">
                                                 {item?.icon}
                                                 <span className="hidden lg:block text-sm">{item?.name}</span>
                                             </section>
                                             <ChevronDown className="group-open:-rotate-180 duration-200" />
                                         </div> :
-                                        <Link href={item?.pathName} className={`${(isActive) ? 'group lg:px-4 lg:py-2 p-1.5 bg-gray-300 text-gray-900' :
-                                            'lg:px-4 lg:py-2 p-1.5 hover:bg-gray-300 hover:text-gray-900'}`}>
+                                        <Link href={item?.pathName} className={`${(isActive) ? 'group lg:px-4 lg:py-2 p-1.5 bg-[#6a96f6] text-gray-900 rounded' :
+                                            'lg:px-4 lg:py-2 p-1.5 hover:bg-[#6a96f6] hover:text-gray-900 rounded'}`}>
                                             {item?.icon}
                                             <span className="hidden lg:block text-sm">{item?.name}</span>
                                         </Link>
                                 }
                             </summary>
-                            <ul className="*:duration-300 *:w-full text-gray-500 bg-gray-200
+                            <ul className="*:duration-300 *:w-full text-gray-500 bg-gray-100
                             flex flex-col gap-y-2 items-end">
                                 {
                                     item?.child_uri?.map((uri: any) => {

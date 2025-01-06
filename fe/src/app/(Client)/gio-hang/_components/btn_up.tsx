@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/src/app/_Components/ui/Shadcn/button";
-import { Mutation_Cart } from "@/src/app/_lib/Tanstack_Query/Cart/mutation_Cart";
+import { Mutation_Cart } from "@/src/app/_lib/Query_APIs/Cart/mutation_Cart";
 import Swal from "sweetalert2";
 
 const Btn_up = ({ id_props }: any) => {

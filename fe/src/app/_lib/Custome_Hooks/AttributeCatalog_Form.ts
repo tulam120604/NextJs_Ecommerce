@@ -1,7 +1,7 @@
 'use client'
 
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Mutation_AttributeCatalog } from "../Tanstack_Query/Attribute_catalog/Query_attribute_catalog"
+import { Mutation_AttributeCatalog } from "../Query_APIs/Attribute_catalog/Query_attribute_catalog"
 import { useForm } from 'react-hook-form';
 import { schemaValidateAttributeCatalog } from "../../(Auth)/validate";
 

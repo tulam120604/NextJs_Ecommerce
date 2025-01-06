@@ -3,8 +3,8 @@
 
 import Link from "next/link"
 import { Suspense, useState } from "react";
-import { Query_Recycle_Items_Admin } from "@/src/app/_lib/Tanstack_Query/Items/query";
-import { Mutation_Items } from "@/src/app/_lib/Tanstack_Query/Items/mutationFn";
+import { Query_Recycle_Items_Admin } from "@/src/app/_lib/Query_APIs/Items/query";
+import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/mutationFn";
 import { useToken } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 import Data_Table from "../../_components/Data_Table";

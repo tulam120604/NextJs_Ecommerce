@@ -1,12 +1,12 @@
 'use client'
 
-import { Query_Order } from '@/src/app/_lib/Tanstack_Query/Order/Query_order'
+import { Query_Order } from '@/src/app/_lib/Query_APIs/Order/Query_order'
 import React, { useState } from 'react'
 import { Button } from "@/src/app/_Components/ui/Shadcn/button"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import Link from "next/link"
-import { Mutation_Order } from '@/src/app/_lib/Tanstack_Query/Order/Mutation_order'
+import { Mutation_Order } from '@/src/app/_lib/Query_APIs/Order/Mutation_order'
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/_Components/ui/alert-dialog'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
@@ -14,7 +14,7 @@ import Paginate_order from './paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { CircleCheck, CircleEllipsis, PackageOpen, Truck, X } from 'lucide-react'
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
-import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification'
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
 import { convert_Slug } from '@/src/app/util/Slug'
 
 const Page_order = () => {

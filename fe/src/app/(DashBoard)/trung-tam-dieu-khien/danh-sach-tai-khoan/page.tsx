@@ -1,7 +1,7 @@
 'use client';
 
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
-import { List_Account } from "@/src/app/_lib/Tanstack_Query/Auth/Query_Auth";
+import { List_Account } from "@/src/app/_lib/Query_APIs/Auth/Query_Auth";
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 import { DataTable } from "@/src/app/_Components/ui/Tables/data_table";
 import { ColumnDef } from "@tanstack/react-table";
@@ -26,7 +26,7 @@ const CustomersAdmin = () => {
     const columns: ColumnDef<any>[] = [
         {
             cell: ({ row }) => (<>
-                <Image className="rounded" width={50} height={50} src={row?.original?.avatar ? row?.original?.avatar : '/Images/default_avatar.jpg'} alt="Loading..."></Image>
+                <Image className="rounded-full" width={50} height={50} src={row?.original?.avatar ? row?.original?.avatar : '/Images/default-user.png'} alt="Loading..."></Image>
             </>),
             'header': 'Ảnh đại diện'
         },
@@ -60,7 +60,7 @@ const CustomersAdmin = () => {
             <Auth_Wrap_Admins>
                 <div className="flex flex-col gap-y-6 py-4 rounded">
                     <strong className="text-gray-900 lg:text-xl">Khách hàng</strong>
-                    <div className="border border-gray-300 rounded-lg px-4">
+                    <div className="bg-white rounded-lg px-4">
                         {
                             data?.data &&
                             <DataTable data={data?.data?.docs} columns={columns}/>

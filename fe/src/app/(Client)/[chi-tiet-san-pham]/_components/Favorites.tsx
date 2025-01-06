@@ -1,7 +1,7 @@
 'use client';
 
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
-import { Mutation_Favorite, Query_detail_favorites } from '@/src/app/_lib/Tanstack_Query/Favorites/Query_Feedback';
+import { Mutation_Favorite, Query_detail_favorites } from '@/src/app/_lib/Query_APIs/Favorites/Query_Feedback';
 import { Heart } from 'lucide-react'
 import { useRouter } from 'next/navigation';
 import React from 'react'

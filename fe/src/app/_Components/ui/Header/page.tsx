@@ -4,19 +4,31 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
-import { Get_Items_Cart } from '@/src/app/_lib/Tanstack_Query/Cart/query';
+import { Get_Items_Cart } from '@/src/app/_lib/Query_APIs/Cart/query';
 import { Search_Component_Client } from '../../Forms/search';
 import { BadgeCheck, BadgeDollarSign, CircleUser, RefreshCcwDot, Search, ShoppingBag, Tag, Truck } from 'lucide-react';
 import { eventEmit } from './Event_emit';
 import { useStoreZustand } from '@/src/app/Zustand/Store';
+import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 
 const Header = () => {
     const { isVisible } = useStoreZustand();
     const routing = useRouter();
-    const [check_local_user, setCheckLocal_user] = useState<boolean>(false)
+    const [check_local_user, setCheckLocal_user] = useState<boolean>(false);
     const pathName = usePathname();
+    const user = useCheck_user();
+    const [account, setAccount] = useState<string | undefined>(undefined)
     const isActivePathUser = pathName?.startsWith('/thong-tin-tai-khoan');
     const isActivePathCart = pathName?.startsWith('/gio-hang');
+    useEffect(() => {
+        if (window.localStorage) {
+            setAccount(user?.check_email?.user_name);
+        }
+    }, [user]);
+    // catch event f5 or reload page
+    if (window.onload) {
+        setAccount(' ')
+    }
     useEffect(() => {
         const status_Storage = () => {
             if (!localStorage.getItem('account')) {
@@ -88,12 +100,12 @@ const Header = () => {
                     <Link href={check_local_user ? '/thong-tin-tai-khoan/thong-tin' : '/dang-nhap'} className={`${isActivePathUser && 'bg-[#E2EDFF]'} ' 
                     flex items-center gap-x-2 hover:bg-[#E2EDFF] rounded duration-200 py-2 px-3 cursor-pointer whitespace-nowrap'`}>
                         <CircleUser color='#0A68FF' />
-                        <span className='text-[#0A68FF] text-sm mt-0.5'>Tài khoản</span>
+                        <span className='text-[#0A68FF] text-sm mt-0.5'>{account ? account : 'Tài khoản'}</span>
                     </Link>
                     {/* cart */}
-                    <div className={`${isActivePathCart && 'bg-[#E2EDFF]'} relative group cursor-pointer hover:bg-[#E2EDFF] rounded duration-200 py-1.5 px-2`}>
-                        <button onClick={handleCart} className='z-[1] relative' >
-                            <ShoppingBag className='w-5 h-5 translate-y-1' color='#0A68FF' />
+                    <div className={`${isActivePathCart && 'bg-[#E2EDFF]'} relative group cursor-pointer`}>
+                        <button onClick={handleCart} className='z-[1] relative hover:bg-[#E2EDFF] rounded duration-200 py-2 px-2.5' >
+                            <ShoppingBag className='w-5 h-5 ' color='#0A68FF' />
                             <Count_Cart />
                             {/* animation add to cart */}
                             {

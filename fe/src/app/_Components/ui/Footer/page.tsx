@@ -26,16 +26,16 @@ const Footer = () => {
                             <h2 className="text-lg tracking-[0.2px] uppercase translate-y-[2px] mb-[24px]">Về chúng tôi</h2>
                             <ul className="*:lg:mb-[13px] *:mb-[13.5px] gap-x-8">
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">Track Your Order</a>
+                                    <Link href="" className="text-gray-800 text-sm">Track Your Order</Link>
                                 </li>
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">Shop All</a>
+                                    <Link href="" className="text-gray-800 text-sm">Shop All</Link>
                                 </li>
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">Flower</a>
+                                    <Link href="" className="text-gray-800 text-sm">Flower</Link>
                                 </li>
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">Edibles</a>
+                                    <Link href="" className="text-gray-800 text-sm">Edibles</Link>
                                 </li>
                             </ul>
                         </div>
@@ -43,10 +43,10 @@ const Footer = () => {
                             <h2 className="text-lg uppercase tracking-[0.3px] translate-y-[1px] mb-6">Liên hệ với chúng tôi qua</h2>
                             <ul>
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">info@store88.cc</a>
+                                    <Link href="" className="text-gray-800 text-sm">info@store88.cc</Link>
                                 </li>
                                 <li>
-                                    <a href="" className="text-gray-800 text-sm">tulam@store88.tulam</a>
+                                    <Link href="" className="text-gray-800 text-sm">tulam@store88.tulam</Link>
                                 </li>
                             </ul>
                         </div>
@@ -67,9 +67,9 @@ const Footer = () => {
                     </p>
                     <p className='order-2 lg:order-2'>by Tú Lâm</p>
                     <ul className="order-1 lg:order-2 flex items-center gap-x-8 -translate-y-[0.7px]">
-                        <li><a href="" className="text-gray-800 text-sm">Out Of Stock</a></li>
-                        <li><a href="" className="text-gray-800 text-sm">Privacy Policy</a></li>
-                        <li><a href="" className="text-gray-800 text-sm">Terms &amp; Conditions</a></li>
+                        <li><Link href="" className="text-gray-800 text-sm">Out Of Stock</Link></li>
+                        <li><Link href="" className="text-gray-800 text-sm">Privacy Policy</Link></li>
+                        <li><Link href="" className="text-gray-800 text-sm">Terms &amp; Conditions</Link></li>
                     </ul>
                 </div>
             </div>

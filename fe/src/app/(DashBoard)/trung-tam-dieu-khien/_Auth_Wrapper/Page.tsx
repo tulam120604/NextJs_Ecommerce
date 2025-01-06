@@ -1,7 +1,7 @@
 'use client'
 
 import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
-import { Check_token_expired } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Auth';
+import { Check_token_expired } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
@@ -22,7 +22,7 @@ export function Auth_Wrap_Admins({ children }: Readonly<{ children: React.ReactN
   const routing = useRouter();
   const user = useCheck_user();
   const token = useToken();
-  const { data, isLoading, isError } = service_check_token(user?.check_email?._id, token?.accessToken);
+  const { data, isLoading } = service_check_token(user?.check_email?._id, token?.accessToken);
   useEffect(() => {
     if (data?.status === 401) {
       routing.push('/dang-nhap');

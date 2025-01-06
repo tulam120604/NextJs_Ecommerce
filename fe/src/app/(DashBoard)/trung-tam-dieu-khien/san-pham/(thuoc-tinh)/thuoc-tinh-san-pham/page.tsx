@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import useFormAttributeCatalog from '@/src/app/_lib/Custome_Hooks/AttributeCatalog_Form';
 import { SketchPicker } from 'react-color';
 import { useLocalStorage, useSessionStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
-import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Tanstack_Query/Attribute_catalog/Query_attribute_catalog';
+import { Get_AttributeCatalog_Seller } from '@/src/app/_lib/Query_APIs/Attribute_catalog/Query_attribute_catalog';
 import List_data_attribute_catalog from './_component/page';
 
 

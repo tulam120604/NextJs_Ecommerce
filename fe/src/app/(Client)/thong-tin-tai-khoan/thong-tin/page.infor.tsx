@@ -1,7 +1,7 @@
 'use client';
 
 import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
-import { List_Address, Mutation_Address } from '@/src/app/_lib/Tanstack_Query/Auth/Query_Address';
+import { List_Address, Mutation_Address } from '@/src/app/_lib/Query_APIs/Auth/Query_Address';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link'
 import React, { useEffect, useRef, useState } from 'react'
@@ -61,7 +61,7 @@ const Page_infor = () => {
                 <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600'>{user && user?.check_email?.user_name}</div>
               </td>
               <td className='flex items-center justify-between lg:text-sm text-xs'>
-                Email tài khoản
+                Email
                 <div className='lg:w-[70%] w-[50%] border py-1 lg:py-2 px-4 rounded text-gray-600 overflow-hidden flex justify-between items-center tracking-[1px]'>
                   <span>{user?.check_email?.email?.slice(0, 2) + '*****' + user?.check_email?.email?.slice(7)}</span>
                 </div>
@@ -82,11 +82,11 @@ const Page_infor = () => {
           <span className='lg:text-xl text-sm'>Địa chỉ</span>
           <Button className='lg:text-sm text-xs px-2 lg:py-2 py-1.5 h-auto bg-[#597BFE] hover:bg-[#6f8bfc]' onClick={handle_Show_Form_Create_Address}>Thêm địa chỉ +</Button>
         </section>
-        <div ref={form_create_address} className='fixed -translate-x-1/2 -translate-y-1/2 scale-0 duration-200 top-1/2 left-3/4 z-[3]'>
+        <div ref={form_create_address} className='fixed -translate-x-1/2 -translate-y-1/2 scale-0 duration-200 top-1/2 left-3/4 z-[11]'>
           <Address_component id_user={user?.check_email?._id} />
         </div>
         <div onClick={handle_Close_Form_Create_Address} ref={bg_form_create_address}
-          className='fixed hidden w-screen h-screen top-0 left-0 z-[2] bg-[#33333355]'></div>
+          className='fixed hidden w-screen h-screen top-0 left-0 z-[10] bg-[#33333355]'></div>
         {isLoading && <Loading_Dots />}
         <div className='grid lg:grid-cols-2 lg:gap-x-10 gap-6'>
           {data?.data && data?.data.length > 0 ?

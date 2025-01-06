@@ -1,8 +1,8 @@
 'use client';
 
-import { Mutation_Auth } from '@/src/app/_lib/Tanstack_Query/Auth/auth_mutation';
-import { Mutation_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Mutation_Notification';
-import { Query_Notification } from '@/src/app/_lib/Tanstack_Query/Notification/Query_Notification';
+import { Mutation_Auth } from '@/src/app/_lib/Query_APIs/Auth/auth_mutation';
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
+import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query_Notification';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { io } from 'socket.io-client';
 import { AlertDialog } from '@/src/app/_Components/ui/alert-dialog';
@@ -70,7 +70,7 @@ export default function Page() {
                                 data?.data?.data_notification?.map((item: any) => {
                                     return <AlertDialog key={item?._id}>
                                         <AlertDialogTrigger asChild onClick={() => (!item?.notes) && sendMessage(item)}>
-                                            <li className='block h-full rounded-lg border border-gray-300 p-4 hover:border-gray-400 cursor-pointer *:flex *:justify-between'>
+                                            <li className='block h-full rounded-lg bg-white shadow-lg p-4 hover:shadow-xl cursor-pointer *:flex *:justify-between duration-200'>
                                                 <div>
                                                     <strong className="font-medium text-gray-800">Từ {item?.sender_id?.user_name}</strong>
                                                     {item.status_message &&
