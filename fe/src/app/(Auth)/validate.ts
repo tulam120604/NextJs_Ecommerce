@@ -32,6 +32,13 @@ export const schemaValidateAddress = yup.object().shape({
     wards: yup.string().required('Bắt buộc!'),
 })
 
-export const schemaValidateAttributeCatalog =  yup.object().shape({
+export const schemaValidateAttributeCatalog = yup.object().shape({
     attribute: yup.string().required('Trường này là bắt buộc!')
+})
+
+export const schemaValidateFormProduct = yup.object().shape({
+    short_name: yup.string().required('Vui lòng nhập tên sản phẩm!').min(3, 'Tên sản phẩm phải chứa ít nhất 3 kí tự!').max(255, 'Tên sản phẩm tối đa 255 kí tự!'),
+    des_product: yup.string().required('Vui lòng nhập mô tả sản phẩm!').min(6, 'Mô tả sản phẩm phải chứa ít nhất 6 kí tự!').max(5000, 'Mô tả sản phẩm tối đa 5000 kí tự!'),
+    category_id: yup.string().required('Vui lòng chọn danh mục sản phẩm!'),
+    made_in: yup.string().required('Vui lòng nhập xuất xứ sản phẩm!'),
 })

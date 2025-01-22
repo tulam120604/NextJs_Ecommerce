@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-export function useToken (){
+export function useToken() {
     const [accessToken, set_AccessToken] = useState();
     const [refeshToken, set_RefeshToken] = useState();
     useEffect(() => {
@@ -19,10 +19,9 @@ export function useToken (){
     }
 }
 
-
-export function useCheck_user () {
-    if(typeof window !== 'undefined') {
-        if(localStorage.getItem("account")) {
+export function useCheck_user() {
+    if (typeof window !== 'undefined') {
+        if (localStorage.getItem("account")) {
             return JSON.parse(localStorage.getItem("account") || '{}');
         }
         return;

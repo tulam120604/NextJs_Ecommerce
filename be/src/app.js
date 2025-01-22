@@ -16,7 +16,6 @@ import { Server } from 'socket.io';
 import RoutesAddress from './Routes/Auth/Address.js';
 import RoutesPayment from './Routes/Payment/Payment.js';
 import Routes_Favorites from './Routes/Items/Favorites.js';
-import Routes_Attribute from './Routes/Attribute/Attribute.js';
 
 dotenv.config();
 const app = express();
@@ -30,8 +29,6 @@ ConnectDB(process.env.DB_MONGO);
 app.use('/v1', RoutesProducts);
 app.use('/v1', RoutesCategories);
 
-// attribute
-app.use('/v1', Routes_Attribute)
 
 // authen
 app.use('/v1', RoutesAuth);

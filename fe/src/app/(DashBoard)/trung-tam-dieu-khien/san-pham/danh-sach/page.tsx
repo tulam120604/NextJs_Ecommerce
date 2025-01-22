@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import Link from "next/link"
 import { Suspense, useEffect } from "react";
 import Loading from "../_component/loading";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/query";
@@ -29,7 +28,7 @@ const Page = () => {
     }
   }
   const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10, id_user);
-  const { on_Submit, isLoading : loading_remove } = Mutation_Items({
+  const { on_Submit, isLoading: loading_remove } = Mutation_Items({
     action: "REMOVE"
   });
   // close socket 
@@ -58,18 +57,21 @@ const Page = () => {
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
       <Auth_Wrap_Seller>
-        <div className="flex flex-col gap-y-6 py-4 rounded">
-          <strong className='text-xl'>Danh sách sản phẩm</strong>
+        <div className="flex flex-col gap-y-6 py-4">
+          <div className="flex flex-col gap-y-1">
+            <strong className='text-lg'>Danh sách sản phẩm</strong>
+            <span className="text-gray-600 text-sm">Quản lý sản phẩm của bạn</span>
+          </div>
           {
             data?.status === 401 ? <span className="text-gray-900 text-center">Xác minh danh tính không thành công! Vui lòng đăng nhập lại!!</span> :
               data?.data ? (<>
                 {isLoading ? <div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div> :
                   <div className="bg-white rounded-lg border px-4">
-                    <Data_Table dataProps={{dataTable : data?.data?.docs, handle_Remove}}/>
+                    <Data_Table dataProps={{ dataTable: data?.data?.docs, handle_Remove }} />
                   </div>
                 }
               </>)
-                : <span className="text-gray-800 text-center text-sm">Không có dữ liệu</span>
+                : <section className="h-[70vh] grid place-content-center text-gray-800 text-center text-sm">Không có dữ liệu!</section>
           }
           {
             data?.data?.docs &&

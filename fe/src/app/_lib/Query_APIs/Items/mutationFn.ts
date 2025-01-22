@@ -4,6 +4,8 @@ import { DESTROY_item, POST_item, PUT_item_dashboard, REMOVE_item, RESTORE_item 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaValidateFormProduct } from "@/src/app/(Auth)/validate";
 
 type Action = 'ADD' | 'EDIT' | 'REMOVE' | 'RESTORE_OR_DESTROY';
 
@@ -11,7 +13,9 @@ type Action = 'ADD' | 'EDIT' | 'REMOVE' | 'RESTORE_OR_DESTROY';
 export function Mutation_Items({ action, onSuccess, onError, onSettled }: { action: Action, onSuccess?: any, onError?: any, onSettled?: any }) {
     const [loading, setLoading] = useState<string>('no_call');
     // create form 
-    const my_Form = useForm();
+    const my_Form = useForm({
+        resolver: yupResolver(schemaValidateFormProduct)
+    });
 
     const query_client = useQueryClient();
     const { mutate, ...rest } = useMutation({

@@ -6,12 +6,13 @@ import { io } from 'socket.io-client';
 import { useRouter } from 'next/navigation';
 import { useToast } from '../../_Components/ui/use-toast';
 import { ToastAction } from '../../_Components/ui/toast';
-import { useCheck_user } from '../../_lib/Custome_Hooks/User';
 import Loading_Skeleton from '../../_Components/Loadings/Loading_Skeleton';
+import { useLocalStorage } from '../../_lib/Custome_Hooks/UseStorage';
 
 const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
-  const user = useCheck_user();
+  const user = useLocalStorage('account', undefined);
+  console.log(user)
 
   useEffect(() => {
     const socket = io('http://localhost:8888');

@@ -3,7 +3,7 @@ import {
     get_item_by_user, get_Item_Client, get_Item_Dashboard, search_Item
 } from './Get.js';
 import { Create_Product } from './Create.js';
-import { Soft_remove } from './Soft_delere.js';
+import { Soft_remove } from './Soft_delete.js';
 import { destroy_items, get_recycle_items, restore_item } from '../Recycle/Items.js';
 import { edit_Product } from './Edit.js';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Mutation_Auth } from '@/src/app/_lib/Query_APIs/Auth/auth_mutation';
+import { Mutation_Auth } from '@/src/app/_lib/Query_APIs/Auth/Auth_mutation';
 import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query_Notification';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';

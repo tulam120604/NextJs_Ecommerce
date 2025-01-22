@@ -1,19 +1,15 @@
 'use client';
 
-import Link from "next/link";
-import Image from "next/image";
 import SideBarDashboard from "./SideBar";
-import { Search_Component_Dashboard } from "../_Components/Forms/search";
 import { Query_Notification } from "../_lib/Query_APIs/Notification/Query_Notification";
 import React, { useEffect, useState } from "react";
 import { useToast } from "../_Components/ui/use-toast";
-import Notification_Component from "../_Components/Notification/Notification";
 import { useCheck_user } from "../_lib/Custome_Hooks/User";
 
 const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   let user = useCheck_user() ?? '';
   const { toast } = useToast();
-  const [count_bell, setCount_bell] = useState(0)
+  const [count_bell, setCount_bell] = useState(0);
   const data = Query_Notification(user?.check_email?._id);
 
   useEffect(() => {
@@ -36,42 +32,21 @@ const Layout_Admin = ({ children }: Readonly<{ children: React.ReactNode }>) => 
     total_bell = data?.data?.data_notification?.filter((item: any) => item?.status_message !== true) ?? ''
   }
   return (
-    <div className="bg-[#F5F5FA]">
-      {/* header */}
-      <div className="fixed w-screen top-0 left-0 bg-white z-[10]">
-        <header className="w-[95vw] z-[1] h-[60px] mx-auto flex items-center justify-between sticky top-0">
-          <Link className='text-sm lg:text-xl font-extrabold text-gray-900' href={'/'}>
-            Store88
-          </Link>
-          <Search_Component_Dashboard />
-          {/* options */}
-          <div className="flex items-center gap-x-8">
-            {/* notification */}
-            <Link href={'adminstrations/dashboard/notification'} className="cursor-pointer relative text-gray-700 group">
-              <Notification_Component dataProps={{ data: data?.data, total_bell: total_bell }} />
-            </Link>
-            {/* logo account */}
-            <div>
-              <Image className="rounded-[50%] cursor-pointer hover:scale-110 duration-200" width={30} height={30} src={'/Images/avatar.jpg'} alt='avatar' />
-            </div>
-          </div>
-        </header>
-      </div>
-
+    <div className="bg-[#F5F5FA] *:antialiased min-h-screen">
       {/* side bar */}
-      <main className="items-start w-full grid lg:grid-cols-[180px_auto] grid-cols-[50px_auto] min-h-screen">
-        <div className="sticky top-20 -translate-y-20 pt-[60px] bg-white after:bg-white after:absolute after:w-full after:h-screen after:top-0 after:left-0 
-        after:z-[-1] after:rounded shadow-lg">
+      <main className="items-start w-full grid lg:grid-cols-[200px_auto] grid-cols-[50px_auto] min-h-auto">
+        <div className="sticky top-0 pt-6 bg-[#F7F9FB] after:bg-[#F7F9FB] after:absolute after:w-full after:h-screen after:top-0 after:left-0 
+        after:z-[-1] shadow-lg after:shadow-lg">
           <SideBarDashboard />
         </div>
-        <div className="min-h-full !text-gray-900 mt-14 pt-2">
-          <div className="w-full h-5 bg-white !fixed top-10 border shadow-xl"/>
-          <main className="pl-6 pr-3">
-          {children}
-          </main>
+        <div className="min-h-screen flex flex-col justify-between">
+          <div className="pl-6 pr-3">
+            {children}
+          </div>
+          <footer className="text-gray-900 text-center pt-5 pb-4 mt-4 bg-gradient-to-r from-[#F7F9FB] to-white z-10 
+          shadow-[3px_-0.5px_4px_1px_rgba(0,0,0,0.1)]">@Copyright by Tu Lam</footer>
         </div>
       </main>
-      <footer className="text-gray-700 text-center py-4 relative mt-auto">@Copyright by Tu Lam</footer>
     </div>
   )
 }
