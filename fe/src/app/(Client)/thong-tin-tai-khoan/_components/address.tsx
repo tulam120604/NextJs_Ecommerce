@@ -1,3 +1,5 @@
+'use client'
+
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button'
 import { Input } from '@/src/app/_Components/ui/Shadcn/input'

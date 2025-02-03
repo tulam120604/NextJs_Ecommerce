@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
-import { list_Categories } from '@/src/app/_lib/Services/Services_Items/categories';
+import { GET_category } from '@/src/app/_lib/Services/Services_Items/Category';
 import { Suspense } from 'react';
 import Loading_Skeleton from '@/src/app/_Components/Loadings/Loading_Skeleton';
 
 const Category = async () => {
     noStore();
-    const { data } = await list_Categories();
+    const { data } = await GET_category();
     return (
         <Suspense fallback={<Loading_Skeleton number_elements={1} />}>
             <aside className='py-4 px-2 overflow-y-scroll hidden_scroll_y !sticky top-4 bg-white rounded-lg max-h-screen'>

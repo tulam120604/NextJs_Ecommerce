@@ -16,18 +16,18 @@ export async function sign_In(item: any) {
         }
         else if (res.status === 200) {
             const data = await res.json();
-            // console.log(data.check_email)
-            localStorage.setItem('account', JSON.stringify(data));
+            // console.log(data)
+            document.cookie = `access_token=${data.accessToken}; Path=/; Secure; SameSite=None; max-age=604800000`;
+            document.cookie = `refesh_token=${data.refeshToken}; Path=/; SameSite=None; max-age=604800000`;
+            localStorage.setItem('account', JSON.stringify(data?.check_email?.user_name));
         }
         return res
-    } catch (error) {
-        return error || 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
 // register
-
-
 export async function create_Account(item: any) {
     try {
         const res = await fetch(`${apiURi}/register`, {
@@ -45,16 +45,17 @@ export async function create_Account(item: any) {
             toast.success("Đăng kí tài khoản thành công!", { autoClose: 500 });
         }
         return res
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
 // infor
-export async function infor_user(id: string | number, accessToken: string) {
+export async function infor_user(accessToken: string) {
     try {
-        const res = await fetch(`${apiURi}/infor/${id}`, {
+        const res = await fetch(`${apiURi}/infor_account`, {
             method: 'get',
+            credentials: 'include',
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -64,8 +65,8 @@ export async function infor_user(id: string | number, accessToken: string) {
         }
         const data = await res.json();
         return data
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
@@ -84,13 +85,13 @@ export async function list_Account(accessToken: string) {
         };
         const data = await res.json();
         return data
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
-// granting_premissions
-export async function granting_premissions(dataForm: { id_user: string | number, accessToken: string }) {
+// cap quyen cho user
+export async function cap_quyen_tai_khoan(dataForm: { id_user: string | number, accessToken: string }) {
     try {
         const res = await fetch(`${apiURi}/granting_premissions`, {
             method: 'post',
@@ -108,17 +109,18 @@ export async function granting_premissions(dataForm: { id_user: string | number,
             toast.success('Cấp quyền thành công!', { autoClose: 500 })
         }
         return res
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
 
-// log out
+// dang xuat
 export async function logout(token: string) {
     try {
         const res = await fetch(`${apiURi}/logout`, {
             method: 'post',
+            credentials: 'include',
             headers: {
                 'Authorization': `${token}`
             }
@@ -127,9 +129,10 @@ export async function logout(token: string) {
             toast.error('Đăng xuất thất bại, vui lòng thử lại sau!', { autoClose: 500 });
             return res;
         };
+        localStorage.removeItem('account')
         return res
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
@@ -148,8 +151,8 @@ export async function refesh_token(token: { refeshToken: string }) {
         }
         const data = await res.json();
         return data
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!' || error
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
@@ -172,8 +175,8 @@ export async function check_token_expired(user: { id: string, accessToken: strin
         }
         const data_user = await res.json()
         return data_user
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!' || error
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }
 
@@ -187,7 +190,7 @@ export async function infor_shop(id?: string | number) {
         }
         const data = await res.json();
         return data
-    } catch (error) {
-        return 'Lỗi rồi đại vương ơi!!'
+    } catch (error: any) {
+        return error || 'Đã có lỗi xảy ra!!'
     }
 }

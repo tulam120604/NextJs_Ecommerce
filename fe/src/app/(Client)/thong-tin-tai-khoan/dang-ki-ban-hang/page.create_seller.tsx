@@ -6,16 +6,16 @@ import { Checkbox } from '@/src/app/_Components/ui/Shadcn/checkbox'
 import { io } from 'socket.io-client'
 import Link from 'next/link'
 import React from 'react'
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
+import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 export default function Page() {
-    const data_user = useCheck_user();
+    const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
     const socket = io('http://localhost:8888')
     const user = data_user ?? '';
     const mutate_notification = Mutation_Notification('ADD');
     function onSendMessage(dataForm: any) {
         const data_body = {
-            sender_id: user?.check_email?._id,
+            sender_id: user?.data?._id,
             receiver_id: 'admin@admin.com',
             notification_message: dataForm?.note_shop,
             notes: dataForm?.address_shop,

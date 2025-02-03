@@ -3,8 +3,8 @@
 
 import { Suspense, useEffect } from "react";
 import Loading from "../_component/loading";
-import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/query";
-import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/mutationFn";
+import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/Query";
+import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/Mutation_product";
 import Pagination_Component from "../_component/Pagination";
 import { useSearchParams } from "next/navigation";
 import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";

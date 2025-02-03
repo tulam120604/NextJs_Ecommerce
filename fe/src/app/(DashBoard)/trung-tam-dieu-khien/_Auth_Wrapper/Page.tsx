@@ -35,7 +35,7 @@ export function Auth_Wrap_Admins({ children }: Readonly<{ children: React.ReactN
     }
   }, [routing, data?.status, toast])
   if (isLoading) {
-    return <div className='w-screen h-full fixed top-0 left-0 grid place-items-center'>
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'>
       <div className='flex flex-col gap-y-3'>
         <Loading_Dots />
         <span className='text-gray-900'>Đang xác minh danh tính</span>
@@ -69,7 +69,7 @@ export function Auth_Wrap_Seller({ children }: Readonly<{ children: React.ReactN
     }
   }, [routing, data?.status, toast])
   if (isLoading) {
-    return <div className='w-screen h-full fixed top-0 left-0 grid place-items-center'>
+    return <div className='w-screen h-screen fixed top-0 left-0 grid place-items-center'>
       <div className='flex flex-col gap-y-3'>
         <Loading_Dots />
         <span className='text-gray-100'>Đang xác minh danh tính</span>

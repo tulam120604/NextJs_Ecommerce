@@ -10,11 +10,11 @@ export async function black_list_token(tokenClient) {
 }
 
 export function createAccessToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '1d' })
+    return jwt.sign({ userId }, 'tulam', { expiresIn: '7d' })
 }
 
 export function createRefeshToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '7d' })
+    return jwt.sign({ userId }, 'tulam', { expiresIn: '30d' })
 }
 
 
@@ -23,10 +23,15 @@ export async function middleWare(req, res, next) {
         // lay token
         if (!req.headers.authorization) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message: "Khong tim thay token !"
+                message: "Khong tim thay token!!"
             })
         }
-        const token = req.headers.authorization.split(" ")[1];
+        const cookie = req.cookies.access_token;
+        // console.log(cookie);
+        const headers_request = req.headers.authorization.split(" ")[1];
+        const check_cookie = headers_request === 'cookie'
+        // neu co cookie thi dung token trong cookie
+        const token = check_cookie ? cookie : headers_request
         if (await black_list_token(token)) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Token không hợp lệ!!'
@@ -41,6 +46,7 @@ export async function middleWare(req, res, next) {
             })
         });
         const user = await Account.findOne({ _id: decoded.userId });
+        req.user = user
         if (!user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Người dùng không tồn tại!!'
@@ -65,16 +71,16 @@ export async function middleWare(req, res, next) {
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(StatusCodes.UNAUTHORIZED).json({
-                message: "Token het han !"
+                message: "Token het han!!"
             })
         }
         else if (error.name === 'JsonWebTokenError') {
             return res.status(StatusCodes.UNAUTHORIZED).json({
-                message: "Token khong hop le !"
+                message: "Token khong hop le!!"
             })
         }
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server'
+            message: error.message || 'Loi server!!'
         })
     }
 }

@@ -1,16 +1,19 @@
 'use client';
 
 import { Mutation_Auth } from '@/src/app/_lib/Query_APIs/Auth/Auth_mutation';
-import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query_Notification';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { io } from 'socket.io-client';
 import { AlertDialog } from '@/src/app/_Components/ui/alert-dialog';
-import { AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog';
+import {
+    AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+} from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { CircleCheck } from 'lucide-react';
 import React, { Suspense, useEffect } from 'react'
 import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import Link from 'next/link';
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 
 
 export default function Page() {
@@ -40,7 +43,7 @@ export default function Page() {
     }, [socket])
 
     // granting premissionss
-    const granting_premission = Mutation_Auth({
+    const cap_quyen_tai_khoan = Mutation_Auth({
         action: 'GRANTING_PREMISSIONS'
     });
 
@@ -49,16 +52,16 @@ export default function Page() {
             id_user: dataForm,
             accessToken: token?.accessToken
         }
-        granting_premission?.onSubmit(item);
+        cap_quyen_tai_khoan?.onSubmit(item);
         sendMessage(item);
-        socket.emit('confirm_granting_premission_account', 'Đại vương có 1 thông báo mới!')
+        socket.emit('xac_nhan_cap_quyen_tai_khoan', 'Đại vương có 1 thông báo mới!')
     }
 
     return (
         <Suspense>
             <div className='text-gray-900 py-4 !px-0'>
                 {
-                    granting_premission?.isLoading &&
+                    cap_quyen_tai_khoan?.isLoading &&
                     <div className='fixed bg-[#33333333] w-screen h-screen top-0 z-[2] left-0'>
                         <Loading_Dots />
                     </div>

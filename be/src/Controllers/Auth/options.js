@@ -55,13 +55,13 @@ export async function Login(req, res) {
         const check_email = await Account.findOne({ email });
         if (!check_email) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
-                message: 'Email khong dung !'
+                message: 'Sai thong tin!'
             })
         };
         const check_password = await brcyptjs.compare(password, check_email.password);
         if (!check_password) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
-                message: "Sai mat khau !"
+                message: "Sai thong tin!"
             })
         };
         const accessToken = createAccessToken(check_email._id);
@@ -126,9 +126,10 @@ export async function granting_premissions(req, res) {
     }
 }
 
-
+// dang xuat
 export async function logout(req, res) {
     try {
+        res.clearCookie('access_token', { path: '/' });
         const token = req.headers.authorization;
         if (!token) {
             return res.status(StatusCodes.NOT_FOUND).json({
@@ -173,7 +174,7 @@ export async function refesh_token(req, res) {
                 })
             }
             try {
-                const user = await Account.findOne({_id : decoded.userId})
+                const user = await Account.findOne({ _id: decoded.userId })
                 if (!user) {
                     return res.status(StatusCodes.NOT_FOUND).json({
                         message: 'Không tìm thấy user!'

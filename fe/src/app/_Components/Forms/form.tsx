@@ -22,7 +22,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
     const [statusOptionsVariant, setStatusOptionsVariant] = useState<any>('no-variant');
     const [variant, setVariant] = useState<any>([{
         attribute: '',
-        value_varriant: [{
+        value_variant: [{
             name_variant: '',
             stock_variant: 0,
             price_variant: 0
@@ -39,7 +39,7 @@ const MyForm: React.FC<any> = ({ mode }: any) => {
                 if (data_one_item?.data?.variant) {
                     data_attr_detail = my_Form.getValues()?.variant?.variants?.map((item: any) => ({
                         attribute: item?.attribute,
-                        value_varriant: item?.value_varriant
+                        value_variant: item?.value_varriant
                     }));
                     setVariant(data_attr_detail);
                 }

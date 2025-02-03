@@ -6,56 +6,46 @@ import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { Get_Items_Cart } from '@/src/app/_lib/Query_APIs/Cart/query';
 import { Search_Component_Client } from '../../Forms/search';
-import { BadgeCheck, BadgeDollarSign, CircleUser, RefreshCcwDot, Search, ShoppingBag, Tag, Truck } from 'lucide-react';
 import { eventEmit } from './Event_emit';
-import { useStoreZustand } from '@/src/app/Zustand/Store';
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
+import { BadgeCheck, BadgeDollarSign, CircleUser, RefreshCcwDot, Search, ShoppingBag, Tag, Truck } from 'lucide-react';
+import { useStoreAddToCart } from '@/src/app/Zustand/Store';
+import { useLocalStorage } from '@/src/app/_lib/Custome_Hooks/UseStorage';
 
 const Header = () => {
-    const { isVisible } = useStoreZustand();
+    const { isVisible } = useStoreAddToCart();
     const routing = useRouter();
-    const [check_local_user, setCheckLocal_user] = useState<boolean>(false);
     const pathName = usePathname();
-    const user = useCheck_user();
-    const [account, setAccount] = useState<string | undefined>(undefined)
+    const [account, setAccount] = useState<string | undefined>('Tài khoản');
     const isActivePathUser = pathName?.startsWith('/thong-tin-tai-khoan');
     const isActivePathCart = pathName?.startsWith('/gio-hang');
+    const [data_localStorage] = useLocalStorage('account', undefined);
+
     useEffect(() => {
-        if (window.localStorage) {
-            setAccount(user?.check_email?.user_name);
+        if (data_localStorage) {
+            setAccount(data_localStorage)
         }
-    }, [user]);
-    // catch event f5 or reload page
-    if (window.onload) {
-        setAccount(' ')
-    }
-    useEffect(() => {
-        const status_Storage = () => {
-            if (!localStorage.getItem('account')) {
-                setCheckLocal_user(false)
-                routing.push('/');
-            }
-            else {
-                setCheckLocal_user(true)
-            }
-        }
-        eventEmit.on('logout', () => { setCheckLocal_user(false) })
-        status_Storage();
-        window.addEventListener('storage', status_Storage);
-        return () => window.removeEventListener('storage', status_Storage);
-    }, [check_local_user, routing]);
+    }, [data_localStorage]);
 
     // cart :
     function handleCart() {
-        if (!localStorage.getItem('account')) {
+        if (account === 'Tài khoản') {
             routing.push('/dang-nhap')
         }
         else {
             routing.push('/gio-hang');
         }
     };
-    console.count('re-render:');
 
+    useEffect(() => {
+        eventEmit.on('log_out', (status: boolean) => {
+            status && setAccount('Tài khoản')
+        })
+    }, [])
+    console.count('re-render:');
+    // catch event f5 or reload page
+    if (window.onload) {
+        setAccount(' ');
+    }
     function Count_Cart() {
         const [data_storage, set_data_storage] = useState();
         useEffect(() => {
@@ -97,10 +87,10 @@ const Header = () => {
                             </form>
                         </div>
                     </div>
-                    <Link href={check_local_user ? '/thong-tin-tai-khoan/thong-tin' : '/dang-nhap'} className={`${isActivePathUser && 'bg-[#E2EDFF]'} ' 
+                    <Link href={(account === 'Tài khoản') ? '/dang-nhap' : '/thong-tin-tai-khoan/thong-tin'} className={`${isActivePathUser && 'bg-[#E2EDFF]'} ' 
                     flex items-center gap-x-2 hover:bg-[#E2EDFF] rounded duration-200 py-2 px-3 cursor-pointer whitespace-nowrap'`}>
                         <CircleUser color='#0A68FF' />
-                        <span className='text-[#0A68FF] text-sm mt-0.5'>{account ? account : 'Tài khoản'}</span>
+                        <span className='text-[#0A68FF] text-sm mt-0.5'>{account}</span>
                     </Link>
                     {/* cart */}
                     <div className={`${isActivePathCart && 'bg-[#E2EDFF]'} relative group cursor-pointer`}>

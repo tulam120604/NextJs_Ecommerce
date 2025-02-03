@@ -1,7 +1,7 @@
 'use client'
 
-import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
 import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query_Notification'
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/src/app/_Components/ui/dialog/alert-dialog'
 import { CircleCheck } from 'lucide-react'
@@ -11,20 +11,19 @@ import React, { useEffect } from 'react'
 import { useToast } from '@/src/app/_Components/ui/use-toast'
 import { ToastAction } from '@/src/app/_Components/ui/toast'
 import Link from 'next/link'
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
+import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 
 const Page_notification = () => {
-  const data_user = useCheck_user();
+  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
   const { toast } = useToast()
-  const user = data_user ?? '';
-  const data = Query_Notification(user?.check_email?._id);
+  const data = Query_Notification(data_user?.data?._id);
   const mutate_notification = Mutation_Notification('SEND');
   function sendMessage(item: any) {
     if (!item?.status_message) {
       const data_body = {
         id_item: item,
-        sender_id: user?.check_email?._id,
+        sender_id: data_user?.data?._id,
       }
       mutate_notification.mutate(data_body);
     }
@@ -56,7 +55,7 @@ const Page_notification = () => {
         }
         <ul className="space-y-2">
           {
-            (data?.data?.data_notification.length || data?.data?.data_notification.length?.length > 0) ?
+            (data?.data?.data_notification?.length || data?.data?.data_notification.length?.length > 0) ?
               (
                 data?.data?.data_notification?.map((item: any) => (
                   <AlertDialog key={item?._id}>

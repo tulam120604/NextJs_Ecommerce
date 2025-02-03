@@ -3,8 +3,8 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from 'react-toastify';
-import { Detail_Item_Dashboard, Query_Category } from "../Query_APIs/Items/query";
-import { Mutation_Items } from "../Query_APIs/Items/mutationFn";
+import { Detail_Item_Dashboard, Query_Category } from "../Query_APIs/Items/Query";
+import { Mutation_Items } from "../Query_APIs/Items/Mutation_product";
 import { useCheck_user, useToken } from "./User";
 
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { Suspense } from "react";
 import Swal from "sweetalert2";
 import { useToast } from "@/src/app/_Components/ui/use-toast";
@@ -13,6 +13,7 @@ import { eventEmit } from "../../_Components/ui/Header/Event_emit";
 import Loading_Skeleton from "../../_Components/Loadings/Loading_Skeleton";
 
 const Side_bar = () => {
+    const routing = useRouter();
     const { toast } = useToast();
     const token = useToken();
     const mutation_auth = Mutation_Auth({
@@ -36,9 +37,10 @@ const Side_bar = () => {
                     duration: 800
                 })
                 localStorage.removeItem('account');
+                eventEmit.emit('log_out', true)
                 mutation_auth.onSubmit(token?.accessToken);
                 eventEmit.emit('logout')
-                // routing.push('/');
+                routing.push('/');
             }
         });
     }

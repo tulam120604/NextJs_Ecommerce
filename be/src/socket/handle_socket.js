@@ -5,7 +5,7 @@ export function handle_socket_event (io) {
             io.emit('res_message_delete_item' ,  data)
         })
 
-        socket.on('confirm_granting_premission_account', (data) => {
+        socket.on('xac_nhan_cap_quyen_tai_khoan', (data) => {
             io.emit('notification_granting_premission_account', data)
         })
 

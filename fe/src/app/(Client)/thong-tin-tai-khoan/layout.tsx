@@ -3,16 +3,12 @@
 import React, { Suspense, useEffect } from 'react';
 import Side_bar from './side_bar';
 import { io } from 'socket.io-client';
-import { useRouter } from 'next/navigation';
 import { useToast } from '../../_Components/ui/use-toast';
 import { ToastAction } from '../../_Components/ui/toast';
 import Loading_Skeleton from '../../_Components/Loadings/Loading_Skeleton';
-import { useLocalStorage } from '../../_lib/Custome_Hooks/UseStorage';
 
 const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
-  const user = useLocalStorage('account', undefined);
-  console.log(user)
 
   useEffect(() => {
     const socket = io('http://localhost:8888');
@@ -31,13 +27,6 @@ const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
       socket.disconnect();
     }
   }, []);
-
-  const routing = useRouter();
-  useEffect(() => {
-    if (!user) {
-      routing.push('/');
-    }
-  }, [routing, user]);
   return (
     <div className='max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[250px_auto] grid-cols-[50px_auto] gap-x-8 *:rounded-lg overflow-hidden pt-6'>
       <Side_bar />
@@ -46,7 +35,7 @@ const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </Suspense>
-    </div>
+    </div >
   )
 }
 

@@ -2,7 +2,7 @@
 
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import List_Products from '@/src/app/_Components/Products/List_Products'
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
+import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 import { List_favorites } from '@/src/app/_lib/Query_APIs/Favorites/Query_Feedback'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,17 +11,17 @@ import React, { useEffect } from 'react'
 
 const Page_favorite = () => {
   const routing = useRouter();
-  const user = useCheck_user();
+  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
   useEffect(() => {
-    if (!user?.check_email?._id) {
+    if (!data_user?.data) {
       routing.push('/login')
     }
-  }, [user, routing]);
+  }, [data_user, routing]);
 
-  const { data, isLoading, isError } = List_favorites(user?.check_email?._id);
+  const { data, isLoading, isError } = List_favorites(data_user?.data?._id);
   return (
-    <div className='ml-10'>
-      {isError ? (<><div className='min-h-[70vh] grid place-items-center'>
+    <div className='ml-10 min-h-[70vh] '>
+      {isError ? (<><div className='grid place-items-center'>
         <div className='flex flex-col gap-y-2'>
           Ôi hỏng!
           <span>Có vẻ như đã có lỗi xảy ra :(( </span>
@@ -30,7 +30,7 @@ const Page_favorite = () => {
       </div></>) :
         (<>
           {
-            isLoading ?
+            isLoading || loading_user ?
               <Loading_Dots /> :
               (data?.data?.docs < 1 || !data?.data?.docs) ?
                 (<div className='grid place-items-center translate-y-full'>

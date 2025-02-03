@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { Suspense } from 'react'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { unstable_noStore as noStore } from 'next/cache';
-import { GET_limit_item } from '@/src/app/_lib/Services/Services_Items/products';
+import { GET_limit_item } from '@/src/app/_lib/Services/Services_Items/Product';
 import ReloadPage from '@/src/app/_Components/Pages/ReloadPage';
 import List_Products from '@/src/app/_Components/Products/List_Products';
 import Loading_Skeleton from '@/src/app/_Components/Loadings/Loading_Skeleton';

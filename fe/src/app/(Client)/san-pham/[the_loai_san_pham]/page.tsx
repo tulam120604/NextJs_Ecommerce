@@ -5,7 +5,7 @@ import { detail_Categories } from '@/src/app/_lib/Services/Services_Items/catego
 import List_Products from '@/src/app/_Components/Products/List_Products';
 import Paginate_item from '../_component/Paginate';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
-import { GET_item_by_category } from '@/src/app/_lib/Services/Services_Items/products';
+import { GET_item_by_category } from '@/src/app/_lib/Services/Services_Items/Product';
 
 const Page = async ({ params }: any) => {
   noStore();

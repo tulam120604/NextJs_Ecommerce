@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { DollarSign, List, SquareGanttChart, UserCheck, UsersRound } from "lucide-react"
-import { Query_Category, Query_List_Items_Dashboard } from '@/src/app/_lib/Query_APIs/Items/query';
+import { Query_Category, Query_List_Items_Dashboard } from '@/src/app/_lib/Query_APIs/Items/Query';
 import { List_Account } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
 import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import Box from "../_component/box"

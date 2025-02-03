@@ -7,26 +7,29 @@ import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import Link from "next/link"
 import { Mutation_Order } from '@/src/app/_lib/Query_APIs/Order/Mutation_order'
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel } from '@/src/app/_Components/ui/alert-dialog'
+import {
+  AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel
+} from '@/src/app/_Components/ui/alert-dialog'
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './paginate_order'
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots'
 import { CircleCheck, CircleEllipsis, PackageOpen, Truck, X } from 'lucide-react'
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User'
-import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
 import { convert_Slug } from '@/src/app/util/Slug'
+import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 const Page_order = () => {
   const [status_item_order, setStatus_item_order] = useState<number>(0);
   const searchParams = useSearchParams();
+  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
   let page = 1;
   if (searchParams.get('_page')) {
     page = Number(searchParams.get('_page'))
   }
   const routing = useRouter();
-  const data_user = useCheck_user();
-  const user_id = data_user?.check_email?._id ?? '';
+  const user_id = data_user?.data?._id ?? '';
   const mutation_order = Mutation_Order('UPDATE_STATUS');
   // send message
   const mutate_notification = Mutation_Notification('ADD');
@@ -57,7 +60,7 @@ const Page_order = () => {
     }
     if (status === 7 && number_order && seller_id) {
       const data_message = {
-        notification_message: `Khách hàng ${data_user?.check_email?.user_name} muốn hủy đơn hàng ${number_order}`,
+        notification_message: `Khách hàng ${data_user?.data?.user_name} muốn hủy đơn hàng ${number_order}`,
         link: id_order,
         sender_id: user_id,
         receiver_id: seller_id
@@ -142,7 +145,7 @@ const Page_order = () => {
         <div className='fixed z-[2] border top-1/2'>
         </div>
         {
-          data.isLoading && <div className='mt-20'><Loading_Dots /></div>
+          data.isLoading || loading_user && <div className='mt-20'><Loading_Dots /></div>
         }
         {
           data?.data?.data_order &&
@@ -193,7 +196,7 @@ const Page_order = () => {
             <div className='grid place-items-center translate-y-full'>
               <div className='flex flex-col items-center gap-y-6'>
                 <Image width={100} height={100} src='/Images/document_icon.png' alt=''></Image>
-                <span className='flex items-center'>Chưa có đơn hàng nào! <Link className='underline' href={'/products'}>Đi mua ngay</Link></span>
+                <span className='flex items-center'>Chưa có đơn hàng nào!<Link className='underline mx-1' href={'/products'}> Đi mua ngay</Link></span>
               </div>
             </div>
         }

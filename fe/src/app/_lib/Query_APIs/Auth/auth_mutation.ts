@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
-import { create_Account, granting_premissions, logout, refesh_token, sign_In } from "../../Services/Services_Auth/Authen";
+import { create_Account, cap_quyen_tai_khoan, logout, refesh_token, sign_In } from "../../Services/Services_Auth/Auth";
 import { useCheck_user } from "../../Custome_Hooks/User";
 
 
@@ -19,7 +19,7 @@ export function Mutation_Auth({ action }: { action: Actions }) {
     const my_form = useForm({
         resolver: yupResolver(schemaValidateRegister)
     });
-    const querry_Client = useQueryClient();
+    const query_Client = useQueryClient();
 
     const { mutate, ...rest } = useMutation({
         mutationFn: async (dataClient: any) => {
@@ -30,15 +30,15 @@ export function Mutation_Auth({ action }: { action: Actions }) {
                 case "REGISTER":
                     return await create_Account(dataClient);
                 case "GRANTING_PREMISSIONS":
-                    return await granting_premissions(dataClient);
+                    return await cap_quyen_tai_khoan(dataClient);
                 case "LOGOUT":
                     return await logout(dataClient);
-                case "REFESH_TOKEN" :
+                case "REFESH_TOKEN":
                     return await refesh_token(dataClient)
                 default: return
             }
         }, onSuccess: (res: any) => {
-            querry_Client.invalidateQueries({
+            query_Client.invalidateQueries({
                 queryKey: ['Auth_Key']
             });
             if (res.status === 201 || res.status === 200) {
@@ -50,9 +50,9 @@ export function Mutation_Auth({ action }: { action: Actions }) {
             if (res?.new_token) {
                 const new_localStorage = {
                     ...user,
-                    accessToken : res?.new_token,
+                    accessToken: res?.new_token,
                 }
-                localStorage.setItem('account' , JSON.stringify(new_localStorage))
+                localStorage.setItem('account', JSON.stringify(new_localStorage))
             }
         }
     })

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { SEARCH_item } from "../../_lib/Services/Services_Items/products";
+import { SEARCH_item } from "../../_lib/Services/Services_Items/Product";
 
 
 export const Search_Component_Dashboard = () => {

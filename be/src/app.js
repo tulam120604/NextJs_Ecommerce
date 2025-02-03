@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import ConnectDB from './Connect/database.js';
 import RoutesProducts from './Routes/Items/Products.js';
 import RoutesCategories from './Routes/Items/Categories.js';
@@ -20,7 +21,11 @@ import Routes_Favorites from './Routes/Items/Favorites.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5000', 'https://fe-store88.vercel.app/'],
+    credentials: true
+}));
+app.use(cookieParser())
 
 
 ConnectDB(process.env.DB_MONGO);

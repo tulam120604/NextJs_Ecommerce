@@ -7,14 +7,14 @@ import { Mutation_Cart } from "../../../_lib/Query_APIs/Cart/mutation_Cart";
 import { CircleCheck, Minus, Plus } from "lucide-react";
 import { io } from 'socket.io-client';
 import { useToast } from "@/src/app/_Components/ui/use-toast";
-import {useStoreZustand} from "@/src/app/Zustand/Store";
+import { useStoreAddToCart } from "@/src/app/Zustand/Store";
 
 
 
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
   const { toast } = useToast();
-  const { setVisible } = useStoreZustand();
+  const { setVisible } = useStoreAddToCart();
   useEffect(() => {
     const socket = io('http://localhost:8888')
     socket.on('res_message_delete_item', (data: any) => {
