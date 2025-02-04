@@ -23,7 +23,7 @@ import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 const Page_order = () => {
   const [status_item_order, setStatus_item_order] = useState<number>(0);
   const searchParams = useSearchParams();
-  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
+  const { data: data_user, isLoading: loading_user } = Infor_user();
   let page = 1;
   if (searchParams.get('_page')) {
     page = Number(searchParams.get('_page'))

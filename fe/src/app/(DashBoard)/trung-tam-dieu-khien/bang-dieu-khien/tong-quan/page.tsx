@@ -4,16 +4,14 @@ import { Suspense } from "react";
 import { DollarSign, List, SquareGanttChart, UserCheck, UsersRound } from "lucide-react"
 import { Query_Category, Query_List_Items_Dashboard } from '@/src/app/_lib/Query_APIs/Items/Query';
 import { List_Account } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
-import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import Box from "../_component/box"
 import { ChartData } from "../_component/Chart"
 import Top_seller from "../_component/top_seller"
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 export default function Page() {
-    const token = useToken();
-    const { data } = Query_List_Items_Dashboard(token.accessToken, 1, 1);
-    const { data: account } = List_Account(token.accessToken);
+    const { data } = Query_List_Items_Dashboard(1, 1);
+    const { data: account } = List_Account();
     const { data: category } = Query_Category();
     return (
         <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>

@@ -7,17 +7,16 @@ import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/Quer
 import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/Mutation_product";
 import Pagination_Component from "../_component/Pagination";
 import { useSearchParams } from "next/navigation";
-import { useCheck_user, useToken } from "@/src/app/_lib/Custome_Hooks/User";
+import { useCheck_user } from "@/src/app/_lib/Custome_Hooks/User";
 import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 import { io } from 'socket.io-client';
-import { Auth_Wrap_Seller } from "../../_Auth_Wrapper/Page";
 import Data_Table from "../../_components/Data_Table";
+import { Auth_Provider } from "../../_Auth_Wrapper/Page";
 
 
 const Page = () => {
   const socket = io('http://localhost:8888')
   let id_user;
-  const token = useToken();
   const user = useCheck_user();
   const searchParams = useSearchParams();
   const role_user = ['admin_global', 'admin_local'];
@@ -27,7 +26,7 @@ const Page = () => {
       id_user = user?.check_email?._id
     }
   }
-  const { data, isLoading } = Query_List_Items_Dashboard(token.accessToken, page, 10, id_user);
+  const { data, isLoading } = Query_List_Items_Dashboard(page, 10, id_user);
   const { on_Submit, isLoading: loading_remove } = Mutation_Items({
     action: "REMOVE"
   });
@@ -45,8 +44,7 @@ const Page = () => {
 
   function handle_Remove(idItem?: { id_item: string, name_item: string }) {
     const item = {
-      accessToken: token.accessToken,
-      refeshToken: token,
+      refeshToken: 'token',
       id_item: idItem?.id_item
     }
     on_Submit(item);
@@ -56,7 +54,7 @@ const Page = () => {
   // render items and attributes
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
-      <Auth_Wrap_Seller>
+      <Auth_Provider>
         <div className="flex flex-col gap-y-6 py-4">
           <div className="flex flex-col gap-y-1">
             <strong className='text-lg'>Danh sách sản phẩm</strong>
@@ -80,7 +78,7 @@ const Page = () => {
             </div>
           }
         </div>
-      </Auth_Wrap_Seller>
+      </Auth_Provider>
     </Suspense>
   )
 }

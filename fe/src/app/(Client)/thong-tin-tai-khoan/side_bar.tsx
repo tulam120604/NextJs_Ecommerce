@@ -8,14 +8,12 @@ import { useToast } from "@/src/app/_Components/ui/use-toast";
 import Bell_component from "../../_Components/Notification/Bell_component";
 import { Box, Heart, User } from "lucide-react";
 import { Mutation_Auth } from "../../_lib/Query_APIs/Auth/Auth_mutation";
-import { useToken } from "../../_lib/Custome_Hooks/User";
 import { eventEmit } from "../../_Components/ui/Header/Event_emit";
 import Loading_Skeleton from "../../_Components/Loadings/Loading_Skeleton";
 
 const Side_bar = () => {
     const routing = useRouter();
     const { toast } = useToast();
-    const token = useToken();
     const mutation_auth = Mutation_Auth({
         action: 'LOGOUT'
     })
@@ -38,7 +36,7 @@ const Side_bar = () => {
                 })
                 localStorage.removeItem('account');
                 eventEmit.emit('log_out', true)
-                mutation_auth.onSubmit(token?.accessToken);
+                mutation_auth.onSubmit('');
                 eventEmit.emit('logout')
                 routing.push('/');
             }

@@ -32,7 +32,7 @@ export function Mutation_Auth({ action }: { action: Actions }) {
                 case "GRANTING_PREMISSIONS":
                     return await cap_quyen_tai_khoan(dataClient);
                 case "LOGOUT":
-                    return await logout(dataClient);
+                    return await logout();
                 case "REFESH_TOKEN":
                     return await refesh_token(dataClient)
                 default: return

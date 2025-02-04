@@ -21,17 +21,14 @@ export function createRefeshToken(userId) {
 export async function middleWare(req, res, next) {
     try {
         // lay token
-        if (!req.headers.authorization) {
+        const cookie = req.cookies.access_token;
+        // console.log(cookie);
+        if (!cookie) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Khong tim thay token!!"
             })
         }
-        const cookie = req.cookies.access_token;
-        // console.log(cookie);
-        const headers_request = req.headers.authorization.split(" ")[1];
-        const check_cookie = headers_request === 'cookie'
-        // neu co cookie thi dung token trong cookie
-        const token = check_cookie ? cookie : headers_request
+        const token = cookie;
         if (await black_list_token(token)) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Token không hợp lệ!!'

@@ -46,6 +46,14 @@ const Header = () => {
     if (window.onload) {
         setAccount(' ');
     }
+
+    function back_to_home() {
+        if (pathName === '/') {
+            window.location.reload();
+        } else {
+            routing.push('/')
+        }
+    }
     function Count_Cart() {
         const [data_storage, set_data_storage] = useState();
         useEffect(() => {
@@ -69,10 +77,10 @@ const Header = () => {
         <header className="w-full z-[20] duration-300 py-5 bg-white">
             {/* logo, search and cart */}
             <div className="relative mx-auto max-w-[1440px] w-[95vw] flex justify-between *:flex *:items-center gap-x-20 items-center">
-                <Link href={'/'}>
+                <button onClick={back_to_home}>
                     <Image width={200} height={100} className='w-[150px] max-h-10'
                         src={'https://res.cloudinary.com/tulam120604/image/upload/v1736088077/k3jhx9ywkmepcp9tz1b1.png'} alt='Store88' />
-                </Link>
+                </button>
                 {/* search form */}
                 <div className='md:!block !hidden absolute md:w-[60%] w-[30%] left-1/2 -translate-x-1/2 z-[7]'>
                     <Search_Component_Client />

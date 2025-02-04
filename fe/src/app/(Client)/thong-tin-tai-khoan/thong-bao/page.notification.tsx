@@ -15,15 +15,14 @@ import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 
 const Page_notification = () => {
-  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
+  const { data: data_user, isLoading: loading_user } = Infor_user();
   const { toast } = useToast()
-  const data = Query_Notification(data_user?.data?._id);
+  const data = Query_Notification();
   const mutate_notification = Mutation_Notification('SEND');
   function sendMessage(item: any) {
     if (!item?.status_message) {
       const data_body = {
         id_item: item,
-        sender_id: data_user?.data?._id,
       }
       mutate_notification.mutate(data_body);
     }

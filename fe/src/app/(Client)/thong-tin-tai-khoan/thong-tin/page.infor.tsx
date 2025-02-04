@@ -12,7 +12,7 @@ import User_address from './user_address';
 const Page_infor = () => {
   const form_create_address = useRef<HTMLDivElement>(null);
   const bg_form_create_address = useRef<HTMLDivElement>(null);
-  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
+  const { data: data_user, isLoading: loading_user } = Infor_user();
   // console.log(data_user)
   // address 
   function handle_Show_Form_Create_Address() {

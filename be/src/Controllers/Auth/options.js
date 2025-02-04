@@ -80,22 +80,6 @@ export async function Login(req, res) {
     }
 }
 
-export async function log_out(req, res) {
-    try {
-        const token = req.headers.authorization;
-        if (token) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'No token'
-            })
-        }
-
-    } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
-        })
-    }
-}
-
 export async function granting_premissions(req, res) {
     const id_user = req.body.sender_id._id;
     try {
@@ -129,14 +113,14 @@ export async function granting_premissions(req, res) {
 // dang xuat
 export async function logout(req, res) {
     try {
-        res.clearCookie('access_token', { path: '/' });
-        const token = req.headers.authorization;
+        const token = req.cookies.access_token;
         if (!token) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No token'
             })
         };
         await Blacklist_token.create({ token });
+        res.clearCookie('access_token', { path: '/' });
         return res.status(StatusCodes.OK).json({
             message: 'OK logout!'
         })

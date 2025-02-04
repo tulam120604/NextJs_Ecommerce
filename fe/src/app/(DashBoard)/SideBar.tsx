@@ -3,16 +3,13 @@
 import { ChevronDown, Contact, House, List, Package, Settings, Shapes, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCheck_user, useToken } from "../_lib/Custome_Hooks/User";
-import { service_check_token } from "./trung-tam-dieu-khien/_Auth_Wrapper/Page";
 import Loading_Dots from "../_Components/Loadings/Loading_Dots";
 import Image from "next/image";
+import { Infor_user } from "../_lib/Query_APIs/Auth/Query_Auth";
 
 const SideBarDashboard = () => {
-    const token = useToken();
-    const user = useCheck_user();
-    const { data, isLoading } = service_check_token(user?.check_email?._id, token?.accessToken);
-    if (isLoading) {
+    const { data: data_user, isLoading: loading_user } = Infor_user();
+    if (loading_user) {
         <Loading_Dots />
     }
     const usePathName = usePathname();
@@ -58,7 +55,7 @@ const SideBarDashboard = () => {
             pathName: '/trung-tam-dieu-khien/cai-dat'
         }
     ]
-    if (data?.data?.role === 'seller') {
+    if (data_user?.data?.role === 'seller') {
         arr = arr.filter((_: any, index: number) => ![2, 5].includes(index))
     }
     return (
@@ -95,7 +92,7 @@ const SideBarDashboard = () => {
                                         item?.child_uri?.map((uri: any) => {
                                             const isChildActive = usePathName === uri.path;
                                             return (
-                                                <Link key={uri?.path} href={uri?.path} className={` lg:pl-8 lg:py-2.5 p-1.5 rounded flex items-center gap-x-2`}>
+                                                <Link key={uri?.path} href={uri?.path} className={`lg:pl-8 lg:py-2.5 p-1.5 rounded flex items-center gap-x-2`}>
                                                     <div className={`${isChildActive && 'bg-[#172850] border-[#172850]'} 
                                                     w-3 h-3 border border-[#172850] rounded-full`} />
                                                     <span className="hidden lg:block text-sm">{uri?.name}</span>

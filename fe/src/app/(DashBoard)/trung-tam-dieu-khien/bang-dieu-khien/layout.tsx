@@ -5,14 +5,15 @@ import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
-import { Auth_Wrap_Seller } from '../_Auth_Wrapper/Page';
+import { Auth_Provider } from '../_Auth_Wrapper/Page';
 
 const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const pathName = usePathname();
 
+
   return (
     <Suspense fallback={<div className="w-screen h-screen fixed top-0 left-0 grid place-items-center"><Loading_Dots /></div>}>
-      <Auth_Wrap_Seller>
+      <Auth_Provider>
         <div className='py-4'>
           <strong className='text-xl'>Bảng điều khiển</strong>
           <div className="w-[220px] bg-white p-1 flex justify-between rounded-lg *:py-1 *:h-auto *:bg-white 
@@ -27,7 +28,7 @@ const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           </div>
           {children}
         </div>
-      </Auth_Wrap_Seller>
+      </Auth_Provider>
     </Suspense>
   )
 }

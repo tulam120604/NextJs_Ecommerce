@@ -14,7 +14,7 @@ import { Infor_user } from "@/src/app/_lib/Query_APIs/Auth/Query_Auth";
 
 export default function Page_create_seller() {
     const parameters = useSearchParams();
-  const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
+  const { data: data_user, isLoading: loading_user } = Infor_user();
     let params_rating: any = parameters.get('_rating') ?? '';
     const data = Get_Item_Order(params_rating);
     const id_user = data_user ?? '';

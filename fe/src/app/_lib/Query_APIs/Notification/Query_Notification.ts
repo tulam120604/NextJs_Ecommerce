@@ -1,16 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { get_notification } from "../../Services/Service_Notification/Fn_Notification";
 
-export function Query_Notification(id_user : string | number) {
-    const {data,... rest} = useQuery({
-        queryKey : ['Notification_Key', id_user],
-        queryFn : async () => {
-            if (id_user) {
-                return await get_notification(id_user);
-            }
-            return 'Không tìm thấy tài khoản!!'
+export function Query_Notification() {
+    const { data, ...rest } = useQuery({
+        queryKey: ['Key_Notification_User'],
+        queryFn: async () => {
+            return await get_notification();
         },
-        enabled : !!id_user
     });
-    return {data, ...rest}
+    return { data, ...rest }
 }

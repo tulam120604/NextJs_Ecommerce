@@ -11,14 +11,12 @@ import {
 } from '@/src/app/_Components/ui/dialog/alert-dialog';
 import { CircleCheck } from 'lucide-react';
 import React, { Suspense, useEffect } from 'react'
-import { useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import Link from 'next/link';
 import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 
 
 export default function Page() {
     const socket = io('http://localhost:8888')
-    const token = useToken();
     let user: any;
     if (typeof window !== 'undefined') {
         user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
@@ -50,7 +48,7 @@ export default function Page() {
     function onSubmitGranting(dataForm: any) {
         const item = {
             id_user: dataForm,
-            accessToken: token?.accessToken
+            accessToken: ''
         }
         cap_quyen_tai_khoan?.onSubmit(item);
         sendMessage(item);

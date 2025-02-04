@@ -12,9 +12,9 @@ export async function add_notification(req, res) {
         const data_body = {
             ...req.body,
             receiver_id: receiver,
-            sender_id: req.params.sender_id
+            sender_id: req.user.id
         }
-        if (data_body.receiver_id.toString() === req.params.sender_id.toString()) {
+        if (data_body.receiver_id.toString() === req.user.id.toString()) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 message: 'Trùng tài khoản!'
             })
@@ -33,7 +33,7 @@ export async function add_notification(req, res) {
 
 export async function get_notification(req, res) {
     try {
-        const data_notification = await Notifications.find({ receiver_id: req.params.receiver_id }).sort({
+        const data_notification = await Notifications.find({ receiver_id: req.user.id }).sort({
             createdAt: -1
         }).populate('sender_id');
         return res.status(StatusCodes.OK).json({

@@ -51,19 +51,20 @@ export async function create_Account(item: any) {
 }
 
 // infor
-export async function infor_user(accessToken: string) {
+export async function infor_user() {
     try {
         const res = await fetch(`${apiURi}/infor_account`, {
             method: 'get',
             credentials: 'include',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
         });
         if (!res.ok) {
             return res
         }
-        const data = await res.json();
+        const response = await res.json();
+        const data = {
+            ...response,
+            status: res?.status
+        }
         return data
     } catch (error: any) {
         return error || 'Đã có lỗi xảy ra!!'
@@ -71,14 +72,11 @@ export async function infor_user(accessToken: string) {
 }
 
 // get
-export async function list_Account(accessToken: string) {
+export async function list_Account() {
     try {
         const res = await fetch(`${apiURi}/account`, {
             method: 'get',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            }
+            credentials: 'include',
         })
         if (!res.ok) {
             return res
@@ -91,15 +89,15 @@ export async function list_Account(accessToken: string) {
 }
 
 // cap quyen cho user
-export async function cap_quyen_tai_khoan(dataForm: { id_user: string | number, accessToken: string }) {
+export async function cap_quyen_tai_khoan(dataForm: { id_user: string | number }) {
     try {
         const res = await fetch(`${apiURi}/granting_premissions`, {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${dataForm?.accessToken}`
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(dataForm?.id_user)
+            body: JSON.stringify(dataForm?.id_user),
+            credentials: 'include',
         });
         if (!res.ok) {
             toast.error('Cấp quyền thất bại!', { autoClose: 500 });
@@ -116,14 +114,14 @@ export async function cap_quyen_tai_khoan(dataForm: { id_user: string | number, 
 
 
 // dang xuat
-export async function logout(token: string) {
+export async function logout() {
     try {
         const res = await fetch(`${apiURi}/logout`, {
             method: 'post',
-            credentials: 'include',
             headers: {
-                'Authorization': `${token}`
-            }
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
         });
         if (!res.ok) {
             toast.error('Đăng xuất thất bại, vui lòng thử lại sau!', { autoClose: 500 });
@@ -137,13 +135,14 @@ export async function logout(token: string) {
 }
 
 // refesh token 
-export async function refesh_token(token: { refeshToken: string }) {
+export async function refesh_token() {
     try {
         const res = await fetch(`${apiURi}/refesh_token`, {
             method: 'post',
             headers: {
-                'Authorization': token?.refeshToken
-            }
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
         })
         if (!res.ok) {
             toast.error('Không thể xác minh danh tính, vui lòng đăng nhập và thử lại sau!', { autoClose: 500 });
@@ -157,30 +156,7 @@ export async function refesh_token(token: { refeshToken: string }) {
 }
 
 
-// check token expired 
-export async function check_token_expired(user: { id: string, accessToken: string }) {
-    try {
-        const res = await fetch(`${apiURi}/check_token_expired/${user?.id}`, {
-            method: 'get',
-            headers: {
-                "Authorization": `Bearer ${user?.accessToken}`
-            }
-        });
-        if (!res.ok) {
-            const { message } = await res.json();
-            if (message === 'Token het han !') {
-                return res
-            }
-            return res;
-        }
-        const data_user = await res.json()
-        return data_user
-    } catch (error: any) {
-        return error || 'Đã có lỗi xảy ra!!'
-    }
-}
-
-// infor
+// thong tin nha ban hang
 export async function infor_shop(id?: string | number) {
     try {
         const res = await fetch(`${apiURi}/inforshop/${id}`);

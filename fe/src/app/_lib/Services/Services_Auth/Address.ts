@@ -38,14 +38,15 @@ export async function create_address(item: { user_id: string | number, about_add
     }
 }
 
-export async function edit_address(item: { id_user: string | number, address: string | number }, accessToken: string) {
+export async function edit_address(item: { id_user: string | number, address: string | number }) {
     try {
         const res = await fetch(`${apiURi}/address/${item?.id_user}`, {
             method: 'PUT',
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(item?.address)
+            body: JSON.stringify(item?.address),
+            credentials: 'include'
         });
         if (!res.ok) {
             return res
