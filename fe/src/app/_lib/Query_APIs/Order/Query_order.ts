@@ -1,24 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { detail_order, get_all_order, get_item_order, get_order_user } from "../../Services/Services_Order/Fn_Order";
 
-export function Query_Order(id_user: any, page: number, limit: number, status_item_order?: any) {
+export function Query_Order(page: number, limit: number, status_item_order?: any) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Key_Order', id_user, page, limit, status_item_order],
-        queryFn: () => get_order_user(id_user, page, limit, status_item_order),
-        enabled: !!id_user
+        queryKey: ['Key_Order', page, limit, status_item_order],
+        queryFn: () => get_order_user(page, limit, status_item_order),
     });
     return { data, ...rest };
 }
 
 
-export function List_Order_Dashboard(accessToken: string | undefined, id_seller: string | number | undefined) {
+export function List_Order_Dashboard() {
     const { data, ...rest } = useQuery({
-        queryKey: ['Key_Order', accessToken],
+        queryKey: ['Key_Order'],
         queryFn: async () => {
-            if (accessToken) {
-                return await get_all_order(accessToken, id_seller);
-            }
-            return 'Đại vương là giả mạo!!'
+            return await get_all_order();
         }
     })
     return { data, ...rest };
@@ -38,10 +34,10 @@ export function Get_Item_Order(id_item_order: string | number) {
     return { data, ...rest }
 }
 
-export function Query_Detail_Order(id: string, user_id?: string | number) {
+export function Query_Detail_Order(id: string) {
     const { data, ...rest } = useQuery({
-        queryKey: ['Key_Order', id, user_id],
-        queryFn: () => detail_order(id, user_id),
+        queryKey: ['Key_Order', id],
+        queryFn: () => detail_order(id),
         enabled: !!id
     })
     return { data, ...rest }

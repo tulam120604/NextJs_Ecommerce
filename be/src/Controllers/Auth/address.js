@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 export async function create_address(req, res) {
     try {
-        const user_id = req.params.user_id;
+        const user_id = req.user.id;
         if (!user_id) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No user'
@@ -34,10 +34,10 @@ export async function create_address(req, res) {
 
 export async function get_address(req, res) {
     try {
-        const data = await Address.find({ user_id: req.params.user_id });
+        const data = await Address.find({ user_id: req.user.id });
         // default address
         const default_address = await Address.findOne({
-            user_id: req.params.user_id,
+            user_id: req.user.id,
             status_address: true
         })
         return res.status(StatusCodes.OK).json({
@@ -55,17 +55,12 @@ export async function get_address(req, res) {
 
 export async function edit_address(req, res) {
     try {
-        if (id_user) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'No user'
-            })
-        };
-        if (!req.params.id) {
+        if (!req.user.id) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'no user'
             })
         }
-        const data = await Address.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const data = await Address.findByIdAndUpdate(req.user.id, req.body, { new: true });
         return res.status(StatusCodes.OK).json({
             message: 'OK',
             data
@@ -97,7 +92,7 @@ export async function remove_address(req, res) {
 
 export async function update_default_address(req, res) {
     try {
-        const id_user = req.params.id_user;
+        const id_user = req.user.id;
         const id_address = req.body.id_address;
         const data_address = await Address.find({ user_id: id_user });
         if (!data_address) {

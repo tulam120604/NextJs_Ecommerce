@@ -10,7 +10,6 @@ const Remove_Item_Cart = ({ id_props }: any) => {
   const { mutate } = Mutation_Cart('REMOVE')
   function remove_item_cart(id_item: any) {
     const items = {
-      user_id: id_props?.id_user?._id,
       item_id: id_item
     }
     mutate(items)

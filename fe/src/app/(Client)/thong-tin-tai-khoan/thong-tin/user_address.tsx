@@ -7,9 +7,9 @@ import Alert_dialog from '../_components/alert_dialog';
 import { List_Address, Mutation_Address } from '@/src/app/_lib/Query_APIs/Auth/Query_Address';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 
-export default function User_address({ _id_user }: { _id_user: string | number }) {
+export default function User_address() {
     const mutate_address = Mutation_Address('REMOVE_OR_UPDATE_DEFAULT_ADDRESS');
-    const { data, isLoading } = List_Address(_id_user);
+    const { data, isLoading } = List_Address();
 
     return (
         <>
@@ -29,7 +29,6 @@ export default function User_address({ _id_user }: { _id_user: string | number }
                                             <Link href={''} className="hover:underline text-sky-500 text-sm mx-2">Cập nhật</Link>
                                             {!item?.status_address &&
                                                 <Alert_dialog dataProps={{
-                                                    id_user: _id_user,
                                                     id_address: item?._id,
                                                     remove_address: mutate_address?.mutate,
                                                     action: 'remove'
@@ -41,7 +40,6 @@ export default function User_address({ _id_user }: { _id_user: string | number }
                                                 <Badge className='bg-green-500 hover:!bg-green-600 whitespace-nowrap'>Mặc định</Badge>
                                             </div> :
                                             <Alert_dialog dataProps={{
-                                                id_user: _id_user,
                                                 id_address: item?._id,
                                                 change_default_address: mutate_address?.mutate
                                             }} />

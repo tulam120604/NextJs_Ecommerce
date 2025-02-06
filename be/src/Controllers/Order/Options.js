@@ -59,7 +59,7 @@ export async function create_Order(req, res) {
 export async function update_status_order(req, res) {
     const { order_id, status_item_order } = req.body;
     try {
-        const check_user = await Account.findById(req.params.user_id);
+        const check_user = await Account.findById(req.user.id);
         if (!check_user) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Không tìm thấy người dùng!"
@@ -88,7 +88,8 @@ export async function update_status_order(req, res) {
 }
 
 export async function restore_buy_item_order(req, res) {
-    const { id_order, user_id, items_order, infor_user } = req.body;
+    const { id_order, items_order, infor_user } = req.body;
+    const user_id = req.user.id
     try {
         const check_user = await Account.findById(user_id);
         if (!check_user) {

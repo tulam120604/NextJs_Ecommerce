@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronDown, Contact, House, List, Package, Settings, Shapes, ShoppingBag, Trash2 } from "lucide-react";
+import { ChevronDown, Contact, House, Package, Settings, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Loading_Dots from "../_Components/Loadings/Loading_Dots";

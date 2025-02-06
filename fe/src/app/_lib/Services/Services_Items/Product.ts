@@ -77,10 +77,10 @@ export async function GET_item_dashboard(page: number, limit_item: number, id_us
         }
         const res = await fetch(uri, {
             method: 'get',
-            credentials: 'include'
+            credentials: 'same-origin'
         });
         if (!res.ok) {
-            console.warn('Call data failer');
+            console.warn('Call api failer');
             return res
         };
         const data = await res.json();
@@ -94,7 +94,7 @@ export async function GET_item_dashboard(page: number, limit_item: number, id_us
 export async function POST_item(item: any) {
     console.log(item);
     try {
-        const res = await fetch(`${apiURi}/products`, {
+        const res = await fetch(`${apiURi}/create_product`, {
             method: 'post',
             headers: {
                 // 'Content-Type': 'multipart/form-data'
@@ -117,7 +117,7 @@ export async function POST_item(item: any) {
     }
 }
 
-// remove
+// xoa mem
 export async function REMOVE_item(item: any) {
     try {
         const res = await fetch(`${apiURi}/products/${item.id_item}`, {
@@ -184,7 +184,7 @@ export async function RESTORE_item(dataClient: any) {
         return (error || "Lỗi rồi đại vương ơi!");
     }
 }
-// destroy item ( no restore )
+// xoa item vinh vien ( no restore )
 export async function DESTROY_item(dataClient: any) {
     console.log(dataClient?.id_item)
     try {

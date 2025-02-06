@@ -8,11 +8,14 @@ import { CircleCheck, Minus, Plus } from "lucide-react";
 import { io } from 'socket.io-client';
 import { useToast } from "@/src/app/_Components/ui/use-toast";
 import { useStoreAddToCart } from "@/src/app/Zustand/Store";
+import { Infor_user } from "@/src/app/_lib/Query_APIs/Auth/Query_Auth";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 
 
 const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   const routing = useRouter();
+  const { data: data_user, isLoading: loading_user } = Infor_user()
   const { toast } = useToast();
   const { setVisible } = useStoreAddToCart();
   useEffect(() => {
@@ -139,10 +142,8 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
   };
   // add cart 
   function add_To_Cart_or_Checkout_order(action: string) {
-    if (localStorage.getItem('account')) {
-      const { check_email } = JSON.parse(localStorage.getItem('account') || '');
+    if (data_user?.data) {
       let items: any = {
-        user_id: check_email._id,
         product_id: data_Item_Detail?._id,
         price_item_attr: price_attr,
         attribute: name_attribute,
@@ -196,6 +197,9 @@ const Quantity_Items_Detail = ({ data_Item_Detail }: any) => {
       }
     }
   }
+  // if (!loading_user) {
+  //   <Loading_Dots />
+  // }
   return (<div>
     <div className="flex gap-x-2 items-end font-medium text-[#EB2606] lg:text-2xl lg:font-normal mb:text-base mb-4">
       {

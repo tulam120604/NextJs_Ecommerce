@@ -1,6 +1,5 @@
 'use client';
 
-import { useCheck_user, useToken } from '@/src/app/_lib/Custome_Hooks/User';
 import { List_Order_Dashboard } from '@/src/app/_lib/Query_APIs/Order/Query_order';
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table';
@@ -10,16 +9,7 @@ import { columns } from '../_components/colum';
 import Paginate_item from '@/src/app/(Client)/san-pham/_component/Paginate';
 
 const Page = () => {
-  const token = useToken();
-  const role_user = ['admin_global', 'admin_local'];
-  const user = useCheck_user();
-  let id_seller: string | undefined;
-  if (!role_user.includes(user?.check_email?.role)) {
-    if (user?.check_email?.role === 'seller') {
-      id_seller = user?.check_email?._id
-    }
-  }
-  const { data, isLoading } = List_Order_Dashboard(token?.accessToken, id_seller);
+  const { data, isLoading } = List_Order_Dashboard();
   if (isLoading) {
     return <Loading />
   }

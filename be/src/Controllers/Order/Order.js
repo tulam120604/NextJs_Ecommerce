@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 
 export async function get_Order_User(req, res) {
-    const { user_id } = req.params;
+    const user_id = req.user.id;
     const {
         _page = 1,
         _limit = 3,
@@ -44,33 +44,11 @@ export async function get_Order_User(req, res) {
     }
 }
 
-export async function get_all_Order(req, res) {
-    const {
-        _page = 1,
-        _limit = 20,
-        _search = '',
-    } = req.query;
-    const options = {
-        page: _page,
-        limit: _limit,
-        sort: { date_time: -1 }
-    }
-    try {
-        const data_order = await Orders.paginate({}, options);
-        return res.status(StatusCodes.OK).json({
-            message: 'OK',
-            data_order
-        })
-    } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
-        })
-    }
-}
-
 // list item user order by seller
-export async function list_item_order_by_seller(req, res) {
+export async function list_items_order(req, res) {
     try {
+        const user_id = req.user.id;
+        const check_user = await Account.findById(user_id);
         const {
             _page = 1,
             _limit = 20,
@@ -78,15 +56,18 @@ export async function list_item_order_by_seller(req, res) {
         const options = {
             page: _page,
             limit: _limit,
-
             sort: { date_time: -1 }
         }
-        const querry = {
-            items_order: {
-                $elemMatch: {
-                    'product_id.id_user_seller': req.params.id_seller
-                }
-            },
+        let querry = {};
+        // neu quyen use la admin thi tra ve tat ca item order, khong thi chi tra ve item cua nguoi ban hang
+        if (check_user.role === 'seller') {
+            querry = {
+                items_order: {
+                    $elemMatch: {
+                        'product_id.id_user_seller': user_id
+                    }
+                },
+            }
         }
         const data_order = await Orders.paginate(querry, options);
         return res.status(StatusCodes.OK).json({
@@ -103,7 +84,8 @@ export async function list_item_order_by_seller(req, res) {
 // get one order
 export async function detail_order(req, res) {
     try {
-        const { id, user_id } = req.query;
+        const { id } = req.query;
+        const user_id = req.user.id
         let data_order_by_user;
         const data_order_by_id = await Orders.findOne({ _id: id.toString() });
         if (user_id) {

@@ -17,11 +17,11 @@ export function Query_Category(id?: string | number | undefined) {
 }
 
 // get list item admin
-export function Query_List_Items_Dashboard(page: number, limit_item: number, id_user?: string | number) {
+export function Query_List_Items_Dashboard(page: number, limit_item: number) {
     const { data, ...rest } = useQuery({
         queryKey: ['Product_Key', page],
         queryFn: async () => {
-            return await GET_item_dashboard(page, limit_item, id_user);
+            return await GET_item_dashboard(page, limit_item);
         },
     });
     return { data, ...rest };

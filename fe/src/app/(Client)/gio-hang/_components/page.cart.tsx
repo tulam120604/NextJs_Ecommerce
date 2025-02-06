@@ -9,11 +9,12 @@ import { Mutation_Cart } from '@/src/app/_lib/Query_APIs/Cart/mutation_Cart';
 import { io } from 'socket.io-client';
 import { useToast } from '@/src/app/_Components/ui/use-toast';
 import { ToastAction } from '@/src/app/_Components/ui/toast';
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import Table_Cart from './table';
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
 import { filter_positive_Stock_Item } from '@/src/app/_lib/Config/Filter_Cart_And_Order';
+import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
+import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 
 const Cart = () => {
   const { toast } = useToast();
@@ -32,15 +33,15 @@ const Cart = () => {
     })
   }, []);
 
-  const routing = useRouter();
+  const router = useRouter();
   const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
-  const user = useCheck_user() ?? undefined;
+  const { data: data_user, isLoading: loading_user } = Infor_user();
   useEffect(() => {
-    if (!user) {
-      routing.push('/')
+    if (!data_user?.data) {
+      router.push('/')
     }
-  }, [routing, user])
-  const { data, isLoading } = Get_Items_Cart(user?.check_email?._id);
+  }, [data_user])
+  const { data, isLoading } = Get_Items_Cart();
   const [arr_item_checkbox, setarr_item_checkbox] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -58,7 +59,6 @@ const Cart = () => {
   const data_checked_true = arr_item_checkbox.filter((item: any) => item?.status_checked && item);
   function remove_all_item_cart() {
     const item = {
-      user_id: user?.check_email?._id,
       key_action: 'remove_all'
     };
     mutate(item);
@@ -66,7 +66,6 @@ const Cart = () => {
 
   function handle_Checkked(id_item: any, name_varriant: any, value_varriant: any) {
     const item = {
-      user_id: user?.check_email?._id,
       id_item: id_item,
       varriant_1: name_varriant,
       varriant_2: value_varriant
@@ -112,7 +111,7 @@ const Cart = () => {
       }
     }
     if (data_item_checkked?.length > 0) {
-      routing.push('/thanh-toan');
+      router.push('/thanh-toan');
     }
     else {
       toast({
@@ -126,7 +125,6 @@ const Cart = () => {
   const dataProps = {
     data: data,
     data_item_checkked: data_item_checkked,
-    user: user?.check_email,
     data_checked_true: data_checked_true,
     handle_Checkked: handle_Checkked,
     remove_all_item_cart: remove_all_item_cart
@@ -134,21 +132,27 @@ const Cart = () => {
   return (
     <Suspense fallback={<LoadingCart />}>
       <div className="max-w-[1440px] w-[95vw] mx-auto pb-8">
-        <div className='max-w-[1440px] mx-auto w-[95vw] mb-4 pt-2'>
-          <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
-        </div>
-        {/* list items */}
-        <Table_Cart dataProps={dataProps} />
         {
-          dataProps?.data?.items?.length > 0 &&
-          <div className="w-full rounded-lg flex flex-col lg:flex-row items-center lg:justify-between justify-center bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
-            <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
-            <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
-              <span>Tiến hành thanh toán</span>
-              |
-              <span>{tota_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-            </Button>
-          </div>
+          isLoading || loading_user ?
+            <Loading_Dots /> :
+            <>
+              <div className='max-w-[1440px] mx-auto w-[95vw] mb-4 pt-2'>
+                <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
+              </div>
+              {/* list items */}
+              <Table_Cart dataProps={dataProps} />
+              {
+                dataProps?.data?.items?.length > 0 &&
+                <div className="w-full rounded-lg flex flex-col lg:flex-row items-center lg:justify-between justify-center bg-white py-2 px-4 lg:p-4 gap-x-4 sticky bottom-0 z-[10] shadow-[0_-5px_20px_-15px_rgba(0,0,0,0.3)] mt-8">
+                  <span className="text-gray-800 whitespace-nowrap text-sm lg:text-base">Số lượng ({data_item_checkked?.length} sản phẩm)</span>
+                  <Button onClick={next_page_payment} type='button' className="flex gap-x-4 mt-2 lg:mt-0">
+                    <span>Tiến hành thanh toán</span>
+                    |
+                    <span>{tota_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
+                  </Button>
+                </div>
+              }
+            </>
         }
       </div>
     </Suspense >

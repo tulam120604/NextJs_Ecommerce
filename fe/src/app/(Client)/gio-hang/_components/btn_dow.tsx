@@ -19,7 +19,6 @@ const Btn_dow = ({ id_props }: any) => {
       }).then((result) => {
         if (result.isConfirmed) {
           const items = {
-            user_id: id_props?.id_user?._id,
             product_id: id,
             attribute: id_props?.attribute,
             name_variant: id_props?.value_variant
@@ -34,7 +33,6 @@ const Btn_dow = ({ id_props }: any) => {
     }
     if (id_props.quantity_item > 1) {
       const items = {
-        user_id: id_props?.id_user?._id,
         product_id: id,
         attribute: id_props?.attribute,
         name_variant: id_props?.value_variant

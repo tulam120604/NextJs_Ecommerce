@@ -3,7 +3,7 @@ import Carts from '../../Model/Cart/Cart.js';
 import { StatusCodes } from 'http-status-codes';
 
 export async function list_carts(req, res) {
-    const { user_id } = req.params;
+    const user_id = req.user.id;
     try {
         const user = await Account.findById(user_id);
         if (!user) {

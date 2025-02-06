@@ -62,7 +62,7 @@ const Header = () => {
                 set_data_storage(storage_acc?.check_email?._id);
             }
         }, [data_storage])
-        const { data, isLoading } = Get_Items_Cart(data_storage);
+        const { data, isLoading } = Get_Items_Cart();
         let new_arr;
         if (data?.items) {
             new_arr = data?.items.filter((item: any) => (item?.product_id !== null) && item);
@@ -120,7 +120,7 @@ const Header = () => {
 
         {/* about us */}
         <div className='border-y w-full'>
-            <section className='mx-auto max-w-[1440px] w-[95vw] overflow-x-auto *:whitespace-nowrap bg-white flex *:flex items-center *:items-center *:gap-x-1 *:text-xs py-3 *:cursor-default'>
+            <section className='hidden_scroll_x mx-auto max-w-[1440px] w-[95vw] overflow-x-auto *:whitespace-nowrap bg-white flex *:flex items-center *:items-center *:gap-x-1 *:text-xs py-3 *:cursor-default'>
                 {/* 1 */}
                 <div className='border-r-2 pr-5'>
                     <BadgeCheck className='w-5 h-5' fill='#0A68FF' color='#fff' />

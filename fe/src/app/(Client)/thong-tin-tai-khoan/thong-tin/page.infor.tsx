@@ -82,7 +82,7 @@ const Page_infor = () => {
             </div>
             <div onClick={handle_Close_Form_Create_Address} ref={bg_form_create_address}
               className='fixed hidden w-screen h-screen top-0 left-0 z-[10] bg-[#33333355]'></div>
-            <User_address _id_user={data_user?.data?._id} />
+            <User_address />
           </>
       }
     </div >

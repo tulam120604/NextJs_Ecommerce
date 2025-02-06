@@ -5,6 +5,7 @@ import { Query_Notification } from '@/src/app/_lib/Query_APIs/Notification/Query
 import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
 import { io } from 'socket.io-client';
 import { AlertDialog } from '@/src/app/_Components/ui/alert-dialog';
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 import {
     AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
     AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
@@ -12,7 +13,6 @@ import {
 import { CircleCheck } from 'lucide-react';
 import React, { Suspense, useEffect } from 'react'
 import Link from 'next/link';
-import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification';
 
 
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
     if (typeof window !== 'undefined') {
         user = JSON.parse(localStorage.getItem('account') || '{}') ?? ''
     }
-    const data = Query_Notification(user?.check_email?._id);
+    const data = Query_Notification();
     const mutate_notification = Mutation_Notification('SEND');
     function sendMessage(item: any) {
         if (!item?.status_message) {

@@ -31,7 +31,7 @@ const Page_checkout = () => {
   const user = useCheck_user();
   const [loading, setLoading] = useState<boolean>(true);
   // address
-  const { data, isLoading } = List_Address(user?.check_email?._id);
+  const { data, isLoading } = List_Address();
   const { data: dataCart, isLoading: loadingCart } = Get_Items_Cart(user?.check_email?._id);
   const data_checked_true = dataCart?.items?.filter((item: any) => item?.status_checked && item);
   // lọc item só lượng lớn hơn 0

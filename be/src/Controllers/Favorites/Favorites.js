@@ -7,7 +7,7 @@ export async function list_favorites(req, res) {
     try {
         const { _page, _limit } = req.query;
         const options = { page: _page, limit: _limit }
-        const id_user = req.params.id_user;
+        const id_user = req.user.id;
         if (!id_user) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "No User"
@@ -46,7 +46,7 @@ export async function list_favorites(req, res) {
 
 export async function detail_favorites_by_user(req, res) {
     try {
-        const id_user = req.params.id_user;
+        const id_user = req.user.id;
         const id_item = req.headers.id_item;
         if (!id_user) {
             return res.status(StatusCodes.NOT_FOUND).json({
@@ -73,7 +73,7 @@ export async function detail_favorites_by_user(req, res) {
 
 export async function create_favorite(req, res) {
     try {
-        const { id_user } = req.body;
+        const { id_user } = req.user.id;
         if (!id_user) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'NO User'
@@ -100,7 +100,7 @@ export async function create_favorite(req, res) {
 
 export async function remove_favorite(req, res) {
     try {
-        const id_user = req.params.id_user;
+        const id_user = req.user.id;
         const data_favorite = await Favorites.findOne({ id_user });
         if (!data_favorite) {
             return res.status(StatusCodes.NOT_FOUND).json({

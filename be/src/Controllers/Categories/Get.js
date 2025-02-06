@@ -4,13 +4,7 @@ import Categories from '../../Model/Products/Categories.js';
 export async function GetAllCategories(req, res) {
     try {
         let data = await Categories.find();
-        // for (let i = 0; i < data.length; i++) {
-        //     if(data[i].category_name === 'Tất cả') {
-        //         data.filter((item) => item.category_name !== data[i].category_name)
-        //     }
-        // }
-        const a = data.filter(item => (item.category_name !== 'Chưa phân loại'));
-        data = a;
+        data = data.filter(item => (item.category_name !== 'Chưa phân loại'));
         data.sort((a, b) => {
             if (a.category_name !== 'Khác') {
                 return -1
@@ -41,7 +35,7 @@ export async function Get_detail_category(req, res) {
     try {
         const data = await Categories.findById(req.params.id_category);
         return res.status(StatusCodes.OK).json({
-            message : 'OK',
+            message: 'OK',
             data
         })
     } catch (error) {

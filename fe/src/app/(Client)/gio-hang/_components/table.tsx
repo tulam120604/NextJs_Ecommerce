@@ -100,15 +100,15 @@ export default function Table_Cart({ dataProps }: any) {
                                         <span className="md:text-base mb:text-xs text-red-600">{item?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
                                         {/* 88 */}
                                         <div className="w-[140px] grid grid-cols-3 *:text-gray-900 gap-x-1 items-center justify-around *:md:text-base *:mb:text-xs px-1 rounded-lg *:font-medium">
-                                            <Btn_dow id_props={{ id_item: item?.product_id?._id, id_user: dataProps?.user, quantity_item: item?.quantity, attribute: item?.name_varriant, value_variant: item?.value_varriant }} />
+                                            <Btn_dow id_props={{ id_item: item?.product_id?._id, quantity_item: item?.quantity, attribute: item?.name_varriant, value_variant: item?.value_varriant }} />
                                             <strong className="cursor-default border py-2 border-gray-300 grid place-items-center rounded">{item?.quantity}</strong>
-                                            <Btn_up id_props={{ item: item, id_user: dataProps?.user }} />
+                                            <Btn_up id_props={{ item: item, }} />
                                         </div>
                                         {/* 88 */}
                                         <span className="md:text-base mb:text-xs text-red-600">{(item?.total_price_item)?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
                                         {/* 88 */}
                                         <div className='w-full flex justify-center'>
-                                            <Remove_Item_Cart id_props={{ item: item?._id, id_user: dataProps?.user }} />
+                                            <Remove_Item_Cart id_props={{ item: item?._id }} />
                                         </div>
                                     </div>
                                 )

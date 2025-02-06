@@ -14,7 +14,6 @@ const Btn_up = ({ id_props }: any) => {
         if (product?.item?.product_id?.variant) {
             if (product?.item?.quantity < quantity_item) {
                 const items = {
-                    user_id: id_props?.id_user?._id,
                     product_id: product.item?.product_id?._id,
                     attribute: product?.item?.name_varriant,
                     name_variant: product?.item?.value_varriant
@@ -28,7 +27,6 @@ const Btn_up = ({ id_props }: any) => {
         else {
             if (product?.item?.quantity < product?.item?.product_id?.stock) {
                 const items = {
-                    user_id: id_props?.id_user?._id,
                     product_id: product?.item?.product_id?._id,
                 }
                 mutate(items)

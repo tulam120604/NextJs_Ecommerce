@@ -11,6 +11,7 @@ export async function edit_Product(req, res) {
     const { short_name } = req.body;
     try {
         const check_id = await Products.findById(req.params.id);
+        const id_user = req.user.id;
         if (!check_id) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No data',
@@ -70,6 +71,7 @@ export async function edit_Product(req, res) {
         else {
             const dataClient = {
                 ...req.body,
+                id_user_seller: id_user,
                 variant: convert_Attributes,
                 gallery: img_upload
             }
