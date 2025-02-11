@@ -40,9 +40,9 @@ export default function Page() {
         return () => { socket.disconnect() }
     }, [socket])
 
-    // granting premissionss
+    // cap quyen ban hang cho tai khoan
     const cap_quyen_tai_khoan = Mutation_Auth({
-        action: 'GRANTING_PREMISSIONS'
+        action: 'SET_ROLE_USER_TO_SELLER'
     });
 
     function onSubmitGranting(dataForm: any) {

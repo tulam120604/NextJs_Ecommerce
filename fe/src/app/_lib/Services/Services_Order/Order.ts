@@ -106,7 +106,7 @@ export async function update_status_order(dataClient: { item: any, action?: stri
 
 export async function restore_buy_order(dataClient: any) {
     try {
-        const res = await fetch(`${apiURi}/order/restore_buy_item`, {
+        const res = await fetch(`${apiURi}/order/buy_again`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'

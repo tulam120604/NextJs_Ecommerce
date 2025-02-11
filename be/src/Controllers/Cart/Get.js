@@ -58,14 +58,9 @@ export async function list_carts(req, res) {
 
 
 export async function checked_item_cart(req, res) {
-    const { user_id, id_item, varriant_1, varriant_2 } = req.body;
     try {
-        const user = await Account.findById(user_id);
-        if (!user) {
-            return res.status(StatusCodes.NOT_FOUND).json({
-                message: "No user!!"
-            })
-        };
+        const { id_item, varriant_1, varriant_2 } = req.body;
+        const user_id = req.user.id;
         const data_cart = await Carts.findOne({ user_id }).populate('items.product_id');
         for (let i = 0; i < data_cart.items.length; i++) {
             if (data_cart.items[i].product_id._id.toString() == id_item._id) {

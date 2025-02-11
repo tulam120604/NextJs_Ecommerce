@@ -1,5 +1,6 @@
 'use client';
 
+import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import { Button } from "@/src/app/_Components/ui/Shadcn/button";
 import { Mutation_Cart } from "@/src/app/_lib/Query_APIs/Cart/mutation_Cart";
 import Swal from "sweetalert2";
@@ -40,7 +41,11 @@ const Btn_up = ({ id_props }: any) => {
     return (<>
         {
             isLoading ?
-                <Button type="button" className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>&#43;</Button > :
+                <>
+                    <Loading_Overlay />
+                    <Button type="button" className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>&#43;</Button>
+                </>
+                :
                 <Button type="button" onClick={() => up_quantity(id_props)} className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>&#43;</Button>
         }
     </>

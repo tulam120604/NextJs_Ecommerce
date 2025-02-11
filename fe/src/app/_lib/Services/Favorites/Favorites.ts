@@ -18,9 +18,9 @@ export async function list_favorites() {
     }
 }
 
-export async function detail_item_in_favorite(id_item: string | number) {
+export async function view_item_in_favorite(id_item: string | number) {
     try {
-        const res = await fetch(`${apiURi}/detail_item_favorite/`, {
+        const res = await fetch(`${apiURi}/view_item_favorite`, {
             method: 'get',
             credentials: 'include',
             headers: {

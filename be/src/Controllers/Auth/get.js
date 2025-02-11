@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import Account from '../../Model/Auth/Account.js';
+import Address from '../../Model/Auth/Address.js'
 
 export async function list_Account(req, res) {
     const {
@@ -34,7 +35,7 @@ export async function list_Account(req, res) {
 
 export async function get_detail_user(req, res) {
     try {
-        const data = await Account.findById(req.user.id);
+        const data = await Account.findById(req.user.id).populate('address');
         if (!data) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No data!'

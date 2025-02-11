@@ -87,7 +87,8 @@ export async function update_status_order(req, res) {
     }
 }
 
-export async function restore_buy_item_order(req, res) {
+// mua lại đơn hàng
+export async function buy_again(req, res) {
     const { id_order, items_order, infor_user } = req.body;
     const user_id = req.user.id
     try {
@@ -118,7 +119,7 @@ export async function restore_buy_item_order(req, res) {
 
 
 // chi tiet san pham trong don hang de feedback
-export async function get_detail_item_order(req, res) {
+export async function view_detail_item_order(req, res) {
     try {
         const id_item_order = req.params.id_item;
         const data_item_orders = await Orders.findOne({

@@ -1,6 +1,6 @@
 import {
     get_Detail_Client, get_Detail_Dashboard, get_item_by_category,
-    get_item_by_user, get_Item_Client, get_Item_Dashboard, search_Item
+    get_Item_Client, get_Item_Dashboard, search_Item
 } from './Get.js';
 import { Create_Product } from './Create.js';
 import { Soft_remove } from './Soft_delete.js';
@@ -11,7 +11,6 @@ const Products = {
     get_Detail_Client,
     get_Detail_Dashboard,
     get_item_by_category,
-    get_item_by_user,
     get_Item_Client,
     get_Item_Dashboard,
     search_Item,

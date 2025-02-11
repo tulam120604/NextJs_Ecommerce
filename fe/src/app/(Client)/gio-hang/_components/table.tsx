@@ -118,7 +118,7 @@ export default function Table_Cart({ dataProps }: any) {
                         <div className='grid place-items-center py-5'>
                             <div className='flex flex-col items-center gap-y-6 my-auto'>
                                 <Image width={100} height={100} src='/Images/document_icon.png' alt='store88' />
-                                <span className='flex items-center'>Không có sản phẩm nào trong giỏ hàng ! <Link className='underline' href={'/products'}>Tìm ngay</Link></span>
+                                <span className='flex items-center'>Không có sản phẩm nào trong giỏ hàng ! <Link className='underline' href={'/san-pham'}>Tìm ngay</Link></span>
                             </div>
                         </div>}
                 </>)

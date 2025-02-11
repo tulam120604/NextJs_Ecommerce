@@ -89,9 +89,9 @@ export async function list_Account() {
 }
 
 // cap quyen cho user
-export async function cap_quyen_tai_khoan(dataForm: { id_user: string | number }) {
+export async function set_role_user_to_seller(dataForm: { id_user: string | number }) {
     try {
-        const res = await fetch(`${apiURi}/granting_premissions`, {
+        const res = await fetch(`${apiURi}/set_role_user_to_seller`, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'

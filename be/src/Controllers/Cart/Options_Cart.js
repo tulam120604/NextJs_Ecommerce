@@ -4,9 +4,9 @@ import Products from "../../Model/Products/Products.js";
 
 
 export async function Add_To_Cart(req, res) {
-    const { product_id, quantity, attribute, name_variant, price_item_attr, status_checked } = req.body;
-    const user_id = req.user.id;
     try {
+        const { product_id, quantity, attribute, name_variant, price_item_attr, status_checked } = req.body;
+        const user_id = req.user.id;
         const data_item = await Products.findById(product_id).populate('variant');
         let stock_product = 0;
         if (data_item.variant) {
@@ -98,9 +98,9 @@ export async function Add_To_Cart(req, res) {
 
 // up quantity 
 export async function up_quantity(req, res) {
-    const { product_id, attribute, name_variant } = req.body;
-    const user_id = req.user.id
     try {
+        const { product_id, attribute, name_variant } = req.body;
+        const user_id = req.user.id;
         const data_user_Cart = await Carts.findOne({ user_id });
         if (!data_user_Cart || data_user_Cart.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({
@@ -130,9 +130,9 @@ export async function up_quantity(req, res) {
 
 // dow quantity
 export async function dow_quantity(req, res) {
-    const { product_id, attribute, name_variant } = req.body;
-    const user_id = req.user.id;
     try {
+        const { product_id, attribute, name_variant } = req.body;
+        const user_id = req.user.id;
         const data_user_cart = await Carts.findOne({ user_id });
         if (!data_user_cart || data_user_cart.length === 0) {
             return res.status(StatusCodes.NOT_FOUND).json({

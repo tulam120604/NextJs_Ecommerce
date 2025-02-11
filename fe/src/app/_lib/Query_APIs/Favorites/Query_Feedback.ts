@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { add_favorites, detail_item_in_favorite, list_favorites, remove_favorites } from "../../Services/Favorites/Favorites";
+import { add_favorites, view_item_in_favorite, list_favorites, remove_favorites } from "../../Services/Favorites/Favorites";
 
 export function List_favorites() {
     const { data, ...rest } = useQuery({
@@ -10,11 +10,11 @@ export function List_favorites() {
 }
 
 
-export function Query_detail_favorites(id_item: string | number) {
+export function Query_view_item_favorites(id_item: string | number) {
     const key = id_item ? ['Favorite_Key', id_item] : ['Favorite_Key']
     const { data, ...rest } = useQuery({
         queryKey: key,
-        queryFn: () => detail_item_in_favorite(id_item),
+        queryFn: () => view_item_in_favorite(id_item),
         enabled: !!id_item
     })
     return { data, ...rest }

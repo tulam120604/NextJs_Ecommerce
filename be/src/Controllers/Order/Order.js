@@ -82,7 +82,7 @@ export async function list_items_order(req, res) {
 }
 
 // get one order
-export async function detail_order(req, res) {
+export async function view_detail_order(req, res) {
     try {
         const { id } = req.query;
         const user_id = req.user.id

@@ -28,10 +28,10 @@ const Layout_Profile = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
   return (
-    <div className='max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[250px_auto] grid-cols-[50px_auto] gap-x-8 *:rounded-lg overflow-hidden pt-6'>
+    <div className='max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[250px_auto] grid-cols-[50px_auto] gap-x-8 *:rounded pt-6'>
       <Side_bar />
       <Suspense fallback={<Loading_Skeleton number_elements={1} />}>
-        <div className='pb-10 lg:pb-0 lg:min-h-[70vh] bg-white pt-4'>
+        <div className='pb-10 lg:pb-0 lg:min-h-[70vh]'>
           {children}
         </div>
       </Suspense>

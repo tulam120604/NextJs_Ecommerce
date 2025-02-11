@@ -10,40 +10,67 @@ export async function black_list_token(tokenClient) {
 }
 
 export function createAccessToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '7d' })
+    return jwt.sign({ userId }, process.env.SCERET_KEY_JWT, { expiresIn: '7d' })
 }
 
 export function createRefeshToken(userId) {
-    return jwt.sign({ userId }, 'tulam', { expiresIn: '30d' })
+    return jwt.sign({ userId }, process.env.SCERET_KEY_JWT, { expiresIn: '30d' })
 }
 
+export async function verify_token_from_cookie(token) {
+    const decoded_jwt = await new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.SCERET_KEY_JWT, (error, decoded) => {
+            if (error) {
+                return reject(error)
+            }
+            resolve(decoded)
+        })
+    })
+    const user = await Account.findOne({ _id: decoded_jwt.userId });
+    return user
+}
 
+// lấy thông tin user qua cookie
+export async function middleWare_get_user_from_cookie(req, res, next) {
+    try {
+        const token = req.cookies.access_token;
+        if (!token) {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                message: 'Không có thông tin!'
+            })
+        }
+        if (await black_list_token(token)) {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                message: 'Token không hợp lệ!'
+            })
+        };
+        const user = await verify_token_from_cookie(token);
+        req.user = user
+        return next()
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: error.message
+        })
+    }
+}
+
+// check role uri adminstration
 export async function middleWare(req, res, next) {
     try {
         // lay token
-        const cookie = req.cookies.access_token;
+        const token = req.cookies.access_token;
         // console.log(cookie);
-        if (!cookie) {
+        if (!token) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: "Khong tim thay token!!"
             })
         }
-        const token = cookie;
         if (await black_list_token(token)) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Token không hợp lệ!!'
             })
         }
-        const decoded = await new Promise((resolve, reject) => {
-            jwt.verify(token, 'tulam', (error, decoded) => {
-                if (error) {
-                    return reject(error)
-                }
-                resolve(decoded)
-            })
-        });
-        const user = await Account.findOne({ _id: decoded.userId });
-        req.user = user
+        const user = await verify_token_from_cookie(token)
         if (!user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Người dùng không tồn tại!!'

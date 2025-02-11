@@ -125,10 +125,11 @@ const Page_order = () => {
   function handle_list_item_status(status: any) {
     setStatus_item_order(status);
   }
-  const data = Query_Order(user_id, page, 10, status_item_order);
+  const {data, isLoading} = Query_Order(page, 10, status_item_order);
   return (
-    <div className='w-full relative pb-4'>
-      <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:px-2 items-center *:bg-none *:text-sm *:py-3 bg-white *:border-b-2 *:border-white *:whitespace-nowrap'>
+    <div className='w-full relative bg-white '>
+      <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:py-4
+      *:px-2 items-center *:bg-none *:text-sm *:border-b-2 *:border-white *:whitespace-nowrap top-0'>
         {
           Array.from({ length: 7 }, (_: any, i: number) =>
             <button key={i} onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' : 'hover:border-gray-900'}>
@@ -140,18 +141,15 @@ const Page_order = () => {
           )
         }
       </div>
-
-      <div className='pt-16 pl-4'>
-        <div className='fixed z-[2] border top-1/2'>
-        </div>
+      <div className='bg-[#F5F5FA] w-full h-4 absolute top-[54px]'/>
         {
-          data.isLoading || loading_user && <div className='mt-20'><Loading_Dots /></div>
+          isLoading || loading_user && <div className='mt-20'><Loading_Dots /></div>
         }
         {
-          data?.data?.data_order &&
-            data?.data?.data_order?.docs.length > 0 ?
-            data?.data?.data_order?.docs?.map((item: any) =>
-              <div className='shadow py-2 mb-6 px-4 lg:px-8 bg-white rounded' key={item?._id}>
+          data?.data_order &&
+            data?.data_order?.docs.length > 0 ?
+            data?.data_order?.docs?.map((item: any) =>
+              <div className='shadow py-2 mb-6 px-4 lg:px-8 rounded' key={item?._id}>
                 <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
                 <div className='*:!border-none *:text-gray-900 -translate-y-12'>
                   <DataTable data={item?.items_order} columns={columns} />
@@ -193,16 +191,15 @@ const Page_order = () => {
               </div>
             )
             :
-            <div className='grid place-items-center translate-y-full'>
+            <div className='grid place-items-center h-[70vh] rounded'>
               <div className='flex flex-col items-center gap-y-6'>
                 <Image width={100} height={100} src='/Images/document_icon.png' alt=''></Image>
                 <span className='flex items-center'>Chưa có đơn hàng nào!<Link className='underline mx-1' href={'/products'}> Đi mua ngay</Link></span>
               </div>
             </div>
         }
-      </div>
-      {data?.data?.data_order &&
-        <Paginate_order totalPages={data?.data?.data_order?.totalPages} page={data?.data?.data_order?.page} />
+      {data?.data_order &&
+        <Paginate_order totalPages={data?.data_order?.totalPages} page={data?.data_order?.page} />
       }
     </div>)
 }

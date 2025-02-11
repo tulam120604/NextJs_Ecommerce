@@ -6,7 +6,7 @@ const apiURi = process.env.NEXT_PUBLIC_DB_HOST
 // list item client
 export async function GET_items_client(page: number, count_item: number, bestSeller?: any) {
     try {
-        const uri = `${apiURi}/products?_page=${page}&_limit=${count_item}&_bestseller=${bestSeller}`;
+        const uri = `${apiURi}/list_products/client?_page=${page}&_limit=${count_item}&_bestseller=${bestSeller}`;
         const res = await fetch(uri);
         if (!res.ok) {
             console.warn('Call data failer')
@@ -22,7 +22,7 @@ export async function GET_items_client(page: number, count_item: number, bestSel
 // limit item
 export async function GET_limit_items(countItem: number) {
     try {
-        const res = await fetch(`${apiURi}/products?&_limit=${countItem}`);
+        const res = await fetch(`${apiURi}/list_products/client?&_limit=${countItem}`);
         if (!res.ok) {
             console.warn('Call data failer')
             return res
@@ -69,15 +69,12 @@ export async function GET_detail_item_dashboard(id: number | string) {
 }
 
 // list items dashboard 
-export async function GET_item_dashboard(page: number, limit_item: number, id_user?: string | number) {
+export async function GET_item_dashboard(page: number, limit_item: number) {
     try {
-        let uri = `${apiURi}/products/admin?_page=${page}&_limit=${limit_item}`;
-        if (id_user) {
-            uri = `${apiURi}/products/sellers/${id_user}?_page=${page}&_limit=${limit_item}`
-        }
+        let uri = `${apiURi}/list_products/admin?_page=${page}&_limit=${limit_item}`;
         const res = await fetch(uri, {
             method: 'get',
-            credentials: 'same-origin'
+            credentials: 'include'
         });
         if (!res.ok) {
             console.warn('Call api failer');

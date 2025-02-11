@@ -95,13 +95,13 @@ const Header = () => {
                             </form>
                         </div>
                     </div>
-                    <Link href={(account === 'Tài khoản') ? '/dang-nhap' : '/thong-tin-tai-khoan/thong-tin'} className={`${isActivePathUser && 'bg-[#E2EDFF]'} ' 
-                    flex items-center gap-x-2 hover:bg-[#E2EDFF] rounded duration-200 py-2 px-3 cursor-pointer whitespace-nowrap'`}>
+                    <Link href={(account === 'Tài khoản') ? '/dang-nhap' : '/thong-tin-tai-khoan/thong-tin'} className=' 
+                    flex items-center gap-x-2 hover:bg-[#E2EDFF] rounded duration-200 py-2 px-3 cursor-pointer whitespace-nowrap'>
                         <CircleUser color='#0A68FF' />
                         <span className='text-[#0A68FF] text-sm mt-0.5'>{account}</span>
                     </Link>
                     {/* cart */}
-                    <div className={`${isActivePathCart && 'bg-[#E2EDFF]'} relative group cursor-pointer`}>
+                    <div className={`relative group cursor-pointer`}>
                         <button onClick={handleCart} className='z-[1] relative hover:bg-[#E2EDFF] rounded duration-200 py-2 px-2.5' >
                             <ShoppingBag className='w-5 h-5 ' color='#0A68FF' />
                             <Count_Cart />

@@ -20,6 +20,14 @@ const schema_Auth = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    address: [
+        {
+            address_id: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Address'
+            }
+        }
+    ],
     role: {
         type: String,
         enum: ['admin_global', 'admin_local', 'seller', 'user'],

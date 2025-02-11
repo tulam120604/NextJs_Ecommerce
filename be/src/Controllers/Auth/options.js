@@ -80,7 +80,7 @@ export async function Login(req, res) {
     }
 }
 
-export async function granting_premissions(req, res) {
+export async function set_role_user_to_seller(req, res) {
     const id_user = req.body.sender_id._id;
     try {
         const data = await Account.findOne({ _id: id_user });

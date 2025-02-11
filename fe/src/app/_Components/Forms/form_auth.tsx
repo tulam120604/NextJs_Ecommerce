@@ -17,7 +17,7 @@ const Form_auth = ({ mode }: any) => {
             routing.push('/');
         }
         else {
-            routing.push('/login');
+            routing.push('/dang-nhap');
         }
     }
     return (

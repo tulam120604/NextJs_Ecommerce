@@ -3,7 +3,7 @@ import Products from '../../Model/Products/Products.js';
 import { StatusCodes } from 'http-status-codes';
 
 
-export async function list_favorites(req, res) {
+export async function list_item_favorites(req, res) {
     try {
         const { _page, _limit } = req.query;
         const options = { page: _page, limit: _limit }
@@ -44,7 +44,7 @@ export async function list_favorites(req, res) {
     }
 }
 
-export async function detail_favorites_by_user(req, res) {
+export async function view_item_favorite(req, res) {
     try {
         const id_user = req.user.id;
         const id_item = req.headers.id_item;
@@ -71,12 +71,12 @@ export async function detail_favorites_by_user(req, res) {
     }
 }
 
-export async function create_favorite(req, res) {
+export async function add_item_to_favorite(req, res) {
     try {
-        const { id_user } = req.user.id;
+        const id_user = req.user.id;
         if (!id_user) {
             return res.status(StatusCodes.NOT_FOUND).json({
-                message: 'NO User'
+                message: 'No User'
             })
         };
         let data_favorite = await Favorites.findOne({ id_user });
@@ -98,7 +98,7 @@ export async function create_favorite(req, res) {
     }
 }
 
-export async function remove_favorite(req, res) {
+export async function remove_item_favorite(req, res) {
     try {
         const id_user = req.user.id;
         const data_favorite = await Favorites.findOne({ id_user });

@@ -47,24 +47,24 @@ const Side_bar = () => {
             <div className="flex h-full flex-col justify-between bg-white">
                 <div className="flex flex-col gap-y-2 overflow-hidden rounded *:after:absolute *:after:top-0 *:after:left-0 *:relative *:after:h-full *:after:bg-[#99c0ff]">
                     <Link href={'/thong-tin-tai-khoan/thong-tin'}
-                        className={`${pathName === '/thong-tin-tai-khoan/thong-tin' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-black flex items-center gap-x-4' : 'duration-200 hover:bg-[#F5F5FA] hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
+                        className={`${pathName === '/thong-tin-tai-khoan/thong-tin' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-sky-600 flex items-center gap-x-4' : 'duration-200 hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
                         <User className="!w-5" />
                         <span className="hidden lg:block">Thông tin tài khoản</span>
                     </Link>
                     <Link href={'/thong-tin-tai-khoan/thong-bao'}
-                        className={`${pathName === '/thong-tin-tai-khoan/thong-bao' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-black flex items-center gap-x-4' : 'duration-200 hover:bg-[#F5F5FA] hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
+                        className={`${pathName === '/thong-tin-tai-khoan/thong-bao' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-sky-600 flex items-center gap-x-4' : 'duration-200 hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
                         <div className="relative *:!text-gray-800">
                             <Bell_component />
                         </div>
                         <span className="hidden lg:block">Thông báo</span>
                     </Link>
                     <Link href={'/thong-tin-tai-khoan/san-pham-yeu-thich'}
-                        className={`${pathName === "/thong-tin-tai-khoan/san-pham-yeu-thich" ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-black flex items-center gap-x-4' : 'duration-200 hover:bg-[#F5F5FA] hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
+                        className={`${pathName === "/thong-tin-tai-khoan/san-pham-yeu-thich" ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-sky-600 flex items-center gap-x-4' : 'duration-200 hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
                         <Heart />
                         <span className="hidden lg:block">Yêu thích</span>
                     </Link>
                     <Link href={'/thong-tin-tai-khoan/don-hang'}
-                        className={`${pathName === '/thong-tin-tai-khoan/don-hang' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-black flex items-center gap-x-4' : 'duration-200 hover:bg-[#F5F5FA] hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
+                        className={`${pathName === '/thong-tin-tai-khoan/don-hang' ? 'after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-sky-600 flex items-center gap-x-4' : 'duration-200 hover:text-black hover:after:w-2 px-4 py-2 lg:py-4 text-sm font-medium text-gray-700 flex items-center gap-x-4'} `}>
                         <Box />
                         <span className="hidden lg:block">Đơn hàng</span>
                     </Link>

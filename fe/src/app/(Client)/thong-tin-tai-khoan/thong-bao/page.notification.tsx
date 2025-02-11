@@ -11,11 +11,9 @@ import React, { useEffect } from 'react'
 import { useToast } from '@/src/app/_Components/ui/use-toast'
 import { ToastAction } from '@/src/app/_Components/ui/toast'
 import Link from 'next/link'
-import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 
 const Page_notification = () => {
-  const { data: data_user, isLoading: loading_user } = Infor_user();
   const { toast } = useToast()
   const data = Query_Notification();
   const mutate_notification = Mutation_Notification('SEND');
@@ -45,8 +43,7 @@ const Page_notification = () => {
 
 
   return (
-    <div className='pl-4 lg:pl-10'>
-      <strong className='text-lg'>Thông báo của bạn </strong>
+    <div className='px-6 py-4 lg:py-8 bg-white rounded'>
       <div className='pb-10 pt-5'>
         {
           data?.isLoading &&
@@ -110,10 +107,10 @@ const Page_notification = () => {
                   </AlertDialog>
                 ))
               ) :
-              <div className='grid place-items-center min-h-[50vh]'>
+              <div className='grid place-items-center min-h-[70vh]'>
                 <div className='flex flex-col items-center gap-y-6'>
                   <Image width={100} height={100} src='/Images/no_bell.png' alt=''></Image>
-                  <span>Bạn không có thông báo gì !</span>
+                  <span className='text-gray-700 font-light'>Bạn không có thông báo gì!</span>
                 </div>
               </div>
           }

@@ -14,7 +14,8 @@ import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Breadcrum from '@/src/app/_Components/breadcrum/breadcrum';
 import { filter_positive_Stock_Item } from '@/src/app/_lib/Config/Filter_Cart_And_Order';
 import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
-import Loading_Dots from '@/src/app/_Components/Loadings/Loading_Dots';
+import Loading_Overlay from '@/src/app/_Components/Loadings/Loading_Overlay';
+import Loading_Skeleton from '@/src/app/_Components/Loadings/Loading_Skeleton';
 
 const Cart = () => {
   const { toast } = useToast();
@@ -34,14 +35,15 @@ const Cart = () => {
   }, []);
 
   const router = useRouter();
-  const { mutate } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
+  const { mutate, isLoading: loading_mutation, isIdle } = Mutation_Cart("CHECKED_AND_REMOVE_ALL");
   const { data: data_user, isLoading: loading_user } = Infor_user();
-  useEffect(() => {
-    if (!data_user?.data) {
-      router.push('/')
-    }
-  }, [data_user])
   const { data, isLoading } = Get_Items_Cart();
+  // Kiểm tra trạng thái idle của mutation trước khi xử lý logic liên quan đến người dùng
+  useEffect(() => {
+    if (!loading_user && !isIdle && !data_user?.data) {
+      router.push('/');
+    }
+  }, [loading_user, isIdle, data_user]);
   const [arr_item_checkbox, setarr_item_checkbox] = useState<any>([]);
   useEffect(() => {
     if (!isLoading) {
@@ -50,11 +52,6 @@ const Cart = () => {
       setarr_item_checkbox(new_arr);
     }
   }, [data, isLoading]);
-  if (isLoading) {
-    return (
-      <LoadingCart />
-    )
-  };
   // console.count('re-render cart :');
   const data_checked_true = arr_item_checkbox.filter((item: any) => item?.status_checked && item);
   function remove_all_item_cart() {
@@ -129,13 +126,19 @@ const Cart = () => {
     handle_Checkked: handle_Checkked,
     remove_all_item_cart: remove_all_item_cart
   }
+
   return (
     <Suspense fallback={<LoadingCart />}>
       <div className="max-w-[1440px] w-[95vw] mx-auto pb-8">
         {
           isLoading || loading_user ?
-            <Loading_Dots /> :
+            <div className='max-w-[1440px] mx-auto w-[95vw] h-full'>
+              <Loading_Skeleton number_elements={1} />
+            </div> :
             <>
+              {
+                loading_mutation && <Loading_Overlay />
+              }
               <div className='max-w-[1440px] mx-auto w-[95vw] mb-4 pt-2'>
                 <Breadcrum textProps={{ name_item: 'Giỏ hàng' }} />
               </div>

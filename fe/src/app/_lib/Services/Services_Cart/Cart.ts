@@ -6,7 +6,7 @@ export async function get_list_Cart() {
     try {
         const res = await fetch(`${apiURi}/list_items_cart`, {
             method: 'get',
-            credentials: 'same-origin'
+            credentials: 'include'
         });
         if (!res.ok) {
             return res.status
@@ -27,7 +27,7 @@ export async function add_to_cart(item: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
@@ -49,7 +49,7 @@ export async function up_quantity(item: any) {
             headers: {
                 "Content-Type": 'application/json',
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
@@ -71,7 +71,7 @@ export async function dow_quantity(item: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
@@ -93,7 +93,7 @@ export async function checked_item_cart(item: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
@@ -115,7 +115,7 @@ export async function remove_item_cart(item: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
@@ -136,7 +136,7 @@ export async function remove_all_item_cart(item: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'same-origin',
+            credentials: 'include',
             body: JSON.stringify(item)
         });
         if (!res.ok) {
