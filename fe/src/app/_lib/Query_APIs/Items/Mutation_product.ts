@@ -13,9 +13,10 @@ type Action = 'ADD' | 'EDIT' | 'REMOVE' | 'RESTORE_OR_DESTROY';
 export function Mutation_Items({ action, onSuccess, onError }: { action: Action, onSuccess?: any, onError?: any }) {
     const [loading, setLoading] = useState<string>('no_call');
     // create form 
-    const my_Form = useForm({
-        resolver: yupResolver(schemaValidateFormProduct)
-    });
+    // const my_Form = useForm({
+    //     resolver: yupResolver(schemaValidateFormProduct)
+    // });
+    const my_Form = useForm();
 
     const query_client = useQueryClient();
     const { mutate, ...rest } = useMutation({

@@ -26,7 +26,7 @@ const Page = () => {
       id_user = user?.check_email?._id
     }
   }
-  const { data, isLoading } = Query_List_Items_Dashboard(page, 10, id_user);
+  const { data, isLoading } = Query_List_Items_Dashboard(page, 10);
   const { on_Submit, isLoading: loading_remove } = Mutation_Items({
     action: "REMOVE"
   });

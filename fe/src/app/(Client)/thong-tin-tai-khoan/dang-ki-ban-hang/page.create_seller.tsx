@@ -9,7 +9,7 @@ import React from 'react'
 import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth'
 
 export default function Page() {
-    const { data: data_user, isLoading: loading_user } = Infor_user('cookie');
+    const { data: data_user, isLoading: loading_user } = Infor_user();
     const socket = io('http://localhost:8888')
     const user = data_user ?? '';
     const mutate_notification = Mutation_Notification('ADD');
