@@ -76,7 +76,9 @@ app.use('/v1', Routes_Favorites)
 // })
 
 // run server without vite
-// app.listen(process.env.PORT_SERVER)
+// app.listen(process.env.PORT_SOCKET, () => {
+//     console.log('server running!');
+// })
 
 
 export const viteNodeApp = app;
