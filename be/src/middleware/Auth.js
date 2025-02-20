@@ -70,12 +70,13 @@ export async function middleWare(req, res, next) {
                 message: 'Token không hợp lệ!!'
             })
         }
-        const user = await verify_token_from_cookie(token)
+        const user = await verify_token_from_cookie(token);
         if (!user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({
                 message: 'Người dùng không tồn tại!!'
             })
         };
+        req.user = user;
         if (user.role === 'admin_global' || user.role === 'seller') {
             return next();
         }

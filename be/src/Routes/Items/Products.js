@@ -6,12 +6,12 @@ import Products from '../../Controllers/Products/index.js'
 
 const RoutesProducts = express.Router();
 
-RoutesProducts.get('/list_products/admin', middleWare, Products.get_Item_Dashboard);
-RoutesProducts.get('/list_products/client', Products.get_Item_Client);
-RoutesProducts.get('/products/search', Products.search_Item);
-RoutesProducts.get('/products/category/:category_id', Products.get_item_by_category);
-RoutesProducts.get('/products/:id', Products.get_Detail_Client);
-RoutesProducts.get('/products/dashboard/:id', Products.get_Detail_Dashboard);
+RoutesProducts.get('/list_products/admin', middleWare, Products.list_product_dashboard);
+RoutesProducts.get('/list_products/client', Products.list_product_client);
+RoutesProducts.get('/products/search', Products.search_product);
+RoutesProducts.get('/products/category/:category_id', Products.list_product_by_category);
+RoutesProducts.get('/products/:id', Products.view_detail_product_client);
+RoutesProducts.get('/products/dashboard/:id', Products.view_detail_product_dashboard);
 RoutesProducts.post('/create_product', upload.array('gallery'), middleWare, Products.Create_Product);
 RoutesProducts.delete('/products/:id', middleWare, Products.Soft_remove);
 RoutesProducts.delete('/products/destroy_item/:id', middleWare, Products.destroy_items);

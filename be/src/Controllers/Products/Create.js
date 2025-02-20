@@ -41,8 +41,8 @@ export async function Create_Product(req, res) {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
             id_user_seller: id_user,
+            gallery: url_image_gallery,
             variant: null,
-            gallery: url_image_gallery
         };
         const { error } = validateProducts.validate(req.body, { abortEarly: false });
         if (error) {

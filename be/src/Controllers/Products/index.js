@@ -1,6 +1,6 @@
 import {
-    get_Detail_Client, get_Detail_Dashboard, get_item_by_category,
-    get_Item_Client, get_Item_Dashboard, search_Item
+    list_product_client, list_product_dashboard, list_product_by_category,
+    view_detail_product_client, view_detail_product_dashboard, search_product
 } from './Get.js';
 import { Create_Product } from './Create.js';
 import { Soft_remove } from './Soft_delete.js';
@@ -8,12 +8,12 @@ import { destroy_items, get_recycle_items, restore_item } from '../Recycle/Items
 import { edit_Product } from './Edit.js';
 
 const Products = {
-    get_Detail_Client,
-    get_Detail_Dashboard,
-    get_item_by_category,
-    get_Item_Client,
-    get_Item_Dashboard,
-    search_Item,
+    list_product_client,
+    list_product_dashboard,
+    list_product_by_category,
+    view_detail_product_client,
+    view_detail_product_dashboard,
+    search_product,
     Create_Product,
     Soft_remove,
     destroy_items,

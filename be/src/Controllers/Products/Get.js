@@ -2,8 +2,8 @@ import Products from '../../Model/Products/Products.js';
 import { StatusCodes } from 'http-status-codes';
 
 
-// get all
-export async function get_Item_Dashboard(req, res) {
+// list item dashboard
+export async function list_product_dashboard(req, res) {
     const {
         _page = 1,
         _limit = 20,
@@ -64,8 +64,8 @@ export async function get_Item_Dashboard(req, res) {
 };
 
 
-// get by categories, madeIn, panigation, ...
-export async function get_Item_Client(req, res) {
+// list item client
+export async function list_product_client(req, res) {
     const {
         _page = 1,
         _limit = 100,
@@ -126,9 +126,8 @@ export async function get_Item_Client(req, res) {
     }
 };
 
-// get detail
-
-export async function get_Detail_Client(req, res) {
+// get product detail client
+export async function view_detail_product_client(req, res) {
     try {
         const data = await Products.findById(req.params.id).populate('variant');
         if (data.variant) {
@@ -160,9 +159,10 @@ export async function get_Detail_Client(req, res) {
 };
 
 
-export async function get_Detail_Dashboard(req, res) {
+// get detail product dashboard
+export async function view_detail_product_dashboard(req, res) {
     try {
-        const data = await Products.findById(req.params.id).populate('variant');
+        const data = await Products.findById(req.params.id).populate('category_id').populate('variant');
         return res.status(StatusCodes.OK).json({
             message: "Done",
             data
@@ -176,7 +176,7 @@ export async function get_Detail_Dashboard(req, res) {
 };
 
 // get by category
-export async function get_item_by_category(req, res) {
+export async function list_product_by_category(req, res) {
     const {
         _page = 1,
         _limit = 100,
@@ -228,7 +228,7 @@ export async function get_item_by_category(req, res) {
 }
 
 // search
-export async function search_Item(req, res) {
+export async function search_product(req, res) {
     const {
         _search = ''
     } = req.query;

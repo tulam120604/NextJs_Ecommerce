@@ -1,8 +1,9 @@
+import Variant from "../../Model/Products/Variant";
 // create variant
 export async function create_variant(data_variant) {
     if (!data_variant || data_variant.length < 1) {
         return res.status(StatusCodes.NOT_FOUND).json({
-            message: 'Not variants'
+            message: 'Không có biến thể sản phẩm!'
         })
     };
     const arr_variant = [];

@@ -35,7 +35,8 @@ export async function list_Account(req, res) {
 
 export async function get_detail_user(req, res) {
     try {
-        const data = await Account.findById(req.user.id).populate('address');
+        const id_user = req.params.id ?? req.user.id
+        const data = await Account.findById(id_user).populate('address');
         if (!data) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: 'No data!'
