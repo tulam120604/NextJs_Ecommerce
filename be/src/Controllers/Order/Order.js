@@ -39,7 +39,7 @@ export async function get_Order_User(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -76,7 +76,7 @@ export async function list_items_order(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server !'
+            message: error
         })
     }
 }
@@ -101,7 +101,7 @@ export async function view_detail_order(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server !'
+            message: error
         })
     }
 }
@@ -136,7 +136,7 @@ export async function list_item_order_by_shipper(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server !'
+            message: error
         })
     }
 }

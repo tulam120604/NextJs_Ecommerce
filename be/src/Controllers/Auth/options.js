@@ -49,7 +49,7 @@ export async function create_Account(req, res) {
 }
 
 
-export async function Login(req, res) {
+export async function login(req, res) {
     try {
         const { email, password } = req.body;
         const check_email = await Account.findOne({ email });
@@ -110,7 +110,7 @@ export async function set_role_user_to_seller(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error || "Lỗi rồi đại vương ơi!!"
+            message: error
         })
     }
 }
@@ -131,7 +131,7 @@ export async function logout(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error || "Lỗi rồi đại vương ơi!!"
+            message: error
         })
     }
 }
@@ -182,7 +182,18 @@ export async function refesh_token(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error || "Lỗi rồi đại vương ơi!!"
+            message: error
+        })
+    }
+}
+
+// update thong tin tai khoan
+export async function update_profile_account (req, res) {
+    try {
+        
+    } catch (error) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message : error
         })
     }
 }

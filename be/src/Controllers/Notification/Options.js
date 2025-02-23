@@ -26,7 +26,7 @@ export async function add_notification(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: 'Lỗi server rồi đại vương ơi!!'
+            message: error
         })
     }
 }
@@ -42,7 +42,7 @@ export async function get_notification(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: 'Lỗi server rồi đại vương ơi!!'
+            message: error
         })
     }
 }
@@ -65,7 +65,7 @@ export async function send_notification(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: 'Lỗi server rồi đại vương ơi!!'
+            message: error
         })
     }
 }

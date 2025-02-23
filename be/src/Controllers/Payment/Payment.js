@@ -4,7 +4,7 @@ import moment from 'moment';
 import { StatusCodes } from 'http-status-codes';
 import qs from 'qs';
 import Orders from '../../Model/Orders/Order.js';
-import { create_item_order } from '../Order/Options.js';
+import { save_item_order } from '../Order/Options.js';
 
 // APP INFO
 const config = {
@@ -54,10 +54,10 @@ export async function create_payment(req, res) {
         try {
             const { data } = await axios.post(config.endpoint, null, { params: order });
             if (data.return_code === 1) {
-                await create_item_order(user_id, items_order, infor_user, notes_order, payment_method, 2)
+                await save_item_order(user_id, items_order, infor_user, notes_order, payment_method, 2)
             }
             else {
-                await create_item_order(user_id, items_order, infor_user, notes_order, payment_method, 6)
+                await save_item_order(user_id, items_order, infor_user, notes_order, payment_method, 6)
             }
             return res.status(StatusCodes.CREATED).json({
                 data
@@ -69,7 +69,7 @@ export async function create_payment(req, res) {
         }
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }

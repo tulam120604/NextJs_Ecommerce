@@ -39,7 +39,7 @@ export async function list_item_favorites(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server roi dai vuong oi'
+            message: error
         })
     }
 }
@@ -66,7 +66,7 @@ export async function view_item_favorite(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server roi dai vuong oi'
+            message: error
         })
     }
 }
@@ -93,7 +93,7 @@ export async function add_item_to_favorite(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Loi server roi dai vuong oi!"
+            message: error
         })
     }
 }
@@ -121,7 +121,7 @@ export async function remove_item_favorite(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server roi dai vuong oi!'
+            message: error
         })
     }
 }

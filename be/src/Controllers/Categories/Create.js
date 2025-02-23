@@ -9,7 +9,7 @@ export async function Create_Categories (req, res) {
         for(let i of name_Cate){
             if(trim_req_body === i.category_name) {
                return res.status(StatusCodes.BAD_REQUEST).json({
-                message: 'Trung ten danh muc !!!'
+                message: 'Danh muc da ton tai!'
                })
             }
         }
@@ -19,13 +19,13 @@ export async function Create_Categories (req, res) {
             category_img : img_upload.secure_url
         }
         const data = await Categories.create(all_data);
-        return res.status(StatusCodes.OK).json({
-            message : 'Done',
+        return res.status(StatusCodes.CREATED).json({
+            message : 'OK',
             data
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message : error.message || 'Lỗi server rồi đại vương ơi!'
+            message : error
         })
     }
 }

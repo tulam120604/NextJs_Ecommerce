@@ -16,7 +16,7 @@ const Routes_Order = express.Router();
 Routes_Order.get('/order_by_user', middleWare_get_user_from_cookie, get_Order_User);
 Routes_Order.get('/list_orders', middleWare, list_items_order);
 Routes_Order.get('/detail_order', middleWare_get_user_from_cookie, view_detail_order);
-Routes_Order.post('/order/add', create_Order);
+Routes_Order.post('/order/add', middleWare_get_user_from_cookie, create_Order);
 Routes_Order.post('/order/buy_again', middleWare_get_user_from_cookie, buy_again);
 Routes_Order.patch('/order/update_status', middleWare_get_user_from_cookie, update_status_order);
 Routes_Order.get('/order/feedback/:id_item', view_detail_item_order);

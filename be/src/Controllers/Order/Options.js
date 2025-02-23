@@ -4,8 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import { update_quantity_item } from '../Products/Edit.js';
 import { update_quantity_item_in_cart } from '../Cart/Get.js';
 
-// function tao don hang
-export async function create_item_order(user_id, items_order, infor_user, notes_order, payment_method, status_order) {
+// tạo đơn hàng trong database
+export async function save_item_order(user_id, items_order, infor_user, notes_order, payment_method, status_order) {
     const check_user = await Account.findById(user_id);
     if (!check_user) {
         return res.status(StatusCodes.NOT_FOUND).json({
@@ -43,19 +43,21 @@ export async function create_item_order(user_id, items_order, infor_user, notes_
 
 // tao don hang
 export async function create_Order(req, res) {
-    const { user_id, items_order, infor_user, notes_order, payment_method } = req.body;
+    const { items_order, infor_user, notes_order, payment_method } = req.body;
+    const user_id = req.user.id
     try {
-        await create_item_order(user_id, items_order, infor_user, notes_order, payment_method, 1);
+        await save_item_order(user_id, items_order, infor_user, notes_order, payment_method, 1);
         return res.status(StatusCodes.CREATED).json({
             message: 'OK',
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }
 
+// cap nhat trang thai don hang
 export async function update_status_order(req, res) {
     const { order_id, status_item_order } = req.body;
     try {
@@ -82,7 +84,7 @@ export async function update_status_order(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -111,14 +113,14 @@ export async function buy_again(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }
 
 
 
-// chi tiet san pham trong don hang de feedback
+// chi tiet san pham trong don hang de danh gia
 export async function view_detail_item_order(req, res) {
     try {
         const id_item_order = req.params.id_item;
@@ -132,7 +134,7 @@ export async function view_detail_item_order(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server !'
+            message: error
         })
     }
 }

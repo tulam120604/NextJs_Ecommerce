@@ -43,7 +43,7 @@ export async function create_address(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -63,7 +63,7 @@ export async function get_address(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -83,7 +83,7 @@ export async function edit_address(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -101,7 +101,7 @@ export async function remove_address(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -129,7 +129,7 @@ export async function update_default_address(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi rồi đại vương ơi!'
+            message: error
         })
     }
 }

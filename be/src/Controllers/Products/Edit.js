@@ -83,7 +83,7 @@ export async function edit_Product(req, res) {
         }
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }

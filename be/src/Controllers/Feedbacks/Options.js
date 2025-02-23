@@ -41,7 +41,7 @@ export async function add_feedback(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server !'
+            message: error
         })
     }
 }
@@ -69,7 +69,7 @@ export async function get_feedback(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server!'
+            message: error
         })
     }
 }
@@ -95,7 +95,7 @@ export async function get_feedback_detail_item(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Loi server!'
+            message: error
         })
     }
 }

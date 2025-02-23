@@ -14,7 +14,7 @@ export async function Soft_remove(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message | 'Loi server!'
+            message: error
         })
     };
 }

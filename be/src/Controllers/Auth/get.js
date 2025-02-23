@@ -28,7 +28,7 @@ export async function list_Account(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }
@@ -48,7 +48,7 @@ export async function get_detail_user(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }

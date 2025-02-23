@@ -90,7 +90,7 @@ export async function Add_To_Cart(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            messgae: error.message || "Lỗi server rồi đại vương ơi!"
+            messgae: error
         })
     }
 };
@@ -122,7 +122,7 @@ export async function up_quantity(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 };
@@ -159,7 +159,7 @@ export async function dow_quantity(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }
@@ -181,7 +181,7 @@ export async function remove_item_cart(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }
@@ -207,7 +207,7 @@ export async function remove_all_item_cart(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }

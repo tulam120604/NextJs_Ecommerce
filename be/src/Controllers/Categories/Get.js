@@ -20,13 +20,13 @@ export async function GetAllCategories(req, res) {
             })
         }
         return res.status(StatusCodes.OK).json({
-            message: 'Done',
+            message: 'OK',
             data
         })
     }
     catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }
@@ -40,7 +40,7 @@ export async function Get_detail_category(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || 'Lỗi server rồi đại vương ơi!'
+            message: error
         })
     }
 }

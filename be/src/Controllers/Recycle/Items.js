@@ -34,7 +34,7 @@ export async function get_recycle_items(req, res) {
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 };
@@ -52,7 +52,7 @@ export async function restore_item(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Loi server !"
+            message: error
         })
     }
 }
@@ -67,7 +67,7 @@ export async function destroy_items(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Lỗi server rồi đại vương ơi!"
+            message: error
         })
     }
 }

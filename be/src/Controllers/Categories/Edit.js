@@ -9,12 +9,12 @@ export async function AddProductToCategories (req, res) {
             {$push : {products : req.body.products}}
         )
         return res.status(StatusCodes.OK).json({
-            message : "Done",
+            message : "OK",
             data
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message : error.message || 'Lỗi server rồi đại vương ơi!'
+            message : error
         })
     }
 }

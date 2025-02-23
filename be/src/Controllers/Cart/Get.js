@@ -51,7 +51,7 @@ export async function list_carts(req, res) {
         });
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error.message || "Loi server"
+            message: error
         })
     }
 };
@@ -92,7 +92,7 @@ export async function checked_item_cart(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            mesage: error.message || 'Loi server!'
+            mesage: error
         })
     }
 }
