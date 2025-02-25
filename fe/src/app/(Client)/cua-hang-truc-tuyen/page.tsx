@@ -7,12 +7,12 @@ import Loading_Dots from "../../_Components/Loadings/Loading_Dots";
 import Paginate_item from "../san-pham/_component/Paginate";
 import Link from "next/link";
 import Breadcrum from "../../_Components/breadcrum/breadcrum";
-import { GET_items_client } from "../../_lib/Services/Services_Items/Product";
+import { list_product_client } from "../../_lib/Services/Services_Items/Product";
 
 export default async function Page({ searchParams }: any) {
   let page = searchParams._page ?? 1;
   const data = await infor_shop(searchParams?.id);
-  const data_item = await GET_items_client(page, 30, "", data?.data?._id);
+  const data_item = await list_product_client(page, 30, "", data?.data?._id);
   return (
     <div className="max-w-[1440px] mx-auto mb:w-[342px] md:w-[90vw] py-2">
       {data?.status === 404 ? (

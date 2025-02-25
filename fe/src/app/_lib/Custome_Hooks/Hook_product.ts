@@ -7,7 +7,7 @@ import { Detail_Item_Dashboard, Query_Category } from "../Query_APIs/Items/Query
 import { Mutation_Items } from "../Query_APIs/Items/Mutation_product";
 
 
-export function useCustome_Hooks_Form({ mode }: any) {
+export function useCustome_Hook_Product({ mode }: any) {
     const router = useRouter();
     const params = useParams();
     const id_item = params['cap-nhat-san-pham'] ?? params['cap-nhat-san-pham'];

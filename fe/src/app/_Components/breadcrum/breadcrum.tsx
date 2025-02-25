@@ -23,7 +23,7 @@ const Breadcrum = ({ textProps }: any) => {
                             textProps?.bread_1 &&
                             <Link href={`/products/${textProps?.bread_1?._id}`} >/ {textProps.bread_1?.category_name || textProps.bread_1}</Link>
                         }
-                        <span>{textProps.bread_2 && ('/' + textProps?.bread_2)}</span>
+                        <span>{textProps.bread_2 && ('/ ' + textProps?.bread_2)}</span>
                     </div>}
                 </li>
             </ol>

@@ -1,5 +1,5 @@
 import express from 'express';
-import { add_notification, get_notification, send_notification } from '../../Controllers/Notification/Options.js';
+import { add_notification, get_notification, send_notification } from '../../Controllers/Notification/Notification_management.js';
 import { middleWare_get_user_from_cookie } from '../../middleware/Auth.js';
 
 const RoutesNotification = express.Router();

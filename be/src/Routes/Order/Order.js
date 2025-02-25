@@ -3,13 +3,13 @@ import {
     view_detail_order, get_Order_User,
     list_item_order_by_shipper,
     list_items_order
-} from '../../Controllers/Order/Order.js';
+} from '../../Controllers/Order/Get_order.js';
 import { middleWare, middleWare_get_user_from_cookie } from '../../middleware/Auth.js';
 import {
     buy_again,
     create_Order, view_detail_item_order,
     update_status_order
-} from '../../Controllers/Order/Options.js';
+} from '../../Controllers/Order/Order_management.js';
 
 const Routes_Order = express.Router();
 

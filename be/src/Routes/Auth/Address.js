@@ -3,7 +3,7 @@ import express from 'express';
 import {
     create_address, edit_address, get_address,
     remove_address, update_default_address
-} from '../../Controllers/Auth/address.js';
+} from '../../Controllers/Auth/Address_management.js';
 import { middleWare_get_user_from_cookie } from '../../middleware/Auth.js';
 
 const RoutesAddress = express.Router();
