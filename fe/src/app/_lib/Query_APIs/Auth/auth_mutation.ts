@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,9 +22,7 @@ type Actions =
   | "REGISTER"
   | "SET_ROLE_USER_TO_SELLER"
   | "LOGOUT"
-  | "REFESH_TOKEN"
-  | "UPDATE_PROFILE";
-
+  | "REFESH_TOKEN";
 export function Mutation_Auth({ action }: { action: Actions }) {
   const user = useCheck_user();
   let check_validate_register: any;
@@ -47,8 +49,6 @@ export function Mutation_Auth({ action }: { action: Actions }) {
           return await logout();
         case "REFESH_TOKEN":
           return await refesh_token();
-        case "UPDATE_PROFILE":
-          return await update_profile_account(dataClient);
         default:
           return;
       }
@@ -76,4 +76,36 @@ export function Mutation_Auth({ action }: { action: Actions }) {
     mutate(data);
   };
   return { status_Loading, my_form, onSubmit, ...rest };
+}
+
+export function Mutation_update_auth() {
+  const query_Client = useQueryClient();
+
+  const form_data = useForm();
+
+  const { mutate, ...rest } = useMutation({
+    mutationFn: async (data_request) => {
+      return await update_profile_account(data_request);
+    },
+    onSuccess: () => {
+      query_Client.invalidateQueries({
+        queryKey: ["Auth_Key"],
+      });
+    },
+    onError: (err) => err,
+  });
+
+  const submitForm: SubmitHandler<any> = (data: any) => {
+    const formData = new FormData();
+    let data_req: any = {};
+    if (data?.new_avatar) {
+      formData.append("new_avatar", data.new_avatar[0]);
+      data_req = formData;
+    } else {
+      formData.append("new_phone", data.new_phone);
+      data_req = formData;
+    }
+    mutate(data_req);
+  };
+  return { submitForm, form_data, ...rest };
 }

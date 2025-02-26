@@ -21,10 +21,18 @@ import Routes_Favorites from './Routes/Items/Favorites.js';
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors({
-    origin: ['http://localhost:5000', 'https://fe-store88.vercel.app'],
-    credentials: true
-}));
+// app.use(cors({
+//     origin: ['http://localhost:5000', 'https://fe-store88.vercel.app'],
+//     credentials: true
+// }));
+app.use(
+    cors({
+      origin: "http://localhost:5000",
+      credentials: true,
+      allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    })
+  );
 app.use(cookieParser())
 
 

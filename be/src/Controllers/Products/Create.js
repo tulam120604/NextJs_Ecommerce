@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { validateProducts } from "../../Validates/Products.js";
 import cloudinary from "../../utils/cloudinary.js";
 import { create_variant } from "./Create_variant.js";
+import { upload_img } from "../../middleware/upload.js";
 
 
 // create 
@@ -32,10 +33,7 @@ export async function Create_Product(req, res) {
         }
 
         const images = req.files;
-        const upload_img = images.map(data_img => (
-            cloudinary.uploader.upload(data_img.path)
-        ))
-        const img_upload = await Promise.all(upload_img);
+        const img_upload = await upload_img(images);
         const url_image_gallery = img_upload.map(uri_secure => uri_secure.secure_url)
         const allData = {
             ...dataClient,

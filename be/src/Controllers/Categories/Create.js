@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Categories from "../../Model/Products/Categories.js";
-import cloudinary from "../../utils/cloudinary.js";
+import { upload_img } from "../../middleware/upload.js";
 
 export async function Create_Categories (req, res) {
     try {
@@ -13,7 +13,7 @@ export async function Create_Categories (req, res) {
                })
             }
         }
-        const img_upload = await cloudinary.uploader.upload(req.file.path);
+        const img_upload = await upload_img(req.file);
         const all_data = {
             ...req.body,
             category_img : img_upload.secure_url

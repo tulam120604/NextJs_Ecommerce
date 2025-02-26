@@ -10,6 +10,7 @@ import {
 } from "../../middleware/Auth.js";
 import Blacklist_token from "../../Model/Blacklist_Token/blacklist_token.js";
 import jwt from "jsonwebtoken";
+import { upload_img } from "../../middleware/upload.js";
 
 export async function create_Account(req, res) {
   try {
@@ -79,8 +80,9 @@ export async function login(req, res) {
     const refeshToken = createRefeshToken(check_email._id);
     check_email.password = undefined;
     res.cookie("access_token", accessToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: false,
+      path: '/',
       maxAge: 604800000,
     });
     return res.status(StatusCodes.OK).json({
@@ -203,18 +205,18 @@ export async function refesh_token(req, res) {
 export async function update_profile_account(req, res) {
   try {
     const id_user = req.user.id;
-    console.log(req.body)
-    const { new_avatar, new_phone } = req.body;
-    // console.log(req.files);
+    const { new_phone } = req.body;
+    const new_avatar = req.file;
     if (!id_user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "No user",
       });
     }
+    const uri_img = await upload_img(new_avatar);
     if (new_avatar) {
       await Account.findOneAndUpdate(
         { _id: id_user },
-        { $set: { avatar: new_avatar } }
+        { $set: { avatar: uri_img.secure_url } }
       );
       return res.status(StatusCodes.OK).json({
         message: "OK",

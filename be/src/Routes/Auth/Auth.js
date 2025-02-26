@@ -21,7 +21,7 @@ const RoutesAuth = express.Router();
 RoutesAuth.get("/account", middleWare, list_Account);
 RoutesAuth.patch(
   "/account/update",
-  upload.single("avatar"),
+  upload.single("new_avatar"),
   middleWare_get_user_from_cookie,
   update_profile_account
 );

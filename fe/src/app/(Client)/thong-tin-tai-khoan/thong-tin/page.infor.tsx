@@ -10,6 +10,7 @@ import { Infor_user } from '@/src/app/_lib/Query_APIs/Auth/Query_Auth';
 import List_address_user from './list_address';
 import Page_infor_mobile from './page.infor.mobile';
 import Avatar_account from './avatar';
+import Phone_account from './phone';
 
 const Page_infor = () => {
   const form_create_address = useRef<HTMLDivElement>(null);
@@ -69,14 +70,7 @@ const Page_infor = () => {
               </div>
               {/* sdt */}
               <span className='text-gray-600 font-light'>Số điện thoại</span>
-              {
-                data_user?.data && data_user?.data?.phone ?
-                  <div className='w-full border py-1 lg:py-2 px-4 rounded overflow-hidden text-gray-700'>
-                    {data_user?.data && data_user?.data?.phone}
-                    </div>
-                  :
-                  <Link href={''} className='underline rounded text-sky-600'>thêm</Link>
-              }
+              <Phone_account data_user={data_user}/>
             </div>
             {/* avatar */}
             <Avatar_account data_user={data_user}/>
