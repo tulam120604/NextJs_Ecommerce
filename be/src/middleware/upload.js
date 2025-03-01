@@ -1,5 +1,5 @@
 import cloudinary from "../utils/cloudinary.js";
-import fs from "fs";
+import fs from 'fs'
 
 export async function upload_img(img) {
   try {
