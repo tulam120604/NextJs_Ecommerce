@@ -133,7 +133,6 @@ const Page_checkout = () => {
       }
     }
   }
-  console.log(check_inventory);
   // notes_order
   const mutate_order = Mutation_Order("ADD_and_RESTORE_BUY_ITEM");
   const mutation_payment = Mutation_Payment("CREATE");

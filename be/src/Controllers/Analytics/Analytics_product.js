@@ -10,11 +10,11 @@ export async function caculate_revenue(req, res) {
       {
         $unwind: "$items_order",
       },
-      {
-        $match: {
-          "$items_order.product_id.id_user_seller.role": { $gt: "admin_global" },
-        },
-      },
+      // {
+      //   $match: {
+      //     "$items_order.product_id.id_user_seller.role": { $gt: "admin_global" },
+      //   },
+      // },
       {
         $group: {
           _id: null,

@@ -13,8 +13,10 @@ export async function save_item_order(user_id, items_order, infor_user, notes_or
         })
     };
     // nếu có 2 sản phẩm từ 2 shop khác nhau thì tạo riêng 2 đơn
+    let total_price_order_amount = -30000; // fix giá ship là 30k
     const group_items_order_by_seller = [];
     for (let i of items_order) {
+        total_price_order_amount += i.total_price_item;
         const id_seller = i.product_id.id_user_seller._id;
         let check_group_item_order_by_seller = group_items_order_by_seller.find(a => a.id_shop === id_seller);
         // tìm id_seller trong mảng group_item kia bằng find, nếu chưa có thì tạo 1 obj
@@ -30,6 +32,7 @@ export async function save_item_order(user_id, items_order, infor_user, notes_or
         return Orders.create({
             user_id,
             items_order: data.items,
+            total_price_order_amount,
             infor_user,
             notes_order,
             payment_method,
