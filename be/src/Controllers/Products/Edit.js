@@ -1,7 +1,6 @@
 import Products from "../../Model/Products/Products.js";
 import { StatusCodes } from "http-status-codes";
 import { validateProducts } from "../../Validates/Products.js";
-import cloudinary from "../../utils/cloudinary.js";
 import Variant from "../../Model/Products/Variant.js";
 import { create_variant } from "./Create_variant.js";
 import { upload_img } from "../../middleware/upload.js";
@@ -36,7 +35,7 @@ export async function edit_Product(req, res) {
       ? req.body.gallery
       : [req.body.gallery];
     if (req.files) {
-      const promise_upload = await upload_file(req.files);
+      const promise_upload = await upload_img(req.files);
       promise_upload.map((uri_secure) => {
         img_upload.push(uri_secure.value.secure_url);
       });

@@ -10,7 +10,7 @@ export async function Soft_remove(req, res) {
             })
         };
         return res.status(StatusCodes.OK).json({
-            message: "Done soft remove !"
+            message: "OK!"
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

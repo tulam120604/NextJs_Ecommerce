@@ -2,7 +2,6 @@ import Products from "../../Model/Products/Products.js";
 import Categories from "../../Model/Products/Categories.js";
 import { StatusCodes } from "http-status-codes";
 import { validateProducts } from "../../Validates/Products.js";
-import cloudinary from "../../utils/cloudinary.js";
 import { create_variant } from "./Create_variant.js";
 import { upload_img } from "../../middleware/upload.js";
 

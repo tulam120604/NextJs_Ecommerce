@@ -2,8 +2,8 @@ import Account from '../../Model/Auth/Account.js';
 import Orders from '../../Model/Orders/Order.js';
 import { StatusCodes } from 'http-status-codes';
 
-
-export async function get_Order_User(req, res) {
+// list item user order by user
+export async function list_item_order_by_user(req, res) {
     const user_id = req.user.id;
     const {
         _page = 1,
@@ -44,8 +44,8 @@ export async function get_Order_User(req, res) {
     }
 }
 
-// list item user order by seller
-export async function list_items_order(req, res) {
+// list item user order by dashboard
+export async function list_item_order_by_dashboard(req, res) {
     try {
         const user_id = req.user.id;
         const check_user = await Account.findById(user_id);

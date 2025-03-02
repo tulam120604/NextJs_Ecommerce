@@ -1,17 +1,17 @@
 'use client'
 
-import { Query_Order } from '@/src/app/_lib/Query_APIs/Order/Query_order'
+import { Query_Order } from '@/src/app/_lib/Query_APIs/Order/Query'
 import React, { useState } from 'react'
 import { Button } from "@/src/app/_Components/ui/Shadcn/button"
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import Link from "next/link"
-import { Mutation_Order } from '@/src/app/_lib/Query_APIs/Order/Mutation_order'
+import { Mutation_Order } from '@/src/app/_lib/Query_APIs/Order/Mutation'
 import {
   AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader,
   AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel
 } from '@/src/app/_Components/ui/alert-dialog'
-import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation_Notification'
+import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { DataTable } from '@/src/app/_Components/ui/Tables/data_table'
 import Paginate_order from './paginate_order'

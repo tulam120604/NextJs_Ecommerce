@@ -1,6 +1,34 @@
 import Products from "../../Model/Products/Products.js";
 import { StatusCodes } from "http-status-codes";
 
+// hàm chung tham chiếu sang danh mục và biến thể sản phẩm và tính toán số lượng
+async function populate_and_caculation_quantity(querry, options) {
+  const data = await Products.paginate(querry, options);
+  await Products.populate(data.docs, [
+    {
+      path: "category_id",
+      select: "category_name",
+    },
+    { path: "variant" },
+  ]);
+  // console.log(data)
+  // await Products.populate(data.docs, );
+  for (const item of data.docs) {
+    if (item.variant) {
+      let current = 0;
+      item.variant.variants.forEach((b) => {
+        b.value_variants.forEach((l) => {
+          current += l.stock_variant;
+        });
+      });
+      item.count_stock = current;
+    } else {
+      item.count_stock = item.stock;
+    }
+  }
+  return data;
+}
+
 // list item dashboard
 export async function list_product_dashboard(req, res) {
   const { _page = 1, _limit = 20, _search = "" } = req.query;
@@ -24,25 +52,7 @@ export async function list_product_dashboard(req, res) {
         },
       ];
     }
-    const data = await Products.paginate(querry, options);
-    await Products.populate(data.docs, {
-      path: "category_id",
-      select: "category_name",
-    });
-    await Products.populate(data.docs, { path: "variant" });
-    for (const item of data.docs) {
-      if (item.variant) {
-        let current = 0;
-        item.variant.variants.forEach((b) => {
-          b.value_variants.forEach((l) => {
-            current += l.stock_variant;
-          });
-        });
-        item.count_stock = current;
-      } else {
-        item.count_stock = item.stock;
-      }
-    }
+    const data = await populate_and_caculation_quantity(querry, options)
     if (!data.docs || data.docs.length === 0) {
       return res.status(StatusCodes.OK).json({
         message: "Khong co data!",
@@ -54,7 +64,7 @@ export async function list_product_dashboard(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
@@ -82,28 +92,7 @@ export async function list_product_client(req, res) {
         },
       ];
     }
-    const data = await Products.paginate(querry, options);
-    await Products.populate(data.docs, {
-      path: "category_id",
-      select: "category_name",
-    });
-    await Products.populate(data.docs, { path: "variant" });
-    for (const item of data.docs) {
-      if (item.variant) {
-        let current = 0;
-        let quantity_sale = 0;
-        item.variant.variants.map((b) => {
-          b.value_variants.map((l) => {
-            current += l.stock_variant;
-            quantity_sale += l.sales_item;
-          });
-        });
-        item.count_stock = current;
-        item.sale_quantity = quantity_sale;
-      } else {
-        item.count_stock = item.stock;
-      }
-    }
+    const data = await populate_and_caculation_quantity(querry, options);
     data.docs = data.docs.filter((item) => item.count_stock > 0);
     if (!data) {
       return res.status(StatusCodes.OK).json({
@@ -116,7 +105,7 @@ export async function list_product_client(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
@@ -149,7 +138,7 @@ export async function view_detail_product_client(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
@@ -166,7 +155,7 @@ export async function view_detail_product_dashboard(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
@@ -196,25 +185,7 @@ export async function list_product_by_category(req, res) {
         },
       ];
     }
-    const data = await Products.paginate(querry, options);
-    await Products.populate(data.docs, {
-      path: "category_id",
-      select: "category_name",
-    });
-    await Products.populate(data.docs, { path: "variant" });
-    for (const id_data of data.docs) {
-      if (id_data.variant) {
-        let current = 0;
-        id_data.variant.variants.map((b) => {
-          b.value_variants.map((l) => {
-            current += l.stock_variant;
-          });
-        });
-        id_data.count_stock = current;
-      } else {
-        id_data.count_stock = id_data.stock;
-      }
-    }
+    const data = await populate_and_caculation_quantity(querry, options);
     data.docs = data.docs.filter((item) => item.count_stock > 0);
     return res.status(StatusCodes.OK).json({
       message: "Done!",
@@ -222,7 +193,7 @@ export async function list_product_by_category(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
@@ -246,7 +217,7 @@ export async function search_product(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error
+      message: error,
     });
   }
 }
