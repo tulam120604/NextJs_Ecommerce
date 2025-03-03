@@ -136,7 +136,7 @@ const Page_order = () => {
   }
   return (
     <div className='w-full relative'>
-      <div className='flex hidden_scroll_x z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:py-4 rounded-t
+      <div className='flex hidden_scroll z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:py-4 rounded-t
       *:px-2 items-center *:bg-none *:text-sm *:border-b-2 *:border-white *:whitespace-nowrap top-0 bg-white'>
         {
           Array.from({ length: 7 }, (_: any, i: number) =>
