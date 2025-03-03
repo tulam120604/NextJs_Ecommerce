@@ -83,7 +83,7 @@ export async function edit_Product(req, res) {
     } else {
       const dataClient = {
         ...req.body,
-        id_user_seller: id_user,
+        seller: id_user,
         variant: convert_Attributes,
         gallery: img_upload,
       };

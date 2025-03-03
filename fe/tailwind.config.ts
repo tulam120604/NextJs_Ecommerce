@@ -79,9 +79,6 @@ const config = {
       },
     },
     screens: {
-      'mb': '350px',
-      // => @media (min-width: 640px) { ... }
-
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 

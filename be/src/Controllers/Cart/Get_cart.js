@@ -15,7 +15,7 @@ export async function list_carts(req, res) {
             path: 'items.product_id',
             populate: [
                 { path: 'variant' },
-                { path: 'id_user_seller' }
+                { path: 'seller' }
             ]
         },
         );

@@ -37,7 +37,7 @@ export async function Create_Product(req, res) {
         const allData = {
             ...dataClient,
             category_id: category_id ? category_id : checkNameCategory._id,
-            id_user_seller: id_user,
+            seller: id_user,
             gallery: url_image_gallery,
             variant: null,
         };

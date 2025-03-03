@@ -17,7 +17,7 @@ export async function save_item_order(user_id, items_order, infor_user, notes_or
     const group_items_order_by_seller = [];
     for (let i of items_order) {
         total_price_order_amount += i.total_price_item;
-        const id_seller = i.product_id.id_user_seller._id;
+        const id_seller = i.product_id.seller._id;
         let check_group_item_order_by_seller = group_items_order_by_seller.find(a => a.id_shop === id_seller);
         // tìm id_seller trong mảng group_item kia bằng find, nếu chưa có thì tạo 1 obj
         // check_group_item_order_by_seller mới để push vào mảng, nếu đã có rồi thì push i vào items

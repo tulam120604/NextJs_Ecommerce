@@ -11,7 +11,7 @@ const schema_Products = new mongoose.Schema({
         maxlength: 255,
     },
     gallery: [],
-    id_user_seller: {
+    seller: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account'
     },

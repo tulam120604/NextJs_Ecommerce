@@ -205,7 +205,8 @@ const Page_order = () => {
                             (+item?.status_item_order === 1) ?
                               <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancel_order(item?._id, 6)}>Xác nhận</AlertDialogAction> :
                               (+item?.status_item_order === 2) &&
-                              <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancel_order(item?._id, 7, item?.code_order, item?.items_order[0]?.product_id?.id_user_seller)}>Xác nhận</AlertDialogAction>}
+                              <AlertDialogAction className="bg-red-500 hover:!bg-red-700" onClick={() => cancel_order(item?._id, 7, item?.code_order, 
+                              item?.items_order[0]?.product_id?.seller)}>Xác nhận</AlertDialogAction>}
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>

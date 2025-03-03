@@ -11,7 +11,8 @@ export async function Add_To_Cart(req, res) {
         let stock_product = 0;
         if (data_item.variant) {
             const check_name_variant = data_item.variant.variants.find(value => value.attribute === attribute);
-            const check_value_variant = check_name_variant.value_variants.find(item => (item?.name_variant?.trim() ? item?.name_variant : undefined) === name_variant);
+            const check_value_variant = check_name_variant.value_variants.find(item => (item?.name_variant?.trim() 
+            ? item?.name_variant : undefined) === name_variant);
             stock_product = check_value_variant.stock_variant;
         }
         else {

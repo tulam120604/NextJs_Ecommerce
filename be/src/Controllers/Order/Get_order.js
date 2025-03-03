@@ -64,7 +64,7 @@ export async function list_item_order_by_dashboard(req, res) {
             querry = {
                 items_order: {
                     $elemMatch: {
-                        'product_id.id_user_seller': user_id
+                        'product_id.seller': user_id
                     }
                 },
             }

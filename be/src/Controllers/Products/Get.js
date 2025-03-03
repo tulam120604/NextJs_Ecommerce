@@ -42,7 +42,7 @@ export async function list_product_dashboard(req, res) {
     const id_user = req.user.id;
     let querry = {};
     if (role_user === "seller") {
-      querry = { id_user_seller: id_user };
+      querry = { seller: id_user };
     }
     // const check_user
     if (_search) {
@@ -81,9 +81,9 @@ export async function list_product_client(req, res) {
   };
   try {
     let querry = {};
-    const id_user_seller = req.headers["id_user_seller"];
-    if (id_user_seller) {
-      querry = { id_user_seller: id_user_seller };
+    const seller = req.headers["id_user_seller"];
+    if (seller) {
+      querry = { seller };
     }
     if (_search) {
       querry.$and = [

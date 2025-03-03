@@ -12,26 +12,32 @@ export async function caculate_revenue(req, res) {
       },
       // {
       //   $match: {
-      //     "$items_order.product_id.id_user_seller.role": { $gt: "admin_global" },
+      //     "$items_order._id": "67c4790b88828d590bade3f5",
       //   },
       // },
       {
         $group: {
-          _id: null,
+          _id: "$items_order.product_id.seller.role",
           totalAmount: { $sum: "$items_order.total_price_item" },
         },
       },
     ]);
-    console.log(result);
     if (!id_user) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "No user!",
       });
     }
-    let total_revenue = 0;
     if (role === "seller") {
+      const data = result.filter(role => role.seller === 'seller');
+      return res.status(StatusCodes.OK).json({
+        message: 'OK',
+        data
+      }) 
     }
-    return total_revenue;
+    return res.status(StatusCodes.OK).json({
+      message : 'OK',
+      data : result
+    })
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error,
