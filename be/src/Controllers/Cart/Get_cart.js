@@ -101,7 +101,6 @@ export async function checked_item_cart(req, res) {
 export async function update_quantity_item_in_cart(user_id, items_order) {
     const data_cart = await Carts.findOne({ user_id: user_id });
     data_cart.items = data_cart.items.filter((i) => {
-        console.log(i)
         return !items_order.some((j) => {
             const check_Product_Id = i.product_id.toString() === j.product_id._id.toString();
             const check_name_varriant = i.name_varriant ? i.name_varriant === j.name_varriant : true;

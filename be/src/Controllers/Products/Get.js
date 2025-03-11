@@ -1,7 +1,7 @@
 import Products from "../../Model/Products/Products.js";
 import { StatusCodes } from "http-status-codes";
 
-// hàm chung tham chiếu sang danh mục và biến thể sản phẩm và tính toán số lượng
+// hàm chung tham chiếu sang danh mục, biến thể sản phẩm và tính toán số lượng
 async function populate_and_caculation_quantity(querry, options) {
   const data = await Products.paginate(querry, options);
   await Products.populate(data.docs, [

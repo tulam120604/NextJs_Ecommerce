@@ -104,7 +104,9 @@ export async function edit_Product(req, res) {
 
 // cap nhat so luong san pham khi mua hang
 export async function update_quantity_item(data_items_order) {
+  let total_quantity_sales = 0;
   for (let i of data_items_order) {
+    const data_product = await Products.find({ _id: i.product_id._id });
     if (i.product_id.variant) {
       const data_attr = await Variant.find({ _id: i.product_id.variant._id });
       for (let j of data_attr) {
@@ -115,23 +117,172 @@ export async function update_quantity_item(data_items_order) {
                 if (x.name_variant == i.value_varriant) {
                   x.stock_variant = x.stock_variant - i.quantity;
                   x.sales_item += i.quantity;
+                  // gộp hết số lượng bán ra ở biến thể vào số lượng bán ra chung để thống kê
+                  total_quantity_sales += i.quantity;
                 }
               } else {
                 x.stock_variant = x.stock_variant - i.quantity;
                 x.sales_item += i.quantity;
+                // gộp hết số lượng bán ra ở biến thể vào số lượng bán ra chung để thống kê
+                total_quantity_sales += i.quantity;
               }
             }
           }
         }
         await j.save();
       }
-    } else {
-      const data_item = await Products.find({ _id: i.product_id._id });
-      for (let a of data_item) {
-        a.stock = a.stock - i.quantity;
-        a.sale_quantity += i.quantity;
-        await a.save();
-      }
+    }
+    for (let a of data_product) {
+      a.stock = a.stock - i.quantity;
+      a.sale_quantity += i.quantity;
+      await a.save();
     }
   }
 }
+
+// export async function update_quantity_product(data_items_order) {
+//   let total_quantity_sales = 0;
+//   const product_updates = [];
+//   const variant_updates = [];
+
+//   // list id product
+//   const id_products = data_items_order.map((value) => value.product_id._id);
+//   const data_products = await Products.find({
+//     _id: { $in: id_products },
+//   }).populate("variant");
+
+//   // list id varian cần update
+//   const id_variants = data_items_order
+//     .filter((value) => value.product_id.variant._id)
+//     .map((i) => i.product_id.variant._id);
+//   const data_variants = await Variant.find({ _id: { $in: id_variants } });
+
+//   // cập nhật từng đơn hàng
+//   for (let i of data_items_order) {
+//     const product = data_products.find(
+//       (value) => value._id.toString() === i.product_id._id.toString()
+//     );
+//     if (product && product.variant) {
+//       const variant = data_variants.find(
+//         (value) => value._id.toString() === product.variant._id.toString()
+//       );
+//       if (variant) {
+//         for (let j of variant.variants) {
+//           if (j.attribute == i.name_varriant) {
+//             for (let x of j.value_variants) {
+//               if (x.name_variant) {
+//                 if (x.name_variant == i.value_varriant) {
+//                   x.stock_variant = x.stock_variant - i.quantity;
+//                   x.sales_item += i.quantity;
+//                   // gộp hết số lượng bán ra ở biến thể vào số lượng bán ra chung để thống kê
+//                   total_quantity_sales += i.quantity;
+//                   // push các value cần update vào mảng
+//                   variant_updates.push({
+//                     updateOne: {
+//                       filter: {
+//                         _id: variant._id,
+//                         "variants.value_variants._id": x._id,
+//                       },
+//                       update: {
+//                         $set: {
+//                           "variants.$.value_variants.$[elem].stock_variant":
+//                             x.stock_variant,
+//                           "variants.$.value_variants.$[elem].sales_item":
+//                             x.sales_item,
+//                         },
+//                       },
+//                       arrayFilters: [{ "elem._id": x._id }],
+//                     },
+//                   });
+//                 }
+//               } else {
+//                 x.stock_variant = x.stock_variant - i.quantity;
+//                 x.sales_item += i.quantity;
+//                 // gộp hết số lượng bán ra ở biến thể vào số lượng bán ra chung để thống kê
+//                 total_quantity_sales += i.quantity;
+//                 variant_updates.push({
+//                   updateOne: {
+//                     filter: {
+//                       _id: variant._id,
+//                     },
+//                     update: {
+//                       $set: {
+//                         "variants.$.value_variants.$[elem].stock_variant":
+//                           x.stock_variant,
+//                         "variants.$.value_variants.$[elem].sales_item":
+//                           x.sales_item,
+//                       },
+//                     },
+//                     arrayFilters: [{ "elem._id": x._id }],
+//                   },
+//                 });
+//               }
+//             }
+//           }
+//         }
+//       }
+//     }
+//     else {
+
+//     }
+//   }
+// }
+
+// export async function update_quantity_item(data_items_order) {
+//   let total_quantity_sales = 0;
+
+//   // Đọc qua từng đơn hàng để cập nhật
+//   for (let i of data_items_order) {
+//     const product = data_products.find(p => p._id.toString() === i.product_id._id.toString());
+
+//     if (product && product.variant) {
+//       // Tìm variant tương ứng từ data_variants
+//       const variant = data_variants.find(v => v._id.toString() === product.variant._id.toString());
+
+//       if (variant) {
+//         for (let k of variant.variants) {
+//           if (k.attribute === i.name_varriant) {
+//             for (let x of k.value_variants) {
+//               if (x.name_variant === i.value_varriant) {
+//                 x.stock_variant -= i.quantity;
+//                 x.sales_item += i.quantity;
+//                 total_quantity_sales += i.quantity;
+
+//                 // Thêm vào mảng variantUpdates để cập nhật sau này
+//                 variantUpdates.push({
+//                   updateOne: {
+//                     filter: { _id: variant._id, 'variants.value_variants._id': x._id },
+//                     update: { $set: { 'variants.$.value_variants.$[elem].stock_variant': x.stock_variant, 'variants.$.value_variants.$[elem].sales_item': x.sales_item } },
+//                     arrayFilters: [{ 'elem._id': x._id }]
+//                   }
+//                 });
+//               }
+//             }
+//           }
+//         }
+//       }
+
+//       // Cập nhật sản phẩm chính và thêm vào mảng productUpdates
+//       product.stock -= i.quantity;
+//       product.sale_quantity += i.quantity;
+
+//       productUpdates.push({
+//         updateOne: {
+//           filter: { _id: product._id },
+//           update: { $set: { stock: product.stock, sale_quantity: product.sale_quantity } }
+//         }
+//       });
+//     }
+//   }
+
+//   // Tiến hành cập nhật tất cả các sản phẩm và variant cùng lúc
+//   if (productUpdates.length > 0) {
+//     await Products.bulkWrite(productUpdates);
+//   }
+
+//   if (variantUpdates.length > 0) {
+//     await Variant.bulkWrite(variantUpdates);
+//   }
+
+//   return total_quantity_sales;
+// }

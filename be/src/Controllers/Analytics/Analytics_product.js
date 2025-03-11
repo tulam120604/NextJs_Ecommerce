@@ -19,10 +19,10 @@ export async function caculate_revenue(req, res) {
         $group: {
           _id: "$items_order.product_id.seller.role", // nhóm lại theo role để lọc
           totalAmount: { $sum: "$items_order.total_price_item" }, // tính tổng doanh thu
-          nameSeller: {$first: "$items_order.product_id.seller.user_name"}, // tên người bán
-          emailSeller: {$first: "$items_order.product_id.seller.email"}, // email người bán
-          avatarSeller: {$first: "$items_order.product_id.seller.avatar"}, // avatar người bán
-          countItems: {$sum : 1}
+          nameSeller: { $first: "$items_order.product_id.seller.user_name"}, // tên người bán
+          emailSeller: { $first: "$items_order.product_id.seller.email"}, // email người bán
+          avatarSeller: { $first: "$items_order.product_id.seller.avatar"}, // avatar người bán
+          countItems: { $sum : 1}
         },
       },
     ]);
