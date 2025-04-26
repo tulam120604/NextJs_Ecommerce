@@ -25,9 +25,9 @@ export async function GetAllCategories(req, res) {
         })
     }
     catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -39,8 +39,8 @@ export async function Get_detail_category(req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }

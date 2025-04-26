@@ -34,8 +34,8 @@ export async function get_recycle_items(req, res) {
       currentPage: _page,
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
     });
   }
 }
@@ -52,8 +52,8 @@ export async function restore_item(req, res) {
       message: "Restore OK!",
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
     });
   }
 }
@@ -66,8 +66,8 @@ export async function destroy_items(req, res) {
       message: "Deleted OK!!",
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
     });
   }
 }

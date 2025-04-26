@@ -23,12 +23,12 @@ export async function list_Account(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
 
-export async function get_detail_user(req, res) {
+export async function get_profile_user(req, res) {
   try {
     const id_user = req.params.id ?? req.user.id;
     const data = await Account.findById(id_user).populate("address");
@@ -37,14 +37,14 @@ export async function get_detail_user(req, res) {
         message: "No data!",
       });
     }
-    data.password = null;
+    data.password = undefined;
     return res.status(StatusCodes.OK).json({
       message: "OK",
       data
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }

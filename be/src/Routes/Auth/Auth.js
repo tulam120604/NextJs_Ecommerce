@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  get_detail_user,
+  get_profile_user,
   list_Account,
 } from "../../Controllers/Auth/Get_account.js";
 import {
@@ -8,14 +8,15 @@ import {
   middleWare_get_user_from_cookie,
 } from "../../middleware/Auth.js";
 import {
-  create_Account,
   login,
   logout,
   refesh_token,
+  register,
   set_role_user_to_seller,
   update_profile_account,
 } from "../../Controllers/Auth/Account_management.js";
 import upload from "../../middleware/multer.js";
+import { authenticate_with_google } from "../../Controllers/Auth/Google_Account.js";
 
 const RoutesAuth = express.Router();
 RoutesAuth.get("/account", middleWare, list_Account);
@@ -28,11 +29,12 @@ RoutesAuth.patch(
 RoutesAuth.get(
   "/infor_account",
   middleWare_get_user_from_cookie,
-  get_detail_user
+  get_profile_user
 );
-RoutesAuth.get("/inforshop/:id", get_detail_user);
-RoutesAuth.post("/register", create_Account);
+RoutesAuth.get("/inforshop/:id", get_profile_user);
+RoutesAuth.post("/register", register);
 RoutesAuth.post("/login", login);
+RoutesAuth.post("/authenticate_with_google", authenticate_with_google);
 RoutesAuth.post(
   "/set_role_user_to_seller",
   middleWare,

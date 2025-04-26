@@ -122,9 +122,9 @@ export async function up_quantity(req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 };
 
@@ -159,9 +159,9 @@ export async function dow_quantity(req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -181,9 +181,9 @@ export async function remove_item_cart(req, res) {
             message: "Done remove!",
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -207,8 +207,8 @@ export async function remove_all_item_cart(req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }

@@ -13,8 +13,8 @@ export async function AddProductToCategories (req, res) {
             data
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message : error
-        })
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }

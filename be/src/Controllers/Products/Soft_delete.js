@@ -13,8 +13,8 @@ export async function Soft_remove(req, res) {
             message: "OK!"
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     };
 }

@@ -64,7 +64,7 @@ export async function list_product_dashboard(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -105,7 +105,7 @@ export async function list_product_client(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -138,7 +138,7 @@ export async function view_detail_product_client(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -155,7 +155,7 @@ export async function view_detail_product_dashboard(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -193,7 +193,7 @@ export async function list_product_by_category(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -217,7 +217,7 @@ export async function search_product(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }

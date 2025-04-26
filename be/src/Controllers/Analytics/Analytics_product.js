@@ -43,8 +43,8 @@ export async function caculate_revenue(req, res) {
       data : result
     })
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
     });
   }
 }

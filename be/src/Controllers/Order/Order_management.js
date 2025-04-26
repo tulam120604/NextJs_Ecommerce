@@ -54,9 +54,9 @@ export async function create_Order(req, res) {
             message: 'OK',
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -86,9 +86,9 @@ export async function update_status_order(req, res) {
             data_order
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -115,9 +115,9 @@ export async function buy_again(req, res) {
             item_order
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -136,8 +136,8 @@ export async function view_detail_item_order(req, res) {
             data_item
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }

@@ -12,9 +12,10 @@ import Blacklist_token from "../../Model/Blacklist_Token/blacklist_token.js";
 import jwt from "jsonwebtoken";
 import { upload_img } from "../../middleware/upload.js";
 
-export async function create_Account(req, res) {
+// register
+export async function register(req, res) {
   try {
-    const { user_name, email, password } = req.body;
+    const { email, password } = req.body;
     const { error } = Validate_Auth.validate(req.body, { abortEarly: false });
     if (error) {
       const message = error.details.map((e) => e.message);
@@ -22,7 +23,7 @@ export async function create_Account(req, res) {
         message,
       });
     }
-    const check_userName = await Account.findOne({ user_name });
+    const check_userName = await Account.findOne({ email });
     if (check_userName) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "Ten dang nhap da ton tai !",
@@ -53,11 +54,12 @@ export async function create_Account(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error.message || "Lỗi server rồi đại vương ơi!",
+      message: error.message || 500,
     });
   }
 }
 
+// login
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
@@ -78,27 +80,27 @@ export async function login(req, res) {
     }
     const accessToken = createAccessToken(check_email._id);
     const refeshToken = createRefeshToken(check_email._id);
-    check_email.password = undefined;
     res.cookie("access_token", accessToken, {
       httpOnly: false,
       secure: false,
-      path: '/',
-      sameSite : 'Lax',
+      path: "/",
+      sameSite: "Lax",
       maxAge: 604800000,
     });
     return res.status(StatusCodes.OK).json({
       message: "Login Done !",
-      check_email,
       accessToken,
       refeshToken,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
 
+
+// cấp quyền bán hàng cho user
 export async function set_role_user_to_seller(req, res) {
   const id_user = req.body.sender_id._id;
   try {
@@ -125,7 +127,7 @@ export async function set_role_user_to_seller(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -146,7 +148,7 @@ export async function logout(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -197,7 +199,7 @@ export async function refesh_token(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
@@ -237,7 +239,7 @@ export async function update_profile_account(req, res) {
     }
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }

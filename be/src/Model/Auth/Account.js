@@ -18,9 +18,7 @@ const schema_Auth = new mongoose.Schema(
     avatar: String,
     password: {
       type: String,
-      min: 6,
       trim: true,
-      required: true,
     },
     address: [
       {

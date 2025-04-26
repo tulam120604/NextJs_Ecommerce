@@ -25,9 +25,9 @@ export async function add_notification(req, res) {
             data_notification
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -41,9 +41,9 @@ export async function get_notification(req, res) {
             data_notification
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }
 
@@ -64,8 +64,8 @@ export async function send_notification(req, res) {
             message: 'OK'
         })
     } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            message: error
-        })
+       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+    });
     }
 }

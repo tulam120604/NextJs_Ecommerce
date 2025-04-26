@@ -92,8 +92,8 @@ export async function checked_item_cart(req, res) {
         })
     } catch (error) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            mesage: error
-        })
+      message: error.message || 500,
+    });
     }
 }
 

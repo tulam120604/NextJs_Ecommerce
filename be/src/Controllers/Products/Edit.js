@@ -97,7 +97,7 @@ export async function edit_Product(req, res) {
     }
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error,
+      message: error.message || 500,
     });
   }
 }
