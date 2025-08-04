@@ -6,23 +6,23 @@ import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/Quer
 import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/Mutation_product";
 import Pagination_Component from "../_component/Pagination";
 import { useSearchParams } from "next/navigation";
-import { useCheck_user } from "@/src/app/_lib/Custome_Hooks/User";
 import { io } from "socket.io-client";
 import Data_Table from "../_component/Data_Table";
 import { Auth_Provider } from "../../_Auth_Wrapper/Page";
 import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import ReloadPage from "@/src/app/_Components/Pages/ReloadPage";
+import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
 
 const Page = () => {
   const socket = io("http://localhost:8888");
   let id_user;
-  const user = useCheck_user();
+  const {data : user} = useAuthStore();
   const searchParams = useSearchParams();
   const role_user = ["admin_global", "admin_local"];
   let page = Number(searchParams.get("_page")) ?? 1;
-  if (!role_user.includes(user?.check_email?.role)) {
-    if (user?.check_email?.role === "seller") {
-      id_user = user?.check_email?._id;
+  if (!role_user.includes(user?.role)) {
+    if (user?.role === "seller") {
+      id_user = user?._id;
     }
   }
   const { data, isLoading, isFetching } = Query_List_Items_Dashboard(page, 20);

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const poppins = Inter({
   subsets: ['vietnamese'],
-  weight: ['500']
+  weight: ['400']
 })
 export default function RootLayout({
   children,

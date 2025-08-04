@@ -14,13 +14,13 @@ import React from 'react'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import { Mutation_Order } from '@/src/app/_lib/Query_APIs/Order/Mutation';
 import Loading from '../loading';
-import { useCheck_user } from '@/src/app/_lib/Custome_Hooks/User';
 import { Mutation_Notification } from '@/src/app/_lib/Query_APIs/Notification/Mutation';
+import { useAuthStore } from '@/src/app/_lib/Zustand/Store';
 
 export default function Page() {
   const id = useSearchParams();
   const id_item = id?.get('id') ?? '';
-  const user = useCheck_user();
+  const {data : user} = useAuthStore();
   const { data, isLoading } = Query_Detail_Order(id_item);
   const mutation_notification = Mutation_Notification('ADD');
   const mutation_status_order = Mutation_Order('UPDATE_STATUS');
@@ -32,7 +32,7 @@ export default function Page() {
   // update status order
   function change_status(id_item: { _id: string, code_order: string | number, user_id: string }, status: number, status_item_order?: string | number) {
     mutation_status_order.mutate({
-      id_user: user?.check_email?._id,
+      id_user: user?._id,
       item: {
         order_id: id_item?._id,
         status_item_order: status,
@@ -46,7 +46,7 @@ export default function Page() {
           (status === 4) ? `Đơn hàng ${id_item?.code_order} đang trên đường vận chuyển tới bạn!.` :
             (status_item_order === 6) && `người bán đã chấp nhận yêu cầu hủy đơn hàng ${id_item?.code_order}!.`
     const data_body = {
-      sender_id: user?.check_email?._id,
+      sender_id: user?._id,
       receiver_id: id_item?.user_id,
       notification_message: message_notification,
     }

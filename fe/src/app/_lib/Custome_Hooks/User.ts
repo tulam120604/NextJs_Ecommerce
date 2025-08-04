@@ -19,13 +19,4 @@
 //     }
 // }
 
-export function useCheck_user() {
-    if (typeof window !== 'undefined') {
-        if (localStorage.getItem("account")) {
-            return JSON.parse(localStorage.getItem("account") || '{}');
-        }
-        return;
-    }
-}
-
 // 
