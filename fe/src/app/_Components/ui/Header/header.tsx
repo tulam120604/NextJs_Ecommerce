@@ -11,7 +11,7 @@ import {
   Tag,
   Truck,
 } from "lucide-react";
-import Header_mobile from "./header_mobile";
+import Menu_bar_mobile from "./menu_bar";
 import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
 import Auth_actions from "./auth_actions";
 import TopBar from "./top_bar";
@@ -32,34 +32,30 @@ const Header = () => {
   return (
     <>
       <TopBar props={{ data, isLoading, isFetching, isHydrated }} />
-      <header className="w-full z-[2000] duration-300 pt-5 pb-2 sticky top-0 lg:relative overflow-hidden">
+      <header
+        className="w-full bg-white z-[2000] duration-300 sticky top-0 lg:relative overflow-hidden 
+       shadow-lg lg:shadow-none"
+      >
         {/* logo, search and cart */}
         <div
-          className="relative mx-auto max-w-[1440px] w-[95vw] flex justify-between *:flex *:items-center lg:gap-x-20 gap-x-5 items-center 
-            bg-white rounded-md p-3"
+          className="relative mx-auto max-w-[1440px] w-[95vw] flex justify-between *:flex *:items-center 
+        lg:gap-x-20 gap-x-5 items-center px-3 py-5"
         >
           {/* logo */}
-          <button
-            onClick={back_to_home}
-            className="!hidden lg:!flex !items-end"
-          >
+          <button onClick={back_to_home} className="!flex !items-end">
             <Image
               width={50}
               height={50}
-              className="w-10 h-10"
+              className="w-16 h-10 lg:w-10"
               src={
                 "https://res.cloudinary.com/tulam120604/image/upload/v1745568585/by1qzllthq4ypulyfrey.png"
               }
               alt="Store88"
             />
-            <span className="text-2xl font-semibold opacity-80 font-serif">Store88</span>
-          </button>
-          {/* logo mobile */}
-          <div className="lg:hidden grid place-content-center z-[-1] -top-10 absolute overflow-hidden w-full">
-            <span className="font-sans font-extrabold text-yellow-300 text-[50px]">
-              STORE88
+            <span className="hidden lg:block text-2xl font-semibold opacity-80 font-serif">
+              Store88
             </span>
-          </div>
+          </button>
           {/* search form */}
           <Search_Component_Client />
           {/* auth actions */}
@@ -105,7 +101,7 @@ const Header = () => {
         </section>
       </div>
       <div className="fixed border-t bottom-0 lg:!hidden w-screen z-[2000]">
-        <Header_mobile dataProps={{ account: data?.user_name }} />
+        <Menu_bar_mobile dataProps={{ account: data?.user_name }} />
       </div>
     </>
   );

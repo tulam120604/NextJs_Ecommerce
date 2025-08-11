@@ -40,6 +40,7 @@ export async function create_Account(item: any) {
       },
       body: JSON.stringify(item),
     });
+    console.log(res)
     if (!res.ok) {
       toast.error("Tạo tài khoản thất bại!", { autoClose: 500 });
       return res;

@@ -10,11 +10,12 @@ const Category = async () => {
   const { data } = await list_category();
   return (
     <Suspense fallback={<Loading_Skeleton number_elements={1} />}>
-      <aside className="py-4 px-2 overflow-y-scroll hidden_scroll_y !sticky top-4 bg-white rounded-lg max-h-screen">
+      <aside className="hidden lg:block py-4 px-2 overflow-y-scroll hidden_scroll_y !sticky 
+      top-4 bg-white max-h-screen border rounded-b">
         {data?.status === 404 ? (
           <>
             <div className="min-h-[100px] grid place-items-center">
-              <ReloadPage/>
+              <ReloadPage />
             </div>
           </>
         ) : (
@@ -24,9 +25,7 @@ const Category = async () => {
                 propsData={{ data: data }}
               />
             ) : (
-              <div className="py-4 text-center text-sm font-normal">
-                Trống!
-              </div>
+              <div className="py-4 text-center text-sm font-normal">Trống!</div>
             )}
           </>
         )}

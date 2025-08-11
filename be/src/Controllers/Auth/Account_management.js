@@ -26,7 +26,7 @@ export async function register(req, res) {
     const check_userName = await Account.findOne({ email });
     if (check_userName) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        message: "Ten dang nhap da ton tai !",
+        message: "Ten dang nhap da ton tai!",
       });
     }
     const check_email = await Account.findOne({ email });
@@ -47,10 +47,13 @@ export async function register(req, res) {
       password: hassPass,
       role,
     });
-    data.password = undefined;
+    if (!data || !data._id) {
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Đã có lỗi xảy ra, vui lòng thử lại sau!',
+      });
+    }
     return res.status(StatusCodes.CREATED).json({
       message: "Done !",
-      data,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -98,7 +101,6 @@ export async function login(req, res) {
     });
   }
 }
-
 
 // cấp quyền bán hàng cho user
 export async function set_role_user_to_seller(req, res) {

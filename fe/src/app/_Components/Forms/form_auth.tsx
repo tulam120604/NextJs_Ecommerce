@@ -4,8 +4,6 @@
 import Link from "next/link";
 import React from "react";
 import Loading_Spin from "../Loadings/Loading_Spin";
-import Image from "next/image";
-import { Input } from "../ui/Shadcn/input";
 import { Button } from "../ui/Shadcn/button";
 import { useCustome_Hook_Auth } from "../../_lib/Custome_Hooks/Hook_auth";
 import Btn_auth_with_google from "../Btn/Btn_authen_with_google";
@@ -25,7 +23,8 @@ const Form_auth = ({ mode, setMode }: any) => {
     <main className="w-full flex item-center bg-white py-10">
       <form
         onSubmit={my_form.handleSubmit(onSubmit)}
-        className="w-[95vw] max-w-[550px] mx-auto flex flex-col p-6 lg:py-10 lg:px-16 gap-y-4 border rounded"
+        className="w-[95vw] max-w-[550px] h-[600px] mx-auto flex flex-col p-6 lg:py-10 lg:px-16 gap-y-4 
+        border rounded"
       >
         <div
           className="font-semibold text-gray-700 dark:text-gray-200 w-3/4 max-w-[200px] 
@@ -52,6 +51,7 @@ const Form_auth = ({ mode, setMode }: any) => {
               text_label: "Tên tài khoản *",
               htmlFor: "user_name",
               type: "text",
+              registerValue: "user_name",
               my_form,
               errors,
             }}
@@ -62,6 +62,7 @@ const Form_auth = ({ mode, setMode }: any) => {
             text_label: "Email *",
             htmlFor: "email",
             type: "email",
+            registerValue: "email",
             my_form,
             errors,
           }}
@@ -71,6 +72,7 @@ const Form_auth = ({ mode, setMode }: any) => {
             text_label: "Mật khẩu *",
             htmlFor: "password",
             type: "password",
+            registerValue: "password",
             my_form,
             errors,
           }}

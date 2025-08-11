@@ -24,11 +24,11 @@ const Auth_actions = ({ props }: any) => {
       <>
         <span
           className="z-[1] absolute bg-[#fb5b60] -top-1/2 -right-[60%] 
-                grid place-items-center rounded-[50%] p-1 text-[8px] text-white"
+                grid place-items-center rounded-[50%] text-[10px] text-white w-5 h-5"
         >
           {quantity_item_in_cart?.length < 99
             ? quantity_item_in_cart?.length
-            : "99+"}
+            : "99"}
         </span>
       </>
     );
@@ -46,30 +46,30 @@ const Auth_actions = ({ props }: any) => {
   if (isLoading || isFetching || !isHydrated)
     return (
       <div className="gap-x-3 flex items-center *:rounded-full *:w-10 *:h-10">
-        <div />
+        <div className="hidden lg:block"/>
         <div />
       </div>
     );
 
   return (
-    <div className="gap-x-3 flex items-center *:w-10 *:h-10 *:rounded-full *:p-2">
+    <div className="gap-x-3 flex items-center *:w-10 *:h-10 *:rounded-full">
       {/* icon account */}
       <Link
         href={data?.user_name ? "/thong-tin-tai-khoan/thong-tin" : "/dang-nhap"}
-        className="!hidden lg:!flex 
-        gap-x-1 items-end hover:bg-gray-100 rounded duration-200 border 
-        cursor-pointer whitespace-nowrap text-gray-600 hover:text-gray-950"
+        className="!hidden lg:!block gap-x-1 hover:bg-gray-100 
+        rounded duration-200 border cursor-pointer whitespace-nowrap text-gray-600 
+        hover:text-gray-950"
       >
         {data?.avatar ? (
           <img
             width={50}
             height={50}
             src={data?.avatar}
-            className="rounded-full w-6 h-6"
+            className="rounded-full w-10 h-10"
             alt="avatar"
           />
         ) : (
-          <User strokeWidth={1.5} />
+          <User strokeWidth={1.5} className="relative mx-auto -translate-y-1/2 top-1/2"/>
         )}
         {/* <span className="text-sm translate-y-1">
           {data?.user_name
@@ -83,7 +83,8 @@ const Auth_actions = ({ props }: any) => {
       {/* cart */}
       <button
         onClick={handleCart}
-        className="flex gap-x-2 items-end relative group cursor-pointer bg-[#FFF1EE] rounded text-gray-600"
+        className="flex gap-x-2 items-end relative group cursor-pointer bg-[#FFF1EE] rounded 
+        text-gray-600 p-2"
       >
         <div className="flex z-[1] relative rounded duration-200">
           <svg

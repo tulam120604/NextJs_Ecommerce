@@ -22,7 +22,7 @@ const Product_Item = ({ dataProps }: any) => {
     }
     return (
         <Link href={`/${convert_Slug(dataProps?.short_name)}.html?p=${dataProps?._id}`} className="flex flex-col w-full 
-        rounded-lg hover:shadow-[0_5px_20px_-5px_rgba(0,0,0,0.3)] bg-white relative duration-150 cursor-pointer h-full overflow-hidden">
+        relative duration-150 cursor-pointer h-full overflow-hidden border-x-[0.5px]">
             {/* Image */}
             <div className="relative group w-full h-[200px] sm:h-[250px] overflow-hidden rounded grid place-content-center">
                 <Image loading='lazy' width={300} height={300} className="w-full max-h-[180px] sm:max-h-[220px] cursor-pointer object-contain" 
