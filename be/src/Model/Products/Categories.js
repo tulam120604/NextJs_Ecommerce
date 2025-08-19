@@ -1,15 +1,18 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const schema_Categories = new mongoose.Schema({
-    category_name : {
-        type: String,
-        trim : true,
-        maxlength : 50,
+const schema_Categories = new mongoose.Schema(
+  {
+    category_name: {
+      type: String,
+      trim: true,
+      maxlength: 50,
     },
-    category_img : Object,
-},
-{
-    timestamps: true, versionKey: false
-});
+    category_img: String,
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
-export default mongoose.model('Categories' , schema_Categories);
+export default mongoose.model("Categories", schema_Categories);

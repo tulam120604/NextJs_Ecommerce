@@ -9,15 +9,24 @@ export default function Field_Form({ props }: any) {
       <label htmlFor={htmlFor} className="mb-2 text-sm opacity-90">
         {text_label}
       </label>
-      <Input
-        {...my_form.register(registerValue)}
-        id={htmlFor}
-        type={type}
-        className="border-transparent bg-[#F3F4F7] rounded"
-      />
-      {/* <div className="h-4 text-red-500 md:text-sm text-xs mt-1">
-        {errors.password && errors.password.message}
-      </div> */}
+      {htmlFor === "description" ? (
+        <textarea
+          id={htmlFor}
+          {...my_form.register(registerValue)}
+          className="outline-none py-2 px-4 border-transparent bg-[#F3F4F7] rounded w-full min-h-[200px]"
+        />
+      ) : (
+        <Input
+          {...my_form.register(registerValue)}
+          id={htmlFor}
+          type={type}
+          className="border-transparent bg-[#F3F4F7] rounded"
+        />
+      )}
+
+      {errors && (
+        <div className="h-4 text-red-500 md:text-sm text-xs mt-1">{errors}</div>
+      )}
     </div>
   );
 }

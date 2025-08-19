@@ -11,247 +11,253 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/src/app/_Components/ui/dialog/alert-dialog";
-import { ArchiveRestore, ChevronUp, FilePenLine, Trash2 } from "lucide-react";
+import {
+  ArchiveRestore,
+  ChevronUp,
+  Eye,
+  EyeOff,
+  FilePenLine,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export default function Data_Table({ dataProps }: any) {
-  console.log(dataProps?.operation);
   return (
-    <>
+    <div className="overflow-x-auto rounded border bg-white">
+      {/* header */}
       <div
-        className={`grid text-gray-900 ${
-          dataProps?.operation
-            ? "grid-cols-[70px_180px_150px_100px_150px_150px_100px_auto]"
-            : "grid-cols-[10px_70px_230px_150px_100px_150px_150px_70px]"
-        } gap-x-4 items-center justify-between p-4 text-sm whitespace-nowrap text-end`}
+        className={`grid grid-cols-9 md:grid-cols-10 text-gray-900 font-semibold bg-gray-100 border-b 
+        gap-2 items-center p-3 text-xs md:text-sm`}
       >
-        {!dataProps?.operation && <span>#</span>}
+        {!dataProps?.operation && <span className="hidden md:block">#</span>}
         <span className="text-start">Ảnh</span>
-        <span className="text-start">Tên</span>
-        <span className="text-start">Thể loại</span>
-        <span>Doanh số</span>
-        <span>Giá tiền</span>
-        <span>Số lượng</span>
-        <span className="text-start">Xuất xứ</span>
-        {dataProps?.operation && <span>Thao tác</span>}
+        <span className="text-start col-span-2">Tên</span>
+        <span className="hidden sm:block">Thể loại</span>
+        <span className="hidden sm:block">Doanh số</span>
+        <span className="hidden md:block">Giá</span>
+        <span className="hidden lg:block">Số lượng</span>
+        <span className="hidden xl:block">Xuất xứ</span>
+        <span>Trạng thái</span>
+        {dataProps?.operation && <span className="text-center">Thao tác</span>}
       </div>
-      {dataProps?.dataTable?.map((data: any, i: number) => {
-        return (
+
+      {/* rows */}
+      {dataProps?.dataTable?.map((data: any, i: number) => (
+        <div
+          key={data?._id}
+          className="flex flex-col border-b last:border-none"
+        >
+          {/* main row */}
           <div
-            key={data?._id}
-            className="flex flex-col w-full text-gray-800 border-t border-gray-300 text-sm"
+            className={`grid grid-cols-9 md:grid-cols-10 text-gray-700 text-xs md:text-sm 
+            gap-2 items-center p-3 hover:bg-gray-50 transition`}
           >
-            <div
-              className={`grid ${
-                dataProps?.operation
-                  ? "grid-cols-[70px_180px_150px_100px_150px_150px_100px_auto]"
-                  : "grid-cols-[10px_70px_230px_150px_100px_150px_150px_70px]"
-              } gap-x-4 items-center justify-between p-4 text-end`}
-            >
-              {!dataProps?.operation && <span>{i + 1}</span>}
-              {/* image */}
+            {!dataProps?.operation && (
+              <span className="hidden md:block">{i + 1}</span>
+            )}
+
+            {/* image */}
+            <div>
               {data?.deleted ? (
-                <span className="line-clamp-3">
-                  <Image
-                    width={100}
-                    height={100}
-                    className="rounded border"
-                    src={data?.gallery[0]}
-                    alt="Loading..."
-                  />
-                </span>
+                <Image
+                  width={50}
+                  height={50}
+                  src={data?.gallery[0]}
+                  alt="..."
+                />
               ) : (
-                <Link
-                  href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}
-                  className="line-clamp-3"
-                >
+                <Link href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}>
                   <Image
-                    width={100}
-                    height={100}
-                    className="rounded border"
+                    width={50}
+                    height={50}
                     src={data?.gallery[0]}
-                    alt="Loading..."
+                    alt="..."
                   />
                 </Link>
-              )}
-
-              {/* name */}
-              {data?.deleted ? (
-                <span className="line-clamp-3">{data?.short_name}</span>
-              ) : (
-                <Link
-                  href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}
-                  className="line-clamp-3 text-start"
-                >
-                  {data?.short_name}
-                </Link>
-              )}
-
-              {/* category */}
-              <span className="line-clamp-2 text-start">
-                {data?.category_id?.category_name}
-              </span>
-              {/* sales */}
-              <span className="line-clamp-2">
-                {data?.sale_quantity}
-              </span>
-              {/* price */}
-              <span className="line-clamp-2 text-red-500">
-                {data?.price_product?.toLocaleString("vi", {
-                  style: "currency",
-                  currency: "VND",
-                })}
-              </span>
-              {/* stock */}
-              <span className="line-clamp-2">{data?.stock}</span>
-              {/* made in */}
-              <span className="line-clamp-2 text-start">{data?.made_in}</span>
-              {/* options */}
-              {dataProps?.operation && (
-                <div className="flex justify-center items-center gap-x-2 *:duration-200">
-                  {dataProps?.action === "recycle" ? (
-                    <button
-                      className="hover:scale-110"
-                      onClick={() =>
-                        dataProps?.handle_Restore_or_Destroy(
-                          data?._id,
-                          "restore"
-                        )
-                      }
-                    >
-                      <ArchiveRestore className="h-5" />
-                    </button>
-                  ) : (
-                    <Link
-                      href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}
-                      className="*:hover:text-black "
-                    >
-                      <FilePenLine className="h-5 text-gray-700" />
-                    </Link>
-                  )}
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <Trash2 className="text-red-500 w-5 h-5 hover:text-red-700" />
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Xác nhận xóa sản phẩm?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {dataProps?.action === "recycle"
-                            ? `Bạn chắc chắn xóa sản phẩm mã ${data?._id} ? Điều này sẽ không thể khôi phục lại sản phẩm và 
-                          ảnh hưởng đến doanh thu!`
-                            : `Bạn chắc chắn xóa sản phẩm mã ${data?._id} ? Bạn có thể khôi phục tại thùng rác.`}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Hủy</AlertDialogCancel>
-                        {dataProps?.action === "recycle" ? (
-                          <AlertDialogAction
-                            className="hover:scale-110 bg-red-500"
-                            onClick={() =>
-                              dataProps?.handle_Restore_or_Destroy(
-                                data?._id,
-                                "destroy"
-                              )
-                            }
-                          >
-                            Xác nhận
-                          </AlertDialogAction>
-                        ) : (
-                          <AlertDialogAction
-                            className="bg-red-500"
-                            onClick={() =>
-                              dataProps?.handle_Remove({
-                                id_item: data?._id,
-                                name_item: data?.short_name,
-                              })
-                            }
-                          >
-                            Xác nhận
-                          </AlertDialogAction>
-                        )}
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
               )}
             </div>
-            {/* options */}
-            {data?.variant && (
-              <details
-                className="group [&_summary::-webkit-details-marker]:hidden"
-                open={true}
+
+            {/* name */}
+            {data?.deleted ? (
+              <span className="col-span-2 line-clamp-2 text-start">
+                {data?.short_name}
+              </span>
+            ) : (
+              <Link
+                href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}
+                className="col-span-2 line-clamp-2 text-start font-medium hover:text-blue-600"
               >
-                <summary className="flex cursor-pointer items-center justify-between px-4 py-1 w-[100px] 
-                mx-auto ">
-                  <span className="group-open:block hidden">Đóng</span>
-                  <span className="group-open:hidden">Hiện</span>
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                    <ChevronUp className="h-4" />
-                  </span>
-                </summary>
-                {data?.variant &&
-                  data?.variant?.variants?.map((item: any) =>
-                    item?.value_variants?.map((value: any) => (
-                      <div
-                        key={item?._id}
-                        className={`grid border-t duration-200 border-gray-300 gap-x-4 
-                          ${
-                            dataProps?.operation
-                              ? "grid-cols-[70px_180px_150px_100px_150px_150px_100px_50px]"
-                              : "grid-cols-[10px_70px_230px_150px_100px_150px_150px_70px]"
-                          } items-center justify-between p-4 text-end`}>
-                        {/* 88 */}
-                        {!dataProps?.operation && <div/>}
-                        {/* 88 */}
-                        <div />
-                        {/* attributes */}
-                        <div className="flex gap-x-2 w-full">
-                          <span className="line-clamp-3">
-                            {item?.attribute}
-                          </span>
-                          {value?.name_variant && " - "}
-                          <span className="line-clamp-3">
-                            {value?.name_variant}
-                          </span>
-                        </div>
-                        {/* div giả */}
-                        <div />
-                        {/* sales */}
-                        <span>{value?.sales_item}</span>
-                        {/* price */}
-                        <span className="line-clamp-1 text-red-600">
-                          {value?.price_attribute?.toLocaleString("vi", {
-                            style: "currency",
-                            currency: "VND",
-                          })}
-                        </span>
-                        {/* quantity */}
-                        <div>
-                          {value?.stock_variant > 0 ? (
-                            <span className="line-clamp-2">
-                              {value?.stock_variant}
-                            </span>
-                          ) : (
-                            <span className="line-clamp-2 text-red-500">
-                              Hết hàng!
-                            </span>
-                          )}
-                        </div>
-                         {/* div giả */}
-                         <div />
-                      </div>
-                    ))
-                  )}
-              </details>
+                {data?.short_name}
+              </Link>
+            )}
+
+            {/* category */}
+            <span className="hidden sm:block line-clamp-1 text-start">
+              {data?.category_id?.category_name}
+            </span>
+
+            {/* sales */}
+            <span className="hidden sm:block">{data?.sale_quantity}</span>
+
+            {/* price */}
+            <span className="hidden md:block font-medium text-red-500">
+              {data?.price_product?.toLocaleString("vi", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </span>
+
+            {/* stock */}
+            <span className="hidden lg:block">{data?.stock}</span>
+
+            {/* made in */}
+            <span className="hidden xl:block">{data?.made_in}</span>
+
+            {/* status */}
+            <span
+              className={`font-medium ${
+                data?.deleted ? "text-red-500" : "text-green-600"
+              }`}
+            >
+              {data?.deleted ? "Đã ẩn" : "Đang bán"}
+            </span>
+
+            {/* actions */}
+            {dataProps?.operation && (
+              <div className="flex justify-center items-center gap-x-2">
+                {dataProps?.action === "recycle" ? (
+                  <button
+                    className="hover:scale-110"
+                    onClick={() =>
+                      dataProps?.handle_Restore_or_Destroy(data?._id, "restore")
+                    }
+                  >
+                    <ArchiveRestore className="h-5" />
+                  </button>
+                ) : (
+                  <Link
+                    href={`/trung-tam-dieu-khien/san-pham/${data?._id}`}
+                    className="*:hover:text-black"
+                  >
+                    <FilePenLine className="h-5 text-gray-700" />
+                  </Link>
+                )}
+
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    {!data?.deleted ? (
+                      <Eye className="w-5 h-5 opacity-80" />
+                    ) : (
+                      <EyeOff className="w-5 h-5 text-red-500 hover:text-red-700" />
+                    )}
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        {data?.deleted
+                          ? "Khôi phục sản phẩm?"
+                          : "Ẩn sản phẩm?"}
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        {`Xác nhận ${
+                          data?.deleted ? "khôi phục" : "ẩn"
+                        } sản phẩm mã ${data?._id}?`}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Hủy</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-500"
+                        onClick={() =>
+                          dataProps?.handle_toggle_item({
+                            id_item: data?._id,
+                            path: data?.deleted
+                              ? "restore_item"
+                              : "soft_delete",
+                            method: data?.deleted ? "PATCH" : "DELETE",
+                            action_mutation: "delete",
+                          })
+                        }
+                      >
+                        Xác nhận
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             )}
           </div>
-        );
-      })}
-    </>
+
+          {/* variants */}
+          {data?.variant && (
+            <details className="group border-t" open>
+              <summary className="flex cursor-pointer items-center justify-center gap-2 p-2 text-xs text-gray-500">
+                <span className="group-open:hidden">Hiện biến thể</span>
+                <span className="hidden group-open:block">Đóng biến thể</span>
+                <ChevronUp className="h-3 group-open:rotate-180 transition" />
+              </summary>
+
+              {data?.variant?.variants?.map((item: any) =>
+                item?.value_variants?.map((value: any, idx: number) => (
+                  <div
+                    key={item?._id + idx}
+                    className="grid grid-cols-9 md:grid-cols-10 text-xs md:text-sm gap-2 
+                    items-center p-3 bg-gray-50 border-t"
+                  >
+                    {!dataProps?.operation && <div />} {/* cột index trống */}
+
+                    {/* ảnh ảo */}
+                    <div />
+
+                    {/* attribute + value */}
+                    <div className="col-span-2 flex gap-1 text-start">
+                      <span>{item?.attribute}</span>
+                      {value?.name_variant && <span>- {value?.name_variant}</span>}
+                    </div>
+
+                    {/* category trống */}
+                    <div className="hidden sm:block" />
+
+                    {/* sales */}
+                    <span className="hidden sm:block">{value?.sales_item}</span>
+
+                    {/* price */}
+                    <span className="hidden md:block text-red-500">
+                      {value?.price_variant?.toLocaleString("vi", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </span>
+
+                    {/* stock */}
+                    <span
+                      className={`hidden lg:block ${
+                        value?.stock_variant > 0
+                          ? ""
+                          : "text-red-500 font-medium"
+                      }`}
+                    >
+                      {value?.stock_variant > 0
+                        ? value?.stock_variant
+                        : "Hết hàng!"}
+                    </span>
+
+                    {/* made in trống */}
+                    <div className="hidden xl:block" />
+
+                    {/* status giữ nguyên */}
+                    <div />
+
+                    {/* action giữ nguyên */}
+                    {dataProps?.operation && <div />}
+                  </div>
+                ))
+              )}
+            </details>
+          )}
+        </div>
+      ))}
+    </div>
   );
 }

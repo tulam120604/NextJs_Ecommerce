@@ -5,7 +5,6 @@ import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/src/app/_Components/ui/Shadcn/button";
-import { Auth_Provider } from "../_Auth_Wrapper/Page";
 
 const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   const pathName = usePathname();
@@ -18,7 +17,6 @@ const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         </div>
       }
     >
-      <Auth_Provider>
         <div className="py-4 text-gray-700">
           <strong className="text-xl">Bảng điều khiển</strong>
           <div
@@ -59,7 +57,6 @@ const Page = ({ children }: Readonly<{ children: React.ReactNode }>) => {
           </div>
           {children}
         </div>
-      </Auth_Provider>
     </Suspense>
   );
 };

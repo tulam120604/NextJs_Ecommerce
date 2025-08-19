@@ -10,7 +10,7 @@ import Btn_auth_with_google from "../Btn/Btn_authen_with_google";
 import Field_Form from "./field_form";
 
 const Form_auth = ({ mode, setMode }: any) => {
-  const { my_form, isLoading, onSubmit, errors, routing } =
+  const { my_form, isLoading, onSubmit} =
     useCustome_Hook_Auth({ mode });
   // if (status_Loading === "call_ok") {
   //   if (mode !== "Register") {
@@ -53,7 +53,6 @@ const Form_auth = ({ mode, setMode }: any) => {
               type: "text",
               registerValue: "user_name",
               my_form,
-              errors,
             }}
           />
         )}
@@ -64,7 +63,6 @@ const Form_auth = ({ mode, setMode }: any) => {
             type: "email",
             registerValue: "email",
             my_form,
-            errors,
           }}
         />
         <Field_Form
@@ -74,7 +72,6 @@ const Form_auth = ({ mode, setMode }: any) => {
             type: "password",
             registerValue: "password",
             my_form,
-            errors,
           }}
         />
         <p className="text-xs opacity-80 leading-5 my-3">

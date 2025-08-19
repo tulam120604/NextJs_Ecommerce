@@ -13,7 +13,7 @@ export async function list_product_client(
   try {
     let uri = `${apiURi}/list_products/client?_page=${page}&_limit=${count_item}`;
     if (bestSeller) {
-      uri += `&_bestseller=${bestSeller}`
+      uri += `&_bestseller=${bestSeller}`;
     }
     let res = await fetch(uri);
     if (seller) {
@@ -132,29 +132,27 @@ export async function create_product(item: any) {
 }
 
 // xoa mem
-export async function delete_product(item: any) {
+export async function hidden_or_restore_product(item: any) {
   try {
-    const res = await fetch(`${apiURi}/products/${item.id_item}`, {
-      method: "delete",
+    const res = await fetch(`${apiURi}/products/admin/${item.path}/${item.id_item}`, {
+      method: item.method,
       credentials: "include",
     });
     if (!res.ok) {
-      toast.error(`Có lỗi xảy ra khi xóa sản phẩm mã ${item.id_item} !`, {
-        autoClose: 500,
-      });
       return res;
-    } else {
-      toast.success(`Đã xóa sản phẩm mã ${item.id_item} !`, { autoClose: 500 });
     }
-    await res.json();
-    console.log("success delete!");
+    const result = await res.json();
+    return result
   } catch (error) {
     return error;
   }
 }
 
 // recycle items adminstration
-export async function list_product_in_recycle(page: Number, limit_item?: Number) {
+export async function list_product_in_recycle(
+  page: Number,
+  limit_item?: Number
+) {
   try {
     let uri = `${apiURi}/products/admin/trash?_page=${page}&_limit=${limit_item}`;
     const res = await fetch(uri, {
@@ -174,56 +172,30 @@ export async function list_product_in_recycle(page: Number, limit_item?: Number)
   }
 }
 
-// restore :
-export async function restore_product(dataClient: any) {
-  try {
-    let uri = `${apiURi}/products/admin/trash/${dataClient.id_item}`;
-    // if (page) {
-    //     uri += `?_page=${page}`
-    // }
-    const res = await fetch(uri, {
-      method: "PATCH",
-      credentials: "include",
-    });
-    if (!res.ok) {
-      toast.error(`khôi phục sản phẩm mã ${dataClient.id_item} thất bại!`, {
-        autoClose: 500,
-      });
-      console.warn("Call data failer");
-    } else {
-      toast.success(`khôi phục sản phẩm mã ${dataClient.id_item} thành công!`, {
-        autoClose: 500,
-      });
-    }
-    console.log("Restore Success !");
-  } catch (error) {
-    return error;
-  }
-}
 // xoa item vinh vien ( no restore )
-export async function delete_product_permanent(dataClient: any) {
-  console.log(dataClient?.id_item);
-  try {
-    let uri = `${apiURi}/products/destroy_item/${dataClient.id_item}`;
-    const res = await fetch(uri, {
-      method: "delete",
-      credentials: "include",
-    });
-    if (!res.ok) {
-      toast.error(`Xóa sản phẩm mã ${dataClient.id_item} thất bại!`, {
-        autoClose: 500,
-      });
-      console.warn("Call data failer");
-    } else {
-      toast.success(`Xóa sản phẩm mã ${dataClient.id_item} thành công!`, {
-        autoClose: 500,
-      });
-    }
-    console.log("Restore Success !");
-  } catch (error) {
-    return error;
-  }
-}
+// export async function delete_product_permanent(dataClient: any) {
+//   console.log(dataClient?.id_item);
+//   try {
+//     let uri = `${apiURi}/products/destroy_item/${dataClient.id_item}`;
+//     const res = await fetch(uri, {
+//       method: "delete",
+//       credentials: "include",
+//     });
+//     if (!res.ok) {
+//       toast.error(`Xóa sản phẩm mã ${dataClient.id_item} thất bại!`, {
+//         autoClose: 500,
+//       });
+//       console.warn("Call data failer");
+//     } else {
+//       toast.success(`Xóa sản phẩm mã ${dataClient.id_item} thành công!`, {
+//         autoClose: 500,
+//       });
+//     }
+//     console.log("Restore Success !");
+//   } catch (error) {
+//     return error;
+//   }
+// }
 
 // update
 export async function update_product_dashboard(dataClient?: any) {

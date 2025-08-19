@@ -2,7 +2,6 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
 import { Detail_Item_Dashboard, Query_Category } from "../Query_APIs/Items/Query";
 import { Mutation_Items } from "../Query_APIs/Items/Mutation_product";
 
@@ -12,33 +11,25 @@ export function useCustome_Hook_Product({ mode }: any) {
     const params = useParams();
     const id_item = params['cap-nhat-san-pham'] ?? params['cap-nhat-san-pham'];
     const [filed_form_data, setFiled_form_data] = useState<any>()
-    // const id_item = use_Params?.cap-nhat-san-pham;
-    // console.log(id_item)
+
     let data_detail_product: any;
     if (mode === 'edit' && mode) {
         data_detail_product = Detail_Item_Dashboard(String(id_item));
     };
 
     const { data: data_Category, isLoading } = Query_Category();
-    const { my_Form, on_Submit, loading, query_client } = Mutation_Items({
+    const { my_form, on_Submit } = Mutation_Items({
         action: id_item ? "EDIT" : "ADD",
-        onSuccess: () => {
-            query_client.invalidateQueries({
-                queryKey: ['Product_Key']
-            })
-            const text_alert = id_item ? `Sản phẩm mã ${id_item} đã được sửa!` : "Đã thêm sản phẩm!";
-            toast.success(text_alert, { autoClose: 500 })
-        },
     });
     useEffect(() => {
         if (id_item && mode) {
-            my_Form.reset(data_detail_product.data);
+            my_form.reset(data_detail_product.data);
         }
         // console.count('re-render')
-    }, [my_Form, data_detail_product?.data, mode, id_item]);
+    }, [my_form, data_detail_product?.data, mode, id_item]);
     function submitForm(data_form: any) {
         try {
-            const value_form_data = my_Form?.getValues();
+            const value_form_data = my_form?.getValues();
             const check_field = Object.keys(value_form_data)
                 .filter((filed: any) => !['stock', 'price_product', 'variant'].includes(filed) && !value_form_data[filed]);
             if (check_field?.length > 0) {
@@ -74,11 +65,10 @@ export function useCustome_Hook_Product({ mode }: any) {
     };
 
     return {
-        my_Form,
+        my_form,
         submitForm,
         router,
         isLoading,
-        loading,
         data_Category,
         data_detail_product,
         filed_form_data,

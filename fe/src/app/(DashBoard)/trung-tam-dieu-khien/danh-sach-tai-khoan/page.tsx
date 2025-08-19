@@ -7,7 +7,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { Suspense } from "react";
 import Loading from "./loading";
-import { Auth_Provider } from "../_Auth_Wrapper/Page";
 import Paginate_item from "@/src/app/(Client)/san-pham/_component/Paginate";
 
 const CustomersAdmin = () => {
@@ -81,7 +80,6 @@ const CustomersAdmin = () => {
         </div>
       }
     >
-      <Auth_Provider>
         <div className="flex flex-col gap-y-6 py-4 rounded text-gray-700">
           <span className="lg:text-xl">Danh sách tài khoản</span>
           {data?.data && (
@@ -98,7 +96,6 @@ const CustomersAdmin = () => {
             </>
           )}
         </div>
-      </Auth_Provider>
     </Suspense>
   );
 };

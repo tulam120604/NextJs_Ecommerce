@@ -20,13 +20,13 @@ const Products_Home = async () => {
                         <ReloadPage />
                     </div></>) :
                     (<>
-                        <span className="text-gray-600 antialiased tracking-[0.3px] text-xl 
-                        font-semibold mt-6 lg:mt-0">Sản phẩm gợi ý</span>
+                        <span className="antialiased tracking-[0.3px] text-xl 
+                        font-semibold font-serif mt-6 lg:mt-0 opacity-90">Sản phẩm gợi ý</span>
                         {
                             data?.data?.docs ?
                                 ((data?.data?.docs?.length < 1) ? <span className='text-center'>Trống!</span> :
                                     <div className='mt-4'>
-                                        <List_Products data={data?.data?.docs} />
+                                        <List_Products data={data?.data?.docs} cols={6}/>
                                     </div> ) :
                                 <Loading_Dots />
                         }

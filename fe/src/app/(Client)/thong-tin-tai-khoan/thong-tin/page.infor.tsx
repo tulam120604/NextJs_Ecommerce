@@ -5,12 +5,12 @@ import Link from 'next/link'
 import React, { useEffect, useRef } from 'react'
 import { Button } from '@/src/app/_Components/ui/Shadcn/button';
 import Address_component from '../_components/address';
-import { eventEmit } from '@/src/app/_Components/ui/Header/Event_emit';
 import List_address_user from './list_address';
 import Page_infor_mobile from './page.infor.mobile';
 import Avatar_account from './avatar';
 import Phone_account from './phone';
 import { useAuthStore } from '@/src/app/_lib/Zustand/Store';
+import { eventEmit } from '@/src/app/_Components/ui/header/Event_emit';
 
 const Page_infor = () => {
   const form_create_address = useRef<HTMLDivElement>(null);

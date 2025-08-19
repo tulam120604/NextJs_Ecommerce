@@ -31,7 +31,7 @@ export default function Best_selling_products() {
       ) : (
         <div>
           <span>Top sản phẩm bán chạy</span>
-          <div className="bg-white rounded-lg border px-4">
+          <div className="bg-white">
             <Data_Table
               dataProps={{ dataTable: data_products, operation: false }}
             />

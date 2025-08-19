@@ -7,9 +7,9 @@ import {
   black_list_token,
   createAccessToken,
   createRefeshToken,
+  verify_token,
 } from "../../middleware/Auth.js";
 import Blacklist_token from "../../Model/Blacklist_Token/blacklist_token.js";
-import jwt from "jsonwebtoken";
 import { upload_img } from "../../middleware/upload.js";
 
 // register
@@ -49,7 +49,7 @@ export async function register(req, res) {
     });
     if (!data || !data._id) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Đã có lỗi xảy ra, vui lòng thử lại sau!',
+        message: "Đã có lỗi xảy ra, vui lòng thử lại sau!",
       });
     }
     return res.status(StatusCodes.CREATED).json({
@@ -66,23 +66,23 @@ export async function register(req, res) {
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const check_email = await Account.findOne({ email });
-    if (!check_email) {
+    const check_account = await Account.findOne({ email });
+    if (!check_account) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "Sai thong tin!",
       });
     }
     const check_password = await brcyptjs.compare(
       password,
-      check_email.password
+      check_account.password
     );
     if (!check_password) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         message: "Sai thong tin!",
       });
     }
-    const accessToken = createAccessToken(check_email._id);
-    const refeshToken = createRefeshToken(check_email._id);
+    const accessToken = createAccessToken(check_account);
+    const refeshToken = createRefeshToken(check_account._id);
     res.cookie("access_token", accessToken, {
       httpOnly: false,
       secure: false,
@@ -170,35 +170,38 @@ export async function refesh_token(req, res) {
         message: "Token không được sử dụng nữa!",
       });
     }
-    jwt.verify(token, "tulam", async (error, decoded) => {
-      if (error === "TokenExpiredError") {
-        return res.status(StatusCodes.UNAUTHORIZED).json({
-          message: "Token hết hạn!",
-        });
-      }
-      if (error === "JsonWebTokenError") {
-        return res.status(StatusCodes.UNAUTHORIZED).json({
-          message: "Token không hợp lệ!",
-        });
-      }
-      try {
-        const user = await Account.findOne({ _id: decoded.userId });
-        if (!user) {
-          return res.status(StatusCodes.NOT_FOUND).json({
-            message: "Không tìm thấy user!",
-          });
-        }
-        const new_token = createAccessToken(decoded.userId);
-        return res.status(StatusCodes.OK).json({
-          message: "OK!",
-          new_token,
-        });
-      } catch (error) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "Không thể tạo token!",
-        });
-      }
-    });
+    const user = await verify_token(token);
+    req.user = user;
+    // to be continue
+    // jwt.verify(token, process.env.SCERET_KEY_JWT, async (error, decoded) => {
+    //   if (error === "TokenExpiredError") {
+    //     return res.status(StatusCodes.UNAUTHORIZED).json({
+    //       message: "Token hết hạn!",
+    //     });
+    //   }
+    //   if (error === "JsonWebTokenError") {
+    //     return res.status(StatusCodes.UNAUTHORIZED).json({
+    //       message: "Token không hợp lệ!",
+    //     });
+    //   }
+    //   try {
+    //     const user = await Account.findOne({ _id: decoded.userId });
+    //     if (!user) {
+    //       return res.status(StatusCodes.NOT_FOUND).json({
+    //         message: "Không tìm thấy user!",
+    //       });
+    //     }
+    //     const new_token = createAccessToken(decoded);
+    //     return res.status(StatusCodes.OK).json({
+    //       message: "OK!",
+    //       new_token,
+    //     });
+    //   } catch (error) {
+    //     return res.status(StatusCodes.BAD_REQUEST).json({
+    //       message: "Không thể tạo token!",
+    //     });
+    //   }
+    // });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,

@@ -11,7 +11,7 @@ import Routes_upload from './Routes/upload.js';
 import Routes_Order from './Routes/Order/Order.js';
 import RoutesFeedback from './Routes/Feedback/Feedback.js';
 import RoutesNotification from './Routes/Notification/Notification.js';
-import Router_analytics from './Routes/Analytics/Analytics_product.js';
+import Router_analytics from './Routes/Analytics/Analytics.js';
 import { handle_socket_event } from './socket/handle_socket';
 import { createServer } from 'node:http'
 import { Server } from 'socket.io';

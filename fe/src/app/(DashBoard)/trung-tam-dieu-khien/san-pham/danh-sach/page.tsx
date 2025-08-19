@@ -8,26 +8,27 @@ import Pagination_Component from "../_component/Pagination";
 import { useSearchParams } from "next/navigation";
 import { io } from "socket.io-client";
 import Data_Table from "../_component/Data_Table";
-import { Auth_Provider } from "../../_Auth_Wrapper/Page";
 import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
-import ReloadPage from "@/src/app/_Components/Pages/ReloadPage";
 import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
+import Link from "next/link";
+import { CirclePlus, EyeOff } from "lucide-react";
+import { message } from "@/src/app/_Components/ui/message";
 
 const Page = () => {
   const socket = io("http://localhost:8888");
   let id_user;
-  const {data : user} = useAuthStore();
+  const { data: user } = useAuthStore();
   const searchParams = useSearchParams();
   const role_user = ["admin_global", "admin_local"];
-  let page = Number(searchParams.get("_page")) ?? 1;
+  let page = Math.max(1, Number(searchParams.get("_page")) || 1);
   if (!role_user.includes(user?.role)) {
     if (user?.role === "seller") {
       id_user = user?._id;
     }
   }
-  const { data, isLoading, isFetching } = Query_List_Items_Dashboard(page, 20);
+  const { data, isLoading } = Query_List_Items_Dashboard(page, 20);
   const { on_Submit, isLoading: loading_remove } = Mutation_Items({
-    action: "REMOVE",
+    action: "HIDDEN_OR_RESTORE",
   });
   // close socket
   useEffect(() => {
@@ -39,15 +40,22 @@ const Page = () => {
     };
   }, [socket]);
 
-  function handle_Remove(idItem?: { id_item: string; name_item: string }) {
+  async function handle_toggle_item(idItem?: {
+    id_item: string;
+    path: string;
+    method: string;
+  }) {
     const item = {
       refeshToken: "token",
       id_item: idItem?.id_item,
+      path: idItem?.path,
+      method: idItem?.method,
     };
-    on_Submit(item);
+    const result: any = await on_Submit(item);
+    message.success(result?.message);
     socket.emit("send_message_delete_item", idItem);
   }
-  const isLoadingOverlayVisible = isLoading || isFetching || loading_remove;
+  const isLoadingOverlayVisible = isLoading || loading_remove;
   // render items and attributes
   return (
     <Suspense
@@ -57,22 +65,41 @@ const Page = () => {
         </div>
       }
     >
-      <Auth_Provider>
-        <div className="flex flex-col gap-y-6 py-4 text-gray-700">
-          <div className="flex flex-col gap-y-1">
-            <span className="text-lg">Danh sách sản phẩm</span>
-            <span className="text-gray-600 text-sm">
-              Quản lý sản phẩm của bạn
-            </span>
+        <div className="flex flex-col gap-y-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-y-1">
+              <span className="text-lg font-extrabold opacity-90">
+                Danh sách sản phẩm
+              </span>
+              <span className="text-gray-600 text-sm">
+                Quản lý sản phẩm của bạn
+              </span>
+            </div>
+
+            {/* add item */}
+            <Link
+              href={"/trung-tam-dieu-khien/san-pham/them-moi-san-pham"}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 
+                transition-colors flex items-center"
+            >
+              <CirclePlus
+                className="inline-block mr-1"
+                strokeWidth={1.5}
+                size={18}
+              />
+              Tạo mới sản phẩm
+            </Link>
           </div>
+
           {isLoadingOverlayVisible ? (
             <Loading_Overlay />
-          ) : (data?.data?.totalDocs > 0) ? (
-            <div className="bg-white rounded-lg border px-4">
+          ) : data?.data?.totalDocs > 0 ? (
+            <div className="bg-white rounded-lg border">
               <Data_Table
                 dataProps={{
                   dataTable: data?.data?.docs,
-                  handle_Remove,
+                  handle_toggle_item,
+                  action: "list_products",
                   operation: true,
                 }}
               />
@@ -91,7 +118,6 @@ const Page = () => {
             </div>
           )}
         </div>
-      </Auth_Provider>
     </Suspense>
   );
 };

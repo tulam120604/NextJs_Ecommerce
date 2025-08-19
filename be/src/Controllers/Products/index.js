@@ -3,8 +3,8 @@ import {
     view_detail_product_client, view_detail_product_dashboard, search_product
 } from './Get.js';
 import { Create_Product } from './Create.js';
-import { Soft_remove } from './Soft_delete.js';
-import { destroy_items, get_recycle_items, restore_item } from '../Recycle/Recycle_management.js';
+import { restore_item, soft_remove } from './Soft_delete.js';
+import { destroy_items, get_recycle_items } from '../Recycle/Recycle_management.js';
 import { edit_Product } from './Edit.js';
 
 const Products = {
@@ -15,7 +15,7 @@ const Products = {
     view_detail_product_dashboard,
     search_product,
     Create_Product,
-    Soft_remove,
+    soft_remove,
     destroy_items,
     get_recycle_items,
     restore_item,
