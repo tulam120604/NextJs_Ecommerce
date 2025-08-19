@@ -10,23 +10,23 @@ const Banner = () => {
         <div className='*:cursor-pointer'>
           <Slide_show>
             {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[350px]">
+            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[450px]">
               <Image width={2000} height={1000} className='w-full h-full top-0 rounded-lg left-0' src="/Images/voucher_4.jpg" alt='Loading...' />
             </div>
             {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[350px]">
+            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[450px]">
               <Image width={2000} height={1000} className='w-full h-full top-0 rounded-lg left-0' src="/Images/voucher_freeship.png" alt='Loading...' />
             </div>
             {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[350px]">
+            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[450px]">
               <Image width={2000} height={1000} className='w-full h-full top-0 rounded-lg left-0' src="/Images/3.jpeg" alt='Loading...' />
             </div>
             {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[350px]">
+            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[450px]">
               <Image width={2000} height={1000} className='w-full h-full top-0 rounded-lg left-0' src="/Images/voucher_3.jpg" alt='Loading...' />
             </div>
             {/* 888 */}
-            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[350px]">
+            <div className="relative flex flex-col *:flex *:flex-col h-[150px] lg:h-[450px]">
               <Image width={2000} height={1000} className='w-full h-full top-0 rounded-lg left-0' src="/Images/banner3.jpg" alt='Loading...' />
             </div>
           </Slide_show>

@@ -1,17 +1,21 @@
 import cloudinary from "../utils/cloudinary.js";
-import fs from 'fs'
+import fs from "fs";
 
 export async function upload_img(img) {
   try {
     if (Array.isArray(img)) {
       const image_upload = img.map((file) =>
-        cloudinary.uploader.upload(file.path)
+        cloudinary.uploader.upload(file.path, {
+          background_removal: "cloudinary_ai:fine_edges",
+        })
       );
       const result = await Promise.all(image_upload);
       img.forEach((file) => fs.unlinkSync(file.path));
       return result;
     } else {
-      const result = await cloudinary.uploader.upload(img.path);
+      const result = await cloudinary.uploader.upload(img.path, {
+        background_removal: "cloudinary_ai:fine_edges",
+      });
       fs.unlinkSync(img.path);
       return result;
     }

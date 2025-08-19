@@ -32,6 +32,7 @@ const Form_add_category = ({ setCategory_form }: any) => {
       const result: any = await mutate_category.on_Submit_category(formData);
       console.log(result?.status);
       if (result?.message === "OK") {
+        setMessage("Đã thêm danh mục mới!");
         setCategory_form(false);
         reset();
         setUri_image_upload("");
@@ -67,9 +68,9 @@ const Form_add_category = ({ setCategory_form }: any) => {
       <form
         onSubmit={handleSubmit(onAdd_category)}
         className="flex bg-white flex-col text-gray-800 gap-y-3 fixed border border-gray-300 shadow
-         z-[7] top-1/2 left-1/2 -translate-x-1/2 rounded-xl  -translate-y-1/2 px-10 py-5 lg:px-20 lg:py-10"
+         z-[7] top-1/2 left-1/2 -translate-x-1/2 rounded-xl -translate-y-1/2 px-10 py-5 lg:px-20 lg:py-10"
       >
-        <strong className="text-gray-700 text-lg font-serif">
+        <strong className="text-gray-700 text-lg">
           Thêm mới danh mục sản phẩm
         </strong>
         <label htmlFor="category_name">Tên danh mục</label>

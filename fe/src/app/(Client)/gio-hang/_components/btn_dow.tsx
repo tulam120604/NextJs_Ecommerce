@@ -27,7 +27,7 @@ const Btn_dow = ({ id_props }: any) => {
           <>
             {
               id_props.quantity_item > 1 ?
-                <Button type="button" onClick={() => dow_quantity(id_props.id_item)} className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>&#8722;</Button>
+                <Button type="button" onClick={() => dow_quantity(id_props.id_item)} className='border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200 text-gray-700'>&#8722;</Button>
                 :
                 <AlertDialog>
                   <AlertDialogTrigger className='h-full rounded border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200'>

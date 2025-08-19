@@ -146,11 +146,12 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
         )} */}
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-lg font-extrabold opacity-90">
+            <span className="text-lg font-extrabold opacity-80">
               {mode ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
             </span>
             <span className="text-gray-600 text-sm">
-              Thêm mới sản phẩm vào cửa hàng của bạn
+              {mode ? "Chỉnh sửa lại sản phẩm trong cửa hàng của bạn" : "Thêm mới sản phẩm vào cửa hàng của bạn"}
+              
             </span>
           </div>
           <button

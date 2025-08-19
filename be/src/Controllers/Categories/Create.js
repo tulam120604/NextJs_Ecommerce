@@ -4,9 +4,19 @@ import { upload_img } from "../../middleware/upload.js";
 
 export async function Create_Categories(req, res) {
   try {
-    const name_Cate = await Categories.find();
+    const data_category = await Categories.find();
     const category_name = req.body.category_name;
-    for (let i of name_Cate) {
+    if (!category_name.trim()) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: "Ten danh muc khong duoc de trong!",
+      });
+    }
+    if (!req.file) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: "Anh danh muc khong duoc de trong!",
+      });
+    }
+    for (let i of data_category) {
       if (category_name === i.category_name) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Danh muc da ton tai!",

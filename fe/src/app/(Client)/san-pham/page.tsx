@@ -31,8 +31,7 @@ const Products = async ({ searchParams }: any) => {
             }}
           />
         </section>
-        <div className="w-full lg:grid grid-cols-[300px_calc(100%-320px)] justify-between">
-          <Category />
+        <div className="w-full justify-between">
           <div>
             {/* menu */}
             <div className="!w-auto mb-4">
@@ -42,7 +41,7 @@ const Products = async ({ searchParams }: any) => {
             {/* <Render_Products data={data}/> */}
             {data?.data?.docs ? (
               Array.isArray(data?.data?.docs) && (
-                <List_Products data={data?.data?.docs} cols={4}/>
+                <List_Products data={data?.data?.docs} cols={6}/>
               )
             ) : (
               <Loading_Dots />

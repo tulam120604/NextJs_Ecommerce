@@ -299,7 +299,7 @@ const Page_checkout = () => {
                 <div className="my-2">
                   <span className="text-gray-700">Phí vận chuyển :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600">
-                    {30000?.toLocaleString("vi", {
+                    {0?.toLocaleString("vi", {
                       style: "currency",
                       currency: "VND",
                     })}
@@ -317,7 +317,7 @@ const Page_checkout = () => {
                 <div className="my-2">
                   <span className="text-gray-700">Tổng thanh toán :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600 text-2xl">
-                    {total_price?.toLocaleString("vi", {
+                    {(+total_price)?.toLocaleString("vi", {
                       style: "currency",
                       currency: "VND",
                     })}
@@ -343,13 +343,13 @@ const Page_checkout = () => {
                   {total_price > 0 ? (
                     check_payment ? (
                       <Button
-                        className="bg-[#5B7FFB] hover:bg-[#5B7FFB] mt-4"
+                        className="mt-4"
                         type="submit"
                       >
                         Thanh toán
                       </Button>
                     ) : (
-                      <Button className="bg-[#5B7FFB] hover:bg-[#5B7FFB] mt-4">
+                      <Button className="mt-4">
                         {mutate_order.isLoading ? (
                           <Loading_Dots />
                         ) : (

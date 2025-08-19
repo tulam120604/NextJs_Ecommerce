@@ -6,7 +6,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-white">
+    <footer className="w-full bg-white border-t">
       <div className="relative pt-5 max-w-[1440px] w-[95vw] mx-auto text-gray-700">
         {/* ***** */}
         <div className="flex flex-col lg:flex-row lg:gap-x-16 lg:gap-y-0 gap-y-8 justify-between">

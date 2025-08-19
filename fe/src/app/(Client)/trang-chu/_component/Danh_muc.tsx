@@ -12,7 +12,10 @@ const Category = async () => {
   const { data } = await list_category();
   return (
     <Suspense fallback={<Loading_Skeleton number_elements={1} />}>
-      <aside className="hidden lg:block max-h-screen">
+      <aside className="hidden lg:block max-h-1/3 py-6 border-b">
+        <span className="antialiased text-xl font-semibold opacity-80">
+          Danh mục gợi ý
+        </span>
         {data?.status === 404 ? (
           <>
             <div className="min-h-[100px] grid place-items-center">
@@ -20,147 +23,28 @@ const Category = async () => {
             </div>
           </>
         ) : (
-          <div className="space-y-3 border p-4 rounded-lg">
+          <div
+            className="grid md:grid-cols-6 xl:grid-cols-9 gap-x-2 w-full max-w-[95vw] 
+          *:border *:rounded-lg my-3 *:h-[150px] *:grid *:place-items-center *:cursor-pointer"
+          >
             {data?.length > 0 ? (
               data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150
-                 hover:text-indigo-600 opacity-85">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <div className="py-4 text-center text-sm font-normal">Trống!</div>
-            )}
-
-            {data?.length > 0 ? (
-              data?.map((item: any) => (
-                <div key={item?._id} className="flex items-center gap-x-3 text-sm duration-150 hover:text-indigo-600">
-                  <Link
-                    href={`/san-pham/${convert_Slug(
-                      item?.category_name
-                    )}.html?p=${item?._id}`}
-                  >
-                    {item?.category_name}
-                  </Link>
-                </div>
+                <Link
+                  key={item?._id}
+                  className="text-sm duration-150
+                 opacity-85 text-center hover:border-orange-600"
+                  href={`/san-pham/${convert_Slug(
+                    item?.category_name
+                  )}.html?p=${item?._id}`}
+                >
+                  <Image
+                    src={item?.category_img}
+                    width={100}
+                    height={100}
+                    alt=""
+                  />
+                  <span>{item?.category_name}</span>
+                </Link>
               ))
             ) : (
               <div className="py-4 text-center text-sm font-normal">Trống!</div>
