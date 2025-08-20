@@ -1,7 +1,7 @@
 import Account from '../../Model/Auth/Account.js';
 import { StatusCodes } from 'http-status-codes';
 import Orders from '../../Model/Orders/Order.js';
-import Products from '../../Model/Products/Products.js';
+import Products from '../../Model/Items/Products.js';
 import Feedback from '../../Model/Feedback/Feedback.js';
 
 export async function add_feedback(req, res) {

@@ -4,15 +4,15 @@
 import { Suspense, useEffect } from "react";
 import { Query_List_Items_Dashboard } from "@/src/app/_lib/Query_APIs/Items/Query";
 import { Mutation_Items } from "@/src/app/_lib/Query_APIs/Items/Mutation_product";
-import Pagination_Component from "../_component/Pagination";
 import { useSearchParams } from "next/navigation";
 import { io } from "socket.io-client";
-import Data_Table from "../_component/Data_Table";
 import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
 import Link from "next/link";
 import { CirclePlus, EyeOff } from "lucide-react";
 import { message } from "@/src/app/_Components/ui/message";
+import ProductTable from "../_components/product_table";
+import Pagination_Component from "../_components/Pagination";
 
 const Page = () => {
   const socket = io("http://localhost:8888");
@@ -95,7 +95,7 @@ const Page = () => {
             <Loading_Overlay />
           ) : data?.data?.totalDocs > 0 ? (
             <div className="bg-white rounded-lg border">
-              <Data_Table
+              <ProductTable
                 dataProps={{
                   dataTable: data?.data?.docs,
                   handle_toggle_item,

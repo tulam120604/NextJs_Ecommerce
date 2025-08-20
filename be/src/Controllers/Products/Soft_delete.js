@@ -1,4 +1,4 @@
-import Products from "../../Model/Products/Products.js";
+import Products from "../../Model/Items/Products.js";
 import { StatusCodes } from "http-status-codes";
 
 export async function soft_remove(req, res) {

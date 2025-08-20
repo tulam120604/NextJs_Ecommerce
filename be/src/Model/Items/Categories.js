@@ -6,8 +6,17 @@ const schema_Categories = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 50,
+      required: true,
     },
-    category_img: String,
+    category_img: {
+      type: String,
+      required: true,
+    },
+    countProduct: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
   },
   {
     timestamps: true,

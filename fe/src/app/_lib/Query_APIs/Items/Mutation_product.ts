@@ -1,5 +1,3 @@
-"use client";
-
 import {
   create_product,
   update_product_dashboard,

@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Tables/button";
-import Form_add_category from "./form_category";
 import { CircleMinus, ImageUp, Undo2 } from "lucide-react";
 import Loading_Dots from "../Loadings/Loading_Dots";
 import {
@@ -19,6 +18,7 @@ import Form_variant from "./form_variant";
 import { useRouter } from "next/navigation";
 import { useCustome_Hook_Product } from "../../_lib/Custome_Hooks/Hook_product";
 import Field_Form from "./field_form";
+import { useImgUploader } from "../../_lib/Custome_Hooks/useImgUploader";
 
 const Form_product: React.FC<any> = ({ mode }: any) => {
   const router = useRouter();
@@ -30,9 +30,8 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
     data_detail_product,
     filed_form_data,
   } = useCustome_Hook_Product({ mode });
-  const [change_img, setChange_img] = useState([]);
-  const [images, setImages] = useState<any[]>([]);
-  const [category_form, setCategory_form] = useState<boolean>(false);
+  const { images, preview, pushImage, removeImage, setImages, setPreview } =
+    useImgUploader();
   const [statusOptionsCategory, setStatusOptionsCategory] =
     useState<any>("Chọn");
   const [statusOptionsVariant, setStatusOptionsVariant] =
@@ -53,8 +52,8 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
     if (mode) {
       if (data_detail_product?.data) {
         if (data_detail_product?.data?.gallery) {
-          setChange_img(data_detail_product?.data?.gallery);
-          setImages(data_detail_product?.data?.gallery);
+          setImages([]); // reset file local
+          setPreview(data_detail_product.data.gallery);
         }
         let data_attr_detail;
         if (data_detail_product?.data?.variant) {
@@ -62,7 +61,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
             .getValues()
             ?.variant?.variants?.map((item: any) => ({
               attribute: item?.attribute,
-              value_variant: item?.value_varriant,
+              value_variant: item?.value_varriants,
             }));
           setVariant(data_attr_detail);
         } else {
@@ -74,41 +73,6 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
       );
     }
   }, [mode, data_detail_product?.data, my_form]);
-  function handle_category() {
-    setCategory_form(!category_form);
-  }
-
-  function pushImage(e: any) {
-    const file = e.target.files;
-    if (file.length > 0) {
-      setImages((preImg) => [...preImg, ...Array.from(file)]);
-      const file_images = Array.from(file);
-      const arr_file_images: any = [];
-      file_images?.forEach((file: any) => {
-        const reader_img = new FileReader();
-        reader_img.onloadend = () => {
-          arr_file_images.push(reader_img.result as string);
-          if (arr_file_images.length === file_images.length) {
-            setChange_img((img: any) => {
-              if (img) {
-                return [...img, ...arr_file_images];
-              }
-              return arr_file_images;
-            });
-          }
-        };
-        reader_img.readAsDataURL(file);
-      });
-    }
-  }
-  function handle_minus_image(uri: string, i: number) {
-    const new_image_after_minus = change_img.filter(
-      (item: string) => item !== uri
-    );
-    setChange_img(new_image_after_minus);
-    const new_images = images.filter((_: any, index: number) => index !== i);
-    setImages(new_images);
-  }
 
   // submit form
   function formSubmit(dataForm: any) {
@@ -121,11 +85,11 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
   useEffect(() => {
     if (!mode) {
       my_form.reset();
-      setChange_img([]);
+      pushImage([]);
       setVariant([
         {
           name_varriant: "",
-          value_varriant: [
+          value_varriants: [
             {
               name_value: "",
               stock_item: 0,
@@ -150,8 +114,9 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
               {mode ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
             </span>
             <span className="text-gray-600 text-sm">
-              {mode ? "Chỉnh sửa lại sản phẩm trong cửa hàng của bạn" : "Thêm mới sản phẩm vào cửa hàng của bạn"}
-              
+              {mode
+                ? "Chỉnh sửa lại sản phẩm trong cửa hàng của bạn"
+                : "Thêm mới sản phẩm vào cửa hàng của bạn"}
             </span>
           </div>
           <button
@@ -161,24 +126,6 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
             Quay lại
             <Undo2 strokeWidth={1.5} size={20} />
           </button>
-        </div>
-        <div className="relative">
-          <button
-            onClick={handle_category}
-            type="button"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
-          >
-            Thêm danh mục
-          </button>
-          {category_form && (
-            <div>
-              <div
-                onClick={handle_category}
-                className="fixed w-[200%] h-[200%] bg-[#00000066] top-0 z-[6] left-0"
-              />
-              <Form_add_category setCategory_form={setCategory_form} />
-            </div>
-          )}
         </div>
         <form
           onSubmit={my_form.handleSubmit(formSubmit)}
@@ -257,8 +204,8 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
           <div className="flex flex-col gap-y-3">
             <label className="mb-2 text-sm opacity-90">Ảnh sản phẩm</label>
             <div className="flex flex-wrap gap-3 relative">
-              {change_img.length > 0 &&
-                change_img?.map((uri: any, i: number) => (
+              {preview.length > 0 &&
+                preview?.map((uri: any, i: number) => (
                   <div
                     key={uri}
                     className="relative border border-gray-300 rounded"
@@ -270,7 +217,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                     />
                     <button
                       className="absolute top-0 right-0 *:w-4 *:h-4 text-xs text-red-500 rounded-full hover:scale-110 duration-200"
-                      onClick={() => handle_minus_image(uri, i)}
+                      onClick={() => removeImage(i)}
                       type="button"
                     >
                       <CircleMinus />
@@ -282,16 +229,16 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                   <ImageUp />
                   Kéo và thả ảnh vào đây
                 </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                id="feature_product"
-                className="outline-none rounded border cursor-pointer w-full h-[100px] 
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="feature_product"
+                  className="outline-none rounded border cursor-pointer w-full h-[100px] 
                   absolute opacity-0"
-                onChange={pushImage}
-                multiple
-              />
+                  onChange={pushImage}
+                  multiple
+                />
+              </div>
             </div>
           </div>
           <Field_Form

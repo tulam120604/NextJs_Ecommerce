@@ -1,6 +1,4 @@
 // PRODUCTS
-import { toast } from "react-toastify";
-
 const apiURi = process.env.NEXT_PUBLIC_DB_HOST;
 
 // list item client
@@ -119,10 +117,7 @@ export async function create_product(item: any) {
     });
     // console.log(res);
     if (!res.ok) {
-      toast.error(`Có lỗi xảy ra khi thêm sản phẩm !`, { autoClose: 500 });
       return res;
-    } else {
-      toast.success(`Tạo sản phẩm thành công!`, { autoClose: 500 });
     }
     const data = await res.text();
     return data;
@@ -207,14 +202,7 @@ export async function update_product_dashboard(dataClient?: any) {
       credentials: "include",
     });
     if (!res.ok) {
-      toast.error(`Có lỗi xảy ra khi sửa sản phẩm mã ${dataClient.id_item} !`, {
-        autoClose: 500,
-      });
       console.warn("Kiem tra lai server hoac internet!");
-    } else {
-      toast.success(`Đã sửa sản phẩm mã ${dataClient.id_item} !`, {
-        autoClose: 500,
-      });
     }
     return res;
   } catch (error) {

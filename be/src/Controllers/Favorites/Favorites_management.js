@@ -1,5 +1,5 @@
-import Favorites from '../../Model/Products/Favorites.js';
-import Products from '../../Model/Products/Products.js';
+import Favorites from '../../Model/Items/Favorites.js';
+import Products from '../../Model/Items/Products.js';
 import { StatusCodes } from 'http-status-codes';
 
 

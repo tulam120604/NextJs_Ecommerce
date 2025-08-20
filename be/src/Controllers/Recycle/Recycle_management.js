@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import Products from "../../Model/Products/Products.js";
+import Products from "../../Model/Items/Products.js";
 
 export async function get_recycle_items(req, res) {
   const { _page, _limit } = req.query;

@@ -1,5 +1,3 @@
-"use client";
-
 import { useRouter } from "next/navigation";
 import { Mutation_Auth } from "../Query_APIs/Auth/Auth_mutation";
 

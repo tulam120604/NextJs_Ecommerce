@@ -22,7 +22,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Data_Table({ dataProps }: any) {
+export default function ProductTable({ dataProps }: any) {
   return (
     <div className="overflow-x-auto rounded border bg-white">
       {/* header */}

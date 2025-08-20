@@ -1,7 +1,7 @@
-import Products from "../../Model/Products/Products.js";
+import Products from "../../Model/Items/Products.js";
 import { StatusCodes } from "http-status-codes";
 import { validateProducts } from "../../Validates/Products.js";
-import Variant from "../../Model/Products/Variant.js";
+import Variant from "../../Model/Items/Variant.js";
 import { create_variant } from "./Create_variant.js";
 import { upload_img } from "../../middleware/upload.js";
 

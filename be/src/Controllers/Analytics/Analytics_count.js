@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-import Products from "../../Model/Products/Products.js";
-import Category from "../../Model/Products/Categories.js";
+import Products from "../../Model/Items/Products.js";
+import Category from "../../Model/Items/Categories.js";
 import Orders from "../../Model/Orders/Order.js";
 import Account from "../../Model/Auth/Account.js";
 

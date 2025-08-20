@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import Categories from "../../Model/Products/Categories.js";
+import Categories from "../../Model/Items/Categories.js";
 import { upload_img } from "../../middleware/upload.js";
 
 export async function Create_Categories(req, res) {

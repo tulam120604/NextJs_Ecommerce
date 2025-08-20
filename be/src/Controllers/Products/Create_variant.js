@@ -1,4 +1,4 @@
-import Variant from "../../Model/Products/Variant.js";
+import Variant from "../../Model/Items/Variant.js";
 // create variant
 export async function create_variant(data_variant) {
     if (!data_variant || data_variant.length < 1) {

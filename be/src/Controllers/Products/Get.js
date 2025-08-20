@@ -1,4 +1,4 @@
-import Products from "../../Model/Products/Products.js";
+import Products from "../../Model/Items/Products.js";
 import { StatusCodes } from "http-status-codes";
 
 // hàm chung tham chiếu sang danh mục, biến thể sản phẩm và tính toán số lượng
