@@ -2,10 +2,10 @@
 
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, XCircle, Info } from "lucide-react";
+import { CheckCircle2, XCircle, Info, AlertTriangle } from "lucide-react";
 import { useEffect, useState } from "react";
 
-type MessageType = "success" | "error" | "info";
+type MessageType = "success" | "error" | "info" | "warning";
 
 let pushMessage: (type: MessageType, text: string, duration?: number) => void;
 
@@ -42,12 +42,15 @@ export const MessageContainer = () => {
                 ? "bg-green-500"
                 : message.type === "error"
                 ? "bg-red-500"
+                : message.type === "warning"
+                ? "bg-yellow-500"
                 : "bg-blue-500"
             }`}
         >
           {message.type === "success" && <CheckCircle2 />}
           {message.type === "error" && <XCircle />}
           {message.type === "info" && <Info />}
+          {message.type === "warning" && <AlertTriangle />}
           <span>{message.text}</span>
         </motion.div>
       )}
@@ -64,4 +67,6 @@ export const message = {
     pushMessage("error", text, duration),
   info: (text: string, duration?: number) =>
     pushMessage("info", text, duration),
+  warning: (text: string, duration?: number) =>
+    pushMessage("warning", text, duration),
 };

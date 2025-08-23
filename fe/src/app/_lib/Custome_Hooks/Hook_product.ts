@@ -5,6 +5,7 @@ import {
   Query_Category,
 } from "../Query_APIs/Items/Query";
 import { Mutation_Items } from "../Query_APIs/Items/Mutation_product";
+import { uploadMultipleImage } from "../../util/upload";
 
 export function useCustome_Hook_Product({ mode }: any) {
   const router = useRouter();
@@ -18,7 +19,11 @@ export function useCustome_Hook_Product({ mode }: any) {
   }
 
   const { data: data_Category, isLoading } = Query_Category();
-  const { my_form, on_Submit, isLoading : loading_mutation } = Mutation_Items({
+  const {
+    my_form,
+    on_Submit,
+    isLoading: loading_mutation,
+  } = Mutation_Items({
     action: id_item ? "EDIT" : "ADD",
   });
   useEffect(() => {
@@ -27,49 +32,16 @@ export function useCustome_Hook_Product({ mode }: any) {
     }
     // console.count('re-render')
   }, [my_form, data_detail_product?.data, mode, id_item]);
-  function submitForm(data_form: any) {
+  async function submitForm(data_form: any) {
     try {
-      const value_form_data = my_form?.getValues();
-      const check_field = Object.keys(value_form_data).filter(
-        (filed: any) =>
-          !["stock", "price_product", "variant"].includes(filed) &&
-          !value_form_data[filed]
-      );
-      if (check_field?.length > 0) {
-        setFiled_form_data(check_field);
-      } else {
-        const formData = new FormData();
-        const arr_file_gallery = Array.isArray(data_form?.gallery)
-          ? data_form?.gallery
-          : Object.values(data_form?.gallery);
-        arr_file_gallery?.forEach((file: File) => {
-          formData.append("gallery", file);
-        });
-        const variantString = JSON.stringify(data_form.variant);
-        formData.append("short_name", data_form.short_name);
-        data_form.price_product &&
-          formData.append("price_product", data_form.price_product);
-        formData.append("des_product", data_form.des_product);
-        formData.append(
-          "category_id",
-          data_form.category_id && data_form.category_id
-        );
-        formData.append("made_in", data_form.made_in);
-        data_form.stock
-          ? formData.append("stock", data_form.stock)
-          : formData.append("variant", variantString);
-        let dataAll: any = {
-          data_item: formData,
-        };
-        if (mode && id_item) {
-          dataAll = {
-            data_item: formData,
-            id_item: id_item,
-          };
-        }
-        const result = on_Submit(dataAll);
-        console.log(result);
-      }
+      const urlGallery = await uploadMultipleImage(data_form?.gallery);
+      const dataReq = {
+        ...data_form,
+        gallery: urlGallery,
+        ...(mode && { id_item }),
+      };
+      const result = await on_Submit(dataReq);
+      return result;
     } catch (error) {
       console.error(error);
     }

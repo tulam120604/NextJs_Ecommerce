@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Tables/button";
-import { CircleMinus, ImageUp, Undo2 } from "lucide-react";
+import { CircleMinus, ImageUp } from "lucide-react";
 import Loading_Dots from "../Loadings/Loading_Dots";
 import {
   Select,
@@ -16,24 +16,16 @@ import {
 } from "../ui/select";
 import Form_variant from "./form_variant";
 import { useRouter } from "next/navigation";
-import { useCustome_Hook_Product } from "../../_lib/Custome_Hooks/Hook_product";
 import Field_Form from "./field_form";
 import { useImgUploader } from "../../_lib/Custome_Hooks/useImgUploader";
+import { uploadMultipleImage } from "../../util/upload";
 
-const Form_product: React.FC<any> = ({ mode }: any) => {
+const Form_product: React.FC<any> = ({ props, type }: any) => {
+  const { my_form, mutateAsync, isLoading, data_Category, loading_category } =
+    props;
   const router = useRouter();
-  const {
-    my_form,
-    submitForm,
-    isLoading,
-    data_Category,
-    data_detail_product,
-    filed_form_data,
-  } = useCustome_Hook_Product({ mode });
   const { images, preview, pushImage, removeImage, setImages, setPreview } =
     useImgUploader();
-  const [statusOptionsCategory, setStatusOptionsCategory] =
-    useState<any>("Chọn");
   const [statusOptionsVariant, setStatusOptionsVariant] =
     useState<any>("no-variant");
   const [variant, setVariant] = useState<any>([
@@ -48,73 +40,41 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
       ],
     },
   ]);
-  useEffect(() => {
-    if (mode) {
-      if (data_detail_product?.data) {
-        if (data_detail_product?.data?.gallery) {
-          setImages([]); // reset file local
-          setPreview(data_detail_product.data.gallery);
-        }
-        let data_attr_detail;
-        if (data_detail_product?.data?.variant) {
-          data_attr_detail = my_form
-            .getValues()
-            ?.variant?.variants?.map((item: any) => ({
-              attribute: item?.attribute,
-              value_variant: item?.value_varriants,
-            }));
-          setVariant(data_attr_detail);
-        } else {
-          setVariant([]);
-        }
-      }
-      setStatusOptionsCategory(
-        data_detail_product?.data?.category_id?.category_name
-      );
-    }
-  }, [mode, data_detail_product?.data, my_form]);
 
   // submit form
-  function formSubmit(dataForm: any) {
+  async function formSubmit(dataForm: any) {
+    const urlGallery = await uploadMultipleImage(images);
+    const { statusOptionsVariant, gallery, ...rest } = dataForm;
     const data_form_item = {
-      ...dataForm,
-      gallery: images,
+      ...rest,
+      gallery: urlGallery,
     };
-    submitForm(data_form_item);
+    const result = await mutateAsync(data_form_item);
+    console.log(result);
   }
-  useEffect(() => {
-    if (!mode) {
-      my_form.reset();
-      pushImage([]);
-      setVariant([
-        {
-          name_varriant: "",
-          value_varriants: [
-            {
-              name_value: "",
-              stock_item: 0,
-              price_attribute: 0,
-            },
-          ],
-        },
-      ]);
-    }
-  }, [mode, my_form]);
+  // render image local
+  const renderImg = (e: any) => {
+    pushImage(e);
+    my_form?.setValue("gallery", [
+      ...images,
+      ...Array.from(e?.target?.files ?? []),
+    ]);
+  };
   return (
     <>
       <section className="flex flex-col gap-y-6 py-6 rounded pr-4 overflow-x-hidden">
-        {/* {loading === "dang_call" && (
-          <div className="grid place-items-center fixed z-[3] *:z-[4] w-screen h-screen top-0 left-0 bg-[#10182488]">
+        {isLoading && (
+          <div className="grid place-items-center fixed z-[100] w-screen h-screen top-0 left-0 bg-[#10182488]">
             <Loading_Dots />
           </div>
-        )} */}
+        )}
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-lg font-extrabold opacity-80">
-              {mode ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
+              {props ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
             </span>
             <span className="text-gray-600 text-sm">
-              {mode
+              {props
                 ? "Chỉnh sửa lại sản phẩm trong cửa hàng của bạn"
                 : "Thêm mới sản phẩm vào cửa hàng của bạn"}
             </span>
@@ -124,7 +84,6 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
             onClick={() => router.back()}
           >
             Quay lại
-            <Undo2 strokeWidth={1.5} size={20} />
           </button>
         </div>
         <form
@@ -139,34 +98,27 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                 type: "text",
                 registerValue: "short_name",
                 my_form,
-                errors:
-                  filed_form_data?.includes("short_name") &&
-                  "Vui lòng nhập tên sản phẩm!",
+                errors: my_form?.formState?.errors?.short_name?.message,
               }}
             />
             {/* category */}
-            {isLoading ? (
-              <span>Loading...</span>
-            ) : (
-              <div className="relative items-center mb-4">
-                <label
-                  htmlFor="category_id"
-                  className="mb-2 text-sm opacity-90"
+            <div className="relative items-center mb-4">
+              <label htmlFor="category_id" className="mb-2 text-sm opacity-90">
+                Danh mục
+              </label>
+              <div className="mt-2">
+                <Select
+                  onValueChange={(value) => {
+                    my_form.setValue("category_id", value);
+                  }}
+                  {...my_form.register("category_id")}
                 >
-                  Danh mục
-                </label>
-                <div className="mt-2">
-                  <Select
-                    onValueChange={(value) => {
-                      my_form.setValue("category_id", value);
-                      setStatusOptionsCategory(value);
-                    }}
-                    {...my_form.register("category_id")}
-                  >
-                    <SelectTrigger className="!h-auto pt-2 mt-1">
-                      <SelectValue placeholder={statusOptionsCategory} />
-                    </SelectTrigger>
-                    <SelectContent>
+                  <SelectTrigger className="!h-auto pt-2 mt-1">
+                    <SelectValue placeholder="Chọn danh mục!" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {loading_category && <span>Loading...</span>}
+                    {!loading_category && (
                       <SelectGroup>
                         {data_Category?.data?.length > 0 ? (
                           data_Category?.data?.map((item: any) => (
@@ -178,15 +130,15 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                           <SelectItem value=" ">Trống!</SelectItem>
                         )}
                       </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <span className="absolute text-sm text-red-500 whitespace-nowrap top-[72px]">
-                  {filed_form_data?.includes("category_id") &&
-                    "Vui lòng chọn danh mục sản phẩm!"}
-                </span>
+                    )}
+                  </SelectContent>
+                </Select>
               </div>
-            )}
+              <span className="absolute text-sm text-red-500 whitespace-nowrap top-[72px]">
+                {my_form?.formState?.errors?.category_id &&
+                  (my_form.formState.errors.category_id.message as string)}
+              </span>
+            </div>
             {/* brand */}
             <Field_Form
               props={{
@@ -195,9 +147,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                 type: "text",
                 registerValue: "made_in",
                 my_form,
-                errors:
-                  filed_form_data?.includes("made_in") &&
-                  "Vui lòng nhập xuất xứ sản phẩm!",
+                errors: my_form?.formState?.errors?.made_in?.message,
               }}
             />
           </div>
@@ -235,11 +185,15 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                   id="feature_product"
                   className="outline-none rounded border cursor-pointer w-full h-[100px] 
                   absolute opacity-0"
-                  onChange={pushImage}
+                  onChange={renderImg}
                   multiple
                 />
               </div>
             </div>
+            <span className="text-sm text-red-500 whitespace-nowrap">
+              {my_form?.formState?.errors?.gallery &&
+                (my_form.formState.errors.gallery.message as string)}
+            </span>
           </div>
           <Field_Form
             props={{
@@ -248,9 +202,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
               type: "text",
               registerValue: "des_product",
               my_form,
-              errors:
-                filed_form_data?.includes("des_product") &&
-                "Vui lòng nhập mô tả sản phẩm!",
+              errors: my_form?.formState?.errors?.des_product?.message,
             }}
           />
           <div className="w-full rounded *:p-4 border">
@@ -259,7 +211,12 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
               <div>
                 <Select
                   value={statusOptionsVariant}
-                  onValueChange={(value) => setStatusOptionsVariant(value)}
+                  onValueChange={(value) => {
+                    setStatusOptionsVariant(value);
+                    my_form?.setValue("statusOptionsVariant", value, {
+                      shouldValidate: true,
+                    });
+                  }}
                 >
                   <SelectTrigger className="!h-auto pt-2 mt-1">
                     <SelectValue placeholder="Sản phẩm đơn giản" />
@@ -287,6 +244,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                     type: "text",
                     registerValue: "price_product",
                     my_form,
+                    errors: my_form?.formState?.errors?.price_product?.message,
                   }}
                 />
 
@@ -297,6 +255,7 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
                     type: "text",
                     registerValue: "stock",
                     my_form,
+                    errors: my_form?.formState?.errors?.stock?.message,
                   }}
                 />
               </div>
@@ -312,14 +271,9 @@ const Form_product: React.FC<any> = ({ mode }: any) => {
           <div className="w-full">
             <Button
               type="submit"
-              className={`text-sm font-medium text-white 
-                        ${
-                          mode
-                            ? "bg-yellow-500 hover:bg-yellow-600"
-                            : "bg-indigo-600 hover:bg-indigo-800"
-                        }`}
+              className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-800"
             >
-              {mode ? "Cập nhật sản phẩm" : "Tạo sản phẩm"}
+              {type}
             </Button>
           </div>
         </form>

@@ -5,23 +5,20 @@ import {
 } from "../../Services/Services_Items/Product";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaValidateFormProduct } from "@/src/app/(Auth)/validate";
 
 type Action = "ADD" | "EDIT" | "HIDDEN_OR_RESTORE";
 
-export function Mutation_Items({
-  action,
-  onSuccess,
-  onError,
-}: {
-  action: Action;
-  onSuccess?: any;
-  onError?: any;
-}) {
+export function Mutation_Items({ action }: { action: Action }) {
   // create form
-  // const my_Form = useForm({
-  //     resolver: yupResolver(schemaValidateFormProduct)
-  // });
-  const my_form = useForm();
+  const my_form = useForm({
+    resolver: yupResolver(schemaValidateFormProduct),
+    defaultValues: {
+      statusOptionsVariant: "no-variant",
+
+    },
+  });
 
   const query_client = useQueryClient();
   const { mutateAsync, ...rest } = useMutation({
@@ -53,18 +50,10 @@ export function Mutation_Items({
     },
   });
 
-  // form
-  const on_Submit: SubmitHandler<any> = async (data) => {
-    return await mutateAsync(data);
-  };
 
   return {
     mutateAsync,
     my_form,
-    on_Submit,
-    query_client,
-    onSuccess,
-    onError,
     ...rest,
   };
 }

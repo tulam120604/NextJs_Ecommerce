@@ -59,7 +59,7 @@ export async function view_detail_product(id: number | string) {
   try {
     const res = await fetch(`${apiURi}/products/${id}`);
     if (!res.ok) {
-      console.warn("Call data failer");
+      console.warn("Call data failer!");
       return res;
     }
     const data = await res.json();
@@ -105,17 +105,15 @@ export async function list_product_dashboard(page: number, limit_item: number) {
 
 // add
 export async function create_product(item: any) {
-  console.log(item);
   try {
     const res = await fetch(`${apiURi}/create_product`, {
       method: "post",
       headers: {
-        // 'Content-Type': 'multipart/form-data'
+        "Content-Type": "application/json",
       },
-      body: item.data_item,
+      body: JSON.stringify(item),
       credentials: "include",
     });
-    // console.log(res);
     if (!res.ok) {
       return res;
     }
@@ -129,15 +127,18 @@ export async function create_product(item: any) {
 // xoa mem
 export async function hidden_or_restore_product(item: any) {
   try {
-    const res = await fetch(`${apiURi}/products/admin/${item.path}/${item.id_item}`, {
-      method: item.method,
-      credentials: "include",
-    });
+    const res = await fetch(
+      `${apiURi}/products/admin/${item.path}/${item.id_item}`,
+      {
+        method: item.method,
+        credentials: "include",
+      }
+    );
     if (!res.ok) {
       return res;
     }
     const result = await res.json();
-    return result
+    return result;
   } catch (error) {
     return error;
   }

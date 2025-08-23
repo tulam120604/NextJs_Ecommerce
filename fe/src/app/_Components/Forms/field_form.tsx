@@ -25,7 +25,7 @@ export default function Field_Form({ props }: any) {
       )}
 
       {errors && (
-        <div className="h-4 text-red-500 md:text-sm text-xs mt-1">{errors}</div>
+        <div className="h-4 text-red-500 md:text-sm text-xs mt-1">{errors as string}</div>
       )}
     </div>
   );

@@ -3,13 +3,12 @@ import Categories from "../../Model/Items/Categories.js";
 import { StatusCodes } from "http-status-codes";
 import { validateProducts } from "../../Validates/Products.js";
 import { create_variant } from "./Create_variant.js";
-import { upload_img } from "../../middleware/upload.js";
 
 // create
 export async function Create_Product(req, res) {
   const { category_id } = req.body;
   const id_user = req.user.id;
-  const dataClient = req.body;
+  const dataRequest = req.body;
   try {
     if (category_id) {
       const category = await Categories.findById(category_id);
@@ -19,20 +18,11 @@ export async function Create_Product(req, res) {
         });
       }
     }
-
-    const images = req.files;
-    const img_upload = await upload_img(images);
-    const url_image_gallery = img_upload.map(
-      (uri_secure) => uri_secure.secure_url
-    );
     const allData = {
-      ...dataClient,
-      category_id: category_id ? category_id : checkNameCategory._id,
+      ...dataRequest,
       seller: id_user,
-      gallery: url_image_gallery,
-      variant: null,
     };
-    const { error } = validateProducts.validate(req.body, {
+    const { error } = validateProducts.validate(dataRequest, {
       abortEarly: false,
     });
     if (error) {
@@ -41,14 +31,13 @@ export async function Create_Product(req, res) {
         message,
       });
     }
-    if (dataClient.variant) {
-      const convert_variant = JSON.parse(dataClient.variant);
-      const variant = await create_variant(convert_variant);
-      const dataRequest = {
+    if (dataRequest.variant) {
+      const variant = await create_variant(dataRequest.variant);
+      const value = {
         ...allData,
         variant: variant._id,
       };
-      const data = await Products.create(dataRequest);
+      const data = await Products.create(value);
       if (!data || !data._id) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Đã có lỗi xảy ra, vui lòng thử lại",
@@ -56,7 +45,6 @@ export async function Create_Product(req, res) {
       }
       return res.status(StatusCodes.CREATED).json({
         message: "Đã thêm sản phẩm vào cửa hàng.",
-        data,
       });
     } else {
       const data = await Products.create(allData);
@@ -67,7 +55,6 @@ export async function Create_Product(req, res) {
       }
       return res.status(StatusCodes.CREATED).json({
         message: "Đã thêm sản phẩm vào cửa hàng.",
-        data,
       });
     }
   } catch (error) {
