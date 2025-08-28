@@ -17,41 +17,40 @@ import {
 import Form_variant from "./form_variant";
 import { useRouter } from "next/navigation";
 import Field_Form from "./field_form";
-import { useImgUploader } from "../../_lib/Custome_Hooks/useImgUploader";
-import { uploadMultipleImage } from "../../util/upload";
+import { Query_Category } from "../../_lib/Query_APIs/Items/Query";
+import { Controller } from "react-hook-form";
 
 const Form_product: React.FC<any> = ({ props, type }: any) => {
-  const { my_form, mutateAsync, isLoading, data_Category, loading_category } =
-    props;
+  const {
+    my_form,
+    formSubmit,
+    isLoading,
+    images,
+    preview,
+    pushImage,
+    removeImage,
+    setImages,
+    setPreview,
+  } = props;
+  const { data: data_Category, isLoading: loading_category } = Query_Category();
   const router = useRouter();
-  const { images, preview, pushImage, removeImage, setImages, setPreview } =
-    useImgUploader();
-  const [statusOptionsVariant, setStatusOptionsVariant] =
-    useState<any>("no-variant");
-  const [variant, setVariant] = useState<any>([
-    {
-      attribute: "",
-      value_variant: [
-        {
-          name_variant: "",
-          stock_variant: 0,
-          price_variant: 0,
-        },
-      ],
-    },
-  ]);
+  const [statusVariant, setStatusVariant] = useState<any>("no-variant");
+  useEffect(() => {
+    if (type === "update") {
+      const variant = my_form?.getValues("variant");
+      if (!variant) return;
 
-  // submit form
-  async function formSubmit(dataForm: any) {
-    const urlGallery = await uploadMultipleImage(images);
-    const { statusOptionsVariant, gallery, ...rest } = dataForm;
-    const data_form_item = {
-      ...rest,
-      gallery: urlGallery,
-    };
-    const result = await mutateAsync(data_form_item);
-    console.log(result);
-  }
+      if (variant?.length > 0) {
+        my_form.setValue("statusVariant", "variant");
+        setStatusVariant("variant");
+        my_form?.unregister(["price_product", "stock"]);
+      } else {
+        my_form.setValue("statusVariant", "no-variant");
+        my_form?.unregister("variant");
+      }
+    }
+  }, [type, my_form.watch("variant")]);
+
   // render image local
   const renderImg = (e: any) => {
     pushImage(e);
@@ -60,6 +59,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
       ...Array.from(e?.target?.files ?? []),
     ]);
   };
+
   return (
     <>
       <section className="flex flex-col gap-y-6 py-6 rounded pr-4 overflow-x-hidden">
@@ -71,7 +71,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-lg font-extrabold opacity-80">
-              {props ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
+              {type === "update" ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
             </span>
             <span className="text-gray-600 text-sm">
               {props
@@ -107,32 +107,29 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
                 Danh mục
               </label>
               <div className="mt-2">
-                <Select
-                  onValueChange={(value) => {
-                    my_form.setValue("category_id", value);
-                  }}
-                  {...my_form.register("category_id")}
-                >
-                  <SelectTrigger className="!h-auto pt-2 mt-1">
-                    <SelectValue placeholder="Chọn danh mục!" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {loading_category && <span>Loading...</span>}
-                    {!loading_category && (
-                      <SelectGroup>
-                        {data_Category?.data?.length > 0 ? (
-                          data_Category?.data?.map((item: any) => (
-                            <SelectItem key={item?._id} value={item?._id}>
-                              {item?.category_name}
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value=" ">Trống!</SelectItem>
-                        )}
-                      </SelectGroup>
-                    )}
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="category_id"
+                  control={my_form?.control}
+                  defaultValue={props?.category_id || ""}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Chọn danh mục!" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {loading_category && "Loading..."}
+                          {!loading_category &&
+                            data_Category?.data?.map((item: any) => (
+                              <SelectItem key={item._id} value={item._id}>
+                                {item.category_name}
+                              </SelectItem>
+                            ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
               <span className="absolute text-sm text-red-500 whitespace-nowrap top-[72px]">
                 {my_form?.formState?.errors?.category_id &&
@@ -154,7 +151,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
           <div className="flex flex-col gap-y-3">
             <label className="mb-2 text-sm opacity-90">Ảnh sản phẩm</label>
             <div className="flex flex-wrap gap-3 relative">
-              {preview.length > 0 &&
+              {preview?.length > 0 &&
                 preview?.map((uri: any, i: number) => (
                   <div
                     key={uri}
@@ -210,16 +207,20 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
               <span className="mb-2 text-sm opacity-90">Dữ liệu sản phẩm</span>
               <div>
                 <Select
-                  value={statusOptionsVariant}
+                  value={statusVariant}
                   onValueChange={(value) => {
-                    setStatusOptionsVariant(value);
-                    my_form?.setValue("statusOptionsVariant", value, {
-                      shouldValidate: true,
-                    });
+                    setStatusVariant(value);
+                    my_form?.setValue("statusVariant", value);
                   }}
                 >
                   <SelectTrigger className="!h-auto pt-2 mt-1">
-                    <SelectValue placeholder="Sản phẩm đơn giản" />
+                    <SelectValue
+                      placeholder={
+                        statusVariant === "no-variant"
+                          ? " Sản phẩm đơn giản"
+                          : "Sản phẩm có biến thể"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
@@ -235,7 +236,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
               </div>
             </section>
             {/* --- */}
-            {(statusOptionsVariant === "no-variant" || variant?.length < 1) && (
+            {statusVariant === "no-variant" && (
               <div className="flex gap-x-16">
                 <Field_Form
                   props={{
@@ -260,8 +261,8 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
                 />
               </div>
             )}
-            {statusOptionsVariant === "variant" && (
-              <Form_variant propsData={{ my_form }} />
+            {statusVariant === "variant" && (
+              <Form_variant propsData={{ my_form, type }} />
             )}
           </div>
 
@@ -271,9 +272,14 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
           <div className="w-full">
             <Button
               type="submit"
-              className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-800"
+              className={`
+                text-sm font-medium
+                ${type === "create" && "bg-indigo-600 hover:bg-indigo-800"}
+                ${type === "update" && "bg-yellow-600 hover:bg-yellow-800"}
+                `}
             >
-              {type}
+              {type === "create" && "Tạo sản phẩm mới"}
+              {type === "update" && "Cập nhật sản phẩm"}
             </Button>
           </div>
         </form>

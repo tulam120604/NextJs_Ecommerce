@@ -117,7 +117,7 @@ export async function create_product(item: any) {
     if (!res.ok) {
       return res;
     }
-    const data = await res.text();
+    const data = await res.json();
     return data;
   } catch (error) {
     return error;
@@ -196,10 +196,13 @@ export async function list_product_in_recycle(
 // update
 export async function update_product_dashboard(dataClient?: any) {
   try {
-    let uri = `${apiURi}/products/admin/${dataClient.id_item}`;
+    let uri = `${apiURi}/products/admin/${dataClient?._id}`;
     const res = await fetch(uri, {
       method: "PUT",
-      body: dataClient.data_item,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataClient),
       credentials: "include",
     });
     if (!res.ok) {

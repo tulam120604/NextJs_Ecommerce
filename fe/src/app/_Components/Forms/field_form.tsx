@@ -3,7 +3,15 @@
 import { Input } from "../ui/Shadcn/input";
 
 export default function Field_Form({ props }: any) {
-  const { text_label, htmlFor, type, registerValue, my_form, errors } = props;
+  const {
+    text_label,
+    htmlFor,
+    type,
+    registerValue,
+    my_form,
+    errors,
+    defaultValue,
+  } = props;
   return (
     <div className="space-y-1">
       <label htmlFor={htmlFor} className="mb-2 text-sm opacity-90">
@@ -21,11 +29,14 @@ export default function Field_Form({ props }: any) {
           id={htmlFor}
           type={type}
           className="border-transparent bg-[#F3F4F7] rounded"
+          defaultValue={defaultValue}
         />
       )}
 
       {errors && (
-        <div className="h-4 text-red-500 md:text-sm text-xs mt-1">{errors as string}</div>
+        <div className="h-4 text-red-500 md:text-sm text-xs mt-1">
+          {errors as string}
+        </div>
       )}
     </div>
   );

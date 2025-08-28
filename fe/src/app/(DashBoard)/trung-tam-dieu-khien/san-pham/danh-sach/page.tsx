@@ -15,7 +15,7 @@ import ProductTable from "../_components/product_table";
 import Pagination_Component from "../_components/Pagination";
 
 const Page = () => {
-  const socket = io("http://localhost:8888");
+  // const socket = io("http://localhost:8888");
   let id_user;
   const { data: user } = useAuthStore();
   const searchParams = useSearchParams();
@@ -27,18 +27,18 @@ const Page = () => {
     }
   }
   const { data, isLoading } = Query_List_Items_Dashboard(page, 20);
-  const { on_Submit, isLoading: loading_remove } = Mutation_Items({
+  const { mutateAsync, isLoading: loading_remove } = Mutation_Items({
     action: "HIDDEN_OR_RESTORE",
   });
   // close socket
-  useEffect(() => {
-    socket.on("connect_error", () => {
-      socket.disconnect();
-    });
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on("connect_error", () => {
+  //     socket.disconnect();
+  //   });
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [socket]);
 
   async function handle_toggle_item(idItem?: {
     id_item: string;
@@ -51,9 +51,9 @@ const Page = () => {
       path: idItem?.path,
       method: idItem?.method,
     };
-    const result: any = await on_Submit(item);
+    const result: any = await mutateAsync(item);
     message.success(result?.message);
-    socket.emit("send_message_delete_item", idItem);
+    // socket.emit("send_message_delete_item", idItem);
   }
   const isLoadingOverlayVisible = isLoading || loading_remove;
   // render items and attributes

@@ -3,7 +3,7 @@ import {
   update_product_dashboard,
   hidden_or_restore_product,
 } from "../../Services/Services_Items/Product";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaValidateFormProduct } from "@/src/app/(Auth)/validate";
@@ -14,10 +14,6 @@ export function Mutation_Items({ action }: { action: Action }) {
   // create form
   const my_form = useForm({
     resolver: yupResolver(schemaValidateFormProduct),
-    defaultValues: {
-      statusOptionsVariant: "no-variant",
-
-    },
   });
 
   const query_client = useQueryClient();
@@ -49,7 +45,6 @@ export function Mutation_Items({ action }: { action: Action }) {
       console.error(err);
     },
   });
-
 
   return {
     mutateAsync,

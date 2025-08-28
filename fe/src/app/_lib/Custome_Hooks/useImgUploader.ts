@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function useImgUploader(initialImages: any[] = []) {
+export function useLocalUploader(initialImages: any[] = []) {
   const [images, setImages] = useState<any[]>(initialImages);
   const [preview, setPreview] = useState<any[]>(initialImages);
 

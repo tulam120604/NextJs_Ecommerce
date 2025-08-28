@@ -59,10 +59,6 @@ export const schemaValidateAddress = yup.object().shape({
   wards: yup.string().required("Bắt buộc!"),
 });
 
-export const schemaValidateAttributeCatalog = yup.object().shape({
-  attribute: yup.string().required("Trường này là bắt buộc!"),
-});
-
 export const schemaValidateFormProduct = yup.object().shape({
   short_name: yup
     .string()
@@ -77,54 +73,4 @@ export const schemaValidateFormProduct = yup.object().shape({
   category_id: yup.string().required("Vui lòng chọn danh mục sản phẩm!"),
   gallery: yup.array().required("Vui lòng chọn ảnh sản phẩm!"),
   made_in: yup.string().required("Vui lòng nhập xuất xứ sản phẩm!"),
-
-  statusOptionsVariant: yup
-    .string()
-    .oneOf(["no-variant", "variant"])
-    .required(),
-
-  // no variant
-  price_product: yup.string().when("statusOptionsVariant", {
-    is: "no-variant",
-    then: (schema) => schema.required("Vui lòng nhập giá sản phẩm!"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-
-  stock: yup.string().when("statusOptionsVariant", {
-    is: "no-variant",
-    then: (schema) => schema.required("Vui lòng nhập số lượng!"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-
-  //   variant
-  variant: yup.array().when("statusOptionsVariant", {
-    is: "variant",
-    then: (schema) =>
-      schema.of(
-        yup.object().shape({
-          attribute: yup.string().required("Tên biến thể là bắt buộc!"),
-          value_variants: yup.array().of(
-            yup.object().shape({
-              stock_variant: yup
-                .string()
-                .test(
-                  "min",
-                  "Số lượng phải lớn hơn 0",
-                  (value) => Number(value) >= 0
-                )
-                .required("Nhập số lượng!"),
-              price_variant: yup
-                .string()
-                .test(
-                  "min",
-                  "Giá phải lớn hơn 0",
-                  (value) => Number(value) >= 0
-                )
-                .required("Nhập giá!"),
-            })
-          ),
-        })
-      ),
-    otherwise: (schema) => schema.notRequired(),
-  }),
 });

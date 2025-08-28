@@ -34,7 +34,7 @@ const schema_Products = new mongoose.Schema(
     },
     count_stock: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     sale_quantity: {
       type: Number,
