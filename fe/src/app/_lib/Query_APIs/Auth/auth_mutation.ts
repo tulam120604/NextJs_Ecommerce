@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaValidateRegister } from "@/src/app/(Auth)/validate";
+import { schemaValidateRegister } from "@/src/app/util/validate";
 import {
   create_Account,
   set_role_user_to_seller,

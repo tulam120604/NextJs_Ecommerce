@@ -40,7 +40,7 @@ export default function Page() {
     >
       <div
         className="grid lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 *:p-6 *:rounded-xl 
-      *:shadow-lg gap-4 my-6 *:bg-white"
+      *:shadow-lg gap-4 my-6 *:bg-white *:dark:bg-[#0F1629]"
       >
         <Box
           dataProps={{
@@ -98,7 +98,7 @@ export default function Page() {
           <Loading_Dots />
         </div>
       ) : ["admin_global", "admin_local"].includes(infor_user?.role) ? (
-        <div className="grid 2xl:grid-cols-[60%_39%] justify-between *:border">
+        <div className="grid 2xl:grid-cols-[60%_39%] justify-between *:border *:bg-white *:dark:bg-[#0F1629]">
           <ChartData />
           <Top_seller dataProps={data_caculate_revenue?.data} />
         </div>

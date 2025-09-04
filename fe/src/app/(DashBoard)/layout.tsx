@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import SideBarDashboard from "./SideBar";
@@ -5,7 +6,10 @@ import { Query_Notification } from "../_lib/Query_APIs/Notification/Query";
 import React, { useEffect, useState } from "react";
 import { useToast } from "../_Components/ui/use-toast";
 import { MessageContainer } from "../_Components/ui/message";
-import { Logs } from "lucide-react";
+import { Logs, User } from "lucide-react";
+import { useAuthStore } from "../_lib/Zustand/Store";
+import { useTheme } from "next-themes";
+import { ThemeToggle } from "../_Components/ui/toggleTheme";
 
 const Layout_Admin = ({
   children,
@@ -14,6 +18,8 @@ const Layout_Admin = ({
   const [count_bell, setCount_bell] = useState(0);
   const [open, setOpen] = useState<boolean>(false);
   const data = Query_Notification();
+  const { theme, setTheme } = useTheme();
+  const { data: user, isLoading, isFetching, isHydrated } = useAuthStore();
 
   useEffect(() => {
     document.title = "Trung tâm điều khiển";
@@ -36,10 +42,13 @@ const Layout_Admin = ({
     }
   }, [data, count_bell]);
 
+  const loading_user = isLoading || isFetching || isHydrated;
+  console.log(theme);
+
   return (
     <>
       <MessageContainer />
-      <div className="bg-[#ECF1F2] min-h-screen antialiased flex">
+      <div className="bg-[#ECF1F2] dark:bg-[#020517] min-h-screen antialiased flex">
         {/* Sidebar chỉ hiển thị ở màn hình >= xl */}
         <aside className="hidden xl:block w-[200px] min-h-screen">
           <SideBarDashboard />
@@ -50,7 +59,7 @@ const Layout_Admin = ({
           {/* Header */}
           <header
             className="sticky top-0 flex items-center justify-between 
-                       px-6 xl:h-[57.5px] h-10 border-b-2 bg-[#ECF1F2] z-20"
+                       px-6 xl:h-[57.5px] h-10 border-b-2 z-20 bg-[#ECF1F2] dark:bg-[#020517]"
           >
             {/* mobile */}
             <button className="xl:hidden" onClick={() => setOpen(!open)}>
@@ -72,7 +81,31 @@ const Layout_Admin = ({
               />
             </div>
 
-            <h1 className="text-gray-800 text-lg font-semibold">Dashboard</h1>
+            <div className="flex justify-between w-full">
+              <h1 className="text-gray-800 text-lg font-semibold dark:text-red-500">
+                Dashboard
+              </h1>
+              <div className="flex gap-x-4">
+                {/* toggle theme */}
+                <ThemeToggle/>
+
+                {/* avatar */}
+                {user?.avatar ? (
+                  <img
+                    width={50}
+                    height={50}
+                    src={user?.avatar}
+                    className="rounded-full w-10 h-10"
+                    alt="."
+                  />
+                ) : (
+                  <User
+                    strokeWidth={1.5}
+                    className="relative mx-auto -translate-y-1/2 top-1/2"
+                  />
+                )}
+              </div>
+            </div>
           </header>
 
           {/* Main content */}

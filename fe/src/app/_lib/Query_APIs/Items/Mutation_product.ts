@@ -6,7 +6,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schemaValidateFormProduct } from "@/src/app/(Auth)/validate";
+import { schemaValidateFormProduct } from "@/src/app/util/validate";
 
 type Action = "ADD" | "EDIT" | "HIDDEN_OR_RESTORE";
 

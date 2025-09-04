@@ -15,25 +15,38 @@ const verifyToken = async (token: string) => {
 };
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const url = request.nextUrl;
+  const pathname = url.pathname;
+  const token = request.cookies.get("access_token")?.value || "";
+
+  const verifyTokenResult: any = await verifyToken(token);
+  const role = verifyTokenResult?.payload?.role;
+  const userId = verifyTokenResult?.payload?.userId;
+
+  // user đã login thì chặn vào /tai-khoan
+  if (userId && pathname.startsWith("/tai-khoan")) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  // role cho /trung-tam-dieu-khien
+  console.log(pathname);
   if (pathname.startsWith("/trung-tam-dieu-khien")) {
-    const token = request.cookies.get("access_token");
-    const verifyTokenResult: any = await verifyToken(token?.value || "");
-    const role = verifyTokenResult?.payload?.role;
     if (!role || !allowRole.includes(role)) {
-      return NextResponse.redirect(new URL("/", request.url), 302);
+      return NextResponse.redirect(new URL("/", request.url));
     }
+
+    const sellerAllowPaths = [
+      "/trung-tam-dieu-khien/bang-dieu-khien",
+      "/trung-tam-dieu-khien/san-pham",
+      "/trung-tam-dieu-khien/don-hang",
+    ];
+
     if (
       role === "seller" &&
-      !(
-        pathname.startsWith("/trung-tam-dieu-khien/bang-dieu-khien") ||
-        pathname.startsWith("/trung-tam-dieu-khien/san-pham") ||
-        pathname.startsWith("/trung-tam-dieu-khien/don-hang")
-      )
+      !sellerAllowPaths?.some((p) => pathname.startsWith(p))
     ) {
       return NextResponse.redirect(
-        new URL("/trung-tam-dieu-khien/bang-dieu-khien/tong-quan", request.url),
-        302
+        new URL("/trung-tam-dieu-khien/bang-dieu-khien/tong-quan", request.url)
       );
     }
   }
@@ -42,5 +55,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/trung-tam-dieu-khien/:path*"],
+  matcher: ["/tai-khoan", "/trung-tam-dieu-khien/:path*"],
 };

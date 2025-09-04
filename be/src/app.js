@@ -1,24 +1,25 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
-import ConnectDB from './Connect/database.js';
-import RoutesProducts from './Routes/Items/Products.js';
-import RoutesCategories from './Routes/Items/Categories.js';
-import RoutesAuth from './Routes/Auth/Auth.js';
-import RoutesCart from './Routes/Cart/Cart.js';
-import Routes_upload from './Routes/upload.js';
-import Routes_Order from './Routes/Order/Order.js';
-import RoutesFeedback from './Routes/Feedback/Feedback.js';
-import RoutesNotification from './Routes/Notification/Notification.js';
-import Router_analytics from './Routes/Analytics/Analytics.js';
-import { handle_socket_event } from './socket/handle_socket';
-import { createServer } from 'node:http'
-import { Server } from 'socket.io';
-import RoutesAddress from './Routes/Auth/Address.js';
-import RoutesPayment from './Routes/Payment/Payment.js';
-import Routes_Favorites from './Routes/Items/Favorites.js';
-import RoutesVariants from './Routes/Items/Variants.js';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import ConnectDB from "./Connect/database.js";
+import RoutesProducts from "./Routes/Items/Products.js";
+import RoutesCategories from "./Routes/Items/Categories.js";
+import RoutesAuth from "./Routes/Auth/Auth.js";
+import RoutesCart from "./Routes/Cart/Cart.js";
+import Routes_upload from "./Routes/upload.js";
+import Routes_Order from "./Routes/Order/Order.js";
+import RoutesFeedback from "./Routes/Feedback/Feedback.js";
+import RoutesNotification from "./Routes/Notification/Notification.js";
+import Router_analytics from "./Routes/Analytics/Analytics.js";
+import { handle_socket_event } from "./socket/handle_socket";
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+import RoutesAddress from "./Routes/Auth/Address.js";
+import RoutesPayment from "./Routes/Payment/Payment.js";
+import Routes_Favorites from "./Routes/Items/Favorites.js";
+import RoutesVariants from "./Routes/Items/Variants.js";
+import Router_Banner from "./Routes/Banner/Banner.js";
 
 dotenv.config();
 const app = express();
@@ -28,53 +29,53 @@ app.use(express.json());
 //     credentials: true
 // }));
 app.use(
-    cors({
-      origin: "http://localhost:5000",
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    })
-  );
-app.use(cookieParser())
-
+  cors({
+    origin: "http://localhost:5000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  })
+);
+app.use(cookieParser());
 
 ConnectDB(process.env.DB_MONGO);
 
 // item
-app.use('/v1', RoutesProducts);
-app.use('/v1', RoutesCategories);
+app.use("/v1", RoutesProducts);
+app.use("/v1", RoutesCategories);
 
 // variant
-app.use('/v1', RoutesVariants)
-
+app.use("/v1", RoutesVariants);
 
 // authen
-app.use('/v1', RoutesAuth);
-app.use('/v1', Routes_upload);
+app.use("/v1", RoutesAuth);
+app.use("/v1", Routes_upload);
 
 // cart
-app.use('/v1', RoutesCart);
+app.use("/v1", RoutesCart);
 
 // order
-app.use('/v1', Routes_Order);
+app.use("/v1", Routes_Order);
 
 // feedback
-app.use('/v1', RoutesFeedback);
+app.use("/v1", RoutesFeedback);
 
 // notification
-app.use('/v1', RoutesNotification)
+app.use("/v1", RoutesNotification);
 
-// address 
-app.use('/v1', RoutesAddress)
+// address
+app.use("/v1", RoutesAddress);
 
 // payment
-app.use('/v1', RoutesPayment)
+app.use("/v1", RoutesPayment);
 
 // favorite
-app.use('/v1', Routes_Favorites)
+app.use("/v1", Routes_Favorites);
 
 // analytics
-app.use('/v1', Router_analytics)
+app.use("/v1", Router_analytics);
 
+// banner
+app.use("/v1", Router_Banner);
 
 // web socket
 // const server = createServer(app)
@@ -94,6 +95,5 @@ app.use('/v1', Router_analytics)
 // app.listen(process.env.PORT_SOCKET, () => {
 //     console.log('server running!');
 // })
-
 
 export const viteNodeApp = app;

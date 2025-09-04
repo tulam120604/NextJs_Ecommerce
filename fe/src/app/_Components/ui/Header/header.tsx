@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { Search_Component_Client } from "../../Forms/search";
+import { Search_component } from "../../Forms/search";
 import {
   BadgeCheck,
   BadgeDollarSign,
@@ -33,7 +33,7 @@ const Header = () => {
     <>
       <TopBar props={{ data, isLoading, isFetching, isHydrated }} />
       <header
-        className="w-full bg-white z-[2000] duration-300 sticky top-0 lg:relative overflow-hidden 
+        className="w-full bg-white dark:bg-[#0F1629] z-[2000] duration-300 sticky top-0 lg:relative overflow-hidden 
        shadow-lg lg:shadow-none"
       >
         {/* logo, search and cart */}
@@ -57,7 +57,7 @@ const Header = () => {
             </span>
           </button>
           {/* search form */}
-          <Search_Component_Client />
+          <Search_component/>
           {/* auth actions */}
           <Auth_actions props={{ data, isLoading, isFetching, isHydrated }} />
         </div>
@@ -66,7 +66,7 @@ const Header = () => {
       {/* about us */}
       <div className="border-y w-full -z-1">
         <section
-          className="hidden_scroll mx-auto max-w-[1440px] w-[95vw] overflow-x-auto *:whitespace-nowrap bg-white dark:bg-red-500 flex 
+          className="hidden_scroll mx-auto max-w-[1440px] w-[95vw] overflow-x-auto *:whitespace-nowrap bg-white dark:bg-[#020817] flex 
         *:flex items-center *:items-center *:gap-x-1 *:text-xs py-3 *:cursor-default"
         >
           {/* 1 */}

@@ -19,7 +19,7 @@ export default function Table_item({ dataProps }: any) {
       {/* ===== Header desktop ===== */}
       <div className="hidden lg:block overflow-x-auto">
         <div
-          className="grid bg-[#F1F2F4] p-4 rounded-lg font-semibold text-gray-800 min-w-[760px]"
+          className="grid bg-gray-100 dark:bg-[#0F1629] p-4 rounded-lg font-semibold opacity-80 min-w-[760px]"
           style={{ gridTemplateColumns: COLS }}
         >
           <span>Sản phẩm</span>
@@ -36,7 +36,7 @@ export default function Table_item({ dataProps }: any) {
           return (
             <div
               key={item._id}
-              className="relative grid items-center bg-white mt-3 p-4 rounded-lg min-w-[760px]"
+              className="relative grid items-center bg-gray-100 dark:bg-[#0F1629] mt-3 p-4 rounded-lg min-w-[760px]"
               style={{ gridTemplateColumns: COLS }}
             >
               <Het_hang dataProps={item} />
@@ -102,7 +102,7 @@ export default function Table_item({ dataProps }: any) {
           return (
             <div
               key={item._id}
-              className="relative bg-white rounded-lg p-3 flex flex-col gap-3"
+              className="relative bg-gray-100 dark:bg-[#0F1629] rounded-lg p-3 flex flex-col gap-3"
             >
               <Het_hang dataProps={item} />
 
@@ -111,7 +111,7 @@ export default function Table_item({ dataProps }: any) {
                   <Image
                     width={84}
                     height={84}
-                    className="bg-[#f2f2f2] rounded w-20 h-20 object-cover"
+                    className="bg-gray-100 dark:bg-[#0F1629] rounded w-20 h-20 object-cover"
                     src={product?.gallery?.[0]}
                     alt={product?.short_name || "product"}
                   />

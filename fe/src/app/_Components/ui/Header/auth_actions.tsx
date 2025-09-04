@@ -14,11 +14,11 @@ const Auth_actions = ({ props }: any) => {
   const { isVisible } = useStoreAddToCart();
   function CountCart() {
     const { data } = Get_Items_Cart();
-    let quantity_item_in_cart;
+    let quantity_item_in_cart = [];
     if (data?.items) {
       quantity_item_in_cart = data?.items?.filter(
         (item: any) => item?.product_id !== null && item
-      );
+      ) || [];
     }
     return (
       <>
@@ -39,7 +39,7 @@ const Auth_actions = ({ props }: any) => {
     if (data?.user_name) {
       routing.push("/gio-hang");
     } else {
-      routing.push("/dang-nhap");
+      routing.push("/tai-khoan");
     }
   }
 
@@ -62,28 +62,21 @@ const Auth_actions = ({ props }: any) => {
       >
         {data?.avatar ? (
           <img
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             src={data?.avatar}
-            className="rounded-full w-10 h-10"
-            alt="avatar"
+            className="rounded-full !w-10 !h-10"
+            alt="."
           />
         ) : (
           <User strokeWidth={1.5} className="relative mx-auto -translate-y-1/2 top-1/2"/>
         )}
-        {/* <span className="text-sm translate-y-1">
-          {data?.user_name
-            ? data?.user_name.length > 15
-              ? data?.user_name.slice(0, 15) + "..."
-              : data?.user_name
-            : "Đăng nhập"}
-        </span> */}
       </Link>
 
       {/* cart */}
       <button
         onClick={handleCart}
-        className="flex gap-x-2 items-end relative group cursor-pointer bg-[#FFF1EE] rounded 
+        className="flex gap-x-2 items-end relative group cursor-pointer bg-[#FFF1EE] dark:bg-[#141016] rounded 
         text-gray-600 p-2"
       >
         <div className="flex z-[1] relative rounded duration-200">

@@ -208,7 +208,8 @@ export async function update_product_dashboard(dataClient?: any) {
     if (!res.ok) {
       console.warn("Kiem tra lai server hoac internet!");
     }
-    return res;
+    const data = await res.json();
+    return data;
   } catch (error) {
     return error;
   }

@@ -81,3 +81,42 @@ export function Search_Component_Client() {
     </div>
   );
 }
+
+export function Search_component() {
+  return (
+    <div className="relative w-full">
+      <form className={`relative w-full *:h-10 gap-x-2 duration-300`}>
+        <input
+          type="text"
+          className="border bg-white dark:bg-[#0F1629] rounded w-full px-3 text-sm !font-light outline-none opacity-90"
+          placeholder="Tìm kiếm sản phẩm..."
+          // onChange={(e) => setKey_search(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="absolute top-[12%] right-0 !h-3/4 duration-300 cursor-pointer text-gray-800 border-l border-gray-300 px-4"
+        >
+          <Search color="#0A68FF" />
+        </button>
+      </form>
+        {/* <div className="bg-white w-[87vw] absolute py-2 px-5 rounded-lg text-gray-900 text-sm flex flex-col gap-y-3 shadow">
+            <Link
+              href={`/${item?._id}`}
+              key={item?._id}
+              className="grid grid-cols-[50px_auto] gap-x-4"
+              onClick={() => setValue_search([])}
+            >
+              <Image
+                key={item?.short_name}
+                width={50}
+                height={50}
+                className="h-[50px] border"
+                alt="Loading..."
+                src={item?.gallery[0]}
+              />
+              <span>{item?.short_name}</span>
+            </Link>
+        </div> */}
+    </div>
+  );
+}

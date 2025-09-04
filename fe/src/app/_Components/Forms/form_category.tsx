@@ -67,10 +67,10 @@ const Form_add_category = ({ setCategory_form }: any) => {
       )}
       <form
         onSubmit={handleSubmit(onAdd_category)}
-        className="flex bg-white flex-col text-gray-800 gap-y-3 fixed border border-gray-300 shadow
+        className="flex bg-white dark:bg-[#0F1629] flex-col gap-y-3 fixed border border-gray-300 shadow
          z-[7] top-1/2 left-1/2 -translate-x-1/2 rounded-xl -translate-y-1/2 px-10 py-5 lg:px-20 lg:py-10"
       >
-        <strong className="text-gray-700 text-lg">
+        <strong className="opacity-90 text-lg">
           Thêm mới danh mục sản phẩm
         </strong>
         <label htmlFor="category_name">Tên danh mục</label>
@@ -80,7 +80,7 @@ const Form_add_category = ({ setCategory_form }: any) => {
           {...register("category_name")}
           className=" py-2 px-4 border border-gray-300 rounded"
         />
-        <div className="flex flex-col text-gray-800 gap-y-3">
+        <div className="flex flex-col gap-y-3">
           <label htmlFor="category_img">Ảnh</label>
           <div className="flex justify-between">
             {uri_image_upload && (

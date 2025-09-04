@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "../../../_Components/ui/Shadcn/button";
 import { useForm } from "react-hook-form";
 import { Mutation_Order } from "../../../_lib/Query_APIs/Order/Mutation";
-import { schemaValidateOrder } from "../../../(Auth)/validate";
+import { schemaValidateOrder } from "../../../util/validate";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Loading_Dots from "../../../_Components/Loadings/Loading_Dots";
 import { Label } from "@/src/app/_Components/ui/Shadcn/label";
@@ -189,7 +189,7 @@ const Page_checkout = () => {
               {check_inventory?.length > 0 ? (
                 <>
                   {check_inventory?.length > 0 ? (
-                    <div className="*:text-gray-800">
+                    <div>
                       <Table_item dataProps={check_inventory} />
                       <div className="flex justify-between whitespace-nowrap text-lg my-4"></div>
                     </div>
@@ -202,7 +202,8 @@ const Page_checkout = () => {
               )}
             </div>
             {/* infor */}
-            <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[auto_450px] gap-x-10 gap-y-6 *:bg-white *:p-4 *:rounded">
+            <div className="max-w-[1440px] mx-auto w-[95vw] grid lg:grid-cols-[auto_450px] gap-x-10 gap-y-6 
+            *:bg-gray-100 *:dark:bg-[#0F1629] *:p-4 *:rounded">
               <div>
                 <span className="flex mb-[1px] items-center justify-between pb-6">
                   Thông tin nhận hàng
@@ -288,7 +289,7 @@ const Page_checkout = () => {
               </div>
               <div>
                 <div>
-                  <span className="text-gray-700">Tổng tiền :</span>
+                  <span>Tổng tiền :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600">
                     {total_price?.toLocaleString("vi", {
                       style: "currency",
@@ -297,7 +298,7 @@ const Page_checkout = () => {
                   </span>
                 </div>
                 <div className="my-2">
-                  <span className="text-gray-700">Phí vận chuyển :</span>
+                  <span>Phí vận chuyển :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600">
                     {0?.toLocaleString("vi", {
                       style: "currency",
@@ -306,7 +307,7 @@ const Page_checkout = () => {
                   </span>
                 </div>
                 <div>
-                  <span className="text-gray-700">Voucher :</span>
+                  <span>Voucher :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600">
                     {0?.toLocaleString("vi", {
                       style: "currency",
@@ -315,7 +316,7 @@ const Page_checkout = () => {
                   </span>
                 </div>
                 <div className="my-2">
-                  <span className="text-gray-700">Tổng thanh toán :</span>
+                  <span>Tổng thanh toán :</span>
                   <span className="w-full ml-1 whitespace-nowrap text-red-600 text-2xl">
                     {(+total_price)?.toLocaleString("vi", {
                       style: "currency",

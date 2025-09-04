@@ -30,7 +30,7 @@ export default function Table_Cart({ dataProps }: any) {
         <div className="min-w-[980px]">
           {/* Header */}
           <div
-            className="grid items-center bg-[#F3F4F6] py-4 px-2 rounded-lg text-gray-700 font-semibold"
+            className="grid items-center py-4 px-2 opacity-90 font-semibold border-b"
             style={{ gridTemplateColumns: COLS }}
           >
             <Checkbox checked={allChecked} />
@@ -51,7 +51,7 @@ export default function Table_Cart({ dataProps }: any) {
               return (
                 <div
                   key={item?._id}
-                  className="relative grid items-center bg-white mt-3 py-4 px-2 rounded-lg text-sm text-gray-800"
+                  className="relative grid items-center mt-3 py-4 px-2 text-sm border-b"
                   style={{ gridTemplateColumns: COLS }}
                 >
                   <Het_hang dataProps={item} />
@@ -95,14 +95,14 @@ export default function Table_Cart({ dataProps }: any) {
                       </div>
                     )}
 
-                    <div className="flex gap-3 items-center text-gray-600 text-xs">
+                    <div className="flex gap-3 items-center opacity-80 text-xs">
                       {product?.seller?.user_name && (
                         <span className="truncate">{product?.seller?.user_name}</span>
                       )}
                       {product?.seller?._id && (
                         <Link
                           href={`cua-hang-truc-tuyen?id=${product?.seller?._id}`}
-                          className="flex items-center gap-1 underline hover:text-black"
+                          className="flex items-center gap-1 underline"
                         >
                           <Store className="h-4" />
                           Ghé thăm

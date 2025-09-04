@@ -9,12 +9,13 @@ import { Mutation_variant } from "@/src/app/_lib/Query_APIs/Items/Mutation_varia
 import { Detail_Item_Dashboard } from "@/src/app/_lib/Query_APIs/Items/Query";
 import { Mutation_Upload } from "@/src/app/util/upload";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Page = () => {
   const param = useParams();
   const router = useRouter();
   const id_item = param["cap-nhat-san-pham"] as string;
+  const [urlGalleryItem, setUrlGalleryItem] = useState<string[]>([]);
   const { mutateAsync: mutateUpload, isLoading: loadingUpload } =
     Mutation_Upload("multiple");
   const { images, preview, pushImage, removeImage, setImages, setPreview } =
@@ -42,18 +43,22 @@ const Page = () => {
         variant: data?.variant?.variants || [],
       });
       setPreview(data?.gallery);
+      setUrlGalleryItem(data?.gallery);
     }
   }, [data]);
 
+  const removeGallery = (index: number) => {
+    removeImage(index);
+    setUrlGalleryItem((prev) => prev.filter((_, i) => i !== index));
+  };
+
   async function formSubmit(dataForm: any) {
-    console.log(dataForm?.gallery);
-    let urlGallery = preview;
+    let urlGallery = urlGalleryItem;
     if (images?.length > 0) {
       const urlUpload: any = await mutateUpload(images);
-      console.log(urlUpload)
-      urlGallery = [...preview, ...urlUpload];
+      urlGallery = [...urlGalleryItem, ...urlUpload];
     }
-    console.log(urlGallery)
+    console.log(urlGallery);
     let payload = {
       ...dataForm,
       gallery: urlGallery,
@@ -68,7 +73,6 @@ const Page = () => {
       await remove_variant(variantId);
     }
     const result = await mutateAsync(payload);
-    console.log(result);
     if (!result?.error) {
       message.success(result?.message);
       router.push("/trung-tam-dieu-khien/san-pham/danh-sach");
@@ -88,9 +92,10 @@ const Page = () => {
     images,
     preview,
     pushImage,
-    removeImage,
+    removeImage: removeGallery,
     setImages,
     setPreview,
+    category: data?.category_id?._id,
   };
   if (loading_detail_item) return <Loading_Dots />;
   return <MyForm props={props} type="update" />;

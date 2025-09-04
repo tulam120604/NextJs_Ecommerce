@@ -13,7 +13,10 @@ async function uploadSingleImage(file: any) {
       body: formData,
     });
     if (!res.ok) {
-      return "Đã xảy ra lỗi, vui lòng kiểm tra và thử lại!";
+      return {
+        error : true,
+        message : "Upload image fail!"
+      };
     }
     const data = await res.json();
     return data?.secure_url as string;
@@ -36,7 +39,7 @@ async function uploadMultipleImage(file: any) {
 
 export function Mutation_Upload(action: "single" | "multiple") {
   const { mutateAsync, ...rest } = useMutation({
-    mutationFn: async (file : any) => {
+    mutationFn: async (file: any) => {
       switch (action) {
         case "single":
           return await uploadSingleImage(file);

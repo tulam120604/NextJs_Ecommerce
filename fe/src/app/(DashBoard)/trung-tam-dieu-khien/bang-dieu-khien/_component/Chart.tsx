@@ -31,9 +31,9 @@ const chartConfig = {
 
 export function ChartData() {
   return (
-    <Card className="rounded-lg bg-white shadow-lg">
+    <Card className="rounded-lg shadow-lg">
       <CardHeader className="mb-4">
-        <CardTitle className="text-base text-gray-700">Tổng quan</CardTitle>
+        <CardTitle className="text-base opacity-80">Tổng quan</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="max-h-[50vh] w-full">

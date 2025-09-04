@@ -20,4 +20,5 @@ export const validateProducts = Joi.object({
     stock: Joi.optional(),
     category_id: Joi.string().optional(),
     made_in: Joi.string().optional(),
+    statusVariant: Joi.optional()
 }) 

@@ -47,7 +47,7 @@ const Btn_up = ({ id_props }: any) => {
           <Loading_Overlay />
           <Button
             type="button"
-            className="border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 duration-200"
+            className="border bg-gray-100 dark:bg-[#0F1629] px-2 hover:bg-gray-200 duration-200 text-gray-800 dark:text-gray-200"
           >
             &#43;
           </Button>
@@ -56,8 +56,8 @@ const Btn_up = ({ id_props }: any) => {
         <Button
           type="button"
           onClick={() => up_quantity(id_props)}
-          className="border-none bg-[#F5F5FA] px-2 hover:bg-gray-200 
-                duration-200 text-gray-700"
+          className="border bg-gray-100 dark:bg-[#0F1629] px-2 hover:bg-gray-200 
+                duration-200 text-gray-800 dark:text-gray-200"
         >
           &#43;
         </Button>

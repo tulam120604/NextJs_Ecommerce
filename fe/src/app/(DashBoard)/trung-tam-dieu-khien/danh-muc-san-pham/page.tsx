@@ -14,7 +14,6 @@ const Page = () => {
   function handle_category() {
     setCategory_form(!category_form);
   }
-  console.log(data?.data);
   return (
     <Suspense
       fallback={
@@ -60,7 +59,19 @@ const Page = () => {
         </div>
       </div>
 
-      {isLoading ? <Loading_Overlay /> : <CategoryTable data={data?.data} />}
+      {isLoading ? (
+        <Loading_Overlay />
+      ) : (
+        <>
+          {data?.data ? (
+            <CategoryTable data={data?.data} />
+          ) : (
+            <section className="h-[70vh] grid place-content-center text-center text-sm">
+              Không có dữ liệu!
+            </section>
+          )}
+        </>
+      )}
     </Suspense>
   );
 };

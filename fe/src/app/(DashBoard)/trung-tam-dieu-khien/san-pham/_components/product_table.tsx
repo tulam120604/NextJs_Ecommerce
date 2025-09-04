@@ -24,10 +24,10 @@ import React from "react";
 
 export default function ProductTable({ dataProps }: any) {
   return (
-    <div className="overflow-x-auto rounded border bg-white">
+    <div className="overflow-x-auto rounded border  bg-white dark:bg-[#0F1629]">
       {/* header */}
       <div
-        className={`grid grid-cols-9 md:grid-cols-10 text-gray-900 font-semibold bg-gray-100 border-b 
+        className={`grid grid-cols-9 md:grid-cols-10 opacity-85 font-semibold border-b 
         gap-2 items-center p-3 text-xs md:text-sm`}
       >
         {!dataProps?.operation && <span className="hidden md:block">#</span>}
@@ -50,8 +50,8 @@ export default function ProductTable({ dataProps }: any) {
         >
           {/* main row */}
           <div
-            className={`grid grid-cols-9 md:grid-cols-10 text-gray-700 text-xs md:text-sm 
-            gap-2 items-center p-3 hover:bg-gray-50 transition`}
+            className={`grid grid-cols-9 md:grid-cols-10 opacity-85 text-xs md:text-sm 
+            gap-2 items-center p-3 transition`}
           >
             {!dataProps?.operation && (
               <span className="hidden md:block">{i + 1}</span>
@@ -203,7 +203,7 @@ export default function ProductTable({ dataProps }: any) {
                   <div
                     key={item?._id + idx}
                     className="grid grid-cols-9 md:grid-cols-10 text-xs md:text-sm gap-2 
-                    items-center p-3 bg-gray-50 border-t"
+                    items-center p-3 border-t"
                   >
                     {!dataProps?.operation && <div />} {/* cột index trống */}
 

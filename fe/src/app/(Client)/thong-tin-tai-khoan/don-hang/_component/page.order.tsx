@@ -135,7 +135,7 @@ const Page_order = () => {
   return (
     <div className='w-full relative'>
       <div className='flex hidden_scroll z-[1] gap-x-10 overflow-x-auto absolute w-full *:w-full *:py-4 rounded-t
-      *:px-2 items-center *:bg-none *:text-sm *:border-b-2 *:border-white *:whitespace-nowrap top-0 bg-white'>
+      *:px-2 items-center *:bg-none *:text-sm *:border-b-2 *:whitespace-nowrap top-0 bg-gray-100 dark:bg-[#0F1629]'>
         {
           Array.from({ length: 7 }, (_: any, i: number) =>
             <button key={i} onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' 
@@ -148,7 +148,7 @@ const Page_order = () => {
           )
         }
       </div>
-      <div className='bg-[#F5F5FA] w-full h-4 pt-16' />
+      <div className='bg-[#F5F5FA] dark:bg-black w-full h-4 pt-16' />
       {
         isLoading || loading_user && <div className='mt-20'><Loading_Dots /></div>
       }
@@ -156,7 +156,7 @@ const Page_order = () => {
         data?.data_order &&
           data?.data_order?.docs.length > 0 ?
           data?.data_order?.docs?.map((item: any) =>
-            <div className='mb-4 px-2 lg:px-8 rounded bg-white pb-4' key={item?._id}>
+            <div className='mb-4 px-2 lg:px-8 rounded bg-gray-100 dark:bg-[#0F1629] pb-4' key={item?._id}>
               <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
               <div className='*:text-gray-700 -mt-4'>
                 <Table_item dataProps={item?.items_order} />
@@ -213,7 +213,7 @@ const Page_order = () => {
             </div>
           )
           :
-          <div className='grid place-items-center h-[70vh] rounded bg-white '>
+          <div className='grid place-items-center h-[70vh] rounded bg-gray-100 dark:bg-[#0F1629]'>
             <div className='flex flex-col items-center gap-y-6 text-gray-700'>
               <Image width={100} height={100} src='/Images/document_icon.png' alt=''></Image>
               <span className='flex items-center'>Chưa có đơn hàng nào!<Link className='underline mx-1' href={'/san-pham'}> Đi mua ngay</Link></span>

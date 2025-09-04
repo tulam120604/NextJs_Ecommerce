@@ -8,8 +8,7 @@ const Box = ({ dataProps }: any) => {
       <div className="flex justify-between items-center relative">
         <span>{dataProps?.text} </span>
         <div
-          className="absolute right-0 p-2 rounded-xl"
-          style={{ backgroundColor: "#E2EDFF" }}
+          className="absolute right-0 p-2 rounded-xl bg-[#E2EDFF] dark:bg-[#142652]"
         >
           {dataProps?.icon}
         </div>

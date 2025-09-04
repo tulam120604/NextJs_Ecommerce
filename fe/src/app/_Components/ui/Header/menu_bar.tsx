@@ -16,7 +16,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
 
   const pathName = usePathname();
   return (
-    <div className="bg-white">
+    <div className="bg-gray-100 dark:bg-[#0F1629]">
       <div
         className="w-[95vw] mx-auto flex justify-between *:flex *:items-center 
         *:flex-col *:gap-y-1 *:text-xs py-2 border-t z-[2]"
@@ -26,7 +26,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
           className={
             pathName === "/" && !popup_catalog_product
               ? "text-sky-500"
-              : "text-gray-700"
+              : "text-gray-700 dark:text-gray-200"
           }
           onClick={() => handle_popup_catalog_product(false)}
         >
@@ -36,7 +36,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
 
         <button
           className={`${
-            popup_catalog_product ? "text-sky-500" : "text-gray-700"
+            popup_catalog_product ? "text-sky-500" : "text-gray-700 dark:text-gray-200"
           }`}
           onClick={() => handle_popup_catalog_product(!popup_catalog_product)}
         >
@@ -54,7 +54,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
             pathName === "/thong-tin-tai-khoan/san-pham-yeu-thich" &&
             !popup_catalog_product
               ? "text-sky-500"
-              : "text-gray-700"
+              : "text-gray-700 dark:text-gray-200"
           }
           onClick={() => handle_popup_catalog_product(false)}
         >
@@ -70,7 +70,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
             pathName === "/thong-tin-tai-khoan/thong-bao" &&
             !popup_catalog_product
               ? "text-sky-500"
-              : "text-gray-700"
+              : "text-gray-700 dark:text-gray-200"
           }
           onClick={() => handle_popup_catalog_product(false)}
         >
@@ -86,7 +86,7 @@ export default function Menu_bar_mobile({ dataProps }: any) {
             pathName === "/thong-tin-tai-khoan/thong-tin" &&
             !popup_catalog_product
               ? "text-sky-500"
-              : "text-gray-700"
+              : "text-gray-700 dark:text-gray-200"
           }
           onClick={() => handle_popup_catalog_product(false)}
         >

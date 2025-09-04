@@ -26,7 +26,7 @@ export default function Top_seller({ dataProps }: any) {
   return (
     <div className="rounded-lg bg-white shadow-lg h-full">
       <CardHeader>
-        <CardTitle className="text-base text-gray-700 tracking-[0.5]">
+        <CardTitle className="text-base opacity-80">
           Top doanh thu đối tác
         </CardTitle>
       </CardHeader>

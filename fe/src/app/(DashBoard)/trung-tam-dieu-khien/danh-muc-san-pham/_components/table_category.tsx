@@ -14,7 +14,7 @@ import {
 
 export default function CategoryTable({ data }: any) {
   return (
-    <Table className="rounded border bg-white overflow-hidden">
+    <Table className="rounded border bg-white dark:bg-[#0F1629] overflow-hidden">
       <TableHeader>
         <TableRow className="*:font-semibold opacity-90 *:border-none">
           <TableHead>Ảnh</TableHead>
@@ -27,7 +27,7 @@ export default function CategoryTable({ data }: any) {
       </TableHeader>
       <TableBody>
         {data?.map((item: any, idx: number) => (
-          <TableRow key={idx}>
+          <TableRow key={idx} className="*:border-gray-200 *:dark:border-gray-700">
             <TableCell>
               <div>
                 <Image

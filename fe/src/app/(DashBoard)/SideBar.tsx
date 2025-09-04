@@ -61,7 +61,7 @@ const SideBarDashboard = () => {
     arr = arr.filter((_: any, index: number) => ![2, 5].includes(index));
   }
   return (
-    <div className="fixed top-0 border-2 h-full w-[200px] z-40 bg-[#ECF1F2]">
+    <div className="fixed top-0 border-2 h-full w-[200px] z-40 ">
       <Link
         href={"/"}
         className="!flex !items-center justify-center px-4 xl:h-14 h-10 border-b-2"
@@ -80,7 +80,7 @@ const SideBarDashboard = () => {
         </span>
       </Link>
       <div
-        className="*:relative flex flex-col text-gray-700 gap-y-1 *:items-center 
+        className="*:relative flex flex-col gap-y-1 *:items-center 
       *:whitespace-nowrap font-regular mt-4 px-2"
       >
         {arr?.map((item: any) => {
@@ -90,8 +90,8 @@ const SideBarDashboard = () => {
               key={item?.pathName}
               href={item?.pathName}
               className={`${
-                isActive ? "bg-white" : "hover:bg-white"
-              }  px-4  py-2.5 p-1.5 rounded-xl flex gap-2`}
+                isActive ? "bg-white dark:bg-[#8440ED]" : "hover:bg-white dark:hover:bg-[#8440ED]"
+              }  px-4  py-2.5 p-1.5 rounded-xl flex gap-2 opacity-80`}
             >
               {item?.icon}
               <span className="text-sm">{item?.name}</span>

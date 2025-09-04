@@ -25,13 +25,13 @@ export default function Best_selling_products() {
   }
 
   return (
-    <div className="p-4 bg-white border rounded-lg my-4">
+    <div className="p-4 bg-white dark:bg-[#0F1629] border rounded-lg my-4">
       {is_Loading ? (
         <Loading_Dots />
       ) : (
         <div>
           <span>Top sản phẩm bán chạy</span>
-          <div className="bg-white">
+          <div className="bg-white dark:bg-[#0F1629]">
             <ProductTable
               dataProps={{ dataTable: data_products, operation: false }}
             />

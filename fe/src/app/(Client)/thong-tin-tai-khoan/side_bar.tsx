@@ -8,9 +8,9 @@ import { useToast } from "@/src/app/_Components/ui/use-toast";
 import Bell_component from "../../_Components/Notification/Bell_component";
 import { Box, Heart, LogOut, User } from "lucide-react";
 import { Mutation_Auth } from "../../_lib/Query_APIs/Auth/Auth_mutation";
-import { eventEmit } from "../../_Components/ui/Header/Event_emit";
 import Loading_Skeleton from "../../_Components/Loadings/Loading_Skeleton";
 import Loading_Overlay from "../../_Components/Loadings/Loading_Overlay";
+import { eventEmit } from "../../_Components/ui/header/Event_emit";
 
 const Side_bar = () => {
   const routing = useRouter();
@@ -56,7 +56,7 @@ const Side_bar = () => {
               pathName === "/thong-tin-tai-khoan/thong-tin" ||
               pathName === "/thong-tin-tai-khoan/dang-ki-ban-hang"
                 ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 text-sm font-medium flex items-center gap-x-4 text-gray-700"
+                : "hover:bg-[#6F8BFC] hover:text-gray-100 text-sm font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <User className="!w-5" />
@@ -67,7 +67,7 @@ const Side_bar = () => {
             className={`${
               pathName === "/thong-tin-tai-khoan/thong-bao"
                 ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 text-gray-700"
+                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Bell_component />
@@ -78,7 +78,7 @@ const Side_bar = () => {
             className={`${
               pathName === "/thong-tin-tai-khoan/san-pham-yeu-thich"
                 ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 text-gray-700"
+                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Heart />
@@ -89,7 +89,7 @@ const Side_bar = () => {
             className={`${
               pathName === "/thong-tin-tai-khoan/don-hang"
                 ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 text-gray-700"
+                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Box />

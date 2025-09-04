@@ -43,6 +43,7 @@ export async function list_carts(req, res) {
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error : true,
       message: error,
     });
   }
@@ -88,8 +89,9 @@ export async function checked_item_cart(req, res) {
       data,
     });
   } catch (error) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: error.message || 500,
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error : true,
+      message: error,
     });
   }
 }

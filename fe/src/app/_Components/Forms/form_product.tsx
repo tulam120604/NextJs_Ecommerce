@@ -31,6 +31,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
     removeImage,
     setImages,
     setPreview,
+    category,
   } = props;
   const { data: data_Category, isLoading: loading_category } = Query_Category();
   const router = useRouter();
@@ -70,11 +71,11 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
         )}
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-lg font-extrabold opacity-80">
+            <span className="text-lg font-extrabold opacity-90">
               {type === "update" ? "Cập nhật sản phẩm" : "Tạo mới sản phẩm"}
             </span>
-            <span className="text-gray-600 text-sm">
-              {props
+            <span className="opacity-80 text-sm">
+              {type === "update"
                 ? "Chỉnh sửa lại sản phẩm trong cửa hàng của bạn"
                 : "Thêm mới sản phẩm vào cửa hàng của bạn"}
             </span>
@@ -88,7 +89,7 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
         </div>
         <form
           onSubmit={my_form.handleSubmit(formSubmit)}
-          className="flex flex-col gap-y-10 p-6 rounded *:w-full text-base text-gray-700 bg-white"
+          className="flex flex-col gap-y-10 p-6 rounded *:w-full text-base bg-white dark:bg-[#0F1629]"
         >
           <div className="grid xl:grid-cols-[2fr_1fr_1fr] gap-x-16 gap-y-6">
             <Field_Form
@@ -110,7 +111,6 @@ const Form_product: React.FC<any> = ({ props, type }: any) => {
                 <Controller
                   name="category_id"
                   control={my_form?.control}
-                  defaultValue={props?.category_id || ""}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger>

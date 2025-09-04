@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "../toggleTheme";
 
 export default function TopBar({ props }: any) {
   const { data, isLoading, isFetching, isHydrated } = props;
@@ -16,20 +17,14 @@ export default function TopBar({ props }: any) {
             Kênh người bán
           </Link>
           <span className="hidden sm:inline">
-            Cần hỗ trợ? Liên hệ:{" "}
+            Cần hỗ trợ ? Liên hệ:{" "}
             <a className="text-blue-500" href="tel:+0020500">
               +9999999999
             </a>
           </span>
-          <div className="hidden sm:flex space-x-2">
-            <select className="bg-transparent outline-none">
-              <option>Tiếng Việt</option>
-              <option>English</option>
-            </select>
-          </div>
         </div>
         {/*  */}
-        <div className="flex space-x-4 *:duration-200">
+        <div className="flex items-center space-x-4 *:duration-200">
           {!(isLoading || isFetching || !isHydrated) && (
             <>
               <Link className="hover:text-blue-500" href="/order-tracking">
@@ -43,7 +38,7 @@ export default function TopBar({ props }: any) {
                 href={
                   data?.user_name
                     ? "/thong-tin-tai-khoan/thong-tin"
-                    : "/dang-nhap"
+                    : "/tai-khoan"
                 }
               >
                 {data?.user_name
@@ -54,6 +49,10 @@ export default function TopBar({ props }: any) {
               </Link>
             </>
           )}
+          {/* toggle theme */}
+          <div className="*:p-0 *:w-5 *:h-5">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </div>

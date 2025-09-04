@@ -32,7 +32,7 @@ const Product_Item = ({ dataProps }: any) => {
             </div>
             {/* about */}
             <div className="w-full py-4 px-2 flex flex-col gap-y-1.5 items-start h-[120px] justify-between">
-                <strong className="text-start w-full text-sm line-clamp-2 font-normal text-[#1A1E26]">{dataProps.short_name}</strong>
+                <strong className="text-start w-full text-sm line-clamp-2 font-normal opacity-80">{dataProps.short_name}</strong>
                 <div className="flex items-center gap-x-2 w-full">
                     {
                         dataProps?.price_product ?
