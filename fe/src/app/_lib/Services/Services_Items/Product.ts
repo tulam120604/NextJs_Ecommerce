@@ -246,7 +246,7 @@ export async function list_product_by_category(
 }
 
 // search
-export async function SEARCH_item(item?: any) {
+export async function search_item(item?: any) {
   try {
     let uri = `${apiURi}/products/search`;
     if (item) {
@@ -263,3 +263,22 @@ export async function SEARCH_item(item?: any) {
     return error;
   }
 }
+
+export async function list_product_search(item?: any) {
+  try {
+    let uri = `${apiURi}/products/list_product_search`;
+    if (item) {
+      uri += `?&_search=${item}`;
+    }
+    const res = await fetch(uri);
+    if (!res.ok) {
+      console.warn(res);
+      return res;
+    }
+    const { data } = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}
+

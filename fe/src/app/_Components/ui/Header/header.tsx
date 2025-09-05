@@ -33,7 +33,7 @@ const Header = () => {
     <>
       <TopBar props={{ data, isLoading, isFetching, isHydrated }} />
       <header
-        className="w-full bg-white dark:bg-[#0F1629] z-[2000] duration-300 sticky top-0 lg:relative overflow-hidden 
+        className="w-full bg-white dark:bg-[#0F1629] z-[2000] duration-300 sticky top-0 lg:relative
        shadow-lg lg:shadow-none"
       >
         {/* logo, search and cart */}
@@ -57,7 +57,7 @@ const Header = () => {
             </span>
           </button>
           {/* search form */}
-          <Search_component/>
+          <Search_component />
           {/* auth actions */}
           <Auth_actions props={{ data, isLoading, isFetching, isHydrated }} />
         </div>

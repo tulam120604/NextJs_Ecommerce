@@ -10,6 +10,7 @@ import { Logs, User } from "lucide-react";
 import { useAuthStore } from "../_lib/Zustand/Store";
 import { useTheme } from "next-themes";
 import { ThemeToggle } from "../_Components/ui/toggleTheme";
+import { Search_component } from "../_Components/Forms/search";
 
 const Layout_Admin = ({
   children,
@@ -82,12 +83,13 @@ const Layout_Admin = ({
             </div>
 
             <div className="flex justify-between w-full">
-              <h1 className="text-gray-800 text-lg font-semibold dark:text-red-500">
-                Dashboard
-              </h1>
+              <div className="w-1/3 ml-10 xl:ml-0">
+                <Search_component />
+              </div>
+
               <div className="flex gap-x-4">
                 {/* toggle theme */}
-                <ThemeToggle/>
+                <ThemeToggle />
 
                 {/* avatar */}
                 {user?.avatar ? (

@@ -9,6 +9,7 @@ const RoutesProducts = express.Router();
 RoutesProducts.get('/list_products/admin', middleWare, Products.list_product_dashboard);
 RoutesProducts.get('/list_products/client', Products.list_product_client);
 RoutesProducts.get('/products/search', Products.search_product);
+RoutesProducts.get('/products/list_product_search', Products.list_product_search);
 RoutesProducts.get('/products/category/:category_id', Products.list_product_by_category);
 RoutesProducts.get('/products/:id', Products.view_detail_product_client);
 RoutesProducts.get('/products/dashboard/:id', Products.view_detail_product_dashboard);

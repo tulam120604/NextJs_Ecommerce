@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { SEARCH_item } from "../../_lib/Services/Services_Items/Product";
+import { search_item } from "../../_lib/Services/Services_Items/Product";
+import { convert_Slug } from "../../util/Slug";
+import { useRouter } from "next/navigation";
 
 export const Search_Component_Dashboard = () => {
   return (
@@ -30,7 +32,7 @@ export function Search_Component_Client() {
   useEffect(() => {
     const time_search = setTimeout(() => {
       if (key_search) {
-        SEARCH_item(key_search)
+        search_item(key_search)
           .then((res) => setValue_search(res))
           .catch((error) => console.log(error));
       } else {
@@ -83,14 +85,61 @@ export function Search_Component_Client() {
 }
 
 export function Search_component() {
+  const [value_search, setValue_search] = useState<any>([]);
+  const [key_search, setKey_search] = useState<string>("");
+  const router = useRouter();
+
+  const submit = async (e: any) => {
+    e.preventDefault();
+    try {
+      if (!key_search) {
+        return;
+      } else {
+        router.push(
+          `/tim-kiem?key=${encodeURIComponent(e?.target?.key_search?.value)}`
+        );
+        setKey_search("");
+      }
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
+
+  useEffect(() => {
+    const time_search = setTimeout(() => {
+      const fetchData = async () => {
+        if (!key_search) {
+          setValue_search([]);
+          return;
+        }
+
+        try {
+          const res = await search_item(key_search);
+          setValue_search(res);
+        } catch (error) {
+          console.error("Error fetching search results:", error);
+        }
+      };
+
+      fetchData();
+    }, 500);
+    return () => clearTimeout(time_search);
+  }, [key_search]);
+  console.log(value_search);
   return (
     <div className="relative w-full">
-      <form className={`relative w-full *:h-10 gap-x-2 duration-300`}>
+      <form
+        onSubmit={submit}
+        className={`relative w-full *:h-10 gap-x-2 duration-300`}
+      >
         <input
           type="text"
+          name="key_search"
           className="border bg-white dark:bg-[#0F1629] rounded w-full px-3 text-sm !font-light outline-none opacity-90"
           placeholder="Tìm kiếm sản phẩm..."
-          // onChange={(e) => setKey_search(e.target.value)}
+          onChange={(e) => {
+            setKey_search(e.target.value);
+          }}
         />
         <button
           type="submit"
@@ -99,24 +148,23 @@ export function Search_component() {
           <Search color="#0A68FF" />
         </button>
       </form>
-        {/* <div className="bg-white w-[87vw] absolute py-2 px-5 rounded-lg text-gray-900 text-sm flex flex-col gap-y-3 shadow">
+      {value_search.length > 0 && (
+        <div
+          className="bg-white dark:bg-[#0F1629] w-full absolute top-10 left-0 border py-2 px-5 rounded-lg 
+        text-sm flex flex-col gap-y-3 shadow"
+        >
+          {value_search?.map((item: any) => (
             <Link
-              href={`/${item?._id}`}
+              href={`/tim-kiem?key=${encodeURIComponent(item?.short_name)}`}
               key={item?._id}
-              className="grid grid-cols-[50px_auto] gap-x-4"
-              onClick={() => setValue_search([])}
+              className="hover:text-blue-500 duration-150 py-1"
+              onClick={() =>  setValue_search([])}
             >
-              <Image
-                key={item?.short_name}
-                width={50}
-                height={50}
-                className="h-[50px] border"
-                alt="Loading..."
-                src={item?.gallery[0]}
-              />
-              <span>{item?.short_name}</span>
+              {item?.short_name}
             </Link>
-        </div> */}
+          ))}
+        </div>
+      )}
     </div>
   );
 }

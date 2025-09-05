@@ -1,32 +1,33 @@
 import { Suspense } from "react";
 import { unstable_noStore as noStore } from "next/cache";
-import LoadingShops from "./_component/loading";
 import Loading_Dots from "../../_Components/Loadings/Loading_Dots";
-import Paginate_item from "./_component/Paginate";
 import type { Metadata } from "next";
 import Breadcrum from "../../_Components/breadcrum/breadcrum";
-import Menu_bar from "./_component/Menubar";
-import { list_product_client } from "../../_lib/Services/Services_Items/Product";
+import {
+  list_product_search,
+} from "../../_lib/Services/Services_Items/Product";
 import List_Products from "../../_Components/Products/List_Products";
+import LoadingShops from "../san-pham/_component/loading";
+import Menu_bar from "../san-pham/_component/Menubar";
 
 export const metadata: Metadata = {
   title: "Sản phẩm",
 };
 
-const Products = async ({ searchParams }: any) => {
-  let page = searchParams._page ?? 1;
-  const bestSeller = searchParams._bestseller ?? "";
+const Page = async ({ searchParams }: any) => {
+  let key_search = searchParams?.key ?? '';
   noStore();
-  const data = await list_product_client(page, 30, bestSeller);
+    const data = await list_product_search(key_search);
   //  const isClient = typeof window !== 'undefined';
   //   console.log(isClient);
   return (
     <Suspense fallback={<LoadingShops />}>
       <div className="lg:pt-2 max-w-[1440px] mx-auto w-[95vw]">
-        <section className="flex items-center text-sm gap-x-2 font-medium capitalize text-gray-700 mb-2">
+        <section className="flex items-center text-sm gap-x-2 font-medium capitalize mb-2">
           <Breadcrum
             textProps={{
               bread_1: "Sản phẩm",
+              bread_2: searchParams?.key,
             }}
           />
         </section>
@@ -37,23 +38,12 @@ const Products = async ({ searchParams }: any) => {
               <Menu_bar />
             </div>
             {/* product */}
-            {/* <Render_Products data={data}/> */}
-            {data?.data?.docs ? (
-              Array.isArray(data?.data?.docs) && (
-                <List_Products data={data?.data?.docs} cols={6}/>
+            {data ? (
+              Array.isArray(data) && (
+                <List_Products data={data} cols={6} />
               )
             ) : (
               <Loading_Dots />
-            )}
-
-            {/* paginate page */}
-            {data?.data?.totalPages > 1 && (
-              <div className="mx-auto py-6">
-                <Paginate_item
-                  totalPages={data?.data?.totalPages}
-                  page={data?.data?.page}
-                />
-              </div>
             )}
           </div>
         </div>
@@ -62,4 +52,4 @@ const Products = async ({ searchParams }: any) => {
   );
 };
 
-export default Products;
+export default Page;

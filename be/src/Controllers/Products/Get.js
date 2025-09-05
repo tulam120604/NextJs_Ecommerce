@@ -230,30 +230,46 @@ export async function list_product_by_category(req, res) {
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error: true,
     });
   }
 }
 
 // search
 export async function search_product(req, res) {
-  const { _search = "" } = req.query;
   try {
-    const querry = {};
-    if (_search) {
-      querry.$and = [
-        {
-          short_name: { $regex: RegExp(_search, "i") },
-        },
-      ];
-    }
-    const data = await Products.find(querry);
+    const { _search = "" } = req.query;
+    const data = await Products.find({
+      short_name: { $regex: ".*" + _search + ".*", $options: "i" },
+    }).populate("category_id").limit(30);
     return res.status(StatusCodes.OK).json({
       message: "Done",
+      error: false,
       data,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error: true,
+    });
+  }
+}
+
+export async function list_product_search(req, res) {
+  try {
+  const { _page = 1, _limit = 100, _search , _bestseller = "" } = req.query;
+    const data = await Products.find({
+      short_name: { $regex: ".*" + _search + ".*", $options: "i" },
+    }).populate("category_id").populate("variant").limit(30);
+    return res.status(StatusCodes.OK).json({
+      message: "Done",
+      error: false,
+      data,
+    });
+  } catch (error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: error.message || 500,
+      error: true,
     });
   }
 }

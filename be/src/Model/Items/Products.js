@@ -55,6 +55,8 @@ const schema_Products = new mongoose.Schema(
   }
 );
 
+schema_Products.index({ short_name: 1 });
+
 schema_Products.plugin(mongoosePaginate);
 schema_Products.plugin(mongoooseDelete, {
   overrideMethods: "all",
