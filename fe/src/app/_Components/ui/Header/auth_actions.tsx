@@ -55,7 +55,7 @@ const Auth_actions = ({ props }: any) => {
     <div className="gap-x-3 flex items-center *:w-10 *:h-10 *:rounded-full">
       {/* icon account */}
       <Link
-        href={data?.user_name ? "/thong-tin-tai-khoan/thong-tin" : "/dang-nhap"}
+        href={data?.user_name ? "/thong-tin-tai-khoan/thong-tin" : "/tai-khoan"}
         className="!hidden lg:!block gap-x-1 hover:bg-gray-100 
         rounded duration-200 border cursor-pointer whitespace-nowrap text-gray-600 
         hover:text-gray-950"

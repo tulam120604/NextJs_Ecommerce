@@ -20,6 +20,12 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get("access_token")?.value || "";
 
   const verifyTokenResult: any = await verifyToken(token);
+  if (!verifyTokenResult) {
+    if (pathname.startsWith("/thong-tin-tai-khoan")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
   const role = verifyTokenResult?.payload?.role;
   const userId = verifyTokenResult?.payload?.userId;
 
@@ -55,5 +61,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/tai-khoan", "/trung-tam-dieu-khien/:path*"],
+  matcher: [
+    "/tai-khoan",
+    "/thong-tin-tai-khoan",
+    "/trung-tam-dieu-khien/:path*",
+  ],
 };

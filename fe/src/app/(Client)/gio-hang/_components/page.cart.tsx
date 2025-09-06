@@ -13,9 +13,9 @@ import Table_Cart from "./table";
 import { Button } from "@/src/app/_Components/ui/Shadcn/button";
 import Breadcrum from "@/src/app/_Components/breadcrum/breadcrum";
 import { loc_san_pham_trong_kho_lon_hon_0 } from "@/src/app/_lib/Config/Filter_Cart_And_Order";
-import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import Loading_Skeleton from "@/src/app/_Components/Loadings/Loading_Skeleton";
 import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 const Cart = () => {
   const { toast } = useToast();
@@ -167,7 +167,11 @@ const Cart = () => {
           </div>
         ) : (
           <>
-            {loading_mutation && <Loading_Overlay />}
+            {loading_mutation && (
+              <div className="w-screen h-screen fixed top-0 left-0 grid place-items-center bg-slate-400/50">
+                <Loading_Dots />
+              </div>
+            )}
             <div className="max-w-[1440px] mx-auto w-[95vw] mb-4 pt-2">
               <Breadcrum textProps={{ bread_1: "Giỏ hàng" }} />
             </div>

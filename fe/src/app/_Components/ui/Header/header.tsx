@@ -57,7 +57,7 @@ const Header = () => {
             </span>
           </button>
           {/* search form */}
-          <Search_component />
+          <Search_component type ='client'/>
           {/* auth actions */}
           <Auth_actions props={{ data, isLoading, isFetching, isHydrated }} />
         </div>

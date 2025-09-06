@@ -263,7 +263,7 @@ const So_luong_san_pham = ({ data_Item_Detail }: any) => {
                   (item?.attribute !== "" || item?.attribute) && (
                     <>
                       <button
-                        className={`text-gray-800 duration-200'}
+                        className={`text-gray-800 dark:text-gray-300 duration-200'}
                 ${name_attribute == item?.attribute && "!border-[#0A68FF]"}`}
                         key={Math.random()}
                         onClick={() =>
@@ -285,7 +285,7 @@ const So_luong_san_pham = ({ data_Item_Detail }: any) => {
             </div>
             {Array.isArray(value_variant) && (
               <div
-                className="flex flex-wrap items-center *:text-gray-800 *:bg-transparent 
+                className="flex flex-wrap items-center *:text-gray-800 *:dark:text-gray-300 *:bg-transparent 
           gap-x-4 *:relative *:border *:px-3 *:py-1 *:text-sm *:rounded *:border-gray-700"
               >
                 {value_variant?.map((item: any) => (

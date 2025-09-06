@@ -84,7 +84,7 @@ export function Search_Component_Client() {
   );
 }
 
-export function Search_component() {
+export function Search_component(props: { type: string }) {
   const [value_search, setValue_search] = useState<any>([]);
   const [key_search, setKey_search] = useState<string>("");
   const router = useRouter();
@@ -125,7 +125,7 @@ export function Search_component() {
     }, 500);
     return () => clearTimeout(time_search);
   }, [key_search]);
-  console.log(value_search);
+
   return (
     <div className="relative w-full">
       <form
@@ -155,10 +155,14 @@ export function Search_component() {
         >
           {value_search?.map((item: any) => (
             <Link
-              href={`/tim-kiem?key=${encodeURIComponent(item?.short_name)}`}
+              href={
+                props?.type === "client"
+                  ? `/tim-kiem?key=${encodeURIComponent(item?.short_name)}`
+                  : `/trung-tam-dieu-khien/san-pham/${item?._id}`
+              }
               key={item?._id}
               className="hover:text-blue-500 duration-150 py-1"
-              onClick={() =>  setValue_search([])}
+              onClick={() => setValue_search([])}
             >
               {item?.short_name}
             </Link>

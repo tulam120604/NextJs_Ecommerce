@@ -13,7 +13,7 @@ const Setting_Admin = () => {
             </div>
           }
         >
-          <div className="flex flex-col gap-y-6 py-4 rounded text-gray-700 ">
+          <div className="flex flex-col gap-y-6 py-4 rounded text-gray-700 dark:text-gray-300">
             <span className="lg:text-xl">Cài đặt</span>
             <div className="grid place-content-center">Đang phát triển</div>
           </div>

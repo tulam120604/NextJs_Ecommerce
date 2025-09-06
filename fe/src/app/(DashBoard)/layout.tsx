@@ -5,7 +5,6 @@ import SideBarDashboard from "./SideBar";
 import { Query_Notification } from "../_lib/Query_APIs/Notification/Query";
 import React, { useEffect, useState } from "react";
 import { useToast } from "../_Components/ui/use-toast";
-import { MessageContainer } from "../_Components/ui/message";
 import { Logs, User } from "lucide-react";
 import { useAuthStore } from "../_lib/Zustand/Store";
 import { useTheme } from "next-themes";
@@ -19,8 +18,7 @@ const Layout_Admin = ({
   const [count_bell, setCount_bell] = useState(0);
   const [open, setOpen] = useState<boolean>(false);
   const data = Query_Notification();
-  const { theme, setTheme } = useTheme();
-  const { data: user, isLoading, isFetching, isHydrated } = useAuthStore();
+  const { data: user } = useAuthStore();
 
   useEffect(() => {
     document.title = "Trung tâm điều khiển";
@@ -43,12 +41,9 @@ const Layout_Admin = ({
     }
   }, [data, count_bell]);
 
-  const loading_user = isLoading || isFetching || isHydrated;
-  console.log(theme);
 
   return (
     <>
-      <MessageContainer />
       <div className="bg-[#ECF1F2] dark:bg-[#020517] min-h-screen antialiased flex">
         {/* Sidebar chỉ hiển thị ở màn hình >= xl */}
         <aside className="hidden xl:block w-[200px] min-h-screen">
@@ -84,7 +79,7 @@ const Layout_Admin = ({
 
             <div className="flex justify-between w-full">
               <div className="w-1/3 ml-10 xl:ml-0">
-                <Search_component />
+                <Search_component type='dashboard' />
               </div>
 
               <div className="flex gap-x-4">

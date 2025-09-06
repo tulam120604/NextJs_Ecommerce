@@ -86,7 +86,7 @@ export default function Page() {
   function status_order(item: any) {
     switch (+item) {
       case 1:
-        return <span>Chờ xác nhận</span>;
+        return <span className="!text-yellow-500">Chờ xác nhận</span>;
       case 2:
         return (
           <span className="flex items-center text-green-500">
@@ -95,7 +95,7 @@ export default function Page() {
           </span>
         );
       case 3:
-        return <span>Đang chuẩn bị hàng</span>;
+        return <span className="!text-yellow-500">Đang chuẩn bị hàng</span>;
       case 4:
         return <span>Đang vận chuyển</span>;
       case 5:
@@ -116,7 +116,7 @@ export default function Page() {
     {
       cell: ({ row }) => (
         <div className="flex gap-x-4 lg:gap-x-8">
-          <Link href={"/" + row?.original?.product_id?._id}>
+          <div>
             <Image
               width={100}
               height={100}
@@ -125,7 +125,7 @@ export default function Page() {
               src={row?.original?.product_id?.gallery[0]}
               alt="Loading..."
             />
-          </Link>
+          </div>
           <div className="w-full flex flex-col gap-y-3">
             <span className="line-clamp-2">
               {row?.original?.product_id?.short_name}
@@ -218,7 +218,7 @@ export default function Page() {
               className="bg-green-500"
               onClick={() => change_status(item, status)}
             >
-              Xác nhận
+              OK
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -229,13 +229,13 @@ export default function Page() {
     return <Loading_Dots />;
   }
   return (
-    <div className="rounded py-4 text-gray-700">
+    <div className="rounded py-4 text-gray-700 dark:text-gray-300">
       <span className="text-xl">Chi tiết đơn hàng</span>
-      <div className="mt-6 bg-white p-6 rounded">
+      <div className="mt-6 bg-white dark:bg-[#0F1629] p-6 rounded">
         <span className="text-sm flex gap-x-3">
           Trạng thái: {status_order(data?.data_order_by_id?.status_item_order)}
         </span>
-        <div className="-translate-y-8">
+        <div className="-translate-y-8 *:dark:text-gray-300">
           <DataTable
             data={data?.data_order_by_id?.items_order}
             columns={columns}

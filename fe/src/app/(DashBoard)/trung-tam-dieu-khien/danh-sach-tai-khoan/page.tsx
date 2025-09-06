@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { List_Account } from "@/src/app/_lib/Query_APIs/Auth/Query_Auth";
@@ -20,7 +21,7 @@ const CustomersAdmin = () => {
     {
       cell: ({ row }) => (
         <>
-          <Image
+          <img
             className="rounded-full"
             width={50}
             height={50}
@@ -30,7 +31,7 @@ const CustomersAdmin = () => {
                 : "/Images/default-user.png"
             }
             alt="Loading..."
-          ></Image>
+          />
         </>
       ),
       header: "Ảnh đại diện",
@@ -67,10 +68,10 @@ const CustomersAdmin = () => {
       ),
       header: "Vai trò",
     },
-    {
-      cell: ({ row }) => console.log(row?.original),
-      header: "Thao tác",
-    },
+    // {
+    //   cell: ({ row }) => console.log(row?.original),
+    //   header: "Thao tác",
+    // },
   ];
   return (
     <Suspense
@@ -80,14 +81,14 @@ const CustomersAdmin = () => {
         </div>
       }
     >
-        <div className="flex flex-col gap-y-6 py-4 rounded text-gray-700">
+        <div className="flex flex-col gap-y-6 py-4 rounded text-gray-700 dark:text-gray-300">
           <span className="lg:text-xl">Danh sách tài khoản</span>
           {data?.data && (
             <>
-              <div className="bg-white rounded-lg px-4">
+              <div className="bg-white dark:bg-[#0F1629] rounded-lg px-4 *:text-gray-700 *:dark:text-gray-300">
                 <DataTable data={data?.data?.docs} columns={columns} />
               </div>
-              <div className="text-gray-100">
+              <div className="opacity-90">
                 <Paginate_item
                   totalPages={data?.data?.totalPages}
                   page={data?.data?.page}

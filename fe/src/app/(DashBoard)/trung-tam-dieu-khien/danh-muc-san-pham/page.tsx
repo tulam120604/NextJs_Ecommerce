@@ -60,7 +60,9 @@ const Page = () => {
       </div>
 
       {isLoading ? (
-        <Loading_Overlay />
+        <div className="*:bg-[#ECF1F2] *:dark:bg-[#020517] min-h-[50vh] grid place-content-center">
+          <Loading_Dots />
+        </div>
       ) : (
         <>
           {data?.data ? (

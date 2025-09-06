@@ -7,8 +7,7 @@ import ProductTable from "../../san-pham/_components/product_table";
 
 export default function Best_selling_products() {
   const [page, setPage] = useState<number>(1);
-  const { data, isLoading, isFetching } = Query_List_Items_Dashboard(page, 20);
-  const is_Loading = isLoading || isFetching;
+  const { data, isLoading } = Query_List_Items_Dashboard(page, 20);
 
   //   sắp xếp giảm dần theo doanh thu
   const data_products = data?.data?.docs ?? [];
@@ -26,7 +25,7 @@ export default function Best_selling_products() {
 
   return (
     <div className="p-4 bg-white dark:bg-[#0F1629] border rounded-lg my-4">
-      {is_Loading ? (
+      {isLoading ? (
         <Loading_Dots />
       ) : (
         <div>

@@ -13,6 +13,7 @@ import { CirclePlus, EyeOff } from "lucide-react";
 import { message } from "@/src/app/_Components/ui/message";
 import ProductTable from "../_components/product_table";
 import Pagination_Component from "../_components/Pagination";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 const Page = () => {
   // const socket = io("http://localhost:8888");
@@ -65,59 +66,59 @@ const Page = () => {
         </div>
       }
     >
-        <div className="flex flex-col gap-y-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-y-1">
-              <span className="text-lg font-extrabold opacity-90">
-                Danh sách sản phẩm
-              </span>
-              <span className="text-gray-600 text-sm">
-                Quản lý sản phẩm của bạn
-              </span>
-            </div>
-
-            {/* add item */}
-            <Link
-              href={"/trung-tam-dieu-khien/san-pham/them-moi-san-pham"}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 
-                transition-colors flex items-center"
-            >
-              <CirclePlus
-                className="inline-block mr-1"
-                strokeWidth={1.5}
-                size={18}
-              />
-              Tạo mới sản phẩm
-            </Link>
+      <div className="flex flex-col gap-y-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-1">
+            <span className="text-lg font-extrabold opacity-90">
+              Danh sách sản phẩm
+            </span>
+            <span className="opacity-70 text-sm">Quản lý sản phẩm của bạn</span>
           </div>
 
-          {isLoadingOverlayVisible ? (
-            <Loading_Overlay />
-          ) : data?.data?.totalDocs > 0 ? (
-            <div className="bg-white rounded-lg border">
-              <ProductTable
-                dataProps={{
-                  dataTable: data?.data?.docs,
-                  handle_toggle_item,
-                  action: "list_products",
-                  operation: true,
-                }}
-              />
-            </div>
-          ) : (
-            <section className="h-[70vh] grid place-content-center text-center text-sm">
-              Không có dữ liệu!
-            </section>
-          )}
-          {data?.data?.totalPages > 1 && (
-            <div className="text-gray-100">
-              <Pagination_Component
-                totalPages={data?.data?.totalPages}
-                currentPage={data?.data?.page}
-              />
-            </div>
-          )}
+          {/* add item */}
+          <Link
+            href={"/trung-tam-dieu-khien/san-pham/them-moi-san-pham"}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 
+                transition-colors flex items-center"
+          >
+            <CirclePlus
+              className="inline-block mr-1"
+              strokeWidth={1.5}
+              size={18}
+            />
+            Tạo mới sản phẩm
+          </Link>
         </div>
+
+        {isLoadingOverlayVisible ? (
+          <div className="*:bg-[#ECF1F2] *:dark:bg-[#020517] min-h-[50vh] grid place-content-center">
+            <Loading_Dots />
+          </div>
+        ) : data?.data?.totalDocs > 0 ? (
+          <div className="rounded-lg border">
+            <ProductTable
+              dataProps={{
+                dataTable: data?.data?.docs,
+                handle_toggle_item,
+                action: "list_products",
+                operation: true,
+              }}
+            />
+          </div>
+        ) : (
+          <section className="h-[70vh] grid place-content-center text-center text-sm">
+            Không có dữ liệu!
+          </section>
+        )}
+        {data?.data?.totalPages > 1 && (
+          <div className="text-gray-100">
+            <Pagination_Component
+              totalPages={data?.data?.totalPages}
+              currentPage={data?.data?.page}
+            />
+          </div>
+        )}
+      </div>
     </Suspense>
   );
 };

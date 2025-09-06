@@ -55,8 +55,8 @@ const Side_bar = () => {
             className={`${
               pathName === "/thong-tin-tai-khoan/thong-tin" ||
               pathName === "/thong-tin-tai-khoan/dang-ki-ban-hang"
-                ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 text-sm font-medium flex items-center gap-x-4 opacity-80"
+                ? "font-medium flex items-center gap-x-4 text-[#6F8BFC]"
+                : "hover:text-[#6F8BFC] text-sm font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <User className="!w-5" />
@@ -66,8 +66,8 @@ const Side_bar = () => {
             href={"/thong-tin-tai-khoan/thong-bao"}
             className={`${
               pathName === "/thong-tin-tai-khoan/thong-bao"
-                ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
+                ? "font-medium flex items-center gap-x-4 text-[#6F8BFC]"
+                : "hover:text-[#6F8BFC] font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Bell_component />
@@ -77,8 +77,8 @@ const Side_bar = () => {
             href={"/thong-tin-tai-khoan/san-pham-yeu-thich"}
             className={`${
               pathName === "/thong-tin-tai-khoan/san-pham-yeu-thich"
-                ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
+                ? "font-medium flex items-center gap-x-4 text-[#6F8BFC]"
+                : "hover:text-[#6F8BFC] font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Heart />
@@ -88,8 +88,8 @@ const Side_bar = () => {
             href={"/thong-tin-tai-khoan/don-hang"}
             className={`${
               pathName === "/thong-tin-tai-khoan/don-hang"
-                ? "font-medium flex items-center gap-x-4 bg-[#6F8BFC] text-gray-100"
-                : "hover:bg-[#6F8BFC] hover:text-gray-100 font-medium flex items-center gap-x-4 opacity-80"
+                ? "font-medium flex items-center gap-x-4 text-[#6F8BFC]"
+                : "hover:text-[#6F8BFC] font-medium flex items-center gap-x-4 opacity-80"
             } `}
           >
             <Box />
@@ -97,8 +97,8 @@ const Side_bar = () => {
           </Link>
           <button
             onClick={log_out}
-            className="border border-transparent hover:border-gray-300 px-4 py-3 text-sm font-medium 
-            text-red-500 flex items-center gap-x-4"
+            className=" px-4 py-3 text-sm font-medium 
+            text-red-500 flex items-center gap-x-4 hover:text-red-600 duration-150"
           >
             <LogOut strokeWidth={1.8} className="h-5 rotate-180" />
             <span className="hidden lg:block">Đăng xuất</span>

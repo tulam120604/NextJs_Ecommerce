@@ -24,7 +24,7 @@ import React from "react";
 
 export default function ProductTable({ dataProps }: any) {
   return (
-    <div className="overflow-x-auto rounded border  bg-white dark:bg-[#0F1629]">
+    <div className="overflow-x-auto rounded border bg-white dark:bg-[#0F1629]">
       {/* header */}
       <div
         className={`grid grid-cols-9 md:grid-cols-10 opacity-85 font-semibold border-b 

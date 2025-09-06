@@ -12,7 +12,7 @@ export default function TopBar({ props }: any) {
         <div className="flex space-x-4 items-center">
           <Link
             className="hover:text-blue-500 duration-200"
-            href="/order-tracking"
+            href="/thong-tin-tai-khoan/dang-ki-ban-hang"
           >
             Kênh người bán
           </Link>
@@ -27,10 +27,10 @@ export default function TopBar({ props }: any) {
         <div className="flex items-center space-x-4 *:duration-200">
           {!(isLoading || isFetching || !isHydrated) && (
             <>
-              <Link className="hover:text-blue-500" href="/order-tracking">
+              <Link className="hover:text-blue-500" href="/thong-tin-tai-khoan/don-hang">
                 Đơn hàng
               </Link>
-              <Link className="hover:text-blue-500" href="/wishlist">
+              <Link className="hover:text-blue-500" href="/thong-tin-tai-khoan/san-pham-yeu-thich">
                 Yêu thích
               </Link>
               <Link

@@ -122,7 +122,7 @@ const Page_order = () => {
       cell: ({ row }) => (
         <div className="flex flex-col gap-y-2 text-end">
           <span className="text-red-600">{row?.original?.price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
-          <div>x {row?.original?.quantity}</div>
+          <span>x {row?.original?.quantity}</span>
           <span className="text-red-600">{row?.original?.total_price_item?.toLocaleString('vi', { style: 'currency', currency: 'VND' })}</span>
         </div>
       ),
@@ -138,7 +138,7 @@ const Page_order = () => {
       *:px-2 items-center *:bg-none *:text-sm *:border-b-2 *:whitespace-nowrap top-0 bg-gray-100 dark:bg-[#0F1629]'>
         {
           Array.from({ length: 7 }, (_: any, i: number) =>
-            <button key={i} onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900' 
+            <button key={i} onClick={() => handle_list_item_status(i)} className={status_item_order === i ? '!border-gray-900 dark:!border-gray-300' 
             : 'hover:border-gray-900'}>
               {
                 i === 0 ? 'Tất cả' : i === 1 ? 'Chưa xác nhận' : i === 2 ? 'Đã xác nhận' : i === 3 ? 'Đang chuẩn bị hàng' : i === 4 ? 'Đang vận chuyển' : i === 5 ?
@@ -158,7 +158,7 @@ const Page_order = () => {
           data?.data_order?.docs?.map((item: any) =>
             <div className='mb-4 px-2 lg:px-8 rounded bg-gray-100 dark:bg-[#0F1629] pb-4' key={item?._id}>
               <span className='px-1 py-2 text-sm'>{status_order(item?.status_item_order)}</span>
-              <div className='*:text-gray-700 -mt-4'>
+              <div className='*:text-gray-700 *:dark:text-gray-300 -mt-4'>
                 <Table_item dataProps={item?.items_order} />
               </div>
               <div key={+item?._id + Math.random()} className='flex justify-between items-center text-gray-700'>

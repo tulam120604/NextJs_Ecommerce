@@ -6,7 +6,7 @@ import {
   FileCog,
   Gift,
   MessageCircleMore,
-  UserRound,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import Image from "next/image";
 import { useStoreStatusItemOrder } from "@/src/app/_lib/Zustand/Store";
 import { eventEmit } from "@/src/app/_Components/ui/header/Event_emit";
+import Loading_Dots from "@/src/app/_Components/Loadings/Loading_Dots";
 
 export default function Page_infor_mobile({ data_user }: any) {
   const { setStatus } = useStoreStatusItemOrder();
@@ -58,10 +59,21 @@ export default function Page_infor_mobile({ data_user }: any) {
   return (
     <>
       {/* name account */}
-      {mutation_auth?.isLoading && <Loading_Overlay />}
+      {mutation_auth?.isLoading && (
+        <div className="fixed top-0 left-0 w-screen h-screen *:!bg-gray-500/50 z-[10000]">
+          <Loading_Dots />
+        </div>
+      )}
       <div className="flex gap-4 opacity-85 items-center relative">
         <div className="rounded-full *:rounded-full bg-slate-200 w-12 h-12 grid place-content-center">
-          <Image src={data_user?.data?.avatar} width={48} height={48} alt="" />
+          {!data_user?.avatar ? (
+            <User
+              strokeWidth={1.5}
+              className="relative mx-auto -translate-y-1/2 top-1/2"
+            />
+          ) : (
+            <Image src={data_user?.avatar} width={48} height={48} alt="" />
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <span>{data_user?.data?.user_name}</span>

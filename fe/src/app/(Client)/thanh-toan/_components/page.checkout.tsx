@@ -26,6 +26,7 @@ import { ToastAction } from "../../../_Components/ui/toast";
 import Loading_Skeleton from "@/src/app/_Components/Loadings/Loading_Skeleton";
 import Loading_Overlay from "@/src/app/_Components/Loadings/Loading_Overlay";
 import { useAuthStore } from "@/src/app/_lib/Zustand/Store";
+import { message } from "@/src/app/_Components/ui/message";
 
 const Page_checkout = () => {
   const { toast } = useToast();
@@ -134,9 +135,9 @@ const Page_checkout = () => {
     }
   }
   // notes_order
-  const mutate_order = Mutation_Order("ADD_and_RESTORE_BUY_ITEM");
+  const {mutateAsync, isLoading: loading_mutate_order} = Mutation_Order("ADD_and_RESTORE_BUY_ITEM");
   const mutation_payment = Mutation_Payment("CREATE");
-  function on_Checkout(infor_user_form: any) {
+ async function on_Checkout(infor_user_form: any) {
     validate_stock_item();
     const data_order = {
       action_mutate: action_mutation,
@@ -152,7 +153,14 @@ const Page_checkout = () => {
     };
     if (checkStock) {
       if (check_payment) {
-        mutate_order?.mutate(data_order);
+        const result = await mutateAsync(data_order);
+        if (result?.error) {
+          message.error(result?.message)
+        }
+        else {
+        message.success(result?.message)
+        routing.push("/thong-tin-tai-khoan/don-hang");
+        }
       } else {
         // mutation payment
         mutation_payment?.mutate(data_order);
@@ -160,9 +168,9 @@ const Page_checkout = () => {
       }
     }
   }
-  if (mutate_order.status_api === "201") {
-    routing.push("/thong-tin-tai-khoan/don-hang");
-  }
+  // if (mutate_order.status_api === "201") {
+  //   routing.push("/thong-tin-tai-khoan/don-hang");
+  // }
   const isLoadingDots = isLoading || loading_data_user;
   return (
     <Suspense fallback={<Loading_Skeleton number_elements={2} />}>
@@ -178,11 +186,11 @@ const Page_checkout = () => {
           <form
             onSubmit={handleSubmit(on_Checkout)}
             className={`relative py-6 ${
-              mutate_order.isLoading &&
+              loading_mutate_order &&
               "after:fixed after:top-0 after:left-0 after:w-screen after:h-screen after:bg-[#33333366]"
             }`}
           >
-            {mutate_order.isLoading && <Loading_Overlay />}
+            {loading_mutate_order && <Loading_Overlay />}
             {/* item */}
             <div className="max-w-[1440px] mx-auto w-[95vw] rounded">
               {/* list items */}
@@ -351,7 +359,7 @@ const Page_checkout = () => {
                       </Button>
                     ) : (
                       <Button className="mt-4">
-                        {mutate_order.isLoading ? (
+                        {loading_mutate_order ? (
                           <Loading_Dots />
                         ) : (
                           "Đến cổng thanh toán"
