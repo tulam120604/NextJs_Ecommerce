@@ -23,16 +23,11 @@ export async function register(req, res) {
         message,
       });
     }
-    const check_userName = await Account.findOne({ email });
-    if (check_userName) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        message: "Ten dang nhap da ton tai!",
-      });
-    }
     const check_email = await Account.findOne({ email });
     if (check_email) {
       return res.status(StatusCodes.BAD_REQUEST).json({
-        message: "Email da ton tai!",
+        message: "Email đã tồn tại, vui lòng thử lại!",
+        error: true,
       });
     }
     const hassPass = await brcyptjs.hash(password, 10);
@@ -50,14 +45,17 @@ export async function register(req, res) {
     if (!data || !data._id) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Đã có lỗi xảy ra, vui lòng thử lại sau!",
+        error: true,
       });
     }
     return res.status(StatusCodes.CREATED).json({
-      message: "Done !",
+      message: "Tạo tài khoản thành công!",
+      error: false,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error: true,
     });
   }
 }
@@ -69,7 +67,8 @@ export async function login(req, res) {
     const check_account = await Account.findOne({ email });
     if (!check_account) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "Sai thong tin!",
+        message: "Email hoặc mật khẩu không đúng, vui lòng thử lại!",
+        error: true,
       });
     }
     const check_password = await brcyptjs.compare(
@@ -78,7 +77,8 @@ export async function login(req, res) {
     );
     if (!check_password) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
-        message: "Sai thong tin!",
+        message: "Email hoặc mật khẩu không đúng, vui lòng thử lại!",
+        error: true,
       });
     }
     const accessToken = createAccessToken(check_account);
@@ -91,13 +91,13 @@ export async function login(req, res) {
       maxAge: 604800000,
     });
     return res.status(StatusCodes.OK).json({
-      message: "Login Done !",
-      accessToken,
-      refeshToken,
+      message: "Đăng nhập thành công!",
+      error: false,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error: true,
     });
   }
 }
@@ -140,17 +140,20 @@ export async function logout(req, res) {
     const token = req.cookies.access_token;
     if (!token) {
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: "No token",
+        message: "Không tìm thấy user!",
+        error: true,
       });
     }
     await Blacklist_token.create({ token });
     res.clearCookie("access_token", { path: "/" });
     return res.status(StatusCodes.OK).json({
-      message: "OK logout!",
+      message: "Đã đăng xuất tài khoản!",
+      error: false,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error: true,
     });
   }
 }
