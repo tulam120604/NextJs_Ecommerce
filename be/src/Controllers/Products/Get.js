@@ -165,12 +165,14 @@ export async function view_detail_product_client(req, res) {
       await data.save();
     }
     return res.status(StatusCodes.OK).json({
-      message: "Done",
+      message: "OK!",
+      error : false,
       data,
     });
   } catch (error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       message: error.message || 500,
+      error : true
     });
   }
 }

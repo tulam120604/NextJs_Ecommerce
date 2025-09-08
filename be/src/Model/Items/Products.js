@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 import mongoooseDelete from "mongoose-delete";
-import Categories from "./Categories";
+import Categories from "./Categories.js";
 
 const schema_Products = new mongoose.Schema(
   {

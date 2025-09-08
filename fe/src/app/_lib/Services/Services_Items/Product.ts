@@ -22,10 +22,6 @@ export async function list_product_client(
         },
       });
     }
-    if (!res.ok) {
-      console.warn("Call data failer");
-      return res;
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -39,10 +35,6 @@ export async function list_product_with_limit(countItem: number) {
     const res = await fetch(
       `${apiURi}/list_products/client?&_limit=${countItem}`
     );
-    if (!res.ok) {
-      console.warn("Call data failer");
-      return res;
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -58,14 +50,11 @@ export async function list_product_with_limit(countItem: number) {
 export async function view_detail_product(id: number | string) {
   try {
     const res = await fetch(`${apiURi}/products/${id}`);
-    if (!res.ok) {
-      console.warn("Call data failer!");
-      return res;
-    }
     const data = await res.json();
-    return data.data;
+    console.log(data);
+    return data?.data;
   } catch (error) {
-    return error;
+    return { success: false, data: null, message: "Server error!" };
   }
 }
 
@@ -73,14 +62,10 @@ export async function view_detail_product(id: number | string) {
 export async function view_detail_product_dashboard(id: number | string) {
   try {
     const res = await fetch(`${apiURi}/products/dashboard/${id}`);
-    if (!res.ok) {
-      console.warn("Call data failer");
-      return res;
-    }
     const data = await res.json();
-    return data.data;
+    return data?.data;
   } catch (error) {
-    return error;
+    return { success: false, data: null, message: "Server error!" };
   }
 }
 
@@ -92,10 +77,6 @@ export async function list_product_dashboard(page: number, limit_item: number) {
       method: "get",
       credentials: "include",
     });
-    if (!res.ok) {
-      console.warn("Call api failer");
-      return res;
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -114,9 +95,6 @@ export async function create_product(item: any) {
       body: JSON.stringify(item),
       credentials: "include",
     });
-    if (!res.ok) {
-      return res;
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -134,9 +112,6 @@ export async function hidden_or_restore_product(item: any) {
         credentials: "include",
       }
     );
-    if (!res.ok) {
-      return res;
-    }
     const result = await res.json();
     return result;
   } catch (error) {
@@ -158,9 +133,6 @@ export async function list_product_in_recycle(
       },
       credentials: "include",
     });
-    if (!res.ok) {
-      console.warn("Call data failer");
-    }
     const result = await res.json();
     return result;
   } catch (error) {
@@ -205,9 +177,6 @@ export async function update_product_dashboard(dataClient?: any) {
       body: JSON.stringify(dataClient),
       credentials: "include",
     });
-    if (!res.ok) {
-      console.warn("Kiem tra lai server hoac internet!");
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -235,9 +204,6 @@ export async function list_product_by_category(
         },
       });
     }
-    if (!res.ok) {
-      return res;
-    }
     const data = await res.json();
     return data;
   } catch (error) {
@@ -253,10 +219,6 @@ export async function search_item(item?: any) {
       uri += `?&_search=${item}`;
     }
     const res = await fetch(uri);
-    if (!res.ok) {
-      console.warn(res);
-      return res;
-    }
     const { data } = await res.json();
     return data;
   } catch (error) {
@@ -271,14 +233,9 @@ export async function list_product_search(item?: any) {
       uri += `?&_search=${item}`;
     }
     const res = await fetch(uri);
-    if (!res.ok) {
-      console.warn(res);
-      return res;
-    }
     const { data } = await res.json();
     return data;
   } catch (error) {
     return error;
   }
 }
-
