@@ -10,6 +10,7 @@ const verifyToken = async (token: string) => {
     const secret = await jwtVerify(String(token), secretJWT);
     return secret;
   } catch (error) {
+    console.error("JWT verify error:", error);
     return null;
   }
 };
@@ -17,9 +18,12 @@ const verifyToken = async (token: string) => {
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
   const pathname = url.pathname;
+  const tokenCookie = request.cookies.getAll();
+  console.log(tokenCookie);
+
   const token = request.cookies.get("access_token")?.value || "";
 
-  const verifyTokenResult: any = await verifyToken(token);
+  const verifyTokenResult: any = await verifyToken(String(token));
   if (!verifyTokenResult) {
     if (pathname.startsWith("/thong-tin-tai-khoan")) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -67,3 +71,9 @@ export const config = {
     "/trung-tam-dieu-khien/:path*",
   ],
 };
+
+// export async function middleware() {
+//   // This function is required to make this file a middleware.
+//   // The actual middleware logic has been commented out above.
+//   return;
+// }

@@ -38,7 +38,7 @@ const Page_infor = () => {
   }, []);
 
   return (
-    <div className="w-full px-6 py-4 lg:py-8 bg-gray-100 dark:bg-[#0F1629]">
+    <div className="w-full py-4 lg:py-8 bg-gray-100 dark:bg-[#0F1629] rounded">
       {loading_user ? (
         <div className="w-full min-h-[40vh] lg:min-h-[70vh] grid place-content-center">
           <Loading_Dots />
@@ -46,21 +46,14 @@ const Page_infor = () => {
       ) : (
         <>
           {/* desktop */}
-          <div className="hidden lg:flex justify-between">
+          <div className="hidden lg:flex justify-between px-6">
             <div className="flex flex-col gap-y-1 pb-4 w-full">
               <span className="lg:text-xl">Hồ sơ của tôi</span>
               <span className="text-sm">
                 Quản lý thông tin hồ sơ để bảo mật tài khoản
               </span>
             </div>
-            {data_user?.role === "user" ? (
-              <Link
-                className="lg:text-sm text-xs underline whitespace-nowrap"
-                href={"/thong-tin-tai-khoan/dang-ki-ban-hang"}
-              >
-                Kênh phân phối
-              </Link>
-            ) : data_user?.role === "seller" ? (
+            {data_user?.role === "seller" ? (
               <Link
                 className="lg:text-sm text-xs underline whitespace-nowrap"
                 href={"/trung-tam-dieu-khien/bang-dieu-khien/tong-quan"}
@@ -76,7 +69,7 @@ const Page_infor = () => {
               </Link>
             )}
           </div>
-          <div className="hidden lg:grid grid-cols-[65%_30%] justify-between py-10 border-y">
+          <div className="hidden lg:grid grid-cols-[65%_30%] justify-between py-10 border-y px-6">
             {/* thong tin */}
             <div className="w-full grid grid-cols-[40%_55%] gap-4 mx-auto">
               <span className="font-light">Tên hiển thị</span>
@@ -99,11 +92,11 @@ const Page_infor = () => {
           </div>
 
           {/* mobile */}
-          <div className="lg:hidden">
+          <div className="lg:hidden px-6">
             <Page_infor_mobile data_user={data_user} />
           </div>
           {/* --- */}
-          <section className="flex items-center justify-between my-5 py-5">
+          <section className="flex items-center justify-between my-5 py-5 px-6">
             <span className="lg:text-xl text-sm">Địa chỉ</span>
             <Button
               className="lg:text-sm text-xs px-2 lg:py-2 py-1.5 h-auto bg-[#597BFE] hover:bg-[#6f8bfc]"
